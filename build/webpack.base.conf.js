@@ -26,10 +26,10 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test: /\.scss$/,
-        loaders: [ "style", "css", "sass" ]
-      },
+      // {
+      //   test: /\.scss$/,
+      //   loaders: [ "style", "css", "sass" ]
+      // },
       {
         test: /\.vue$/,
         loader: 'vue'

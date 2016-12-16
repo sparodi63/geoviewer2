@@ -21,6 +21,7 @@ require('./buttons/fullscreen');
 require('./buttons/zoom');
 require('./buttons/locate');
 require('./buttons/legend');
+require('./buttons/search');
 
 // -------------------------------------------------------------------------------- //
 // Direttive
@@ -37,3 +38,4 @@ Vue.component('gv-iframe-panel', IFrame);
 import * as WmsInfoList from './components/WmsInfoList.vue';
 Vue.component('gv-wms-info-list', WmsInfoList);
 
+console.log('fine _base.js')

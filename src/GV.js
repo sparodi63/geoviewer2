@@ -7,11 +7,11 @@ var map = null;
 var Buttons = [];
 
 export default {
-    init,
-    config,
-    globals,
-    util,
-    map,
-    Buttons
+  init,
+  config,
+  globals,
+  util,
+  map,
+  Buttons
 };
 

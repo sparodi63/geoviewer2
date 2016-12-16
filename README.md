@@ -1,4 +1,4 @@
-# geoviewer2tris v0.0.1
+# geoviewer2 v0.0.1
 
 > A Vue.js 2.0 project
 

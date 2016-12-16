@@ -1,12 +1,12 @@
 <template>
     <div v-show="visible" :class="cls">
-        <div class="gv-panel-title gv-bgcolor">
+        <div class="gv-panel-title gv-color-scheme">
             {{title}}
             <button class="gv-close" type="button" @click="closePanel">×</button>
         </div>
         <div>
             <div class="gv-html-panel-body">
-                <iframe id="iframe" :src="src" :height="height" :width="width" style="border: none;" ></iframe>
+                <iframe id="iframe" :src="src" :height="height" :width="width" style="border: none;"></iframe>
             </div>
         </div>
     </div>
@@ -19,7 +19,7 @@
         name: 'gv-iframe-panel',
         props: ['html', 'src', 'visible', 'cls', 'title', 'width', 'height'],
         methods: {
-            closePanel: function() {
+            closePanel: function () {
                 this.$el.parentNode.removeChild(this.$el);
             }
         },

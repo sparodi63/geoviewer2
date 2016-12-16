@@ -1,6 +1,6 @@
 <template>
     <div v-show="visible" :class="cls">
-        <div class="gv-panel-title gv-bgcolor">Risultato Info
+        <div class="gv-panel-title gv-color-scheme">Risultato Info
             <button class="gv-close" type="button" @click="closePanel">×</button>
         </div>
         <div class="gv-html-panel-body">

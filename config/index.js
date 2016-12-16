@@ -7,7 +7,7 @@ module.exports = {
         index: path.resolve(__dirname, '../dist/index.html'),
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsSubDirectory: 'static',
-        assetsPublicPath: '/geoviewer2tris/dist/',
+        assetsPublicPath: '/geoviewer2/dist/',
         productionSourceMap: true,
         // Gzip off by default as many popular static hosts such as
         // Surge or Netlify already gzip all static assets for you.
@@ -22,7 +22,9 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: {
-            '/geoservices/proxy/proxy.jsp' : 'http://localhost:8080/geoservices/proxy/proxy.jsp'
+            '/geoservices/**' : 'http://localhost:8080/',
+            '/geoviewer2/data/**' : 'http://localhost:8080/',
+            '/geoviewer2/static/**' : 'http://localhost:8080/'
         },
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README

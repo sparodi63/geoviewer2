@@ -3,8 +3,8 @@ import util from '../util';
 var L = require('leaflet');
 require('../controls/Locate');
 
-GV.Buttons.locate = function(btnOptions, map) {
-    "use strict";
+GV.Buttons.locate = function (btnOptions, map) {
+  "use strict";
 
-    return new L.Control.Locate(btnOptions);
+  return new L.Control.Locate(btnOptions);
 };

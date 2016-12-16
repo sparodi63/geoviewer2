@@ -8,7 +8,6 @@ GV.init({
     debug: true,
     application: {
         callback: function() {
-            "use strict";
             GV.app.addButton({
                 name: "search",
                 options: {
@@ -68,10 +67,10 @@ GV.init({
                     name: 'scuole_01',
                     visible: true,
                     geomSubType: 'POINT',
-                    url: '01.json',
+                    url: '/geoviewer2/data/scuoladigitale/01.json',
                     legend: {
                         label: 'Centro Formazione Adulti',
-                        icon: "images/legend/scuola/cfa.png"
+                        icon: "/geoviewer2/static/img/scuoladigitale/legend/cfa.png"
                     },
                     tooltip: '{DENOMINAZIONE}',
                     popup: popupTemplate,
@@ -82,7 +81,7 @@ GV.init({
                             value: '01'
                         },
                         style: {
-                            iconUrl: "images/legend/scuola/cfa.png",
+                            iconUrl: "/geoviewer2/static/img/scuoladigitale/legend/cfa.png",
                             iconSize: [32, 37],
                             iconAnchor: [16, 37],
                             popupAnchor: [0, -37]
@@ -104,9 +103,9 @@ GV.init({
                     name: 'scuole_02',
                     visible: true,
                     geomSubType: 'POINT',
-                    url: '02.json',
+                    url: '/geoviewer2/data/scuoladigitale/02.json',
                     legend: {
-                        icon: "images/legend/scuola/school02.png",
+                        icon: "/geoviewer2/static/img/scuoladigitale/legend/school02.png",
                         label: 'Istruzione Superiore'
                     },
                     tooltip: '{DENOMINAZIONE}',
@@ -118,7 +117,7 @@ GV.init({
                             value: '02'
                         },
                         style: {
-                            iconUrl: "images/legend/scuola/school02.png",
+                            iconUrl: "/geoviewer2/static/img/scuoladigitale/legend/school02.png",
                             iconSize: [32, 37],
                             iconAnchor: [16, 37],
                             popupAnchor: [0, -37]
@@ -140,9 +139,9 @@ GV.init({
                     name: 'scuole_03',
                     visible: true,
                     geomSubType: 'POINT',
-                    url: '03.json',
+                    url: '/geoviewer2/data/scuoladigitale/03.json',
                     legend: {
-                        icon: "images/legend/scuola/school01.png",
+                        icon: "/geoviewer2/static/img/scuoladigitale/legend/school01.png",
                         label: 'IC :  infanzia, primaria, media'
                     },
                     tooltip: '{DENOMINAZIONE}',
@@ -154,7 +153,7 @@ GV.init({
                             value: '03'
                         },
                         style: {
-                            iconUrl: "images/legend/scuola/school01.png",
+                            iconUrl: "/geoviewer2/static/img/scuoladigitale/legend/school01.png",
                             iconSize: [32, 37],
                             iconAnchor: [16, 37],
                             popupAnchor: [0, -37]
@@ -176,9 +175,9 @@ GV.init({
                     name: 'scuole_04',
                     visible: true,
                     geomSubType: 'POINT',
-                    url: '04.json',
+                    url: '/geoviewer2/data/scuoladigitale/04.json',
                     legend: {
-                        icon: "images/legend/scuola/school03.png",
+                        icon: "/geoviewer2/static/img/scuoladigitale/legend/school03.png",
                         label: 'Istituti Omnicomprensivi'
                     },
                     tooltip: '{DENOMINAZIONE}',
@@ -190,7 +189,7 @@ GV.init({
                             value: '04'
                         },
                         style: {
-                            iconUrl: "images/legend/scuola/school03.png",
+                            iconUrl: "/geoviewer2/static/img/scuoladigitale/legend/school03.png",
                             iconSize: [32, 37],
                             iconAnchor: [16, 37],
                             popupAnchor: [0, -37]
