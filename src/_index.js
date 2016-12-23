@@ -1,2 +1,1 @@
-require('./_base');
-
+require('./_base')

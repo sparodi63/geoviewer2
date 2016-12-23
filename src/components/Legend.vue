@@ -30,69 +30,69 @@
 
 
 <script>
-    import Vue from 'vue';
-    import util from '../util';
-    import Map from '../leaflet/Map.js';
-    import GV from '../GV';
-    import * as config from '../config';
-    import dynamicAddedComp from '../mixins/dynamicAddedComp';
+    import Vue from 'vue'
+    import util from '../util'
+    import Map from '../leaflet/Map.js'
+    import GV from '../GV'
+    import * as config from '../config'
+    import dynamicAddedComp from '../mixins/dynamicAddedComp'
 
     export default {
         name: 'gv-legend',
         data: function () {
             return {
                 maps: config.maps
-            };
+            }
         },
         props: ['showAddMap', 'showInfoMap'],
         mounted () {
-            util.log('gv-legend: mounted');
+            util.log('gv-legend: mounted')
         },
         methods: {
             hideLegend: function (event) {
-                config.setButtonOption("legend", "show", false);
+                config.setButtonOption('legend', 'show', false)
             },
             showMapInfoPanel: function (map) {
-                "use strict";
-                alert(map.id);
+                'use strict'
+                alert(map.id)
             },
             addMap: function () {
-                alert('add map');
+                alert('add map')
             },
             iconUrl: function (layer) {
-                return layer.legend.icon;
+                return layer.legend.icon
             },
             getClass: function (layer) {
-                return (layer.inRange) ? "gv-list-legend-layer-item" : "gv-list-legend-layer-item gv-list-legend-layer-disabled-item";
+                return (layer.inRange) ? 'gv-list-legend-layer-item' : 'gv-list-legend-layer-item gv-list-legend-layer-disabled-item'
             },
             setLayerVisible: function (layer, event) {
-                GV.map.setLayerVisible(layer, event.currentTarget.checked);
+                GV.map.setLayerVisible(layer, event.currentTarget.checked)
             },
             showLegendPanel: function (layer) {
                 if (layer.inRange && (layer.multiClasse || layer.legend.popUpFlag)) {
                     //if ((layer.multiClasse || layer.legend.popUpFlag)) {
-                    var url = null, html = null, width, height;
+                    var url = null, html = null, width, height
                     if (layer.legend.popUpUrl && layer.legend.popUpFlag) {
                         // se impostato attributo legendPopupUrl apro una finestra con il documento
-                        url = layer.legend.popUpUrl;
-                        width = (util.SMALL_SCREEN) ? 400 : 600;
-                        height = (util.SMALL_SCREEN) ? 400 : 600;
+                        url = layer.legend.popUpUrl
+                        width = (util.SMALL_SCREEN) ? 400 : 600
+                        height = (util.SMALL_SCREEN) ? 400 : 600
                     } else if (layer.multiClasse) {
                         // se livello multiclasse apro una finestra con la legenda dei livelli multiclasse
                         if (layer.flagGeoserver) {
-                            url = layer.wmsParams.url + "LAYER=" + layer.name + "&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&";
-                            width = 400;
-                            height = 350;
+                            url = `${layer.wmsParams.url}LAYER=${layer.name}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&`
+                            width = 400
+                            height = 350
                         } else {
-                            var classes = layer.classes;
-                            html = '<table width=100% border=0>';
+                            var classes = layer.classes
+                            html = '<table width=100% border=0>'
                             classes.forEach(function (cls) {
-                                html += '<tr>';
-                                html += '<td width=30><img src="' + cls.legendIcon + '"></td>';
-                                html += '<td >' + cls.legendLabel + '</td>';
-                                html += '</tr>';
-                            });
-                            html += '</table>';
+                                html += '<tr>'
+                                html += '<td width=30><img src="' + cls.legendIcon + '"></td>'
+                                html += '<td >' + cls.legendLabel + '</td>'
+                                html += '</tr>'
+                            })
+                            html += '</table>'
                         }
                     }
 
@@ -104,10 +104,10 @@
                             html: html,
                             width: width,
                             height: height,
-                            cls: "gv-legend-multi"
+                            cls: 'gv-legend-multi'
                         },
                         mixins: [dynamicAddedComp]
-                    });
+                    })
                 }
             }
 

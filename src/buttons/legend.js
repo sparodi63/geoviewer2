@@ -1,15 +1,14 @@
-import GV from '../GV';
-import util from '../util';
-import * as config from '../config';
-var L = require('leaflet');
-require('../controls/EasyButton');
+import GV from '../GV'
+import * as config from '../config'
+var L = require('leaflet')
+require('../controls/EasyButton')
 
 GV.Buttons.legend = function (btnOptions, map) {
-  "use strict";
+  'use strict'
 
   // Al primo avvio se schermo piccolo nascondo la legenda
   if (GV.globals.SMALL_SCREEN) {
-    config.setButtonOption("legend", "show", false);
+    config.setButtonOption('legend', 'show', false)
   }
 
   var options = Object.assign(btnOptions, {
@@ -17,13 +16,12 @@ GV.Buttons.legend = function (btnOptions, map) {
     states: [{
       stateName: 'legend',
       onClick: function (button, map) {
-        config.setButtonOption("legend", "show", true);
+        config.setButtonOption('legend', 'show', true)
       },
       title: 'Legenda',
       icon: 'ms ms-layers'
     }]
-  });
+  })
 
-  return L.easyButton(options);
-
-};
+  return L.easyButton(options)
+}

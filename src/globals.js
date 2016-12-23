@@ -1,5 +1,5 @@
-var L = require('leaflet');
-var matchMedia = require('./polyfills/matchMedia.js');
+var L = require('leaflet')
+require('./polyfills/matchMedia.js')
 
 var globals = {
   DEFAULT_PROXY: '/geoservices/proxy/proxy.jsp?url=',
@@ -14,7 +14,7 @@ var globals = {
   INFO_WMS_MAX_FEATURES: 10,
 
   SMALL_SCREEN: window.matchMedia('(max-width: 700px)').matches,
-  //SMALL_SCREEN: false,
+  // SMALL_SCREEN: false,
 
   BASE_SCALES: [
     591657550.500000,
@@ -55,6 +55,6 @@ var globals = {
     20: '1:400'
   }
 
-};
+}
 
-export default globals;
+export default globals

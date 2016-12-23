@@ -1,177 +1,158 @@
-import globals from './globals';
-import util from './util';
-import GV from './GV';
-
-var _lastZIndex = 21;
-var debug = false,
-  idMap = null,
-  title = null,
-  geoserverUrl,
-  application = {},
-  baseLayers = [
-    {'type': 'ESRI_IMAGERY', visible: true}
-  ],
-  maps = [];
+import globals from './globals'
+import util from './util'
+import GV from './GV'
+var _lastZIndex = 21
+var debug = false
+var idMap = null
+var title = null
+var geoserverUrl
+var application = {}
+var baseLayers = [
+  { 'type': 'ESRI_IMAGERY', visible: true }
+]
+var maps = []
 
 function set (options) {
   if (!options) {
-    debug = true;
-    util.log('Opzioni di inizializzazione non impostate!', 1);
-    return null;
+    debug = true
+    util.log('Opzioni di inizializzazione non impostate!', 1)
+    return null
   }
-
-
-
-  debug = options.debug;
-  idMap = options.idMap;
-  geoserverUrl = options.geoserverUrl;
-
+  debug = options.debug
+  idMap = options.idMap
+  geoserverUrl = options.geoserverUrl
   if (options.application) {
-    application = options.application;
+    application = options.application
   }
   if (options.application && options.application.layout) {
-    application.layout = options.application.layout || {};
+    application.layout = options.application.layout || {}
   }
   if (options.application) {
-    application.proxy = options.application.proxy || globals.DEFAULT_PROXY;
+    application.proxy = options.application.proxy || globals.DEFAULT_PROXY
   }
-
   if (options.application && options.application.layout && options.application.layout.title) {
-    title = options.application.layout.title;
+    title = options.application.layout.title
   }
-
   if (options.baseLayers) {
-    baseLayers = options.baseLayers;
+    baseLayers = options.baseLayers
   }
-
   if (options.maps) {
     options.maps.forEach(
       (mapConfig) => {
-        addMapConfig(mapConfig);
+        addMapConfig(mapConfig)
       }
-    );
+    )
   }
-
 }
 
 function addMapConfig (mapConfig) {
   mapConfig.layers.forEach(function (layer) {
     if (layer.minScale === 0) {
-      layer.minScale = 591657550;
+      layer.minScale = 591657550
     }
-    layer.zIndex = _lastZIndex++;
-    if (GV.map) {
-      layer.inRange = GV.map.layerInRange(layer);
-    } else {
-      layer.inRange = true;
-    }
-  });
-  mapConfig.layers.reverse();
-  maps.unshift(mapConfig);
+    layer.zIndex = _lastZIndex++
+      if (GV.map) {
+        layer.inRange = GV.map.layerInRange(layer)
+      } else {
+        layer.inRange = true
+      }
+  })
+  mapConfig.layers.reverse()
+  maps.unshift(mapConfig)
 }
-
-
 
 function getAllLayersConfig () {
-  var layers = [];
-
+  var layers = []
   maps.forEach(function (map) {
     map.layers.forEach(function (layer) {
-      layers.push(layer);
-    });
-  });
-  return layers;
+      layers.push(layer)
+    })
+  })
+  return layers
 }
 
-
-
 function setLayerAttribute (layerName, attribute, value) {
-  var foundLayer = null;
-
   maps.forEach(function (map) {
-    var layers = map.layers;
-
+    var layers = map.layers
     layers.forEach(function (layer) {
       if (layer.name === layerName) {
-        layer[attribute] = value;
+        layer[attribute] = value
       }
-    });
-  });
+    })
+  })
 }
 
 function getLayerConfig (layerName) {
-  var foundLayer = null;
-
+  var foundLayer = null
   maps.forEach(function (map) {
-    var layers = map.layers;
-
+    var layers = map.layers
     foundLayer = layers.find(function (layer) {
-      return layer.name === layerName;
-    });
-  });
-
+      return layer.name === layerName
+    })
+  })
   if (foundLayer) {
-    return foundLayer;
+    return foundLayer
   }
 }
 
 function getButton (buttonName) {
-  var button = null;
-
+  var button = null
   if (!application.layout) {
-    return null;
+    return null
   }
-
   application.layout.toolbar.forEach(function (tb) {
     tb.items.forEach(function (item) {
       if (item.name === buttonName) {
-        button = item;
+        button = item
       }
-    }, this);
-  }, this);
-
-  return button;
+    }, this)
+  }, this)
+  return button
 }
 
 function getButtonOption (buttonName, optionName) {
-  var option = null;
-
+  var option = null
   if (!application.layout) {
-    return null;
+    return null
   }
-
   application.layout.toolbar.forEach(function (tb) {
     tb.items.forEach(function (item) {
       if (item.name === buttonName) {
-        option = item.options[optionName];
+        option = item.options[optionName]
       }
-    }, this);
-  }, this);
-
-  return option;
+    }, this)
+  }, this)
+  return option
 }
 
 function setButtonOption (buttonName, optionName, value) {
-  var option = null;
-
+  var option = null
   if (!application.layout) {
-    return null;
+    return null
   }
-
   application.layout.toolbar.forEach(function (tb) {
     tb.items.forEach(function (item) {
       if (item.name === buttonName) {
-        item.options[optionName] = value;
+        item.options[optionName] = value
       }
-    }, this);
-  }, this);
-
-  return option;
+    }, this)
+  }, this)
+  return option
 }
-
 export {
-  debug, idMap, application, baseLayers, maps, title, geoserverUrl,
-  set, addMapConfig, getAllLayersConfig, getLayerConfig, getButton, getButtonOption, setButtonOption,
+  debug,
+  idMap,
+  application,
+  baseLayers,
+  maps,
+  title,
+  geoserverUrl,
+  set,
+  addMapConfig,
+  getAllLayersConfig,
+  getLayerConfig,
+  getButton,
+  getButtonOption,
+  setButtonOption,
   setLayerAttribute
-};
-
+}

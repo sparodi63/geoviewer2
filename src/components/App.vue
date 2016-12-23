@@ -21,6 +21,7 @@
 
     import infoWmsManager from '../infoWmsManager'
 
+
     export default {
         name: 'gv-app',
         components: {
@@ -28,7 +29,7 @@
             gvLegend
         },
         data: function () {
-            return config;
+            return config
         },
         computed: {
             showTitle: function () {

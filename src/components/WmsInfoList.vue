@@ -14,19 +14,19 @@
 </template>
 
 <script>
-    import GV from '../GV';
-    import infoWmsManager from '../infoWmsManager';
+    import GV from '../GV'
+    import infoWmsManager from '../infoWmsManager'
 
     export default {
         name: 'gv-wms-info-list',
         props: ['cls', 'items', 'visible'],
         methods: {
             closePanel: function () {
-                this.$el.parentNode.removeChild(this.$el);
-                GV.map.getLayerByName('InfoWmsHilite').clearLayers();
+                this.$el.parentNode.removeChild(this.$el)
+                GV.map.getLayerByName('InfoWmsHilite').clearLayers()
             },
             featureInfo: function (item) {
-                infoWmsManager.showFeatureInfo(item);
+                infoWmsManager.showFeatureInfo(item)
             }
 
         }

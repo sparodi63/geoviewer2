@@ -1,8 +1,578 @@
-// Inserire le impostazioni in questo file per sovrascrivere quelle utente e predefinite.
-{
-    "files.associations": {
-        "*.vue": "vue"
-    },
-    "editor.tabSize": 2,
-    "editor.formatOnSave": true
+module.exports = {
+  root: true,
+  parser: 'babel-eslint',
+  parserOptions: {
+    sourceType: 'module'
+  },
+  // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
+  extends: 'standard',
+  // required to lint *.vue files
+  plugins: [
+    'html'
+  ],
+  // add your custom rules here
+  'rules': {
+    // allow paren-less arrow functions
+    'arrow-parens': 0,
+    // allow async-await
+    'generator-star-spacing': 0,
+    // allow debugger during development
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'indent': ['error', 2],
+    'no-new':
+  }
 }
+"**/.DS_Store": true
+},
+// Controlla lo stile del cursore. I valori accettati sono 'block', 'line' e 'underline'
+"editor.cursorStyle": "line",
+// Inserisce spazi quando viene premuto TAB. Quando `editor.detectIndentation` è attivo, questa impostazione viene sostituita in base al contenuto del file.
+"editor.insertSpaces": true,
+// Controlla il numero di caratteri dopo i quali l'editor attiverà l'a capo automatico alla riga successiva. Se è impostato su 0, verrà attivato l'a capo automatico in base alla larghezza del viewport (ritorno a capo automatico). Se è impostato su -1, forzerà l'editor a non eseguire mai il wrapping.
+"editor.wrappingColumn": 300,
+// Consente di configurare le associazioni tra file e linguaggi, ad esempio "*.extension": "html". Queste hanno la precedenza sulle associazioni predefinite dei linguaggi installate.
+"files.associations": {}
+}, {
+  // Controlla la famiglia di caratteri.
+  "editor.fontFamily": "Consolas, 'Courier New', monospace",
+  // Controlla lo spessore del carattere.
+  "editor.fontWeight": "normal",
+  // Controlla le dimensioni del carattere in pixel.
+  "editor.fontSize": 14,
+  // Controlla l'altezza della riga. Usare 0 per calcolare l'altezza della riga dalle dimensioni del carattere.
+  "editor.lineHeight": 0,
+  // Consente di controllare la visualizzazione dei numeri di riga. I valori possibili sono 'on', 'off' e 'relative'. Con 'relative' viene visualizzato il conteggio delle righe a partire dalla posizione corrente del cursore.
+  "editor.lineNumbers": "on",
+  // Colonne in corrispondenza delle quali visualizzare i righelli verticali
+  "editor.rulers": [],
+  // Caratteri che verranno usati come separatori di parola quando si eseguono operazioni o spostamenti correlati a parole
+  "editor.wordSeparators": "`~!@#$%^&*()-=+[{]}\\|;:'\",.<>/?",
+  // Numero di spazi a cui equivale una tabulazione. Quando `editor.detectIndentation` è attivo, questa impostazione viene sostituita in base al contenuto del file.
+  "editor.tabSize": 4,
+  // Inserisce spazi quando viene premuto TAB. Quando `editor.detectIndentation` è attivo, questa impostazione viene sostituita in base al contenuto del file.
+  "editor.insertSpaces": true,
+  // All'apertura di un file, `editor.tabSize` e `editor.insertSpaces` verranno rilevati in base al contenuto del file.
+  "editor.detectIndentation": true,
+  // Controlla se gli angoli delle selezioni sono arrotondati
+  "editor.roundedSelection": true,
+  // Controlla se l'editor scorrerà oltre l'ultima riga
+  "editor.scrollBeyondLastLine": true,
+  // Controlla il numero di caratteri dopo i quali l'editor attiverà l'a capo automatico alla riga successiva. Se è impostato su 0, verrà attivato l'a capo automatico in base alla larghezza del viewport (ritorno a capo automatico). Se è impostato su -1, forzerà l'editor a non eseguire mai il wrapping.
+  "editor.wrappingColumn": 300,
+  // Controlla se le righe devono andare a capo. Le righe andranno a capo alla posizione definita da min(editor.wrappingColumn, viewportWidthInColumns).
+  "editor.wordWrap": false,
+  // Controlla il rientro delle righe con ritorno a capo. Può essere uno dei valori seguenti: 'none', 'same' o 'indent'.
+  "editor.wrappingIndent": "same",
+  // Moltiplicatore da usare sui valori `deltaX` e `deltaY` degli eventi di scorrimento della rotellina del mouse
+  "editor.mouseWheelScrollSensitivity": 1,
+  // Controlla se durante la digitazione verranno o meno visualizzati i suggerimenti rapidi
+  "editor.quickSuggestions": true,
+  // Controlla il ritardo in ms dopo il quale verranno visualizzati i suggerimenti rapidi
+  "editor.quickSuggestionsDelay": 10,
+  // Abilita i suggerimenti per i parametri
+  "editor.parameterHints": true,
+  // Controlla se l'editor deve chiudere automaticamente le parentesi quadre dopo che sono state aperte
+  "editor.autoClosingBrackets": true,
+  // Controlla se l'editor deve formattare automaticamente la riga dopo la digitazione
+  "editor.formatOnType": false,
+  // Controlla se i suggerimenti devono essere visualizzati automaticamente durante la digitazione dei caratteri trigger
+  "editor.suggestOnTriggerCharacters": true,
+  // Controlla se i suggerimenti devono essere accettati con 'INVIO' in aggiunta a 'TAB'. Consente di evitare ambiguità tra l'inserimento di nuove righe e l'accettazione di suggerimenti.
+  "editor.acceptSuggestionOnEnter": true,
+  // Controlla se i frammenti di codice sono visualizzati con altri suggerimenti e il modo in cui sono ordinati.
+  "editor.snippetSuggestions": "bottom",
+  // Consente di controllare se, quando si copia senza aver effettuato una selezione, viene copiata la riga corrente.
+  "editor.emptySelectionClipboard": true,
+  // Abilita i suggerimenti basati su parole.
+  "editor.wordBasedSuggestions": true,
+  // Dimensioni del carattere per il widget dei suggerimenti
+  "editor.suggestFontSize": 0,
+  // Altezza della riga per il widget dei suggerimenti
+  "editor.suggestLineHeight": 0,
+  // Inserisce frammenti di codice quando il prefisso corrisponde. Funziona in modo ottimale quando non sono abilitati i suggerimenti rapidi.
+  "editor.tabCompletion": false,
+  // Controlla se l'editor deve evidenziare gli elementi corrispondenti simili alla selezione
+  "editor.selectionHighlight": true,
+  // Controlla il numero di effetti che possono essere visualizzati nella stessa posizione nel righello delle annotazioni
+  "editor.overviewRulerLanes": 3,
+  // Controlla lo stile di animazione del cursore. I valori possibili sono: 'blink', 'smooth', 'phase', 'expand' e 'solid'
+  "editor.cursorBlinking": "blink",
+  // Ingrandisce il carattere dell'editor quando si usa la rotellina del mouse e si tiene premuto CTRL
+  "editor.mouseWheelZoom": false,
+  // Controlla lo stile del cursore. I valori accettati sono 'block', 'line' e 'underline'
+  "editor.cursorStyle": "line",
+  // Abilita i caratteri legatura
+  "editor.fontLigatures": false,
+  // Controlla se il cursore deve essere nascosto nel righello delle annotazioni.
+  "editor.hideCursorInOverviewRuler": false,
+  // Consente di controllare in che modo l'editor deve eseguire il rendering dei caratteri di spazio vuoto. Le opzioni possibili sono: 'none', 'boundary' e 'all'. Con l'opzione 'boundary' non viene eseguito il rendering di singoli spazi tra le parole.
+  "editor.renderWhitespace": "none",
+  // Controlla se l'editor deve eseguire il rendering dei caratteri di controllo
+  "editor.renderControlCharacters": false,
+  // Controlla se l'editor deve eseguire il rendering delle guide con rientro
+  "editor.renderIndentGuides": false,
+  // Consente di controllare in che modo l'editor deve eseguire il rendering dell'evidenziazione di riga corrente. Le opzioni possibili sono 'none', 'gutter', 'line' e 'all'.
+  "editor.renderLineHighlight": "line",
+  // Controlla se nell'editor sono visualizzate le finestre di CodeLens
+  "editor.codeLens": true,
+  // Controlla se per l'editor è abilitata la riduzione del codice
+  "editor.folding": true,
+  // Controlla se l'editor deve eseguire il rendering del margine verticale del glifo. Il margine del glifo viene usato principalmente per il debug.
+  "editor.glyphMargin": true,
+  // Inserimento ed eliminazione dello spazio vuoto dopo le tabulazioni
+  "editor.useTabStops": true,
+  // Rimuovi lo spazio vuoto finale inserito automaticamente
+  "editor.trimAutoWhitespace": true,
+  // Mantiene aperti gli editor rapidi anche quando si fa doppio clic sul contenuto o si preme ESC.
+  "editor.stablePeek": false,
+  // Controlla se l'editor diff mostra le differenze affiancate o incorporate
+  "diffEditor.renderSideBySide": true,
+  // Controlla se l'editor diff mostra come differenze le modifiche relative a spazi vuoti iniziali e finali
+  "diffEditor.ignoreTrimWhitespace": true,
+  // Consente di controllare se l'editor diff mostra gli indicatori +/- per le modifiche aggiunte/rimosse
+  "diffEditor.renderIndicators": true,
+  // Formatta un file durante il salvataggio. Deve essere disponibile un formattatore, il file non deve essere salvato automaticamente e l'editor non deve essere in fase di chiusura.
+  "editor.formatOnSave": false,
+  // Se abilitate, le abbreviazioni Emmet vengono espanse quando si preme TAB.
+  "emmet.triggerExpansionOnTab": true,
+  // Preferenze usate per modificare il comportamento di alcune azioni e i resolver di Emmet.
+  "emmet.preferences": {},
+  // Consente di definire il profilo per la sintassi specificata oppure di usare un profilo personalizzato con regole specifiche.
+  "emmet.syntaxProfiles": {},
+  // Matrice di linguaggi in cui le abbreviazioni Emmet non devono essere espanse.
+  "emmet.excludeLanguages": [],
+  // Controlla se visualizzare o meno gli editor aperti in schede.
+  "workbench.editor.showTabs": true,
+  // Controlla se nelle schede dell'editor deve essere presente o meno un pulsante Chiudi visibile.
+  "workbench.editor.showTabCloseButton": true,
+  // Controlla se visualizzare o meno un'icona per gli editor aperti. Richiede l'abilitazione anche di un tema dell'icona.
+  "workbench.editor.showIcons": true,
+  // Controlla se gli editor aperti vengono visualizzati come anteprima. Le anteprime editor vengono riutilizzate finché vengono mantenute, ad esempio tramite doppio clic o modifica.
+  "workbench.editor.enablePreview": true,
+  // Controlla se gli editor aperti da Quick Open vengono visualizzati come anteprima. Le anteprime editor vengono riutilizzate finché vengono mantenute, ad esempio tramite doppio clic o modifica.
+  "workbench.editor.enablePreviewFromQuickOpen": true,
+  // Controlla la posizione in cui vengono aperti gli editor. Selezionare 'left' o 'right' per aprire gli editor a sinistra o a destra di quello attualmente attivo. Selezionare 'first' o 'last' per aprire gli editor indipendentemente da quello attualmente attivo.
+  "workbench.editor.openPositioning": "right",
+  // Controlla se Quick Open deve essere chiuso automaticamente quando perde lo stato attivo.
+  "workbench.quickOpen.closeOnFocusLost": true,
+  // Controlla se all'apertura delle impostazioni viene aperto anche un editor che mostra tutte le impostazioni predefinite.
+  "workbench.settings.openDefaultSettings": true,
+  // Controlla la posizione della barra laterale. Può essere visualizzata a sinistra o a destra del workbench.
+  "workbench.sideBar.location": "left",
+  // Controlla la visibilità della barra di stato nella parte inferiore del workbench.
+  "workbench.statusBar.visible": true,
+  // Controlla la visibilità della barra attività nel workbench.
+  "workbench.activityBar.visible": true,
+  // Se abilitata, apre i file in una nuova finestra invece di riutilizzare un'istanza esistente.
+  "window.openFilesInNewWindow": true,
+  // Controlla la modalità di riapertura delle cartelle dopo un riavvio. Selezionare 'none' per non riaprire mai una cartella, 'one' per riaprire l'ultima cartella usata oppure 'all' per riaprire tutte le cartelle dell'ultima sessione.
+  "window.reopenFolders": "one",
+  // Controlla se una finestra deve essere ripristinata a schermo intero se è stata chiusa in questa modalità.
+  "window.restoreFullscreen": false,
+  // Consente di controllare se attivando la modalità Zen anche l'area di lavoro passa alla modalità schermo intero.
+  "window.fullScreenZenMode": true,
+  // Consente di modificare il livello di zoom della finestra. Il valore originale è 0 e ogni incremento superiore (ad esempio 1) o inferiore (ad esempio -1) rappresenta un aumento o una diminuzione del 20% della percentuale di zoom. È anche possibile immettere valori decimali per modificare il livello di zoom con maggiore granularità.
+  "window.zoomLevel": 0,
+  // Se è abilitato, visualizzerà il percorso completo dei file aperti nel titolo della finestra.
+  "window.showFullPath": false,
+  // Consente di configurare i criteri di ricerca GLOB per escludere file e cartelle.
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true
+  },
+  "files.insertFinalNewline": true,
+  // Consente di configurare le associazioni tra file e linguaggi, ad esempio "*.extension": "html". Queste hanno la precedenza sulle associazioni predefinite dei linguaggi installate.
+  "files.associations": {},
+  // Codifica del set di caratteri predefinita da usare durante la lettura e la scrittura di file.
+  "files.encoding": "utf8",
+  // Carattere di fine riga predefinito.
+  "files.eol": "\r\n",
+  // Se è abilitato, taglierà lo spazio vuoto quando si salva un file.
+  "files.trimTrailingWhitespace": false,
+  // Se è abilitato, inserisce un carattere di nuova riga finale alla fine del file durante il salvataggio.
+  "files.insertFinalNewline": false,
+  // Controlla il salvataggio automatico dei file modificati ma non salvati. Valori accettati: "off", "afterDelay", "onFocusChange" (l'editor perde lo stato attivo), "onWindowChange" (la finestra perde lo stato attivo). Se è impostato su "afterDelay", è possibile configurare il ritardo in "files.autoSaveDelay".
+  "files.autoSave": "off",
+  // Controlla il ritardo in ms dopo il quale un file modificato ma non salvato viene salvato automaticamente. Si applica solo quando "files.autoSave" è impostato su "afterDelay"
+  "files.autoSaveDelay": 1000,
+  // Consente di configurare i criteri GLOB dei percorsi file da escludere dal controllo dei file. Se si modifica questa impostazione, è necessario riavviare. Quando si nota che Code consuma troppo tempo della CPU all'avvio, è possibile escludere le cartelle di grandi dimensioni per ridurre il carico iniziale.
+  "files.watcherExclude": {
+    "**/.git/objects/**": true
+  },
+  // Consente di controllare se i file non salvati verranno ripristinati dopo il riavvio. Se questa opzione è abilitata, non verrà visualizzata alcuna richiesta di conferma alla chiusura dell'editor.
+  "files.hotExit": true,
+  // Numero di editor visualizzati nel riquadro degli editor aperti. Impostarlo su 0 per nascondere il riquadro.
+  "explorer.openEditors.visible": 9,
+  // Controlla se l'altezza della sezione degli editor aperti deve essere adattata o meno dinamicamente al numero di elementi.
+  "explorer.openEditors.dynamicHeight": true,
+  // Controlla se Esplora risorse deve rivelare automaticamente i file durante l'apertura.
+  "explorer.autoReveal": true,
+  // Controlla se Esplora risorse deve consentire lo spostamento di file e cartelle tramite trascinamento della selezione.
+  "explorer.enableDragAndDrop": true,
+  // Consente di configurare i criteri GLOB per escludere file e cartelle nelle ricerche. Eredita tutti i criteri GLOB dall'impostazione files.exclude.
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true
+  },
+  // Configurare questa opzione per includere i risultati di una ricerca di simboli globale nei risultati dei file per Quick Open.
+  "search.quickOpen.includeSymbols": false,
+  // Consente di configurare la ricezione degli aggiornamenti automatici da un canale di aggiornamento. Richiede un riavvio dopo la modifica.
+  "update.channel": "default",
+  // GIT abilitato
+  "git.enabled": true,
+  // Percorso dell'eseguibile di GIT
+  "git.path": null,
+  // Indica se l'aggiornamento automatico è abilitato
+  "git.autorefresh": true,
+  // Indica se il recupero automatico è abilitato.
+  "git.autofetch": true,
+  // Indica se visualizzare un avviso in caso di messaggi di commit lunghi.
+  "git.enableLongCommitWarning": true,
+  // Consente a Code di gestire sempre i repository di grandi dimensioni.
+  "git.allowLargeRepositories": false,
+  // Confermare prima di sincronizzare i repository GIT.
+  "git.confirmSync": true,
+  // Controlla il contatore dei log GIT.
+  "git.countBadge": "all",
+  // Impostazione proxy da usare. Se non è impostata, verrà ottenuta dalle variabili di ambiente http_proxy e https_proxy
+  "http.proxy": "",
+  // Indica se il certificato del server proxy deve essere verificato in base all'elenco di CA specificate.
+  "http.proxyStrictSSL": true,
+  // Valore da inviare come intestazione 'Proxy-Authorization' per ogni richiesta di rete.
+  "http.proxyAuthorization": null,
+  // Controls CSS validation and problem severities.
+  // Enables or disables all validations
+  "css.validate": true,
+  // When using a vendor-specific prefix make sure to also include all other vendor-specific properties
+  "css.lint.compatibleVendorPrefixes": "ignore",
+  // When using a vendor-specific prefix also include the standard property
+  "css.lint.vendorPrefix": "warning",
+  // Do not use duplicate style definitions
+  "css.lint.duplicateProperties": "ignore",
+  // Do not use empty rulesets
+  "css.lint.emptyRules": "warning",
+  // Import statements do not load in parallel
+  "css.lint.importStatement": "ignore",
+  // Do not use width or height when using padding or border
+  "css.lint.boxModel": "ignore",
+  // The universal selector (*) is known to be slow
+  "css.lint.universalSelector": "ignore",
+  // No unit for zero needed
+  "css.lint.zeroUnits": "ignore",
+  // @font-face rule must define 'src' and 'font-family' properties
+  "css.lint.fontFaceProperties": "warning",
+  // Hex colors must consist of three or six hex numbers
+  "css.lint.hexColorLength": "error",
+  // Invalid number of parameters
+  "css.lint.argumentsInColorFunction": "error",
+  // Unknown property.
+  "css.lint.unknownProperties": "warning",
+  // IE hacks are only necessary when supporting IE7 and older
+  "css.lint.ieHack": "ignore",
+  // Unknown vendor specific property.
+  "css.lint.unknownVendorSpecificProperties": "ignore",
+  // Property is ignored due to the display. E.g. with 'display: inline', the width, height, margin-top, margin-bottom, and float properties have no effect
+  "css.lint.propertyIgnoredDueToDisplay": "warning",
+  // Avoid using !important. It is an indication that the specificity of the entire CSS has gotten out of control and needs to be refactored.
+  "css.lint.important": "ignore",
+  // Avoid using 'float'. Floats lead to fragile CSS that is easy to break if one aspect of the layout changes.
+  "css.lint.float": "ignore",
+  // Selectors should not contain IDs because these rules are too tightly coupled with the HTML.
+  "css.lint.idSelector": "ignore",
+  // Traces the communication between VS Code and the CSS language server.
+  "css.trace.server": "off",
+  // Controls SCSS validation and problem severities.
+  // Enables or disables all validations
+  "scss.validate": true,
+  // When using a vendor-specific prefix make sure to also include all other vendor-specific properties
+  "scss.lint.compatibleVendorPrefixes": "ignore",
+  // When using a vendor-specific prefix also include the standard property
+  "scss.lint.vendorPrefix": "warning",
+  // Do not use duplicate style definitions
+  "scss.lint.duplicateProperties": "ignore",
+  // Do not use empty rulesets
+  "scss.lint.emptyRules": "warning",
+  // Import statements do not load in parallel
+  "scss.lint.importStatement": "ignore",
+  // Do not use width or height when using padding or border
+  "scss.lint.boxModel": "ignore",
+  // The universal selector (*) is known to be slow
+  "scss.lint.universalSelector": "ignore",
+  // No unit for zero needed
+  "scss.lint.zeroUnits": "ignore",
+  // @font-face rule must define 'src' and 'font-family' properties
+  "scss.lint.fontFaceProperties": "warning",
+  // Hex colors must consist of three or six hex numbers
+  "scss.lint.hexColorLength": "error",
+  // Invalid number of parameters
+  "scss.lint.argumentsInColorFunction": "error",
+  // Unknown property.
+  "scss.lint.unknownProperties": "warning",
+  // IE hacks are only necessary when supporting IE7 and older
+  "scss.lint.ieHack": "ignore",
+  // Unknown vendor specific property.
+  "scss.lint.unknownVendorSpecificProperties": "ignore",
+  // Property is ignored due to the display. E.g. with 'display: inline', the width, height, margin-top, margin-bottom, and float properties have no effect
+  "scss.lint.propertyIgnoredDueToDisplay": "warning",
+  // Avoid using !important. It is an indication that the specificity of the entire CSS has gotten out of control and needs to be refactored.
+  "scss.lint.important": "ignore",
+  // Avoid using 'float'. Floats lead to fragile CSS that is easy to break if one aspect of the layout changes.
+  "scss.lint.float": "ignore",
+  // Selectors should not contain IDs because these rules are too tightly coupled with the HTML.
+  "scss.lint.idSelector": "ignore",
+  // Controls LESS validation and problem severities.
+  // Enables or disables all validations
+  "less.validate": true,
+  // When using a vendor-specific prefix make sure to also include all other vendor-specific properties
+  "less.lint.compatibleVendorPrefixes": "ignore",
+  // When using a vendor-specific prefix also include the standard property
+  "less.lint.vendorPrefix": "warning",
+  // Do not use duplicate style definitions
+  "less.lint.duplicateProperties": "ignore",
+  // Do not use empty rulesets
+  "less.lint.emptyRules": "warning",
+  // Import statements do not load in parallel
+  "less.lint.importStatement": "ignore",
+  // Do not use width or height when using padding or border
+  "less.lint.boxModel": "ignore",
+  // The universal selector (*) is known to be slow
+  "less.lint.universalSelector": "ignore",
+  // No unit for zero needed
+  "less.lint.zeroUnits": "ignore",
+  // @font-face rule must define 'src' and 'font-family' properties
+  "less.lint.fontFaceProperties": "warning",
+  // Hex colors must consist of three or six hex numbers
+  "less.lint.hexColorLength": "error",
+  // Invalid number of parameters
+  "less.lint.argumentsInColorFunction": "error",
+  // Unknown property.
+  "less.lint.unknownProperties": "warning",
+  // IE hacks are only necessary when supporting IE7 and older
+  "less.lint.ieHack": "ignore",
+  // Unknown vendor specific property.
+  "less.lint.unknownVendorSpecificProperties": "ignore",
+  // Property is ignored due to the display. E.g. with 'display: inline', the width, height, margin-top, margin-bottom, and float properties have no effect
+  "less.lint.propertyIgnoredDueToDisplay": "warning",
+  // Avoid using !important. It is an indication that the specificity of the entire CSS has gotten out of control and needs to be refactored.
+  "less.lint.important": "ignore",
+  // Avoid using 'float'. Floats lead to fragile CSS that is easy to break if one aspect of the layout changes.
+  "less.lint.float": "ignore",
+  // Selectors should not contain IDs because these rules are too tightly coupled with the HTML.
+  "less.lint.idSelector": "ignore",
+  // Consente l'impostazione del punto di interruzione in qualsiasi file
+  "debug.allowBreakpointsEverywhere": false,
+  // Apre automaticamente la visualizzazione di esplorazione al termine di una sessione di debug
+  "debug.openExplorerOnEnd": false,
+  // Enable/disable default HTML formatter (requires restart)
+  "html.format.enable": true,
+  // Maximum amount of characters per line (0 = disable).
+  "html.format.wrapLineLength": 120,
+  // List of tags, comma separated, that shouldn't be reformatted. 'null' defaults to all tags listed at https://www.w3.org/TR/html5/dom.html#phrasing-content.
+  "html.format.unformatted": "a, abbr, acronym, b, bdo, big, br, button, cite, code, dfn, em, i, img, input, kbd, label, map, object, pre, q, samp, select, small, span, strong, sub, sup, textarea, tt, var",
+  // Indent <head> and <body> sections.
+  "html.format.indentInnerHtml": false,
+  // Whether existing line breaks before elements should be preserved. Only works before elements, not inside tags or for text.
+  "html.format.preserveNewLines": true,
+  // Maximum number of line breaks to be preserved in one chunk. Use 'null' for unlimited.
+  "html.format.maxPreserveNewLines": null,
+  // Format and indent {{#foo}} and {{/foo}}.
+  "html.format.indentHandlebars": false,
+  // End with a newline.
+  "html.format.endWithNewline": false,
+  // List of tags, comma separated, that should have an extra newline before them. 'null' defaults to "head, body, /html".
+  "html.format.extraLiners": "head, body, /html",
+  // Configures if the built-in HTML language support suggests Angular V1 tags and properties.
+  "html.suggest.angular1": true,
+  // Configures if the built-in HTML language support suggests Ionic tags, properties and values.
+  "html.suggest.ionic": true,
+  // Configures if the built-in HTML language support suggests HTML5 tags, properties and values.
+  "html.suggest.html5": true,
+  // Traces the communication between VS Code and the HTML language server.
+  "html.trace.server": "off",
+  // Associate schemas to JSON files in the current project
+  "json.schemas": [],
+  // Enable/disable default JSON formatter (requires restart)
+  "json.format.enable": true,
+  // Traces the communication between VS Code and the JSON language server.
+  "json.trace.server": "off",
+  // Elenco di URL o percorsi locali dei fogli di stile CSS da usare dall'anteprima markdown. I percorsi relativi vengono interpretati come relativi alla cartella aperta nella finestra di esplorazione. Se non è presente alcuna cartella aperta, vengono interpretati come relativi al percorso del file markdown. Tutti i caratteri '' devono essere scritti come '\'.
+  "markdown.styles": [],
+  // Consente di impostare il rendering del front matter YAML nell'anteprima markdown. Con 'hide' il front matter viene rimosso; altrimenti il front matter viene considerato come contenuto markdown.
+  "markdown.previewFrontMatter": "hide",
+  // Consente di controllare la famiglia di caratteri usata nell'anteprima markdown.
+  "markdown.preview.fontFamily": "'Segoe WPC', 'Segoe UI', 'SFUIText-Light', 'HelveticaNeue-Light'",
+  // Consente di controllare le dimensioni del carattere in pixel usate nell'anteprima markdown.
+  "markdown.preview.fontSize": 14,
+  // Consente di controllare l'altezza della riga usata nell'anteprima markdown. Questo numero è relativo alle dimensioni del carattere.
+  "markdown.preview.lineHeight": 1.6,
+  // Indica se la convalida PHP è abilitata o meno.
+  "php.validate.enable": true,
+  // Punta all'eseguibile di PHP.
+  "php.validate.executablePath": null,
+  // Indica se il linter viene eseguito durante il salvataggio o la digitazione.
+  "php.validate.run": "onSave",
+  // Specifica il percorso della cartella che contiene i file tsserver e lib*.d.ts da usare.
+  "typescript.tsdk": null,
+  // Disabilita l'acquisizione automatica del tipo. Richiede TypeScript >= 2.0.6 e un riavvio dopo la modifica.
+  "typescript.disableAutomaticTypeAcquisition": false,
+  // Verifica se nell'area di lavoro è disponibile una versione di TypeScript.
+  "typescript.check.workspaceVersion": true,
+  // Verifica se un compilatore TypeScript di installazione globale, ad esempio tsc, è diverso dal servizio di linguaggio TypeScript usato.
+  "typescript.check.tscVersion": true,
+  // Consente la traccia dell'invio dei messaggi al server di Servizi terminal.
+  "typescript.tsserver.trace": "off",
+  // Completare le funzioni con la relativa firma del parametro.
+  "typescript.useCodeSnippetsOnMethodSuggest": false,
+  // Abilita/Disabilita la convalida TypeScript.
+  "typescript.validate.enable": true,
+  // Abilita/Disabilita il formattatore TypeScript predefinito.
+  "typescript.format.enable": true,
+  // Consente di definire la gestione dello spazio dopo una virgola di delimitazione6
+  "typescript.format.insertSpaceAfterCommaDelimiter": true,
+  //  Consente di definire la gestione dello spazio dopo un punto e virgola in un'istruzione for.
+  "typescript.format.insertSpaceAfterSemicolonInForStatements": true,
+  // Consente di definire la gestione dello spazio dopo un operatore binario.
+  "typescript.format.insertSpaceBeforeAndAfterBinaryOperators": true,
+  // Consente di definire la gestione dello spazio dopo le parole chiave nell'istruzione del flusso di controllo.
+  "typescript.format.insertSpaceAfterKeywordsInControlFlowStatements": true,
+  // Consente di definire la gestione dello spazio dopo la parola chiave function per funzioni anonime.
+  "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
+  // Consente di definire la gestione dello spazio dopo le parentesi tonde di apertura e di chiusura non vuote.
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
+  // Consente di definire la gestione dello spazio dopo le parentesi quadre di apertura e di chiusura non vuote.
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
+  // Consente di definire la gestione dello spazio dopo la parentesi graffa iniziale e prima della parentesi graffa finale della stringa del modello. Richiede TypeScript >= 2.0.6
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": false,
+  // Consente di definire la gestione dello spazio dopo la parentesi graffa iniziale e prima della parentesi graffa finale dell'espressione JSX. Richiede TypeScript >= 2.0.6
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": false,
+  // Consente di definire se una parentesi graffa di apertura viene o meno inserita su una riga per le funzioni.
+  "typescript.format.placeOpenBraceOnNewLineForFunctions": false,
+  // Consente di definire se una parentesi graffa di apertura viene o meno inserita su una riga per i blocchi di controllo.
+  "typescript.format.placeOpenBraceOnNewLineForControlBlocks": false,
+  // Abilita/Disabilita la convalida JavaScript.
+  "javascript.validate.enable": true,
+  // Abilita/Disabilita il formattatore JavaScript predefinito.
+  "javascript.format.enable": true,
+  // Consente di definire la gestione dello spazio dopo una virgola di delimitazione6
+  "javascript.format.insertSpaceAfterCommaDelimiter": true,
+  //  Consente di definire la gestione dello spazio dopo un punto e virgola in un'istruzione for.
+  "javascript.format.insertSpaceAfterSemicolonInForStatements": true,
+  // Consente di definire la gestione dello spazio dopo un operatore binario.
+  "javascript.format.insertSpaceBeforeAndAfterBinaryOperators": true,
+  // Consente di definire la gestione dello spazio dopo le parole chiave nell'istruzione del flusso di controllo.
+  "javascript.format.insertSpaceAfterKeywordsInControlFlowStatements": true,
+  // Consente di definire la gestione dello spazio dopo la parola chiave function per funzioni anonime.
+  "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
+  // Consente di definire la gestione dello spazio dopo le parentesi tonde di apertura e di chiusura non vuote.
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
+  // Consente di definire la gestione dello spazio dopo le parentesi quadre di apertura e di chiusura non vuote.
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
+  // Consente di definire la gestione dello spazio dopo la parentesi graffa iniziale e prima della parentesi graffa finale della stringa del modello. Richiede TypeScript >= 2.0.6
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": false,
+  // Consente di definire la gestione dello spazio dopo la parentesi graffa iniziale e prima della parentesi graffa finale dell'espressione JSX. Richiede TypeScript >= 2.0.6
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": false,
+  // Consente di definire se una parentesi graffa di apertura viene o meno inserita su una riga per le funzioni.
+  "javascript.format.placeOpenBraceOnNewLineForFunctions": false,
+  // Consente di definire se una parentesi graffa di apertura viene o meno inserita su una riga per i blocchi di controllo.
+  "javascript.format.placeOpenBraceOnNewLineForControlBlocks": false,
+  // Aggiorna automaticamente le estensioni
+  "extensions.autoUpdate": false,
+  // Personalizza il terminale da eseguire in Windows.
+  "terminal.external.windowsExec": "%COMSPEC%",
+  // Personalizza l'applicazione di terminale da eseguire in OS X.
+  "terminal.external.osxExec": "Terminal.app",
+  // Personalizza il terminale da eseguire in Linux.
+  "terminal.external.linuxExec": "xterm",
+  // Percorso della shell usata dal terminale in Linux.
+  "terminal.integrated.shell.linux": "sh",
+  // Argomenti della riga di comando da usare nel terminale Linux.
+  "terminal.integrated.shellArgs.linux": [],
+  // Percorso della shell usata dal terminale in OS X.
+  "terminal.integrated.shell.osx": "sh",
+  // Argomenti della riga di comando da usare nel terminale OS X.
+  "terminal.integrated.shellArgs.osx": [],
+  // Percorso della shell usata dal terminale in Windows. Quando si usano le shell incluse in Windows (cmd, PowerShell o Bash in Ubuntu), preferire C:\Windows\sysnative rispetto a C:\Windows\System32 per usare le versioni a 64 bit.
+  "terminal.integrated.shell.windows": "C:\\Windows\\system32\\cmd.exe",
+  // Argomenti della riga di comando da usare nel terminale Windows.
+  "terminal.integrated.shellArgs.windows": [],
+  // Controlla la famiglia di caratteri del terminale. L'impostazione predefinita è il valore di editor.fontFamily.
+  "terminal.integrated.fontFamily": "",
+  // Controlla se i caratteri legatura sono abilitati nel terminale.
+  "terminal.integrated.fontLigatures": false,
+  // Consente di controllare le dimensioni del carattere in pixel del terminale.
+  "terminal.integrated.fontSize": 14,
+  // Controlla l'altezza della riga del terminale. Questo numero è moltiplicato dalle dimensioni del carattere del terminale per ottenere l'altezza di riga effettiva in pixel.
+  "terminal.integrated.lineHeight": 1.2,
+  // Controlla se il cursore del terminale è intermittente o meno.
+  "terminal.integrated.cursorBlinking": false,
+  // Consente di controllare il numero massimo di righe che il terminale mantiene nel buffer.
+  "terminal.integrated.scrollback": 1000,
+  // Controlla se le variabili delle impostazioni locali sono impostate all'avvio del terminale. Il valore predefinito è true per OS X e false per altre piattaforme.
+  "terminal.integrated.setLocaleVariables": false,
+  // Set di ID comando i cui tasti di scelta rapida non verranno inviati alla shell e verranno sempre gestiti da Code. In tal modo i tasti di scelta rapida normalmente utilizzati dalla shell avranno lo stesso effetto di quando il terminale non ha lo stato attivo, ad esempio CTRL+P per avviare Quick Open.
+  "terminal.integrated.commandsToSkipShell": [
+    "editor.action.toggleTabFocusMode",
+    "workbench.action.debug.continue",
+    "workbench.action.debug.restart",
+    "workbench.action.debug.run",
+    "workbench.action.debug.start",
+    "workbench.action.debug.stop",
+    "workbench.action.openNextRecentlyUsedEditorInGroup",
+    "workbench.action.openPreviousRecentlyUsedEditorInGroup",
+    "workbench.action.quickOpen",
+    "workbench.action.showCommands",
+    "workbench.action.terminal.clear",
+    "workbench.action.terminal.copySelection",
+    "workbench.action.terminal.focus",
+    "workbench.action.terminal.focusNext",
+    "workbench.action.terminal.focusPrevious",
+    "workbench.action.terminal.kill",
+    "workbench.action.terminal.new",
+    "workbench.action.terminal.paste",
+    "workbench.action.terminal.runSelectedText",
+    "workbench.action.terminal.scrollDown",
+    "workbench.action.terminal.scrollDownPage",
+    "workbench.action.terminal.scrollToBottom",
+    "workbench.action.terminal.scrollToTop",
+    "workbench.action.terminal.scrollUp",
+    "workbench.action.terminal.scrollUpPage",
+    "workbench.action.terminal.toggleTerminal"
+  ],
+  // Controlla se la visualizzazione Problemi deve visualizzare automaticamente i file durante l'apertura
+  "problems.autoReveal": true,
+  // Consente l'invio di errori e dati sull'utilizzo a Microsoft.
+  "telemetry.enableTelemetry": true,
+  // Consente l'invio di segnalazioni di arresto anomalo del sistema a Microsoft.
+  // Per rendere effettiva questa opzione, è necessario riavviare.
+  "telemetry.enableCrashReporter": true,
+  // Controls whether eslint is enabled for JavaScript files or not.
+  "eslint.enable": true,
+  // A path added to NODE_PATH when resolving the eslint module.
+  "eslint.nodePath": null,
+  // Uses the legacy module resolving.
+  "eslint._legacyModuleResolve": false,
+  // The eslint options object to provide args normally passed to eslint when executed from a command line.
+  "eslint.options": {},
+  // Traces the communication between VSCode and the eslint linter service.
+  "eslint.trace.server": "off",
+  // Run the linter on save (onSave) or on type (onType)
+  "eslint.run": "onSave",
+  // Turns auto fix on save on or off.
+  "eslint.autoFixOnSave": false,
+  // An array of language ids which should be validated by ESLint
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact"
+  ],
+  // Allow bookmarks to be saved and restored, even if you close or change the Project
+  "bookmarks.saveBookmarksBetweenSessions": false,
+  // Path to another image to be presented as Bookmark
+  "bookmarks.gutterIconPath": "",
+  // Allow navigation look for bookmarks in all files in the project, instead of only the current
+  "bookmarks.navigateThroughAllFiles": false,
+  // The bookmarks will be glued to the line of code instead of the line of the file
+  "bookmarks.useStickyBookmarks": false
+}
+]

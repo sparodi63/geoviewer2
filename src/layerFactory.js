@@ -1,4 +1,4 @@
-var L = require('leaflet');
+var L = require('leaflet')
 require('./leaflet/MarkerCluster.js')
 require('./leaflet/NonTiledLayer.js')
 
@@ -203,14 +203,14 @@ var layerFactory = {
   },
 
   WMS (layerConfig) {
-    let {name, geomType, cacheMinZoomLevel, minScale, maxScale, wmsParams, flagGeoserver, zIndex } = layerConfig
+    let { name, geomType, cacheMinZoomLevel, minScale, maxScale, wmsParams, flagGeoserver, zIndex } = layerConfig
     util.log('layerFactory - Creazione Layer WMS: ' + name)
 
-    let format = (geomType === 'VECTOR') ? 'image/png8' : (cacheMinZoomLevel) ? 'image/jpeg' : 'image/png',
-      minZoom = (minScale) ? util.getZoomFromScaleDenom(minScale) : 8,
-      maxZoom = (maxScale) ? util.getZoomFromScaleDenom(maxScale) : 20,
-      url = wmsParams.url,
-      opacity = layerConfig.opacity || 1
+    let format = (geomType === 'VECTOR') ? 'image/png8' : (cacheMinZoomLevel) ? 'image/jpeg' : 'image/png'
+    let minZoom = (minScale) ? util.getZoomFromScaleDenom(minScale) : 8
+    let maxZoom = (maxScale) ? util.getZoomFromScaleDenom(maxScale) : 20
+    let url = wmsParams.url
+    let opacity = layerConfig.opacity || 1
 
     if (!flagGeoserver) {
       cacheMinZoomLevel = null
@@ -254,11 +254,10 @@ var layerFactory = {
 
   JSON (layerConfig) {
     let {data, url, name, wfsParams, esParams, classes, style, pointToLayer, tooltip, popup, cluster} = layerConfig
-    let dataType = layerConfig.dataType || 'jsonp'
     let clusterLayer = null
     let options = {}
 
-    if (classes && classes.length>0) {
+    if (classes && classes.length > 0) {
       if (layerConfig.geomSubType === 'POINT') {
         options.pointToLayer = function (feature, latlng) {
           var style
@@ -274,29 +273,29 @@ var layerFactory = {
           if (style.iconUrl) {
             var icon
             switch (style.iconUrl) {
-              case 'default':
-                icon = L.icon({
-                  iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/images/legend/marker-icon.png',
-                  iconSize: [25, 41],
-                  iconAnchor: [12, 41],
-                  popupAnchor: [0, -41]
-                })
-                break
-              case 'default-small':
-                icon = L.icon({
-                  iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/images/legend/marker-icon.png',
-                  iconSize: [12, 20],
-                  iconAnchor: [6, 10],
-                  popupAnchor: [0, -20]
-                })
-                break
-              default:
-                icon = L.icon({
-                  iconUrl: style.iconUrl,
-                  iconSize: style.iconSize,
-                  iconAnchor: style.iconAnchor,
-                  popupAnchor: style.popupAnchor
-                })
+            case 'default':
+              icon = L.icon({
+                iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/images/legend/marker-icon.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [0, -41]
+              })
+              break
+            case 'default-small':
+              icon = L.icon({
+                iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/images/legend/marker-icon.png',
+                iconSize: [12, 20],
+                iconAnchor: [6, 10],
+                popupAnchor: [0, -20]
+              })
+              break
+            default:
+              icon = L.icon({
+                iconUrl: style.iconUrl,
+                iconSize: style.iconSize,
+                iconAnchor: style.iconAnchor,
+                popupAnchor: style.popupAnchor
+              })
             }
             return L.marker(latlng, {icon: icon})
           } else {
@@ -389,7 +388,6 @@ var layerFactory = {
         typeName: wfsParams.typeName
       }
       url = wfsParams.url + util.getParamString(parameters)
-      dataType = 'jsonp'
     }
 
     // Gestione livelli puntuali su ElasticSearch
@@ -412,12 +410,11 @@ var layerFactory = {
       // TODO parametro bbox. https://www.elastic.co/guide/en/elasticsearch/reference/1.4/query-dsl-geo-bounding-box-filter.html
 
       url = config.application.proxy + esParams.url + util.getParamString(parameters)
-      dataType = 'json'
     }
 
     if (url) {
       // TODO gestione jsonp https://github.com/pagekit/vue-resource/issues/35
-      Vue.http.get(url).then(function (response) {
+      Vue.http.jsonp(url).then(function (response) {
         var data = response.data
         var geoJson = data
         if (esParams) {

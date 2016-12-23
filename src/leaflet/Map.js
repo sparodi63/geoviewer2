@@ -1,9 +1,9 @@
-var L = require('leaflet');
+var L = require('leaflet')
 
-import globals from '../globals';
-import * as config from '../config';
-import util from '../util';
-import * as layerFactory from '../layerFactory';
+import globals from '../globals'
+import * as config from '../config'
+import util from '../util'
+import * as layerFactory from '../layerFactory'
 
 const Map = L.Map.extend({
   layers: [],
@@ -20,171 +20,170 @@ const Map = L.Map.extend({
   },
 
   initialize: function () {
-    "use strict";
+    'use strict'
 
-    Object.assign(this.mapOptions, config.application.mapOptions);
+    Object.assign(this.mapOptions, config.application.mapOptions)
 
-    L.Map.prototype.initialize.call(this, 'gv-map', L.extend(L.Map.prototype.options, this.mapOptions));
+    L.Map.prototype.initialize.call(this, 'gv-map', L.extend(L.Map.prototype.options, this.mapOptions))
 
-    this.setInitialExtent();
+    this.setInitialExtent()
 
-    this.setLayersInRange();
+    this.setLayersInRange()
 
-    this.setLoading();
+    this.setLoading()
 
-    this.loadBaseLayers();
+    this.loadBaseLayers()
 
-    this.loadControls();
-
+    this.loadControls()
   },
 
   setInitialExtent: function () {
-    "use strict";
+    'use strict'
 
-    var extent = this.mapOptions.initialExtent || "830036,5402959,1123018,5597635";
-    var extArray = extent.split(',');
-    var swPoint = L.point(extArray[0], extArray[1]);
-    var nePoint = L.point(extArray[2], extArray[3]);
-    var swLatLng = L.Projection.SphericalMercator.unproject(swPoint);
-    var neLatLng = L.Projection.SphericalMercator.unproject(nePoint);
-    this.initialExtent = L.latLngBounds(swLatLng, neLatLng);
-    this.fitBounds(this.initialExtent);
+    var extent = this.mapOptions.initialExtent || '830036,5402959,1123018,5597635'
+    var extArray = extent.split(',')
+    var swPoint = L.point(extArray[0], extArray[1])
+    var nePoint = L.point(extArray[2], extArray[3])
+    var swLatLng = L.Projection.SphericalMercator.unproject(swPoint)
+    var neLatLng = L.Projection.SphericalMercator.unproject(nePoint)
+    this.initialExtent = L.latLngBounds(swLatLng, neLatLng)
+    this.fitBounds(this.initialExtent)
   },
 
   setLayersInRange: function () {
-    "use strict";
+    'use strict'
     this.on('zoom', function () {
-      var layers = config.getAllLayersConfig();
+      var layers = config.getAllLayersConfig()
       layers.forEach(function (layer) {
-        config.setLayerAttribute(layer.name, 'inRange', this.layerInRange(layer));
-      }, this);
-    });
+        config.setLayerAttribute(layer.name, 'inRange', this.layerInRange(layer))
+      }, this)
+    })
   },
 
   setLayerVisible: function (layerConfig, visible) {
-    "use strict";
+    'use strict'
     if (visible) {
       // Muta lo stato del layer
-      layerConfig.visible = true;
-      this.loadLayers([layerConfig]);
+      layerConfig.visible = true
+      this.loadLayers([layerConfig])
     } else {
-      this.removeLayer(this.getLayerByName(layerConfig.name));
+      this.removeLayer(this.getLayerByName(layerConfig.name))
     }
   },
 
   layerInRange: function (layerConfig) {
-    "use strict";
+    'use strict'
     if (!layerConfig.minScale && !layerConfig.minScale) {
-      return true;
+      return true
     }
-    return (this.getScale() < layerConfig.minScale && this.getScale() > layerConfig.maxScale );
+    return (this.getScale() < layerConfig.minScale && this.getScale() > layerConfig.maxScale)
   },
 
   loadControls: function () {
-    "use strict";
+    'use strict'
     if (this.mapOptions.controls) {
-      var cntrl;
-      this.controls = {};
+      var cntrl
+      this.controls = {}
       this.mapOptions.controls.forEach(function (control) {
         switch (control.name) {
-          case 'scale':
-            cntrl = L.control.scale({imperial: false}).addTo(this);
-            this.controls[control] = cntrl;
-            break;
+        case 'scale':
+          cntrl = L.control.scale({imperial: false}).addTo(this)
+          this.controls[control] = cntrl
+          break
         }
-      }, this);
+      }, this)
     }
   },
 
   loadBaseLayers: function () {
-    "use strict";
+    'use strict'
 
     config.baseLayers.forEach(function (layerConfig) {
-      var layer = layerFactory.create(layerConfig, this);
-      this.baseLayers[layer.config.legend.label] = layer;
+      var layer = layerFactory.create(layerConfig, this)
+      this.baseLayers[layer.config.legend.label] = layer
       if (layer && layerConfig.visible) {
         layer.on('loading', function () {
-          this.loading(true, layer);
-        }, this);
+          this.loading(true, layer)
+        }, this)
         layer.on('load', function () {
-          this.loading(false, layer);
-        }, this);
-        layer.addTo(this);
+          this.loading(false, layer)
+        }, this)
+        layer.addTo(this)
       }
-    }, this);
+    }, this)
   },
 
   loadLayers: function (layers) {
-    "use strict";
+    'use strict'
     layers.forEach(function (layerConfig) {
       if (!this.getLayerByName(layerConfig.name)) {
-        var layer = layerFactory.create(layerConfig, this);
+        var layer = layerFactory.create(layerConfig, this)
         if (layer && layerConfig.visible) {
           layer.on('loading', function () {
-            this.loading(true, layer);
-          }, this);
+            this.loading(true, layer)
+          }, this)
           layer.on('load', function () {
-            this.loading(false, layer);
-          }, this);
-          layer.addTo(this);
+            this.loading(false, layer)
+          }, this)
+          layer.addTo(this)
         }
       }
-    }, this);
+    }, this)
   },
 
   getLayerByName: function (layerName) {
-    "use strict";
-    var foundLayer = null;
+    'use strict'
+    var foundLayer = null
     this.eachLayer(function (layer) {
       if (layer.config && layer.config.name && layer.config.name === layerName) {
-        foundLayer = layer;
+        foundLayer = layer
       }
-    });
-    return foundLayer;
+    })
+    return foundLayer
   },
 
   getScaleLabel: function () {
-    'use strict';
-    return util.getScaleLabelsFromZoom(this._zoom);
+    'use strict'
+    return util.getScaleLabelsFromZoom(this._zoom)
   },
 
   getScale: function () {
-    'use strict';
-    return util.getScaleFromZoom(this._zoom);
+    'use strict'
+    return util.getScaleFromZoom(this._zoom)
   },
 
   setLoading: function () {
-    this._spinning = 0;
+    this._spinning = 0
     this.on('layerremove', function (e) {
       // Clean-up
       if (e.layer.loading) {
-        this.loading(false);
+        this.loading(false)
       }
-      if (typeof e.layer.on != 'function') {
-        return;
+      if (typeof e.layer.on !== 'function') {
+        return
       }
-      e.layer.off('load');
-      e.layer.off('loading');
-    }, this);
+      e.layer.off('load')
+      e.layer.off('loading')
+    }, this)
   },
 
   loading: function (state, layer) {
-    if (!!state) {
+    // if (!!state) {
+    if (state) {
       if (this._spinning === 0) {
-        util.log('start load: ' + layer.config.name);
-        this._container.style.cursor = "progress";
+        util.log('start load: ' + layer.config.name)
+        this._container.style.cursor = 'progress'
       }
-      this._spinning++;
-    }
-    else {
-      this._spinning--;
+      this._spinning++
+    } else {
+      this._spinning--
       if (this._spinning <= 0) {
-        util.log('end load: ' + layer.config.name);
-        this._container.style.cursor = "default";
+        util.log('end load: ' + layer.config.name)
+        this._container.style.cursor = 'default'
       }
     }
   }
 
-});
+})
 
-export default Map;
+export default Map
