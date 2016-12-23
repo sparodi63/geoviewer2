@@ -258,14 +258,14 @@ GV.layerFactory = (function () {
 
             var layer;
             if (layerConfig.cacheMinZoomLevel) {
-                _.extend(options, {
+                Object.assign(options, {
                     'tiled': true,
                     'TILESORIGIN': '-20037508,-20037508',
                     'tileSize': 256
                 });
                 layer = L.tileLayer.wms(url, options);
             } else {
-                _.extend(options, {
+                Object.assign(options, {
                     'tiled': false,
                     'pane': 'tilePane'
                 });
@@ -497,14 +497,12 @@ GV.layerFactory = (function () {
             if (cluster) {
                 var clusterOptions = { showCoverageOnHover: false };
                 if (cluster.options) {
-                    _.extend(clusterOptions, cluster.options);
+                    Object.assign(clusterOptions, cluster.options);
                 }
                 clusterLayer = L.markerClusterGroup(clusterOptions);
                 return clusterLayer;
             }
-
-            return layer;
-
+           return layer;
         }
 
     };

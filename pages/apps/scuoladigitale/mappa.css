@@ -1,3 +1,26 @@
+/* ----------------------------------------------- */
+/* Gestione colori customizzabili */
+/* ----------------------------------------------- */
+
+.leaflet-bar a, .leaflet-bar a:hover, .leaflet-bar a.leaflet-disabled {
+    background-color: #42537f;
+    color: #ccc;
+}
+
+.gv-color-scheme {
+    background-color: #42537f;
+    color: #CCC;
+}
+
+.gv-inverted-color-scheme {
+    color: #42537f;
+    background-color: #CCC;
+}
+
+/* ----------------------------------------------- */
+/* Cluster */
+/* ----------------------------------------------- */
+
 .cluster_01 {
     background-image: url(/geoviewer2/static/img/scuoladigitale/legend/cfa-nq.png);
     text-align: center;
@@ -23,15 +46,9 @@
     color: white;
 }
 
-.gv-color-scheme {
-    background-color: #31708f;
-    color: #CCC;
-}
-
-.gv-inverted-color-scheme {
-    color: #31708f;
-    background-color: #CCC;
-}
+/* ----------------------------------------------- */
+/* GV */
+/* ----------------------------------------------- */
 
 #gv-title {
     height: 0;

@@ -2,18 +2,16 @@ import globals from './globals';
 import util from './util';
 import GV from './GV';
 
-var _ = require('underscore');
-
 var _lastZIndex = 21;
-var debug       = false,
-    idMap       = null,
-    title       = null,
-    geoserverUrl,
-    application = {},
-    baseLayers  = [
-      {'type': 'ESRI_IMAGERY', visible: true}
-    ],
-    maps        = [];
+var debug = false,
+  idMap = null,
+  title = null,
+  geoserverUrl,
+  application = {},
+  baseLayers = [
+    {'type': 'ESRI_IMAGERY', visible: true}
+  ],
+  maps = [];
 
 function set (options) {
   if (!options) {
@@ -22,7 +20,11 @@ function set (options) {
     return null;
   }
 
+
+
   debug = options.debug;
+  idMap = options.idMap;
+  geoserverUrl = options.geoserverUrl;
 
   if (options.application) {
     application = options.application;
@@ -44,18 +46,16 @@ function set (options) {
 
   if (options.maps) {
     options.maps.forEach(
-        (mapConfig) => {
-          addMapConfig(mapConfig);
-        }
+      (mapConfig) => {
+        addMapConfig(mapConfig);
+      }
     );
   }
 
-  idMap = options.idMap;
-  geoserverUrl = options.geoserverUrl;
 }
 
 function addMapConfig (mapConfig) {
-  _.each(mapConfig.layers, function (layer) {
+  mapConfig.layers.forEach(function (layer) {
     if (layer.minScale === 0) {
       layer.minScale = 591657550;
     }
@@ -70,24 +70,28 @@ function addMapConfig (mapConfig) {
   maps.unshift(mapConfig);
 }
 
+
+
 function getAllLayersConfig () {
   var layers = [];
 
-  _.each(maps, function (map) {
-    _.each(map.layers, function (layer) {
+  maps.forEach(function (map) {
+    map.layers.forEach(function (layer) {
       layers.push(layer);
     });
   });
   return layers;
 }
 
+
+
 function setLayerAttribute (layerName, attribute, value) {
   var foundLayer = null;
 
-  _.each(maps, function (map) {
+  maps.forEach(function (map) {
     var layers = map.layers;
 
-    _.each(layers, function (layer) {
+    layers.forEach(function (layer) {
       if (layer.name === layerName) {
         layer[attribute] = value;
       }
@@ -98,10 +102,10 @@ function setLayerAttribute (layerName, attribute, value) {
 function getLayerConfig (layerName) {
   var foundLayer = null;
 
-  _.each(maps, function (map) {
+  maps.forEach(function (map) {
     var layers = map.layers;
 
-    foundLayer = _.find(layers, function (layer) {
+    foundLayer = layers.find(function (layer) {
       return layer.name === layerName;
     });
   });
@@ -118,8 +122,8 @@ function getButton (buttonName) {
     return null;
   }
 
-  _.each(application.layout.toolbar, function (tb) {
-    _.each(tb.items, function (item) {
+  application.layout.toolbar.forEach(function (tb) {
+    tb.items.forEach(function (item) {
       if (item.name === buttonName) {
         button = item;
       }
@@ -136,8 +140,8 @@ function getButtonOption (buttonName, optionName) {
     return null;
   }
 
-  _.each(application.layout.toolbar, function (tb) {
-    _.each(tb.items, function (item) {
+  application.layout.toolbar.forEach(function (tb) {
+    tb.items.forEach(function (item) {
       if (item.name === buttonName) {
         option = item.options[optionName];
       }
@@ -154,8 +158,8 @@ function setButtonOption (buttonName, optionName, value) {
     return null;
   }
 
-  _.each(application.layout.toolbar, function (tb) {
-    _.each(tb.items, function (item) {
+  application.layout.toolbar.forEach(function (tb) {
+    tb.items.forEach(function (item) {
       if (item.name === buttonName) {
         item.options[optionName] = value;
       }
@@ -166,8 +170,8 @@ function setButtonOption (buttonName, optionName, value) {
 }
 
 export {
-    debug, idMap, application, baseLayers, maps, title, geoserverUrl,
-    set, addMapConfig, getAllLayersConfig, getLayerConfig, getButton, getButtonOption, setButtonOption,
-    setLayerAttribute
+  debug, idMap, application, baseLayers, maps, title, geoserverUrl,
+  set, addMapConfig, getAllLayersConfig, getLayerConfig, getButton, getButtonOption, setButtonOption,
+  setLayerAttribute
 };
 

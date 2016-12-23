@@ -37,5 +37,6 @@ import * as IFrame from './components/IFrame';
 Vue.component('gv-iframe-panel', IFrame);
 import * as WmsInfoList from './components/WmsInfoList.vue';
 Vue.component('gv-wms-info-list', WmsInfoList);
+//import * as Geocoder from './components/Geocoder.vue';
+//Vue.component('gv-geocoder', Geocoder);
 
-console.log('fine _base.js')

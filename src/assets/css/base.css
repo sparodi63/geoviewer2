@@ -15,6 +15,26 @@ body {
 }
 
 /* ----------------------------------------------- */
+/* Gestione colori customizzabili */
+/* ----------------------------------------------- */
+
+.leaflet-bar a, .leaflet-bar a:hover, .leaflet-bar a.leaflet-disabled {
+  background-color: #24386c;
+  color: #ccc;
+}
+
+.gv-color-scheme {
+  background-color: #24386c;
+  color: #CCC;
+}
+
+.gv-inverted-color-scheme {
+  color: #24386c;
+  background-color: #CCC;
+}
+
+
+/* ----------------------------------------------- */
 /* LEAFLET */
 /* ----------------------------------------------- */
 
@@ -270,25 +290,6 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
 .leaflet-control-locate a {
   font-size: 1.4em;
   color: #ccc;
-}
-
-/* ----------------------------------------------- */
-/* Gestione colori customizzabili */
-/* ----------------------------------------------- */
-
-.leaflet-bar a, .leaflet-bar a:hover, .leaflet-bar a.leaflet-disabled {
-  background-color: #31708f;
-  color: #ccc;
-}
-
-.gv-color-scheme {
-  background-color: #31708f;
-  color: #CCC;
-}
-
-.gv-inverted-color-scheme {
-  color: #31708f;
-  background-color: #CCC;
 }
 
 /* ----------------------------------------------- */

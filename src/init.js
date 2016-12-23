@@ -1,22 +1,22 @@
-import Vue from 'vue';
+import Vue from 'vue'
 
-//require('./components/gv-app.js');
+// require('./components/gv-app.js');
 
-import util from './util';
-import * as config from './config';
-import globals from './globals';
+import * as config from './config'
 
-function init (options) {
-  'use strict';
+function init(options) {
+  'use strict'
 
   // imposto configurazione applicazione
-  config.set(options);
+  config.set(options)
 
   // istanzio gv-app
   new Vue({
     el: '#gv-container',
     template: '<gv-app></gv-app>'
-  });
+  })
+
 }
 
-export default init;
+
+export default init

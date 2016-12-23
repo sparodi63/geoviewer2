@@ -7,22 +7,19 @@
 </template>
 
 <script>
-    var L = require('leaflet'),
-        _ = require('underscore');
+    import * as config from '../config'
+    import globals from '../globals'
+    import util from '../util'
+    import GV from '../GV'
 
-    import * as config from '../config';
-    import globals from '../globals';
-    import util from '../util';
-    import GV from '../GV';
-
-    import Vue from 'vue';
+    import Vue from 'vue'
     import VueResource from 'vue-resource'
-    Vue.use(VueResource);
+    Vue.use(VueResource)
 
-    import * as gvMap from './Map';
-    import * as gvLegend from './Legend';
+    import * as gvMap from './Map'
+    import * as gvLegend from './Legend'
 
-    import infoWmsManager from '../infoWmsManager';
+    import infoWmsManager from '../infoWmsManager'
 
     export default {
         name: 'gv-app',
@@ -35,120 +32,122 @@
         },
         computed: {
             showTitle: function () {
-                return (config.application.layout.title && !globals.SMALL_SCREEN);
+                return (config.application.layout.title && !globals.SMALL_SCREEN)
             },
             showLegend: function () {
-                return (config.getButton('legend') && config.getButtonOption('legend', 'show'));
+                return (config.getButton('legend') && config.getButtonOption('legend', 'show'))
             },
             showAddMap: function () {
-                return config.getButtonOption('legend', 'showAddMap');
+                return config.getButtonOption('legend', 'showAddMap')
             },
             showInfoMap: function () {
-                return config.getButtonOption('legend', 'showInfoMap');
+                return config.getButtonOption('legend', 'showInfoMap')
             }
         },
         created () {
-            GV.app = this;
+            GV.app = this
         },
         mounted: function () {
-            util.log('gv-app: mounted');
+            util.log('gv-app: mounted')
 
             // imposto metodo per drag panelli
-            util.setDrag();
+            util.setDrag()
 
             // gestione toolbar
-            this.addToolbars(config.application.layout.toolbar);
+            this.addToolbars(config.application.layout.toolbar)
 
             // gestione click
             if (config.application.mapOptions && config.application.mapOptions.click) {
                 if (config.application.mapOptions.click === 'info' && !util.isTouch()) {
-                    infoWmsManager.activate();
+                    infoWmsManager.activate()
                 }
             }
 
             // Gestione caricamento mappe/livelli da configurazione
             if (config.maps.length>0) {
-                _.each(config.maps, (mapConfig) => { this.addMap(mapConfig) })
+                config.maps.forEach( (mapConfig) => { this.addMap(mapConfig) } )
             }
 
             // Gestione caricamento mappe RL da servizio
             if (config.idMap) {
-                this.addRlMap(config.idMap, config.application.callback);
+                this.addRlMap(config.idMap, config.application.callback)
             } else {
                 if (config.application.callback) {
-                    config.application.callback(this);
+                    config.application.callback(this)
                 }
             }
         },
         methods: {
             getTitle() {
-                return config.title;
+                return config.title
             },
             getMaps: function () {
-                return this.maps;
+                return this.maps
             },
             addToolbars: function () {
                 if (config.application.layout.toolbar) {
-                    var toolbar = config.application.layout.toolbar;
-                        _.each(toolbar, (tb) => {
-                            const position = tb.position || 'topleft';
-                            _.each(tb.items, (item) => {
-                                item.options = item.options || {};
-                                item.options.position = item.options.position || position;
-                                this.addButton(item);
-                            });
-                        });
+                    var toolbar = config.application.layout.toolbar
+                    toolbar.forEach((tb) => {
+                        const position = tb.position || 'topleft'
+                        tb.items.forEach((item) => {
+                            item.options = item.options || {}
+                            item.options.position = item.options.position || position
+                            this.addButton(item)
+                        })
+                    })
                 }
             },
             addButton: function (item) {
                 if (GV.Buttons[item.name]) {
-                    var button = GV.Buttons[item.name](item.options, GV.map);
+                    var button = GV.Buttons[item.name](item.options, GV.map)
                     if (button) {
-                        button.name = item.name;
-                        button.addTo(GV.map);
+                        button.name = item.name
+                        button.addTo(GV.map)
                     }
                 } else {
-                    util.log('Bottone ' + item.name + ' non esistente');
+                    util.log('Bottone ' + item.name + ' non esistente')
                 }
             },
 
+
+
             addRlMap: function (idMap, callback) {
                 if (!idMap || idMap === 'null') {
-                    util.log('addRlMap: prametro idMap mancante', 2);
-                    return;
+                    util.log('addRlMap: prametro idMap mancante', 2)
+                    return
                 }
 
-                var url = `${globals.RL_MAP_CONFIG_SERVICE}${idMap}`;
+                var url = `${globals.RL_MAP_CONFIG_SERVICE}${idMap}`
                 if (config.geoserverUrl) {
-                    url += "?geoserverUrl=" + config.geoserverUrl;
+                    url += "?geoserverUrl=" + config.geoserverUrl
                 }
 
-                this.$http.get(url).then(function (response) {
+                this.$http.get(url, {headers: {'Accept': 'application/json'}}).then(function (response) {
                     if (!response.data.success) {
-                        util.log('Errore Caricamento Configurazione Mappa: ' + response.data.message, 2);
-                        return;
+                        util.log('Errore Caricamento Configurazione Mappa: ' + response.data.message, 2)
+                        return null
                     }
                     // Aggiorno array delle mappe
-                    config.addMapConfig(response.data.data);
-                    GV.app.addMap(response.data.data);
+                    config.addMapConfig(response.data.data)
+                    GV.app.addMap(response.data.data)
                     // Gestione callback
                     if (callback) {
-                        callback(GV.app);
+                        callback(GV.app)
                     }
                 }, function (error) {
-                    util.log(error, 2);
-                });
+                    util.log(error, 2)
+                })
             },
             addMap: function (mapConfig) {
                 // Imposto titolo
                 if (config.application.layout.title === '{map.title}') {
-                    config.title = mapConfig.name;
+                    config.title = mapConfig.name
                 }
                 // Aggiungo livelli alla mappa
-                GV.map.loadLayers(mapConfig.layers);
+                GV.map.loadLayers(mapConfig.layers)
                 //gestione extent
                 if (mapConfig.extent_3857) {
-                    GV.map.setInitialExtent(mapConfig.extent_3857);
+                    GV.map.setInitialExtent(mapConfig.extent_3857)
                 }
                 //TODO: gestione find
             }

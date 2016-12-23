@@ -7,7 +7,7 @@ GV.Buttons.print = function (btnOptions, map) {
     return null;
   }
 
-  var options = _.extend(btnOptions, {
+  var options = Object.assign(btnOptions, {
     leafletClasses: true,
     states: [{
       stateName: 'print',

@@ -37,8 +37,6 @@
     import * as config from '../config';
     import dynamicAddedComp from '../mixins/dynamicAddedComp';
 
-    var _ = require('underscore');
-
     export default {
         name: 'gv-legend',
         data: function () {
@@ -88,7 +86,7 @@
                         } else {
                             var classes = layer.classes;
                             html = '<table width=100% border=0>';
-                            _.each(classes, function (cls) {
+                            classes.forEach(function (cls) {
                                 html += '<tr>';
                                 html += '<td width=30><img src="' + cls.legendIcon + '"></td>';
                                 html += '<td >' + cls.legendLabel + '</td>';

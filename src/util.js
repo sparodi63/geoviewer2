@@ -1,6 +1,5 @@
 var interact = require('interact.js');
-var matchMedia = require('./polyfills/matchMedia.js');
-var _ = require('underscore');
+require('./polyfills/matchMedia.js');
 import * as config from './config';
 import globals from './globals';
 import Vue from 'vue';
@@ -8,6 +7,7 @@ import Vue from 'vue';
 // ----
 
 function msgBox (msg) {
+  // TODO usare modal
   window.alert(msg);
 }
 
@@ -41,9 +41,9 @@ function setDrag () {
 
   function dragMoveListener (event) {
     var target = event.target,
-        // keep the dragged position in the data-x/data-y attributes
-        x      = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-        y      = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+      // keep the dragged position in the data-x/data-y attributes
+      x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+      y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
     // translate the element
     target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
@@ -58,7 +58,7 @@ function setDrag () {
 }
 
 function log (message, level) {
-  var action = "log";
+  let action = "log";
 
   if (!config.debug) {
     //    return;
@@ -87,19 +87,19 @@ function getScaleFromZoom (zoom) {
   return globals.BASE_SCALES[zoom]
 }
 
+
 function getScaleLabelsFromZoom (zoom) {
   return globals.BASE_SCALE_LABELS[zoom]
 }
 
 function getZoomFromScaleDenom (scaleDenom) {
-  return _.findIndex(globals.BASE_SCALES, function (scale) {
+  return globals.BASE_SCALES.findIndex(function (scale) {
     return scaleDenom > scale;
   });
 }
 
 function getUrlParam (paramName) {
   var results = new RegExp("[\\?&]" + paramName + "=([^&#]*)").exec(window.location.href);
-  log("GV.util.getUrlParam");
   return results ? decodeURIComponent(results[1]) : null;
 }
 
@@ -112,17 +112,22 @@ function getUrlParamFromString (url, paramName) {
 }
 
 function isBrowserIE () {
-  return navigator.userAgent.indexOf("MSIE ") > 0 || navigator.userAgent.indexOf("Trident") > 0 || navigator.userAgent.indexOf("Edge") > 0;
+  return navigator.userAgent.indexOf("MSIE ")>0 || navigator.userAgent.indexOf("Trident")>0 || navigator.userAgent.indexOf("Edge")>0;
 }
 
 function getXML (options, callback) {
   //TODO gestire metodo POST
+  let {url, data} = options
+
+  Vue.http.get(url, {params: data, headers: {'Accept': 'text/plain'}}).then(done).catch(err);
+
+
 
   function done (response) {
     try {
-      var xml = response.body;
+      let xml = null;
       if (isBrowserIE()) {
-        var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+        let xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
         xmlDoc.async = "false";
         xmlDoc.loadXML(response.body);
         xml = xmlDoc;
@@ -132,15 +137,13 @@ function getXML (options, callback) {
       }
       callback(xml);
     } catch (exception) {
-      log(exception, 2);
+      console.error(exception);
     }
   }
 
   function err (error) {
-    log(error, 2);
+    console.error(error);
   }
-
-  Vue.http.get(options.url, {params: options.data, headers: {'Accept': 'text/plain'}}).then(done, err);
 
 }
 

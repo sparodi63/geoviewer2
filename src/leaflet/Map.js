@@ -1,5 +1,4 @@
-var L = require('leaflet'),
-    _ = require('underscore');
+var L = require('leaflet');
 
 import globals from '../globals';
 import * as config from '../config';
@@ -23,7 +22,7 @@ const Map = L.Map.extend({
   initialize: function () {
     "use strict";
 
-    _.extend(this.mapOptions, config.application.mapOptions);
+    Object.assign(this.mapOptions, config.application.mapOptions);
 
     L.Map.prototype.initialize.call(this, 'gv-map', L.extend(L.Map.prototype.options, this.mapOptions));
 
@@ -56,7 +55,7 @@ const Map = L.Map.extend({
     "use strict";
     this.on('zoom', function () {
       var layers = config.getAllLayersConfig();
-      _.each(layers, function (layer) {
+      layers.forEach(function (layer) {
         config.setLayerAttribute(layer.name, 'inRange', this.layerInRange(layer));
       }, this);
     });
@@ -86,7 +85,7 @@ const Map = L.Map.extend({
     if (this.mapOptions.controls) {
       var cntrl;
       this.controls = {};
-      _.each(this.mapOptions.controls, function (control) {
+      this.mapOptions.controls.forEach(function (control) {
         switch (control.name) {
           case 'scale':
             cntrl = L.control.scale({imperial: false}).addTo(this);
@@ -100,7 +99,7 @@ const Map = L.Map.extend({
   loadBaseLayers: function () {
     "use strict";
 
-    _.each(config.baseLayers, function (layerConfig) {
+    config.baseLayers.forEach(function (layerConfig) {
       var layer = layerFactory.create(layerConfig, this);
       this.baseLayers[layer.config.legend.label] = layer;
       if (layer && layerConfig.visible) {
@@ -117,7 +116,7 @@ const Map = L.Map.extend({
 
   loadLayers: function (layers) {
     "use strict";
-    _.each(layers, function (layerConfig) {
+    layers.forEach(function (layerConfig) {
       if (!this.getLayerByName(layerConfig.name)) {
         var layer = layerFactory.create(layerConfig, this);
         if (layer && layerConfig.visible) {

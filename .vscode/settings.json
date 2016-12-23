@@ -1,0 +1,8 @@
+// Inserire le impostazioni in questo file per sovrascrivere quelle utente e predefinite.
+{
+    "files.associations": {
+        "*.vue": "vue"
+    },
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+}

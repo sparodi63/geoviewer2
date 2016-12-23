@@ -1,7 +1,6 @@
 import GV from '../GV';
 import util from '../util';
-var L = require('leaflet'),
-    _ = require('underscore');
+var L = require('leaflet');
 require('../controls/Search');
 
 GV.Buttons.search = function (btnOptions, map) {
@@ -14,7 +13,7 @@ GV.Buttons.search = function (btnOptions, map) {
   // ATTENZIONE!!!!
   // RICORDARSI DI INCLUDERE STILE PER CONTROL IN CSS
   var layers = [];
-  _.each(btnOptions.layers, function (layerName) {
+  btnOptions.layers.forEach(function (layerName) {
     var layer = map.getLayerByName(layerName);
     if (layer) {
       layers.push(layer);

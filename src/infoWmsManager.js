@@ -1,5 +1,3 @@
-var _ = require('underscore');
-
 import util from './util';
 import GV from './GV';
 import globals from './globals';
@@ -8,8 +6,8 @@ import Vue from 'vue';
 import dynamicAddedComp from './mixins/dynamicAddedComp';
 
 var _requestCount = 0,
-    _numRequests  = 0,
-    _features     = []
+  _numRequests = 0,
+  _features = []
 
 function _request (e) {
   util.log('start info request: ' + new Date());
@@ -19,11 +17,11 @@ function _request (e) {
   _features = [];
 
   var buildWMSOptions = function (url, layers, latlng) {
-    var point  = GV.map.latLngToContainerPoint(latlng, GV.map.getZoom()),
-        size   = GV.map.getSize(),
-        bounds = GV.map.getBounds(),
-        sw     = GV.map.options.crs.project(bounds.getSouthWest()),
-        ne     = GV.map.options.crs.project(bounds.getNorthEast());
+    var point = GV.map.latLngToContainerPoint(latlng, GV.map.getZoom()),
+      size = GV.map.getSize(),
+      bounds = GV.map.getBounds(),
+      sw = GV.map.options.crs.project(bounds.getSouthWest()),
+      ne = GV.map.options.crs.project(bounds.getNorthEast());
 
     var params = {
       request: 'GetFeatureInfo',
@@ -42,7 +40,7 @@ function _request (e) {
       info_format: 'application/json'
     };
 
-    _.extend(params, {});
+    Object.assign(params, {});
     params[params.version === '1.3.0' ? 'i' : 'x'] = point.x;
     params[params.version === '1.3.0' ? 'j' : 'y'] = point.y;
 
@@ -51,12 +49,12 @@ function _request (e) {
   };
 
   // Ciclo sulle mappe caricate
-  _.each(config.maps, function (mapConfig) {
-    var url         = null,
-        layersArray = [];
+  config.maps.forEach(function (mapConfig) {
+    var url = null,
+      layersArray = [];
 
     // Ciclo sui layer caricati sulla mappa leaflet
-    _.each(mapConfig.layers, function (layerConfig) {
+    mapConfig.layers.forEach(function (layerConfig) {
       if (layerConfig.idMap === mapConfig.id && layerConfig.type === 'WMS' && layerConfig.queryable && layerConfig.visible && GV.map.layerInRange(layerConfig)) {
         url = layerConfig.wmsParams.url;
         layersArray.push(layerConfig.wmsParams.name);
@@ -65,7 +63,7 @@ function _request (e) {
 
     var layers = layersArray.join(',');
 
-    if (url && layersArray.length > 0) {
+    if (url && layersArray.length>0) {
       var wmsUrl = buildWMSOptions(url, layers, e.latlng);
       _numRequests++;
       GV.map._container.style.cursor = "progress";
@@ -81,13 +79,12 @@ function _request (e) {
 
 function _handleResponse (features) {
   _requestCount++;
-  _.each(features, function (feature) {
+  features.forEach(function (feature) {
     var layerName = feature.id.split('.')[0];
     feature.layerName = layerName;
     feature.layer = GV.map.getLayerByName(layerName);
     feature.label = setFeatureLabel(layerName, feature.properties);
     feature.infoOptions = feature.layer.config.infoOptions;
-
   });
   Array.prototype.push.apply(_features, features);
   if (_requestCount === _numRequests) {
@@ -119,7 +116,7 @@ function _handleResponse (features) {
 
   function setFeatureLabel (layerName, attributes) {
     var infoLabelAttr,
-        infoIdAttr;
+      infoIdAttr;
     infoLabelAttr = getField(layerName, "infoLabelAttr");
     infoIdAttr = getField(layerName, "infoIdAttr");
     if (infoLabelAttr && attributes[infoLabelAttr]) {
@@ -132,15 +129,10 @@ function _handleResponse (features) {
   }
 
   function getField (layerName, fieldName) {
-    try {
-      var layerConfig = GV.map.getLayerByName(layerName).config;
-      if (layerConfig && layerConfig.infoOptions && layerConfig.infoOptions[fieldName]) {
-        return layerConfig.infoOptions[fieldName];
-      } else {
-        return null;
-      }
-    } catch (exception) {
-      util.log(exception, 2);
+    var layerConfig = GV.map.getLayerByName(layerName).config;
+    if (layerConfig && layerConfig.infoOptions && layerConfig.infoOptions[fieldName]) {
+      return layerConfig.infoOptions[fieldName];
+    } else {
       return null;
     }
   }
@@ -159,7 +151,7 @@ function _handleResponse (features) {
 function _showFeatureInfo (feature) {
 
   var infoOptions = feature.infoOptions,
-      infoUrl     = infoOptions.infoUrl;
+    infoUrl = infoOptions.infoUrl;
 
   if ((infoUrl.substr(infoUrl.length - 4) === ".xsl") || (infoUrl.substr(infoUrl.length - 5) === ".xslt")) {
     // Gestione xsl
@@ -175,12 +167,13 @@ function _showFeatureInfo (feature) {
 
   function buildAndShowHtml (infoOptions, data) {
     // costruisco il gml in formato getFeatureInfo Mapserver
-    var xmlDoc = buildGml(data);
+    let xmlDoc = buildGml(data);
+    let {infoUrl, infoTarget} = infoOptions
 
     var options = {
       url: "/geoservices/REST/config/xsl_info_service?",
       data: {
-        xslUrl: infoOptions.infoUrl,
+        xslUrl: infoUrl,
         ambiente: null,
         idLayer: data.layerName.replace("L", ""),
         featureAttributes: data.properties
@@ -201,7 +194,7 @@ function _showFeatureInfo (feature) {
       // levo i caratteri di encoding %0A e %09 dai link
       // result = result.replace(new RegExp('%0A', 'g'), '').replace(new RegExp('%09', 'g'), '').replace(new RegExp('%20', 'g'), '');
       // visualizzo il risultato
-      if (!infoOptions.infoTarget || infoOptions.infoTarget === "panel") {
+      if (!infoTarget || infoTarget === "panel") {
         showPanel(result, null, infoOptions);
       } else {
         openPopup(result, null, infoOptions);
@@ -211,13 +204,13 @@ function _showFeatureInfo (feature) {
     // costruisce un documento GML in formato getFeatureInfo Mapserver
     function buildGml (feature) {
       try {
-        var baseXml     = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><msGMLOutput xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"></msGMLOutput>",
-            xmlDoc      = util.parseXML(baseXml),
-            layerName   = feature.layerName + "_layer",
-            layerNode   = xmlDoc.createElement(layerName),
-            featureName = feature.layerName + "_feature",
-            featureNode = xmlDoc.createElement(featureName),
-            attributes  = feature.properties;
+        var baseXml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><msGMLOutput xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"></msGMLOutput>",
+          xmlDoc = util.parseXML(baseXml),
+          layerName = feature.layerName + "_layer",
+          layerNode = xmlDoc.createElement(layerName),
+          featureName = feature.layerName + "_feature",
+          featureNode = xmlDoc.createElement(featureName),
+          attributes = feature.properties;
 
         for (var key in attributes) {
           if (attributes.hasOwnProperty(key)) {
@@ -258,8 +251,8 @@ function _showFeatureInfo (feature) {
   }
 
   function createHtmlPanel (html, configOptions) {
-    var width  = configOptions.infoWidth || 400,
-        height = configOptions.infoHeight || 300;
+    var width = configOptions.infoWidth || 400,
+      height = configOptions.infoHeight || 300;
 
     var vm = new Vue({
       template: '<gv-iframe-panel v-draggable visible="true" :src="src" :html="html" :height="height" :width="width" :cls="cls" :title="title"></gv-iframe-panel>',
@@ -292,9 +285,9 @@ function _showFeatureInfo (feature) {
   }
 
   function openPopup (html, url, options) {
-    var width  = options.infoWidth || 400,
-        height = options.infoHeight || 500,
-        popup  = window.open(url, '', "status=yes, toolbar=yes, menubar=no, width=" + width + ", height=" + height + ", resizable=yes, scrollbars=yes");
+    var width = options.infoWidth || 400,
+      height = options.infoHeight || 500,
+      popup = window.open(url, '', "status=yes, toolbar=yes, menubar=no, width=" + width + ", height=" + height + ", resizable=yes, scrollbars=yes");
 
     popup.document.open();
     popup.document.write(html);

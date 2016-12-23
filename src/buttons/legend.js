@@ -1,8 +1,7 @@
 import GV from '../GV';
 import util from '../util';
 import * as config from '../config';
-var L = require('leaflet'),
-    _ = require('underscore');
+var L = require('leaflet');
 require('../controls/EasyButton');
 
 GV.Buttons.legend = function (btnOptions, map) {
@@ -13,7 +12,7 @@ GV.Buttons.legend = function (btnOptions, map) {
     config.setButtonOption("legend", "show", false);
   }
 
-  var options = _.extend(btnOptions, {
+  var options = Object.assign(btnOptions, {
     leafletClasses: true,
     states: [{
       stateName: 'legend',
