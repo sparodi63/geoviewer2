@@ -1,14 +1,11 @@
 // -------------------------------------------------------------------------------- //
-// Bootstrap components integration (JQuery needed)
-// window.$ = window.jQuery = require('jquery')
-// require('bootstrap-sass')
 // CSS
 require('style!../node_modules/leaflet/dist/leaflet.css')
 require('style!./assets/css/base.css')
 require('style!./assets/css/mapskin/css/mapskin.css')
 require('style!font-awesome/css/font-awesome.css')
 // -------------------------------------------------------------------------------- //
-// Definizione Libreria GV
+// Definizione globale oggetto GV
 import GV from './GV'
 window.GV = GV
 // -------------------------------------------------------------------------------- //
@@ -22,7 +19,7 @@ require('./buttons/search')
 // Direttive
 require('./directives/draggable')
 // -------------------------------------------------------------------------------- //
-// Registrazione Componenti Generici
+// Registrazione Componenti Generici Vue
 import Vue from 'vue'
 import * as App from './components/App'
 Vue.component('gv-app', App)

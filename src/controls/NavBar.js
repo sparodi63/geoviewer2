@@ -1,4 +1,4 @@
-(function () {
+;(function () {
   L.Control.NavBar = L.Control.extend({
     options: {
       position: 'topleft',

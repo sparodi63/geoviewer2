@@ -1,0 +1,81 @@
+{
+  "type": "FeatureCollection",
+  "totalFeatures": 3,
+  "features": [
+    {
+      "type": "Feature",
+      "id": "V_SCUOLE_2014_COMPL.fid-463246a7_159819e6ac1_-620",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.894812698276548,
+          44.43832970624121
+        ]
+      },
+      "geometry_name": "GEOMETRY",
+      "properties": {
+        "COD_MECC": "GE1M03100V",
+        "DENOMINAZIONE": "I.P. \"SANTA DOROTEA\"",
+        "INDIRIZZO": "VIA PIERINO NEGROTTO CAMBIASO, 7",
+        "CAP": "16100",
+        "COMUNE": "Genova",
+        "DESCR_TIPO": "Istituti Paritari",
+        "TIPO": "06",
+        "PROV": "GENOVA",
+        "SITOWEB": "http://www.istsantadorotea.it/"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "V_SCUOLE_2014_COMPL.fid-463246a7_159819e6ac1_-61f",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.873838752447694,
+          44.418023769980884
+        ]
+      },
+      "geometry_name": "GEOMETRY",
+      "properties": {
+        "COD_MECC": "GEPS07500L",
+        "DENOMINAZIONE": "I.P. \"CALASANZIO\"",
+        "INDIRIZZO": "VIA CERVETTO, 40",
+        "CAP": "16100",
+        "COMUNE": "Genova",
+        "DESCR_TIPO": "Istituti Paritari",
+        "TIPO": "06",
+        "PROV": "GENOVA",
+        "SITOWEB": "http://www.calasanziogenova.it/"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "V_SCUOLE_2014_COMPL.fid-463246a7_159819e6ac1_-61e",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.97491585931346,
+          44.39535513284719
+        ]
+      },
+      "geometry_name": "GEOMETRY",
+      "properties": {
+        "COD_MECC": "GEPS09500T",
+        "DENOMINAZIONE": "I.P. \"CHAMPAGNAT\"",
+        "INDIRIZZO": "VIA CAPRERA,1a",
+        "CAP": "16146",
+        "COMUNE": "Genova",
+        "DESCR_TIPO": "Istituti Paritari",
+        "TIPO": "06",
+        "PROV": "GENOVA",
+        "SITOWEB": "http://www.maristi.it/champagnat/"
+      }
+    }
+  ],
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:EPSG::4326"
+    }
+  }
+}

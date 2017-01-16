@@ -1,18 +1,18 @@
-import util from './util'
 import GV from './GV'
-// import globals from './globals'
 import * as config from './config'
 import Vue from 'vue'
-import dynamicAddedComp from './mixins/dynamicAddedComp'
-var L = require('leaflet')
+import createElement from './util/createElement'
+import L from 'leaflet'
+import parseXML from './util/parseXML'
+import getXML from './util/getXML'
+import getParamString from './util/getParamString'
 
 var _requestCount = 0
 var _numRequests = 0
 var _features = []
 
 function _request (e) {
-  util.log('start info request: ' + new Date())
-
+  if (GV.config.debug) console.log('start info request: ' + new Date())
   _requestCount = 0
   _numRequests = 0
   _features = []
@@ -28,24 +28,21 @@ function _request (e) {
       service: 'WMS',
       crs: 'EPSG:3857',
       styles: '',
-      version: '1.1.0',
+      version: '1.3.0',
       format: 'application/json',
-      bbox: sw.x + ',' + sw.y + ',' + ne.x + ',' + ne.y,
+      bbox: `${sw.x},${sw.y},${ne.x},${ne.y}`,
       height: size.y,
       width: size.x,
       layers: layers,
       query_layers: layers,
       FEATURE_COUNT: 100,
       buffer: 10,
-      info_format: 'application/json'
+      info_format: 'application/json',
+      i: point.x,
+      j: point.y
     }
 
-    Object.assign(params, {})
-    params[params.version === '1.3.0' ? 'i' : 'x'] = point.x
-    params[params.version === '1.3.0' ? 'j' : 'y'] = point.y
-
-    // return config.application.proxy + url + util.getParamString(params, url, true)
-    return url + util.getParamString(params, url, true)
+    return url + getParamString(params, url, true)
   }
 
   // Ciclo sulle mappe caricate
@@ -67,11 +64,9 @@ function _request (e) {
       var wmsUrl = buildWMSOptions(url, layers, e.latlng)
       _numRequests++
       GV.map._container.style.cursor = 'progress'
-      Vue.http.get(wmsUrl).then(function (response) {
-        _handleResponse(response.data.features)
-      }, function (error) {
-        util.log(error, 2)
-      })
+      Vue.http.get(wmsUrl)
+        .then(response => _handleResponse(response.data.features))
+        .catch(error => console.error(error))
     }
   })
 }
@@ -90,27 +85,26 @@ function _handleResponse (features) {
     GV.map._container.style.cursor = 'default'
 
     if (_features.length === 0) {
-      util.log('Nessun elemento trovata')
+      if (GV.config.debug) console.log('Nessun elemento trovato')
       return
     }
 
-    // TODO se esiste cancellare e ricreare
-    // mettere parametro clear se true gestire remove in dynamicAddeddComp
-    var vm = new Vue({
-      template: '<gv-wms-info-list v-draggable :cls="cls" visible="true" :items="items"></gv-wms-info-list>',
+    const el = createElement('div', 'gv-wms-info-list', 'gv-container', true)
+    const vm = new Vue({
+      template: `<gv-wms-info-list id="${el.id}" v-draggable :cls="cls" visible="true" :items="items"></gv-wms-info-list>`,
       data: {
         items: _features,
         cls: 'gv-info-wms gv-inverted-color-scheme',
-        divId: 'gv-wms-info-list'
-      },
-      mixins: [dynamicAddedComp]
+        clear: true
+      }
     })
+    vm.$mount(el)
 
     if (_features.length === 1) {
       _showFeatureInfo(_features[0])
     }
 
-    util.log('end info request: ' + new Date())
+    if (GV.config.debug) console.log('end info request: ' + new Date())
   }
 
   function setFeatureLabel (layerName, attributes) {
@@ -129,11 +123,7 @@ function _handleResponse (features) {
 
   function getField (layerName, fieldName) {
     var layerConfig = GV.map.getLayerByName(layerName).config
-    if (layerConfig && layerConfig.infoOptions && layerConfig.infoOptions[fieldName]) {
-      return layerConfig.infoOptions[fieldName]
-    } else {
-      return null
-    }
+    return (layerConfig && layerConfig.infoOptions && layerConfig.infoOptions[fieldName]) ? layerConfig.infoOptions[fieldName]: null
   }
 
   function getFirstAttribute (attributes) {
@@ -177,7 +167,7 @@ function _showFeatureInfo (feature) {
       }
     }
 
-    util.getXML(options, function (xslDoc) {
+    getXML(options, function (xslDoc) {
       // Aggiungo Nome Layer
       Array.prototype.slice.call(xslDoc.getElementsByTagName('td')).forEach(function (value, index, ar) {
         if (value.id === 'Titolo') {
@@ -202,10 +192,10 @@ function _showFeatureInfo (feature) {
     function buildGml (feature) {
       try {
         var baseXml = '<?xml version="1.0" encoding="ISO-8859-1"?><msGMLOutput xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></msGMLOutput>'
-        var xmlDoc = util.parseXML(baseXml)
-        var layerName = feature.layerName + '_layer'
+        var xmlDoc = parseXML(baseXml)
+        var layerName = `${feature.layerName}_layer`
         var layerNode = xmlDoc.createElement(layerName)
-        var featureName = feature.layerName + '_feature'
+        var featureName = `${feature.layerName}_feature`
         var featureNode = xmlDoc.createElement(featureName)
         var attributes = feature.properties
 
@@ -226,7 +216,7 @@ function _showFeatureInfo (feature) {
         xmlDoc.documentElement.appendChild(layerNode)
         return xmlDoc
       } catch (exception) {
-        util.log(exception, 2)
+        console.error(exception)
       }
     }
 
@@ -242,7 +232,7 @@ function _showFeatureInfo (feature) {
           return xmlDoc.transformNode(xslDoc)
         }
       } catch (exception) {
-        util.log(exception, 2)
+        console.error(exception)
       }
     }
   }
@@ -251,7 +241,8 @@ function _showFeatureInfo (feature) {
     var width = configOptions.infoWidth || 400
     var height = configOptions.infoHeight || 300
 
-    var vm = new Vue({
+    const el = createElement('div', 'info', 'gv-container')
+    const vm = new Vue({
       template: '<gv-iframe-panel v-draggable visible="true" :src="src" :html="html" :height="height" :width="width" :cls="cls" :title="title"></gv-iframe-panel>',
       data: {
         title: 'Risultato Info',
@@ -260,9 +251,9 @@ function _showFeatureInfo (feature) {
         width: width,
         height: height,
         cls: 'gv-info-wms-html'
-      },
-      mixins: [dynamicAddedComp]
+      }
     })
+    vm.$mount(el)
   }
 
   // apre una panel div con un documento html
@@ -302,13 +293,13 @@ function _showFeatureInfo (feature) {
       GV.map._container.style.cursor = 'default'
     }
   }, function (error) {
-    util.log(error, 2)
+    console.error(error)
   })
 }
 
 function _buildWFSUrl (attr) {
-  var wsName = 'M' + attr.layer.config.idMap
-  var baseUrl = attr.layer.config.wfsParams.url.replace('/' + wsName, '')
+  var wsName = `M${attr.layer.config.idMap}`
+  var baseUrl = attr.layer.config.wfsParams.url.replace('/'+wsName, '')
   var idAttr = attr.layer.config.infoOptions.infoIdAttr
   // var url = globals.DEFAULT_PROXY
   var url = baseUrl + 'service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson'
@@ -319,7 +310,7 @@ function _buildWFSUrl (attr) {
 
 export default {
   activate: function () {
-    util.log('GV.app.infoWmsManager.activate')
+    if (GV.config.debug) console.log('GV.app.infoWmsManager.activate')
     // Aggiungo layer per evidenziazione
     GV.map.loadLayers([{
       name: 'InfoWmsHilite',

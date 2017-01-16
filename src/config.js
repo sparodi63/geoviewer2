@@ -1,32 +1,31 @@
 import globals from './globals'
-import util from './util'
 import GV from './GV'
-var _lastZIndex = 21
-var debug = false
-var idMap = null
-var title = null
-var geoserverUrl
-var application = {}
-var baseLayers = [
+
+let _lastZIndex = 21
+let debug = false
+let idMap = null
+let title = null
+let geoserverUrl
+let application = {}
+let baseLayers = [
   { 'type': 'ESRI_IMAGERY', visible: true }
 ]
-var maps = []
+let maps = []
 
 function set (options) {
   if (!options) {
-    debug = true
-    util.log('Opzioni di inizializzazione non impostate!', 1)
-    return null
+    throw new Error('Opzioni di inizializzazione non impostate!')
   }
+
   debug = options.debug
   idMap = options.idMap
   geoserverUrl = options.geoserverUrl
   if (options.application) {
     application = options.application
   }
-  if (options.application && options.application.layout) {
-    application.layout = options.application.layout || {}
-  }
+
+  application.layout = (options.application && options.application.layout) ? options.application.layout : {}
+
   if (options.application) {
     application.proxy = options.application.proxy || globals.DEFAULT_PROXY
   }
@@ -47,22 +46,16 @@ function set (options) {
 
 function addMapConfig (mapConfig) {
   mapConfig.layers.forEach(function (layer) {
-    if (layer.minScale === 0) {
-      layer.minScale = 591657550
-    }
+    layer.minScale = (layer.minScale === 0) ? 591657550 : layer.minScale
+    layer.inRange = (GV.map) ? GV.map.layerInRange(layer) : true
     layer.zIndex = _lastZIndex++
-      if (GV.map) {
-        layer.inRange = GV.map.layerInRange(layer)
-      } else {
-        layer.inRange = true
-      }
   })
   mapConfig.layers.reverse()
   maps.unshift(mapConfig)
 }
 
 function getAllLayersConfig () {
-  var layers = []
+  let layers = []
   maps.forEach(function (map) {
     map.layers.forEach(function (layer) {
       layers.push(layer)
@@ -73,7 +66,7 @@ function getAllLayersConfig () {
 
 function setLayerAttribute (layerName, attribute, value) {
   maps.forEach(function (map) {
-    var layers = map.layers
+    let layers = map.layers
     layers.forEach(function (layer) {
       if (layer.name === layerName) {
         layer[attribute] = value
@@ -83,9 +76,9 @@ function setLayerAttribute (layerName, attribute, value) {
 }
 
 function getLayerConfig (layerName) {
-  var foundLayer = null
+  let foundLayer = null
   maps.forEach(function (map) {
-    var layers = map.layers
+    let layers = map.layers
     foundLayer = layers.find(function (layer) {
       return layer.name === layerName
     })
@@ -96,8 +89,8 @@ function getLayerConfig (layerName) {
 }
 
 function getButton (buttonName) {
-  var button = null
-  if (!application.layout) {
+  let button = null
+  if (!application.layout || !application.layout.toolbar) {
     return null
   }
   application.layout.toolbar.forEach(function (tb) {
@@ -111,8 +104,8 @@ function getButton (buttonName) {
 }
 
 function getButtonOption (buttonName, optionName) {
-  var option = null
-  if (!application.layout) {
+  let option = null
+  if (!application.layout || !application.layout.toolbar) {
     return null
   }
   application.layout.toolbar.forEach(function (tb) {
@@ -126,7 +119,7 @@ function getButtonOption (buttonName, optionName) {
 }
 
 function setButtonOption (buttonName, optionName, value) {
-  var option = null
+  let option = null
   if (!application.layout) {
     return null
   }
@@ -139,6 +132,7 @@ function setButtonOption (buttonName, optionName, value) {
   }, this)
   return option
 }
+
 export {
   debug,
   idMap,

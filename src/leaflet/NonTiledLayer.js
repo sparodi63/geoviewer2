@@ -1,6 +1,4 @@
-/*
- * L.NonTiledLayer is an addon for leaflet which renders dynamic image overlays
- */
+
 L.NonTiledLayer = L.Layer.extend({
   includes: L.Mixin.Events,
   options: {

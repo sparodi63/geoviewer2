@@ -1,5 +1,5 @@
-require('../../../src/_base');
-import GV from '../../../src/GV';
+require('../../../src/_base')
+import GV from '../../../src/GV'
 
-require('./mappa');
-require('./mappa.css');
+require('./mappa')
+require('./mappa.css')

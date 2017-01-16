@@ -1,5 +1,4 @@
 import GV from '../GV'
-import util from '../util'
 var L = require('leaflet')
 require('../controls/Search')
 
@@ -20,8 +19,7 @@ GV.Buttons.search = function (btnOptions, map) {
     }
   })
   if (layers.length === 0) {
-    util.log('bottone search: layer non trovato.', 2)
-    return
+    throw new Error('bottone search: layer non trovato.')
   }
   btnOptions.layer = L.layerGroup(layers)
 

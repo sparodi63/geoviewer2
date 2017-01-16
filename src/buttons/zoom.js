@@ -1,10 +1,10 @@
 import GV from '../GV'
-import util from '../util'
-var L = require('leaflet')
+import isTouch from '../util/isTouch'
+import L from 'leaflet'
 
 GV.Buttons.zoom = function (btnOptions, map) {
   'use strict'
-  if (util.isTouch()) {
+  if (isTouch()) {
     return null
   }
 

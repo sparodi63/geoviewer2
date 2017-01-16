@@ -54,7 +54,7 @@ GV.init({
                     esParams: {
                         url: 'http://bv8prod1.datasiel.net:9200/repcarto_pub/toponimo/_search',
                         field: 'toponimo',
-                        query: (decodeURIComponent(GV.util.getUrlParam('q')) === "null") ? "*" : "*" + decodeURIComponent(GV.util.getUrlParam('q')) + "*"
+                        query: (decodeURIComponent(GV.getUrlParam('q')) === "null") ? "*" : "*" + decodeURIComponent(GV.getUrlParam('q')) + "*"
                     },
                     legend: {
                         label: 'Toponimi'

@@ -1,8 +1,11 @@
+import GV from '../GV'
+var L = require('leaflet')
+
 GV.Buttons.baselayers = function (btnOptions, map) {
-  "use strict";
+  'use strict'
 
   if (GV.globals.SMALL_SCREEN) {
-    return null;
+    return null
   }
-  return L.control.baseLayersSwitcher(map.baseLayers, [], {position: btnOptions.position}).addTo(map);
-};
+  return L.control.baseLayersSwitcher(map.baseLayers, [], {position: btnOptions.position}).addTo(map)
+}

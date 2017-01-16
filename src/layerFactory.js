@@ -5,9 +5,47 @@ require('./leaflet/NonTiledLayer.js')
 import Vue from 'vue'
 import globals from './globals'
 import * as config from './config'
-import util from './util'
+import GV from './GV'
+import template from './util/template'
+import getParamString from './util/getParamString'
+import getZoomFromScaleDenom from './util/getZoomFromScaleDenom'
 
 var esriLink = '<a href="http://www.esri.com/">Esri</a>'
+
+
+// Funzione di costruzione geoJson
+function buildGeoJson (data, esParams) {
+  'use strict'
+  let geoJson
+  if (esParams) {
+    var geomField = esParams.geomField || 'location'
+    var features = data.hits.hits
+    geoJson = {
+      'type': 'FeatureCollection',
+      'totalFeatures': data.hits.total,
+      'features': [],
+      'crs': {
+        'type': 'name',
+        'properties': {
+          'name': 'urn:ogc:def:crs:EPSG::4326'
+        }
+      }
+    }
+    features.forEach(function (feature) {
+      var coords = feature._source[geomField]
+      geoJson.features.push({
+        'type': 'Feature',
+        'id': feature._id,
+        'geometry': {'type': 'Point', 'coordinates': coords},
+        'geometry_name': 'GEOMETRY',
+        'properties': feature._source
+      })
+    })
+  } else {
+    geoJson = (typeof data === 'string') ? JSON.parse(data): data
+  }
+  return geoJson
+}
 
 var layerFactory = {
 
@@ -148,7 +186,7 @@ var layerFactory = {
     var attr = 'DigitalGlobe, GeoEye, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community'
     return L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '&copy; ' + esriLink + ', ' + attr,
+        attribution: `&copy; ${esriLink}, ${attr}`,
         maxZoom: 19 //, pane: layerConfig.name
       }
     )
@@ -160,7 +198,7 @@ var layerFactory = {
     var attr = 'USGS, NOAA'
     return L.tileLayer(
       'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '&copy; ' + esriLink + ', ' + attr,
+        attribution: `&copy; ${esriLink}, ${attr}`,
         maxZoom: 19 //, pane: layerConfig.name
       }
     )
@@ -172,7 +210,7 @@ var layerFactory = {
     var attr = 'USGS, NOAA'
     return L.tileLayer(
       'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '&copy; ' + esriLink + ', ' + attr,
+        attribution: `&copy; ${esriLink}, ${attr}`,
         maxZoom: 19 //, pane: layerConfig.name
       }
     )
@@ -184,7 +222,7 @@ var layerFactory = {
     var attr = 'HERE, DeLorme, MapmyIndia, OpenStreetMap contributors'
     return L.tileLayer(
       'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '&copy; ' + esriLink + ', ' + attr,
+        attribution: `&copy; ${esriLink}, ${attr}`,
         maxZoom: 16 //, pane: layerConfig.name
       }
     )
@@ -196,19 +234,20 @@ var layerFactory = {
     var attr = 'HERE, DeLorme, MapmyIndia, OpenStreetMap contributors'
     return L.tileLayer(
       'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '&copy; ' + esriLink + ', ' + attr,
+        attribution: `&copy; ${esriLink}, ${attr}`,
         maxZoom: 16 //, pane: layerConfig.name
       }
     )
   },
 
   WMS (layerConfig) {
-    let { name, geomType, cacheMinZoomLevel, minScale, maxScale, wmsParams, flagGeoserver, zIndex } = layerConfig
-    util.log('layerFactory - Creazione Layer WMS: ' + name)
+    let {name, geomType, cacheMinZoomLevel, minScale, maxScale, wmsParams, flagGeoserver, zIndex} = layerConfig
+    if (GV.config.debug) console.log('layerFactory - Creazione Layer WMS: ' + name)
 
+    let isCached = (cacheMinZoomLevel) ? true : false
     let format = (geomType === 'VECTOR') ? 'image/png8' : (cacheMinZoomLevel) ? 'image/jpeg' : 'image/png'
-    let minZoom = (minScale) ? util.getZoomFromScaleDenom(minScale) : 8
-    let maxZoom = (maxScale) ? util.getZoomFromScaleDenom(maxScale) : 20
+    let minZoom = (minScale) ? getZoomFromScaleDenom(minScale) : 8
+    let maxZoom = (maxScale) ? getZoomFromScaleDenom(maxScale) : 20
     let url = wmsParams.url
     let opacity = layerConfig.opacity || 1
 
@@ -230,7 +269,7 @@ var layerFactory = {
     }
 
     let layer = null
-    if (cacheMinZoomLevel) {
+    if (isCached) {
       Object.assign(options, {
         'tiled': true,
         'TILESORIGIN': '-20037508,-20037508',
@@ -344,10 +383,10 @@ var layerFactory = {
     if (tooltip || popup) {
       options.onEachFeature = function (feature, layer) {
         if (tooltip) {
-          layer.options.title = util.template(tooltip, feature.properties)
+          layer.options.title = template(tooltip, feature.properties)
         }
         if (popup) {
-          layer.bindPopup(util.template(popup, feature.properties))
+          layer.bindPopup(template(popup, feature.properties))
         }
       }
     }
@@ -387,7 +426,7 @@ var layerFactory = {
         format_options: 'callback: getJson',
         typeName: wfsParams.typeName
       }
-      url = wfsParams.url + util.getParamString(parameters)
+      url = wfsParams.url + getParamString(parameters)
     }
 
     // Gestione livelli puntuali su ElasticSearch
@@ -409,46 +448,7 @@ var layerFactory = {
       parameters.size = 100000
       // TODO parametro bbox. https://www.elastic.co/guide/en/elasticsearch/reference/1.4/query-dsl-geo-bounding-box-filter.html
 
-      url = config.application.proxy + esParams.url + util.getParamString(parameters)
-    }
-
-    if (url) {
-      // TODO gestione jsonp https://github.com/pagekit/vue-resource/issues/35
-      Vue.http.jsonp(url).then(function (response) {
-        var data = response.data
-        var geoJson = data
-        if (esParams) {
-          var geomField = esParams.geomField || 'location'
-          var features = data.hits.hits
-          geoJson = {
-            'type': 'FeatureCollection',
-            'totalFeatures': data.hits.total,
-            'features': [],
-            'crs': {
-              'type': 'name',
-              'properties': {
-                'name': 'urn:ogc:def:crs:EPSG::4326'
-              }
-            }
-          }
-          features.forEach(function (feature) {
-            var coords = feature._source[geomField]
-            geoJson.features.push({
-              'type': 'Feature',
-              'id': feature._id,
-              'geometry': {'type': 'Point', 'coordinates': coords},
-              'geometry_name': 'GEOMETRY',
-              'properties': feature._source
-            })
-          })
-        }
-        layer.addData(geoJson)
-        if (cluster) {
-          clusterLayer.addLayer(layer)
-        }
-      }, function (error) {
-        util.log(error, 2)
-      })
+      url = config.application.proxy + esParams.url + getParamString(parameters)
     }
 
     if (cluster) {
@@ -457,10 +457,26 @@ var layerFactory = {
         Object.assign(clusterOptions, cluster.options)
       }
       clusterLayer = L.markerClusterGroup(clusterOptions)
-      return clusterLayer
     }
 
-    return layer
+    if (url) {
+      Vue.http.get(url, {headers: {'Accept': 'application/json'}}).then(response => {
+        var geoJson = buildGeoJson(response.data, esParams)
+        layer.addData(geoJson)
+        if (cluster) {
+          clusterLayer.addLayer(layer)
+        }
+      }).catch(error => console.error(error))
+    }
+
+    if (data) {
+      if (cluster) {
+        clusterLayer.addLayer(layer)
+      }
+    }
+
+    return (cluster) ? clusterLayer : layer
+
   }
 }
 
@@ -471,8 +487,7 @@ function create (layerConfig, map) {
     layer.config = layerConfig
     return layer
   } else {
-    util.log('Layer di tipo ' + layerConfig.type + ' non gestito', 2)
-    return null
+    throw new Error(`Layer di tipo ${layerConfig.type} non gestito`)
   }
 }
 

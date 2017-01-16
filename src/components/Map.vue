@@ -5,17 +5,18 @@
 
 <script>
     import Vue from 'vue'
-    import util from '../util'
     import Map from '../leaflet/Map.js'
     import GV from '../GV'
 
     export default {
         name: 'gv-map',
         mounted () {
-            util.log('gv-map: mounted')
+            if (GV.config.debug) console.log('gv-map: mounted')
             GV.map = new Map()
         }
     }
+
+
 </script>
 
 <style scoped>

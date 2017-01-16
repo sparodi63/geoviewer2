@@ -1,7 +1,4 @@
-/**
- * Created by parodi on 28/10/2016.
- */
-(function (ca) {
+;(function (ca) {
   function S (b, a) {
     var c = b.x - a.x, d = b.y - a.y;
     return c * c + d * d

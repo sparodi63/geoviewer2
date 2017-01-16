@@ -1,11 +1,10 @@
 var L = require('leaflet')
-require('./polyfills/matchMedia.js')
 
 var globals = {
   DEFAULT_PROXY: '/geoservices/proxy/proxy.jsp?url=',
 
-  RL_MAP_CONFIG_SERVICE: 'http://geoportale.regione.liguria.it/geoservices/REST/config/map/',
-  RL_CREATE_SLD_SERVICE: 'http://geoportale.regione.liguria.it/geoservices/REST/config/create_sld/',
+  RL_MAP_CONFIG_SERVICE: 'geoportale.regione.liguria.it/geoservices/REST/config/map/',
+  RL_CREATE_SLD_SERVICE: 'geoportale.regione.liguria.it/geoservices/REST/config/create_sld/',
 
   RL_METADATA_URL: '/geoservices/REST/metadata/scheda_xml/',
 

@@ -1,4 +1,4 @@
-(function (factory) {
+;(function (factory) {
   if (typeof define === 'function' && define.amd) {
     //AMD
     define(['leaflet'], factory);
@@ -652,9 +652,9 @@
           this.collapse();
           break;
         case 13://Enter
-            if (this._countertips == 1 || (this.options.firstTipSubmit && this._countertips > 0)) {
-                this._handleArrowSelect(1);
-            }
+          // if (this._countertips == 1 || (this.options.firstTipSubmit && this._countertips > 0)) {
+          //     this._handleArrowSelect(1);
+          // }
           this._handleSubmit();	//do search
           break;
         case 38://Up
@@ -817,6 +817,11 @@
     },
 
     _handleSubmit: function () {	//button and tooltip click and enter submit
+
+      console.log(this._countertips)
+      if (this._countertips == 1 || (this.options.firstTipSubmit && this._countertips > 0)) {
+        this._handleArrowSelect(1);
+      }
 
       this._hideAutoType();
 

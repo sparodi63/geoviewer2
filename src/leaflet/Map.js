@@ -1,8 +1,8 @@
 var L = require('leaflet')
 
+import GV from '../GV'
 import globals from '../globals'
 import * as config from '../config'
-import util from '../util'
 import * as layerFactory from '../layerFactory'
 
 const Map = L.Map.extend({
@@ -144,12 +144,12 @@ const Map = L.Map.extend({
 
   getScaleLabel: function () {
     'use strict'
-    return util.getScaleLabelsFromZoom(this._zoom)
+    return globals.BASE_SCALE_LABELS[this._zoom]
   },
 
   getScale: function () {
     'use strict'
-    return util.getScaleFromZoom(this._zoom)
+    return globals.BASE_SCALES[this._zoom]
   },
 
   setLoading: function () {
@@ -169,16 +169,17 @@ const Map = L.Map.extend({
 
   loading: function (state, layer) {
     // if (!!state) {
+
     if (state) {
       if (this._spinning === 0) {
-        util.log('start load: ' + layer.config.name)
+        if (GV.config.debug) console.log('start load: ' + layer.config.name)
         this._container.style.cursor = 'progress'
       }
       this._spinning++
     } else {
       this._spinning--
       if (this._spinning <= 0) {
-        util.log('end load: ' + layer.config.name)
+        if (GV.config.debug) console.log('end load: ' + layer.config.name)
         this._container.style.cursor = 'default'
       }
     }

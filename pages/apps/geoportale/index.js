@@ -1,4 +1,4 @@
-var id = GV.util.getUrlParam('id') || 56
+var id = GV.getUrlParam('id')
 
 GV.init({
   debug: true,
@@ -11,31 +11,32 @@ GV.init({
     },
     layout: {
       title: '{map.title}',
-      toolbar: [{
-        position: 'topleft',
-        items: [
-          {name: 'fullscreen'}
-          //                    {name: 'geocoder'},
-          //                    {name: 'print'}
-        ]
-      },
-      {
-        position: 'topright',
-        items: [{
-          name: 'legend',
-          options: {
-            show: true,
-            showAddMap: true,
-            showInfoMap: true
-          }
-        }]
-      },
-      {
-        position: 'bottomright',
-        items: [
-          {name: 'zoom'}
-        ]
-      }
+      toolbar: [
+        {
+          position: 'topleft',
+          items: [
+            {name: 'fullscreen'}
+            //                    {name: 'geocoder'},
+            //                    {name: 'print'}
+          ]
+        },
+        {
+          position: 'topright',
+          items: [{
+            name: 'legend',
+            options: {
+              show: true,
+              showAddMap: true,
+              showInfoMap: true
+            }
+          }]
+        },
+        {
+          position: 'bottomright',
+          items: [
+            {name: 'zoom'}
+          ]
+        }
       ]
     },
     callback: function (app) {
@@ -50,3 +51,4 @@ GV.init({
   ],
   maps: []
 })
+

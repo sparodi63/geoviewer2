@@ -27,9 +27,9 @@
             var vm = this;
 
             if (vm.html) {
-                // firefox non aggiorna innerHTML - devo aspettare 3ms
+                // firefox non aggiorna innerHTML - devo aspettare 1ms
                 setTimeout(function () {
-                    vm.$el.querySelector('#iframe').contentDocument.body.innerHTML = vm.html;
+                    vm.$el.querySelector('#iframe').contentDocument.body.innerHTML = vm.html
                 }, 1);
             }
         }

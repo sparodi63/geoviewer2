@@ -1,10 +1,19 @@
 export default {
-  created: function () {
-    var container = document.getElementById("gv-container")
-    var div = document.createElement('div')
+  beforeCreate: function () {
+    // se impostato opzione clear ed esiste il div prima di crearlo lo cancello
+    if (this.clear === true) {
+      const el = document.getElementById(this.divId)
+      if (el) {
+        el.remove()
+      }
+    }
+    const container = document.getElementById("gv-container")
+    const div = document.createElement('div')
     div.id = this.divId
     container.appendChild(div)
-    this.$mount('#' + this.divId)
+  },
+  created: function () {
+    this.$mount(`#` + this.divId)
   }
 }
 

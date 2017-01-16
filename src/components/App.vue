@@ -9,18 +9,19 @@
 <script>
     import * as config from '../config'
     import globals from '../globals'
-    import util from '../util'
     import GV from '../GV'
-
+    import isTouch from '../util/isTouch'
+    import setDrag from '../util/setDrag'
+    import getProtocol from '../util/getProtocol'
     import Vue from 'vue'
     import VueResource from 'vue-resource'
+
     Vue.use(VueResource)
 
     import * as gvMap from './Map'
     import * as gvLegend from './Legend'
 
     import infoWmsManager from '../infoWmsManager'
-
 
     export default {
         name: 'gv-app',
@@ -33,7 +34,7 @@
         },
         computed: {
             showTitle: function () {
-                return (config.application.layout.title && !globals.SMALL_SCREEN)
+                return (config.application.layout.title && !globals.SMALL_SCREEN && this.maps.length > 0)
             },
             showLegend: function () {
                 return (config.getButton('legend') && config.getButtonOption('legend', 'show'))
@@ -46,28 +47,31 @@
             }
         },
         created () {
+            // imposto GV.app in modo da averlo s disposizione appena crato il componente
             GV.app = this
         },
         mounted: function () {
-            util.log('gv-app: mounted')
+            if (GV.config.debug) {
+                console.log('gv-app: mounted')
+            }
 
             // imposto metodo per drag panelli
-            util.setDrag()
+            setDrag()
 
             // gestione toolbar
             this.addToolbars(config.application.layout.toolbar)
 
             // gestione click
             if (config.application.mapOptions && config.application.mapOptions.click) {
-                if (config.application.mapOptions.click === 'info' && !util.isTouch()) {
+                if (config.application.mapOptions.click === 'info' && !isTouch()) {
                     infoWmsManager.activate()
                 }
             }
 
             // Gestione caricamento mappe/livelli da configurazione
-            if (config.maps.length>0) {
-                config.maps.forEach( (mapConfig) => { this.addMap(mapConfig) } )
-            }
+            config.maps.forEach((mapConfig) => {
+                this.addMap(mapConfig)
+            })
 
             // Gestione caricamento mappe RL da servizio
             if (config.idMap) {
@@ -82,10 +86,10 @@
             getTitle() {
                 return config.title
             },
-            getMaps: function () {
+            getMaps() {
                 return this.maps
             },
-            addToolbars: function () {
+            addToolbars() {
                 if (config.application.layout.toolbar) {
                     var toolbar = config.application.layout.toolbar
                     toolbar.forEach((tb) => {
@@ -98,7 +102,7 @@
                     })
                 }
             },
-            addButton: function (item) {
+            addButton(item) {
                 if (GV.Buttons[item.name]) {
                     var button = GV.Buttons[item.name](item.options, GV.map)
                     if (button) {
@@ -106,40 +110,34 @@
                         button.addTo(GV.map)
                     }
                 } else {
-                    util.log('Bottone ' + item.name + ' non esistente')
+                    throw new Error('Bottone ' + item.name + ' non esistente')
                 }
             },
 
-
-
-            addRlMap: function (idMap, callback) {
+            addRlMap(idMap, callback) {
                 if (!idMap || idMap === 'null') {
-                    util.log('addRlMap: prametro idMap mancante', 2)
-                    return
+                    throw new Error('addRlMap: prametro idMap mancante')
                 }
 
-                var url = `${globals.RL_MAP_CONFIG_SERVICE}${idMap}`
+                let url = `${window.location.href.split(':')[0]}://${globals.RL_MAP_CONFIG_SERVICE}${idMap}`
                 if (config.geoserverUrl) {
                     url += "?geoserverUrl=" + config.geoserverUrl
                 }
 
-                this.$http.get(url, {headers: {'Accept': 'application/json'}}).then(function (response) {
+                this.$http.get(url, {headers: {'Accept': 'application/json'}}).then(response => {
                     if (!response.data.success) {
-                        util.log('Errore Caricamento Configurazione Mappa: ' + response.data.message, 2)
-                        return null
+                        throw new Error('Errore Caricamento Configurazione Mappa: ' + response.data.message)
                     }
                     // Aggiorno array delle mappe
                     config.addMapConfig(response.data.data)
-                    GV.app.addMap(response.data.data)
+                    this.addMap(response.data.data)
                     // Gestione callback
                     if (callback) {
-                        callback(GV.app)
+                        callback(this)
                     }
-                }, function (error) {
-                    util.log(error, 2)
-                })
+                }).catch(error => console.error(error))
             },
-            addMap: function (mapConfig) {
+            addMap(mapConfig) {
                 // Imposto titolo
                 if (config.application.layout.title === '{map.title}') {
                     config.title = mapConfig.name

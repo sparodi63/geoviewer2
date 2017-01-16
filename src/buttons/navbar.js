@@ -1,11 +1,12 @@
-/**
- * Created by parodi on 19/09/2016.
- */
-GV.Buttons.navbar = function (btnOptions, map) {
-  "use strict";
+import isTouch from '../util/isTouch'
+import GV from '../GV'
+import L from 'leaflet'
 
-  if (GV.util.isTouch()) {
-    return null;
+GV.Buttons.navbar = function (btnOptions, map) {
+  'use strict'
+
+  if (isTouch()) {
+    return null
   }
-  return L.control.navbar(btnOptions);
-};
+  return L.control.navbar(btnOptions)
+}

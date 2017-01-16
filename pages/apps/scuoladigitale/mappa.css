@@ -3,17 +3,17 @@
 /* ----------------------------------------------- */
 
 .leaflet-bar a, .leaflet-bar a:hover, .leaflet-bar a.leaflet-disabled {
-    background-color: #42537f;
+    background-color: #31708f;
     color: #ccc;
 }
 
 .gv-color-scheme {
-    background-color: #42537f;
+    background-color: #31708f;
     color: #CCC;
 }
 
 .gv-inverted-color-scheme {
-    color: #42537f;
+    color: #31708f;
     background-color: #CCC;
 }
 
@@ -41,6 +41,12 @@
 }
 .cluster_04 {
     background-image: url(/geoviewer2/static/img/scuoladigitale/legend/school03-nq.png);
+    text-align: center;
+    font-size: 20px;
+    color: white;
+}
+.cluster_06 {
+    background-image: url(/geoviewer2/static/img/scuoladigitale/legend/school06-nq.jpg);
     text-align: center;
     font-size: 20px;
     color: white;

@@ -31,11 +31,10 @@
 
 <script>
     import Vue from 'vue'
-    import util from '../util'
     import Map from '../leaflet/Map.js'
     import GV from '../GV'
     import * as config from '../config'
-    import dynamicAddedComp from '../mixins/dynamicAddedComp'
+    import createElement from '../util/createElement'
 
     export default {
         name: 'gv-legend',
@@ -46,7 +45,7 @@
         },
         props: ['showAddMap', 'showInfoMap'],
         mounted () {
-            util.log('gv-legend: mounted')
+            if (GV.config.debug) console.log('gv-legend: mounted')
         },
         methods: {
             hideLegend: function (event) {
@@ -96,18 +95,19 @@
                         }
                     }
 
-                    var vm = new Vue({
+                    const el = createElement('div', 'multi-legend-panel', 'gv-container')
+                    const vm = new Vue({
                         template: '<gv-iframe-panel v-draggable visible="true" :src="src" :html="html" :height="height" :width="width" :cls="cls" :title="title"></gv-iframe-panel>',
                         data: {
-                            title: 'LEGENDA - ' + layer.legend.label,
+                            title: `LEGENDA - ${layer.legend.label}`,
                             src: url,
                             html: html,
                             width: width,
                             height: height,
                             cls: 'gv-legend-multi'
-                        },
-                        mixins: [dynamicAddedComp]
+                        }
                     })
+                    vm.$mount(el)
                 }
             }
 

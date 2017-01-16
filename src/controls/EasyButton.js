@@ -1,4 +1,4 @@
-(function () {
+;(function () {
 
 // This is for grouping buttons into a bar
 // takes an array of `L.easyButton`s and
