@@ -10,8 +10,8 @@
         </div>
         <div id="gv-legend-body">
             <ul v-for="map in maps" class="gv-list-group">
-                <li class="gv-list-legend-map-item gv-inverted-color-scheme">{{map.name}}
-                    <span v-show="showInfoMap" class="gv-legend-map-info ms ms-information" title="Scheda metadati"
+                <li class="gv-list-legend-map-item gv-inverted-color-scheme">{{map.name}}<br>&nbsp;
+                    <span v-show="showInfoMap" class="gv-legend-map-info fa fa-eye" title="Scheda Informativa"
                           @click="showMapInfoPanel(map)"></span>
                 </li>
                 <ul class="gv-list-group">
@@ -24,6 +24,8 @@
                     </li>
                 </ul>
             </ul>
+            <div class="gv-legend-footer gv-inverted-color-scheme">
+            </div>
         </div>
     </div>
 </template>
@@ -34,7 +36,10 @@
     import Map from '../leaflet/Map.js'
     import GV from '../GV'
     import * as config from '../config'
-    import createElement from '../util/createElement'
+    import mountComponent from '../util/mountComponent'
+
+    import * as MapInfoPanel from './MapInfoPanel.vue'
+    Vue.component('gv-map-info-panel', MapInfoPanel)
 
     export default {
         name: 'gv-legend',
@@ -43,7 +48,7 @@
                 maps: config.maps
             }
         },
-        props: ['showAddMap', 'showInfoMap'],
+        props: ['showAddMap', 'showInfoMap','showBaseLayerSwitcher'],
         mounted () {
             if (GV.config.debug) console.log('gv-legend: mounted')
         },
@@ -53,10 +58,17 @@
             },
             showMapInfoPanel: function (map) {
                 'use strict'
-                alert(map.id)
+                //alert(map.id)
+                mountComponent({
+                    elId: 'gv-map-info-panel',
+                    clear: true,
+                    vm: new Vue({
+                        template: `<gv-map-info-panel v-draggable visible="true" idMap="${map.id}" title="Scheda - ${map.name}"></gv-map-info-panel>`
+                    })
+                })
             },
             addMap: function () {
-                alert('add map')
+                GV.app.addRlMap(1735)
             },
             iconUrl: function (layer) {
                 return layer.legend.icon
@@ -95,19 +107,20 @@
                         }
                     }
 
-                    const el = createElement('div', 'multi-legend-panel', 'gv-container')
-                    const vm = new Vue({
-                        template: '<gv-iframe-panel v-draggable visible="true" :src="src" :html="html" :height="height" :width="width" :cls="cls" :title="title"></gv-iframe-panel>',
-                        data: {
-                            title: `LEGENDA - ${layer.legend.label}`,
-                            src: url,
-                            html: html,
-                            width: width,
-                            height: height,
-                            cls: 'gv-legend-multi'
-                        }
+                    mountComponent({
+                        elId: 'multi-legend-panel',
+                        vm: new Vue({
+                            template: '<gv-iframe-panel v-draggable visible="true" :src="src" :html="html" :height="height" :width="width" :cls="cls" :title="title"></gv-iframe-panel>',
+                            data: {
+                                title: `LEGENDA - ${layer.legend.label}`,
+                                src: url,
+                                html: html,
+                                width: width,
+                                height: height,
+                                cls: 'gv-legend-multi'
+                            }
+                        })
                     })
-                    vm.$mount(el)
                 }
             }
 

@@ -1,0 +1,239 @@
+<?php
+/**
+ * Highlighting matching string
+ * @param   string  $text           subject
+ * @param   string  $words          search string
+ * @return  string  highlighted text
+ */
+ /*
+function highlight($text, $words) {
+    preg_match_all('~\w+~', $words, $m);
+    if(!$m)
+        return $text;
+    $re = '~\\b(' . implode('|', $m[0]) . ')\\b~';
+    return preg_replace($re, '<span class="highlight">$0</span>', $text);
+}
+*/
+
+function highlight($text, $words)
+{
+    preg_match_all('~[A-Za-z0-9_‰ˆ¸ƒ÷‹]+~', $words, $m);
+    if (!$m)
+        return $text;
+    $re = '~(' . implode('|', $m[0]) . ')~i';
+    return preg_replace($re, '<span class="highlight">$0</span>', $text);
+}
+
+/** IMPORTANTE INDICARE IL TEMPLATE *****/
+$templateActive = 'gk_cloudhost';
+
+/**/
+$q = json_decode(file_get_contents('php://input'), true);
+$size = (int)$_REQUEST["size"];
+$strSize = "";
+if ($size>0) {
+	$strSize = 'size='.$size.'&';
+}
+$from  = (int)$_REQUEST["from"];
+
+if ($_REQUEST["wordsearch"]!="") {
+	$wordsearch = $_REQUEST["wordsearch"];
+}else{
+	$wordsearch = "";
+}
+
+/* $typeLayout: maplisthome, maplist, mapdetail */
+if ($_REQUEST["typeLayout"]!="") {
+	$typeLayout = $_REQUEST["typeLayout"];
+}else{
+	$typeLayout = "maplist";
+}
+
+if ($_REQUEST["linkMap"]!="") {
+	$linkMap = urldecode($_REQUEST["linkMap"]);
+	if (strpos($linkMap,"&")>0) {
+		$linkMap .= "&";
+	}else{
+		$linkMap .= "?";
+	}
+}
+if ($_REQUEST["anchor"]!="") {
+	$anchor = $_REQUEST["anchor"];
+}else{
+	$anchor = "";
+}
+
+$HTTP_HOST = $_SERVER["HTTP_HOST"];
+   switch($HTTP_HOST) {
+      case strpos($HTTP_HOST,"svil.dts")>0 :
+        $url  = 'http://bv8prod1.datasiel.net:9200/repcarto_pub_v1/_search?'.$strSize.'from='.$from;   
+        break;
+      case strpos($HTTP_HOST,"stage.dts")>0 :        
+        $url  = 'http://bv8prod1.datasiel.net:9200/repcarto_pub_v1/_search?'.$strSize.'from='.$from;
+        break;            
+      case strpos($HTTP_HOST,".it")>0 :
+        $url  = 'http://bv8prod1.datasiel.net:9200/repcarto_pub_v1/_search?'.$strSize.'from='.$from;
+        break; 
+   } 		
+
+include('httpful.phar');
+include('url_slug.php');
+
+$response = \Httpful\Request::post($url)->sendsJson()->addHeaders(array("content-type" => "text/html; charset=utf-8"))->body($q)->send();
+/*
+echo '<pre>';
+var_dump($response);
+echo '</pre>';
+*/
+
+$body = $response->body->hits->hits;   
+
+//$aggregations = $response->body->aggregations;   
+
+
+
+$total  = (int) $response->body->hits->total;
+
+$pagine = $total/$size;
+if ((int)$pagine<$pagine)
+  {
+   $pagine++;
+  }
+
+$pagine = floor($pagine);  
+  
+$currentPage = (int) (($from/$size))+1;
+if ($currentPage == 0) {$currentPage = 1;}
+
+if ($total>0) {
+	if ($typeLayout == "maplist") {	?>
+     <div class="paginazioneListaMappe">
+        <p>Risultati trovati: <?php echo $total;?> su <?php echo (int) $pagine;?> pagine (<?php echo $size;?> risultati per pagina)</p>
+		<?php
+        if ($pagine>1) {
+			// GESTISCO GLI ESTREMI DI PAGINAZIONE
+			$max_elem=4;
+			$ini_elem=$currentPage-$max_elem;
+			$fin_elem=$currentPage+$max_elem;
+			if ($ini_elem<1) {
+				$ini_elem=1;
+				$fin_elem=$fin_elem+($max_elem-$currentPage);
+			}
+			if ($fin_elem>$pagine) {
+			$fin_elem=$pagine;
+			$ini_elem=$currentPage-$max_elem-$max_elem;
+				if ($ini_elem<1) {
+					$ini_elem=1;
+				}
+			}
+            // GESTISCO LA PAGINAZIONE A FRECCE A SX
+			echo "<ul>";                    
+			if ((int)$currentPage == 1) {
+				echo "<li class='_disable'><<</li>";
+			}else{
+				echo "<li><a href='#' onClick='jQuery:setQueryES(0,\"\",\"\",\"navigation\")'><<</a></li>";
+			}     
+			if ((int)$currentPage == 1) {
+				echo "<li class='_disable'><</li>";
+			}else{
+				$offset = ((int)$from - (int)$size);                    
+				echo "<li><a href='#' onClick='jQuery:setQueryES($offset,\"\",\"\",\"navigation\")'><</a></li>";
+			}  
+			// GESTISCO LA PAGINAZIONE A PAGINE
+			for($x=$ini_elem;$x<=$fin_elem;$x++){
+				$offset = ($size * (int)$x)-$size;    
+				if ((int) $currentPage == (int) $x){
+					echo "<li class='_current'>";
+					echo $x;
+				}else{
+					echo "<li>";
+					echo " <a href='#' onClick='jQuery:setQueryES($offset,\"\",\"\",\"navigation\")'>$x</a>";
+				}
+				echo "</li>";
+			}
+            // GESTISCO LA PAGINAZIONE A FRECCE A DX
+			if ((int)$currentPage == (int)$pagine){
+				echo "<li class='_disable'>></li>";
+			}else{
+				$offset = ((int)$from + (int)$size);                    
+				echo "<li><a href='#' onClick='jQuery:setQueryES($offset,\"\",\"\",\"navigation\")'>></a></li>";
+			} 
+			if ((int)$currentPage == (int)$pagine){
+				echo "<li class='_disable'>>></li>";
+			}else{
+				$offset = ((int)$size * (int)$pagine)-$size;                    
+				echo "<li><a href='#' onClick='jQuery:setQueryES($offset,\"\",\"\",\"navigation\")'>>></a></li>";
+			}       				  
+			echo "</ul>";                  
+		} ?>
+      </div>
+	  <?php
+	}
+	?>
+	<div id="legenda">LEGENDA: 
+	<i class="fa fa-shopping-cart" aria-hidden="true"> Acquista</i>
+	<i class="fa icon-paper-clip" aria-hidden="true"> Allegato</i>
+	<i class="fa fa-eye" aria-hidden="true"> Dettaglio</i>
+<!--	<i class="fa icon-copy" aria-hidden="true"> Copia</i>-->
+	<i class="fa icon-external-link" aria-hidden="true"> Link</i>
+	<i class="fa fa-download" aria-hidden="true"> Scarica</i>
+	<i class="fa icon-map-marker"> Visualizzatore</i> 
+	</div>
+	<?php
+	foreach ($body AS $a) {
+		/* LIMIT DESCRIPTION */
+		$wordMax   = 15;
+		$lengthMax = 200;
+		$string=$a->_source->note;
+		$words = explode(' ', $string);
+		$wordCount = count($words );
+		$length = strlen($string);
+		if($wordCount > $wordMax) {
+			$words = array_slice($words, 0, $wordMax);
+			$string = implode(' ', $words); 
+			$length = strlen($string);
+		}
+		if($length > $lengthMax) {
+			$string = substr($string , 0, $lengthMax);
+		}
+		$linkparam = $linkMap."idmap=".$a->_source->id.":".url_slug($a->_source->descrizione); 
+		$link      = "javascript:vaiMappa('".$a->_source->id."' , '".url_slug($a->_source->descrizione)."', '', '')"; 
+		$linkMeta  = "javascript:vaiMappa('".$a->_source->id."' , '".url_slug($a->_source->descrizione)."', '', 'metadati')"; 
+		$linkMetaWms  = "javascript:vaiMappa('".$a->_source->id."' , '".url_slug($a->_source->descrizione)."', '', 'schedawms')"; 
+		$linkMetaWfs  = "javascript:vaiMappa('".$a->_source->id."' , '".url_slug($a->_source->descrizione)."', '', 'schedawfs')"; 
+		$linkMeta  = "javascript:vaiMappa('".$a->_source->id."' , '".url_slug($a->_source->descrizione)."', '', 'metadati')"; 
+		$linkCart  = "javascript:vaiMappa('".$a->_source->id."' , '".url_slug($a->_source->descrizione)."', '', 'tariffe')"; 
+
+		$mime="text/xml";
+		$name=$a->_source->id.".xml";
+//		$url =  "http://srvcarto.regione.liguria.it/geoservices/REST/metadata/scheda_xml/".$a->_source->id;
+//		$download_url_metadati = '/templates/gk_cloudhost/includes/getFiles.php?mime='.$mime.'&name='.$name.'&url='.$url;
+		
+		$download_url = '/templates/gk_cloudhost/includes/getFiles.php?mime='.$mime.'&name='.$name.'&url='.$a->_source->link_metadati;
+
+		if ($wordsearch!="") {
+			//echo '$wordsearch:'.$wordsearch;		
+			$descrizione  = highlight($a->_source->descrizione, $wordsearch);
+			$categoria    = highlight($a->_source->categoria, $wordsearch);
+			$anno         = highlight($a->_source->anno, $wordsearch);
+			$scala        = highlight($a->_source->scala, $wordsearch);
+			$ente         = highlight($a->_source->ente[0]->nome, $wordsearch);
+			$note         = highlight($a->_source->note, $wordsearch);
+			$inspire_tema = highlight($a->_source->inspire_tema, $wordsearch);
+		}else{
+			$descrizione  = $a->_source->descrizione;
+			$categoria    = $a->_source->categoria;
+			$anno         = $a->_source->anno;
+			$scala        = $a->_source->scala;
+			$ente         = $a->_source->ente[0]->nome;
+			$note         = $a->_source->note;
+			$inspire_tema = $a->_source->inspire_tema;
+		}
+		include $_SERVER['DOCUMENT_ROOT'].'/templates/'.$templateActive.'/includes/'.$typeLayout.'.php';		
+	}
+	
+} else {
+    echo "<p class='_warning'>Nessuna Mappa trovata per i Filtri richiesti.</p>";
+}
+
+?>

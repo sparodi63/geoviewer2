@@ -33,7 +33,6 @@ body {
   background-color: #CCC;
 }
 
-
 /* ----------------------------------------------- */
 /* LEAFLET */
 /* ----------------------------------------------- */
@@ -399,6 +398,32 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   max-height: 500px;
 }
 
+#gv-geocoder {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-left: 50px;
+  margin-top: 20px;
+  width: 260px;
+  z-index: 800;
+}
+
+#gv-geocoder-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.ap-input, .ap-hint {
+  border-radius: 0px;
+  border: 1px solid #24386c;
+  color: #24386c;
+  height: 26px;
+  padding-left: 10px;
+}
+
+.ap-icon-pin {
+  display: none;
+}
+
 #gv-legend {
   position: absolute;
   right: 0;
@@ -485,15 +510,14 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   z-index: 800;
 }
 
-/*
 .gv-legend-map-info {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: 5px;
-    margin-right: 3px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin-left: 8px;
+  margin-bottom: 5px;
 }
-*/
+
 
 .gv-legend-add {
   padding: 0;
@@ -526,9 +550,48 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   max-width: 180px;
 }
 
+.gv-legend-footer {
+  position: relative;
+  display: block;
+  padding: 0.3rem 0.5rem;
+  margin-bottom: -1px;
+  color: #ccc;
+  cursor: default;
+}
+
+.gv-map-info-panel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-left: 10px;
+  margin-top: 100px;
+  background-color: #fff;
+  z-index: 800;
+  max-width: 600px;
+}
+
+.gv-map-info-panel table {
+  border: 1px solid #ddd ;
+  width: 100%;
+  padding: 10px;
+}
 
 
+.gv-map-info-panel table tr th {
+  background-color: #527c41;
+  white-space: nowrap;
+  width: auto;
+  padding: 5px 5px;
+  color: #fff;
+  text-align: left;
+  font-weight: 400;
+  font-size: 12px;
+  border: 1px solid #e5e5e5;
+}
 
-
-
+.gv-map-info-panel table tr td {
+  padding: 5px;
+  font-size: 12px;
+  border: 1px solid #e5e5e5;
+}
 

@@ -10,14 +10,17 @@ GV.init({
       click: 'info'
     },
     layout: {
-      title: '{map.title}',
+      //title: '{map.title}',
       toolbar: [
         {
           position: 'topleft',
           items: [
-            {name: 'fullscreen'}
-            //                    {name: 'geocoder'},
-            //                    {name: 'print'}
+            {
+              name: 'geocoder',
+              options: {
+                autoClick: true
+              }
+            }
           ]
         },
         {

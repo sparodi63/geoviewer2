@@ -12,6 +12,8 @@ const Map = L.Map.extend({
 
   initialExtent: [],
 
+  buttons: [],
+
   mapOptions: {
     zoomControl: false,
     maxBounds: globals.MAX_BOUNDS,

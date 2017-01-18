@@ -6,7 +6,7 @@ import Vue from 'vue'
 import globals from './globals'
 import * as config from './config'
 import GV from './GV'
-import template from './util/template'
+import interpolateString from './util/interpolateString'
 import getParamString from './util/getParamString'
 import getZoomFromScaleDenom from './util/getZoomFromScaleDenom'
 
@@ -383,10 +383,10 @@ var layerFactory = {
     if (tooltip || popup) {
       options.onEachFeature = function (feature, layer) {
         if (tooltip) {
-          layer.options.title = template(tooltip, feature.properties)
+          layer.options.title = interpolateString(tooltip, feature.properties)
         }
         if (popup) {
-          layer.bindPopup(template(popup, feature.properties))
+          layer.bindPopup(interpolateString(popup, feature.properties))
         }
       }
     }

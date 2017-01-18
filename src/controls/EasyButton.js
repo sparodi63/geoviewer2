@@ -156,6 +156,10 @@
 
       this._activateState(this._states[0]);
 
+      if (this.options.callback) {
+        this.options.callback(this)
+      }
+
     },
 
     _buildButton: function () {
@@ -297,6 +301,12 @@
       });
       this._container = containerObj.container;
       return this._container;
+    },
+
+    click: function() {
+      'use strict';
+      this.onClick()
+
     }
 
   });

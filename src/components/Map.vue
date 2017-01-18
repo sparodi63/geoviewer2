@@ -8,11 +8,54 @@
     import Map from '../leaflet/Map.js'
     import GV from '../GV'
 
+    const events = [
+        'click',
+        'dblclick',
+        'mousedown',
+        'mouseup',
+        'mouseover',
+        'mouseout',
+        'mousemove',
+        'contextmenu',
+        'focus',
+        'blur',
+        'preclick',
+        'load',
+        'unload',
+        'viewreset',
+        'movestart',
+        'move',
+        'moveend',
+        'dragstart',
+        'drag',
+        'dragend',
+        'zoomstart',
+        'zoomend',
+        'zoomanim',
+        'zoomlevelschange',
+        'resize',
+        'autopanstart',
+        'layeradd',
+        'layerremove',
+        'baselayerchange',
+        'overlayadd',
+        'overlayremove',
+        'locationfound',
+        'locationerror',
+        'popupopen',
+        'popupclose',
+    ];
+
     export default {
         name: 'gv-map',
         mounted () {
             if (GV.config.debug) console.log('gv-map: mounted')
             GV.map = new Map()
+            // Emetto eventi Vue per ogni evento della mappa Leaflet
+            events.forEach((eventName) => {
+                const exposedName = 'lmap-' + eventName;
+                GV.map.on(eventName, (ev) => { GV.app.$emit(exposedName, ev) })
+            })
         }
     }
 

@@ -1,4 +1,4 @@
-export default function template (str, data) {
+export default function (str, data) {
   var templateRe = /\{ *([\w_\-]+) *\}/g
   return str.replace(templateRe, function (str, key) {
     var value = data[key]

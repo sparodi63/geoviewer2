@@ -1,15 +1,18 @@
-export default function createElement (tagName, elementId, containterId, clear) {
-  'use strict'
-  const container = document.getElementById(containterId)
 
-  if (clear) {
-    const el = document.getElementById(elementId)
-    if (el) {
-      el.remove()
-    }
+export default function ({
+    elType = 'div',
+    elId,
+    containterId = 'gv-container',
+    clear
+  })
+{
+  if (clear && document.getElementById(elId)) {
+    document.getElementById(elId).remove()
   }
-  const el = document.createElement(tagName)
-  el.id = elementId
-  container.appendChild(el)
+
+  const el = document.createElement(elType)
+  el.id = elId
+  document.getElementById(containterId).appendChild(el)
+
   return el
 }

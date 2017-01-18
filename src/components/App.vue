@@ -3,6 +3,9 @@
         <gv-map ref="gv-map"></gv-map>
         <div v-show="showTitle" class="gv-color-scheme" id="gv-title">{{this.getTitle()}}</div>
         <gv-legend ref="gv-legend" v-show="showLegend" :showAddMap="showAddMap" :showInfoMap="showInfoMap"></gv-legend>
+        <!--
+        <gv-geocoder ref="gv-map"></gv-geocoder>
+        -->
     </div>
 </template>
 
@@ -81,6 +84,12 @@
                     config.application.callback(this)
                 }
             }
+
+            // Per utilizzare eventi mappa leaflet
+            // ev è oggetto formato da
+            // - target (mappa Leaflet)
+            // - type (tipo di evento es: 'move'
+            // this.$on('lmap-move', ev => {console.log(ev)})
         },
         methods: {
             getTitle() {
@@ -108,6 +117,12 @@
                     if (button) {
                         button.name = item.name
                         button.addTo(GV.map)
+                        GV.map.buttons.push(button)
+                        if (item.options.callBack) {
+                            item.options.callBack(button)
+                        }
+                        if (item.options.autoClick) {
+                            button.button.click()                        }
                     }
                 } else {
                     throw new Error('Bottone ' + item.name + ' non esistente')

@@ -1,7 +1,8 @@
 import GV from './GV'
 import * as config from './config'
 import Vue from 'vue'
-import createElement from './util/createElement'
+import mountComponent from './util/mountComponent'
+
 import L from 'leaflet'
 import parseXML from './util/parseXML'
 import getXML from './util/getXML'
@@ -89,16 +90,18 @@ function _handleResponse (features) {
       return
     }
 
-    const el = createElement('div', 'gv-wms-info-list', 'gv-container', true)
-    const vm = new Vue({
-      template: `<gv-wms-info-list id="${el.id}" v-draggable :cls="cls" visible="true" :items="items"></gv-wms-info-list>`,
-      data: {
-        items: _features,
-        cls: 'gv-info-wms gv-inverted-color-scheme',
-        clear: true
-      }
+    const elementId = 'gv-wms-info-list'
+    mountComponent({
+      elId: 'gv-wms-info-list',
+      clear: true,
+      vm: new Vue({
+        template: `<gv-wms-info-list id="${elementId}" v-draggable :cls="cls" visible="true" :items="items"></gv-wms-info-list>`,
+        data: {
+          items: _features,
+          cls: 'gv-info-wms gv-inverted-color-scheme'
+        }
+      })
     })
-    vm.$mount(el)
 
     if (_features.length === 1) {
       _showFeatureInfo(_features[0])
@@ -238,22 +241,20 @@ function _showFeatureInfo (feature) {
   }
 
   function createHtmlPanel (html, configOptions) {
-    var width = configOptions.infoWidth || 400
-    var height = configOptions.infoHeight || 300
-
-    const el = createElement('div', 'info', 'gv-container')
-    const vm = new Vue({
-      template: '<gv-iframe-panel v-draggable visible="true" :src="src" :html="html" :height="height" :width="width" :cls="cls" :title="title"></gv-iframe-panel>',
-      data: {
-        title: 'Risultato Info',
-        src: null,
-        html: html,
-        width: width,
-        height: height,
-        cls: 'gv-info-wms-html'
-      }
+    mountComponent({
+      elId: 'info',
+      vm: new Vue({
+        template: '<gv-iframe-panel v-draggable visible="true" :src="src" :html="html" :height="height" :width="width" :cls="cls" :title="title"></gv-iframe-panel>',
+        data: {
+          title: 'Risultato Info',
+          src: null,
+          html: html,
+          width: configOptions.infoWidth || 400,
+          height: configOptions.infoHeight || 300,
+          cls: 'gv-info-wms-html'
+        }
+      })
     })
-    vm.$mount(el)
   }
 
   // apre una panel div con un documento html

@@ -1,9 +1,13 @@
+
 // -------------------------------------------------------------------------------- //
 // CSS
 require('style!../node_modules/leaflet/dist/leaflet.css')
 require('style!./assets/css/base.css')
 require('style!./assets/css/mapskin/css/mapskin.css')
 require('style!font-awesome/css/font-awesome.css')
+// -------------------------------------------------------------------------------- //
+// Shims/Polyfill
+require('./util/findIndex')
 // -------------------------------------------------------------------------------- //
 // Definizione globale oggetto GV
 import GV from './GV'
@@ -15,6 +19,7 @@ require('./buttons/zoom')
 require('./buttons/locate')
 require('./buttons/legend')
 require('./buttons/search')
+require('./buttons/geocoder')
 // -------------------------------------------------------------------------------- //
 // Direttive
 require('./directives/draggable')
@@ -27,3 +32,5 @@ import * as IFrame from './components/IFrame'
 Vue.component('gv-iframe-panel', IFrame)
 import * as WmsInfoList from './components/WmsInfoList.vue'
 Vue.component('gv-wms-info-list', WmsInfoList)
+import * as Geocoder from './components/Geocoder.vue'
+Vue.component('gv-geocoder', Geocoder)

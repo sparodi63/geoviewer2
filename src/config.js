@@ -88,6 +88,12 @@ function getLayerConfig (layerName) {
   }
 }
 
+function getMapConfig (idMap) {
+  return maps.find(function (map) {
+    return map.id == idMap
+  })
+}
+
 function getButton (buttonName) {
   let button = null
   if (!application.layout || !application.layout.toolbar) {
@@ -145,6 +151,7 @@ export {
   addMapConfig,
   getAllLayersConfig,
   getLayerConfig,
+  getMapConfig,
   getButton,
   getButtonOption,
   setButtonOption,
