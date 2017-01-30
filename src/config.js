@@ -11,6 +11,7 @@ let baseLayers = [
   { 'type': 'ESRI_IMAGERY', visible: true }
 ]
 let maps = []
+let optionsMaps = []
 
 function set (options) {
   if (!options) {
@@ -32,19 +33,34 @@ function set (options) {
   if (options.application && options.application.layout && options.application.layout.title) {
     title = options.application.layout.title
   }
+
+  // Gestione BaseLayers
   if (options.baseLayers) {
     baseLayers = options.baseLayers
   }
-  if (options.maps) {
-    options.maps.forEach(
-      (mapConfig) => {
-        addMapConfig(mapConfig)
-      }
-    )
-  }
+  baseLayers.forEach( layer => {
+    "use strict";
+    layer.name = layer.type
+    layer.label = globals.BASE_LAYERS[layer.type].label
+    layer.icon = globals.BASE_LAYERS[layer.type].icon
+  })
+
+  // Gestione mappe in configurazione iniziale
+  this.optionsMaps = options.maps
+
+    // if (options.maps) {
+    // options.maps.forEach(
+    //   (mapConfig) => {
+    //     addMapConfig(mapConfig)
+    //   }
+    // )
+    // }
 }
 
 function addMapConfig (mapConfig) {
+  if (getMapConfig(mapConfig.id)) {
+    return
+  }
   mapConfig.layers.forEach(function (layer) {
     layer.minScale = (layer.minScale === 0) ? 591657550 : layer.minScale
     layer.inRange = (GV.map) ? GV.map.layerInRange(layer) : true
@@ -52,6 +68,9 @@ function addMapConfig (mapConfig) {
   })
   mapConfig.layers.reverse()
   maps.unshift(mapConfig)
+  GV.app.$emit('config-add-map', {
+    config: mapConfig
+  })
 }
 
 function getAllLayersConfig () {
@@ -139,21 +158,41 @@ function setButtonOption (buttonName, optionName, value) {
   return option
 }
 
+function getActiveBaseLayer() {
+  'use strict'
+  let activeLayer = null
+  baseLayers.forEach(layer => {
+    if (layer.visible) activeLayer = layer
+  })
+  return activeLayer
+
+}
+
+function setActiveBaseLayer(layerName) {
+  'use strict'
+  baseLayers.forEach(layer => {
+    layer.visible = (layer.name === layerName)
+  })
+}
+
 export {
   debug,
   idMap,
   application,
   baseLayers,
   maps,
+  optionsMaps,
   title,
   geoserverUrl,
   set,
   addMapConfig,
   getAllLayersConfig,
   getLayerConfig,
+  getActiveBaseLayer,
   getMapConfig,
   getButton,
   getButtonOption,
   setButtonOption,
-  setLayerAttribute
+  setLayerAttribute,
+  setActiveBaseLayer
 }

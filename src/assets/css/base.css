@@ -33,6 +33,17 @@ body {
   background-color: #CCC;
 }
 
+.gv-secondary-color-scheme {
+  background-color: #527c41;
+  color: #CCC;
+}
+
+.gv-default-font {
+  font-family: "Raleway",Arial,sans-serif !important;
+  font-size: 14px;
+  font-weight: bold;
+}
+
 /* ----------------------------------------------- */
 /* LEAFLET */
 /* ----------------------------------------------- */
@@ -318,99 +329,19 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   max-width: 800px;
 }
 
-.gv-panel-title {
-  position: relative;
-  display: block;
-  padding: 0.3rem 0.5rem;
-  margin-bottom: -1px;
-  color: #ccc;
-  cursor: default;
-}
-
-.gv-close {
-  padding: 0;
-  cursor: pointer;
-  background: transparent;
-  border: 0;
-  -webkit-appearance: none;
-  float: right;
-  font-size: 1rem;
-  line-height: 1;
-  color: #ffffff;
-  margin-left: 5px;
-  margin-right: 3px;
-  margin-top: 3px;
-  opacity: .5;
-}
 
 /* INFO WMS */
-
-.gv-info-wms {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  margin-left: 55px;
-  margin-top: 50px;
-  width: 260px;
-  z-index: 800;
-  max-height: 430px;
-}
-
-#gv-info-wms-body {
-  position: absolute;
-  overflow-y: auto;
-  width: 260px;
-  height: 400px;
-  max-height: 500px;
-}
-
-.gv-info-wms-list-item {
-  position: relative;
-  padding: 0.1rem 0.5rem;
-  margin-bottom: -1px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  cursor: pointer;
-}
-
-.gv-info-wms-list-item-span {
-  position: absolute;
-  top: 50%;
-  margin-top: -7px;
-  font-size: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 180px;
-  text-decoration: underline;
-}
-
-.gv-info-wms-html {
-  position: absolute;
-  left: 0;
-  top: 0;
-  margin-left: 55px;
-  margin-top: 50px;
-  background-color: #fff;
-  z-index: 800;
-}
 
 .gv-html-panel-body iframe {
   max-height: 500px;
 }
 
-#gv-geocoder {
-  position: absolute;
-  left: 0;
-  top: 0;
-  margin-left: 50px;
-  margin-top: 20px;
-  width: 260px;
-  z-index: 800;
-}
 
+/*
 #gv-geocoder-input::-webkit-search-cancel-button {
   display: none;
 }
+*/
 
 .ap-input, .ap-hint {
   border-radius: 0px;
@@ -424,32 +355,7 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   display: none;
 }
 
-#gv-legend {
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin-right: 10px;
-  margin-top: 10px;
-  width: 260px;
-  z-index: 800;
-  max-height: 430px;
-}
 
-#gv-legend-title {
-  height: 30px;
-}
-
-#gv-legend-body {
-  position: absolute;
-  width: 260px;
-  max-height: 400px;
-  cursor: default;
-  overflow: hidden;
-}
-
-#gv-legend-body:hover {
-  overflow-y: scroll;
-}
 
 @media (pointer: coarse) {
   #gv-legend-body {
@@ -458,140 +364,35 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   }
 }
 
-.gv-list-group {
-  padding-left: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  background-color: #fff;
+
+
+/* ----------------------------------------------- */
+/* ELEMENT */
+/* ----------------------------------------------- */
+.el-row {
+  padding: 5px 5px 5px 15px;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
 }
 
-.gv-list-legend-layer-item {
-  position: relative;
-  display: block;
-  /* padding: 0.1rem 0.5rem; */
-  padding-left: 0.3rem;
-  margin-bottom: -2px;
-  margin-top: -2px;
-  background-color: #fff;
-  border: 1px solid #ddd;
+.row-bg {
+  background-color: #CCC;
 }
 
-.gv-list-legend-layer-disabled-item {
-  opacity: 0.3;
-  filter: alpha(opacity=30);
+.el-button--primary {
+  color: #CCC;
+  background-color: #24386C !important;
+  border-color: #24386C !important;
 }
 
-.gv-list-legend-map-item {
-  position: relative;
-  display: block;
-  padding: 0.25rem 0.5rem;
-  margin-bottom: -1px;
-  border: 1px solid #ddd;
-  font-size: 14px;
+.el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover {
+  color: #bfcbd9;
+  cursor: default !important;
+  background-image: none;
 }
 
-.gv-legend-layer-icon {
-  /* padding: 2px 2px 2px 2px; */
-  padding-top: 3px;
+.el-button--inverted {
+  color: #24386C !important;
+  background-color: #ccc !important;
+  border-color: #ccc !important;
 }
-
-.gv-legend-layer-icon img {
-  width: 24px;
-  height: 24px;
-}
-
-.gv-legend-multi {
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin-right: 10px;
-  margin-top: 85px;
-  background-color: #fff;
-  z-index: 800;
-}
-
-.gv-legend-map-info {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  margin-left: 8px;
-  margin-bottom: 5px;
-}
-
-
-.gv-legend-add {
-  padding: 0;
-  height: 19px;
-  cursor: pointer;
-  margin-right: 10px;
-  background: transparent;
-  border: 0;
-  -webkit-appearance: none;
-  float: right;
-  line-height: 1;
-  color: #ffffff;
-  opacity: .5;
-}
-
-.gv-layer-visibility-span {
-  position: absolute;
-  top: 16%;
-  left: 29px;
-}
-
-.gv-layer-title-span {
-  position: absolute;
-  top: 50%;
-  left: 55px;
-  margin-top: -7px;
-  font-size: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 180px;
-}
-
-.gv-legend-footer {
-  position: relative;
-  display: block;
-  padding: 0.3rem 0.5rem;
-  margin-bottom: -1px;
-  color: #ccc;
-  cursor: default;
-}
-
-.gv-map-info-panel {
-  position: absolute;
-  left: 0;
-  top: 0;
-  margin-left: 10px;
-  margin-top: 100px;
-  background-color: #fff;
-  z-index: 800;
-  max-width: 600px;
-}
-
-.gv-map-info-panel table {
-  border: 1px solid #ddd ;
-  width: 100%;
-  padding: 10px;
-}
-
-
-.gv-map-info-panel table tr th {
-  background-color: #527c41;
-  white-space: nowrap;
-  width: auto;
-  padding: 5px 5px;
-  color: #fff;
-  text-align: left;
-  font-weight: 400;
-  font-size: 12px;
-  border: 1px solid #e5e5e5;
-}
-
-.gv-map-info-panel table tr td {
-  padding: 5px;
-  font-size: 12px;
-  border: 1px solid #e5e5e5;
-}
-

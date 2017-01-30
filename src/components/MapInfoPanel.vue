@@ -1,35 +1,55 @@
 <template>
-    <div v-show="visible" class="gv-map-info-panel" id="gv-map-info-panel">
-        <div class="gv-panel-title gv-color-scheme">{{title}}
-            <button class="gv-close" type="button" @click="closePanel">×</button>
-        </div>
+    <div v-show="visible" class="gv-map-info-panel gv-inverted-color-scheme" id="gv-map-info-panel">
+        <gv-title :title="title"></gv-title>
         <div class="gv-map-info-panel-body">
             <table>
                 <tbody>
                     <tr v-for="item in items">
-                        <th>
-                            {{item.label}}
-                        </th>
-                        <td>
-                            {{item.value}}
-                        </td>
+                        <th class="gv-map-info-panel-th gv-secondary-color-scheme">{{item.label}}</th><td>{{item.value}}</td>
                     </tr>
                 </tbody>
             </table>
+            <el-row type="flex" class="row-bg" justify="left">
+
+                <el-col :span="5">
+                    <el-button type="primary" @click="download" class="gv-button-download fa fa-download" size="mini">
+                        <span> Download</span>
+                    </el-button>
+                </el-col>
+                <el-col>
+                    <el-button-group class="gv-button-group">
+                        <el-button type="primary" disabled size="mini"><span>Scheda Metadati:</span></el-button>
+                        <el-button type="primary" @click="openMetadataPanel('DATA')" size="mini"><span>Dataset</span></el-button>
+                        <el-button type="primary" @click="openMetadataPanel('VS')" size="mini"><span>WMS</span></el-button>
+                        <el-button v-show="flagDownload" type="primary" @click="openMetadataPanel('DS')" size="mini"><span>WFS</span></el-button>
+                    </el-button-group>
+                </el-col>
+            </el-row>
         </div>
     </div>
 </template>
 
+
 <script>
-    import GV from '../GV'
-    import infoWmsManager from '../infoWmsManager'
+    import * as config from '../config'
+    import Vue from 'vue'
+    import mountComponent from '../util/mountComponent'
+
+    import { Button, ButtonGroup, Row, Col } from 'element-ui'
+    Vue.use(Button)
+    Vue.use(ButtonGroup)
+    Vue.use(Row)
+    Vue.use(Col)
+
+    import * as MapMetadataPanel from './MapMetadataPanel.vue'
+    Vue.component('gv-map-metadata-panel', MapMetadataPanel)
 
     export default {
-        name: 'gv-wms-info-list',
-        props: ['idMap','title','visible'],
+        name: 'gv-map-info-panel',
+        props: ['idMap','visible'],
         data() {
             let items = []
-            var metaData = GV.config.getMapConfig(this.idMap).metaData
+            var metaData = config.getMapConfig(this.idMap).metaData
             if (metaData) {
                 items.push({label: 'Origine del dato', value: metaData.origine})
                 items.push({label: 'Anno', value: metaData.anno})
@@ -40,22 +60,120 @@
                 items.push({label: 'Note', value: metaData.note})
             }
             return {
-                items: items
+                items: items,
+                name: metaData.descrizione,
+                flagDownload: metaData.flag_download,
+                title: ("Scheda - " + metaData.descrizione).substr(0,83) + "...",
+                linkWms: metaData.link_wms,
+                linkWfs: metaData.link_wfs,
+                linkDownload: metaData.link_download
             }
         },
         mounted() {
-            this.getMapMetadata();
         },
         methods: {
             closePanel() {
                 this.$el.parentNode.removeChild(this.$el)
             },
-            getMapMetadata () {
-                //console.log(GV.config.getMapConfig(this.idMap))
+            download() {
+                window.open(this.linkDownload)
+            },
+            openMetadataPanel(type) {
+                const xmlUrl = `http://geoportale.regione.liguria.it:8080/geoservices/REST/metadata/scheda_xml/${this.idMap}?type=${type}&`
+                let url = xmlUrl
+                if (type==='DATA') {
+                    url += `${xmlUrl}style=dataset-gv.xsl`
+                } else {
+                    url += `${xmlUrl}style=service-gv.xsl`
+                }
 
+                const linkWms = this.linkWms
+                const linkWfs = this.linkWfs
+                const title = (type==='DATA') ? 'Scheda Metadati Dataset':
+                            (type==='VS') ? 'Scheda Metadati Servizio Visualizzazione' :
+                            'Scheda Metadati Servizio Scarico'
+
+                mountComponent({
+                    elId: 'gv-map-metadata-panel',
+                    clear: true,
+                    vm: new Vue({
+                        template: `<gv-map-metadata-panel :src="src" :xmlUrl="xmlUrl" :title="title" :type="type" :linkWms="linkWms" :linkWfs="linkWfs" ></gv-map-metadata-panel>`,
+                        data: {
+                            title: `${title}: ${this.name}`,
+                            src: url,
+                            type: type,
+                            xmlUrl: xmlUrl,
+                            linkWms: linkWms,
+                            linkWfs: linkWfs
+                        }
+                    })
+                })
             }
         }
     }
 
 </script>
 
+<style scoped>
+
+    .gv-map-metadata-panel {
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin-left: 10px;
+      margin-top: 100px;
+      background-color: #fff;
+      z-index: 800;
+      width: 860px;
+    }
+
+    .gv-map-info-panel {
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin-left: 10px;
+      margin-top: 100px;
+      background-color: #fff;
+      z-index: 800;
+      max-width: 600px;
+    }
+
+    .gv-map-info-panel table {
+      border: 1px solid #ddd ;
+      width: 100%;
+      padding: 10px;
+    }
+
+
+    .gv-map-info-panel-th {
+      white-space: nowrap;
+      width: auto;
+      padding: 5px 5px;
+      text-align: left;
+      font-weight: 400;
+      font-size: 12px;
+      border: 1px solid #e5e5e5;
+    }
+
+    .gv-map-info-panel table tr td {
+      padding: 5px;
+      font-size: 12px;
+      border: 1px solid #e5e5e5;
+    }
+
+    .gv-button-download {
+        font-size: 12px;
+    }
+
+    .gv-button-download span {
+        font-family: "Raleway",Arial,sans-serif !important;
+        font-weight: bold;
+    }
+    .gv-button-group span {
+        font-size: 12px;
+        font-family: "Raleway",Arial,sans-serif !important;
+        font-weight: bold;
+    }
+
+
+</style>

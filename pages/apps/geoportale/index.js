@@ -30,7 +30,8 @@ GV.init({
             options: {
               show: true,
               showAddMap: true,
-              showInfoMap: true
+              showInfoMap: true,
+              showBaseLayerSwitcher: true
             }
           }]
         },
@@ -50,6 +51,7 @@ GV.init({
   },
   baseLayers: [
     {'type': 'ESRI_IMAGERY', visible: true},
+    {'type': 'MAPBOX_STREETS'},
     {'type': 'BLANK'}
   ],
   maps: []

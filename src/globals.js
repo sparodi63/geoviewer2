@@ -3,10 +3,13 @@ var L = require('leaflet')
 var globals = {
   DEFAULT_PROXY: '/geoservices/proxy/proxy.jsp?url=',
 
-  RL_MAP_CONFIG_SERVICE: 'geoportale.regione.liguria.it/geoservices/REST/config/map/',
-  RL_CREATE_SLD_SERVICE: 'geoportale.regione.liguria.it/geoservices/REST/config/create_sld/',
+  RL_MAP_CONFIG_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/config/map/',
+  RL_CREATE_SLD_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/config/create_sld/',
+  RL_CATALOG_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/config/catalogo',
 
   RL_METADATA_URL: '/geoservices/REST/metadata/scheda_xml/',
+
+  GOOGLE_GEOCODE_PROXY: 'geoportale.regione.liguria.it/geoservices/REST/proxy/google_geocode?region=it&language=it&sensor=false&bounds=7.43,43.75|10.00,44.70',
 
   MAX_BOUNDS: L.latLngBounds(L.latLng(43.4, 7.3), L.latLng(44.8, 10.5)),
 
@@ -52,6 +55,82 @@ var globals = {
     18: '1:1.560',
     19: '1:800',
     20: '1:400'
+  },
+
+  BASE_LAYERS: {
+    'BLANK': {
+      label: 'Sfondo Bianco',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/bianco.gif'
+    },
+    'OSM': {
+      label: 'OpenStreetMap',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/openstreetmap.png'
+    },
+    'ESRI_IMAGERY': {
+      label: 'ESRI Imagery',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/esri.gif'
+    },
+    'ESRI_TOPOGRAPHIC': {
+      label: 'ESRI Topographic',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/esri.gif'
+    },
+    'ESRI_GRAY': {
+      label: 'ESRI Gray',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/esri.gif'
+    },
+    'ESRI_DARKGRAY': {
+      label: 'ESRI Dark Gray',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/esri.gif'
+    },
+    'MAPBOX_STREETS': {
+      label: 'Mapbox Streets',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
+    },
+    'MAPBOX_SATELLITE': {
+      label: 'Mapbox Satellite',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
+    },
+    'MAPBOX_OUTDOOR': {
+      label: 'Mapbox Outdoor',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
+    },
+    'MAPBOX_LIGHT': {
+      label: 'Mapbox Light',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
+    },
+    'STAMEN_TERRAIN': {
+      label: 'Stamen Terrain',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
+    },
+    'STAMEN_TONER_LIGHT': {
+      label: 'Stamen Toner Light',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
+    },
+    'google_roadmap': {
+      label: 'Google Stradario',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/google.png'
+    },
+    'google_hybrid': {
+      label: 'Google Ibrido',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/google.png'
+    },
+    'google_terrain': {
+      label: 'Google Terreno',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/google.png'
+    },
+    'google_satellite': {
+      label: 'Google Satellite',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/google.png'
+    },
+    'rl_ortofoto_2013': {
+      label: 'AGEA: Ortofoto 2013',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/sfondi_rl.jpg'
+    },
+    'rl_carte_base': {
+      label: 'Carte di base regionali',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/sfondi_rl.jpg'
+    }
+
   }
 
 }

@@ -1,11 +1,8 @@
 <template>
     <div id="gv-container">
-        <gv-map ref="gv-map"></gv-map>
+        <gv-map ref="gv-map" :maps="maps"></gv-map>
         <div v-show="showTitle" class="gv-color-scheme" id="gv-title">{{this.getTitle()}}</div>
-        <gv-legend ref="gv-legend" v-show="showLegend" :showAddMap="showAddMap" :showInfoMap="showInfoMap"></gv-legend>
-        <!--
-        <gv-geocoder ref="gv-map"></gv-geocoder>
-        -->
+        <gv-legend ref="gv-legend" v-show="showLegend" :show-add-map="showAddMap" :show-base-layer-switcher="showBaseLayerSwitcher" :show-info-map="showInfoMap" :base-layers="baseLayers" :maps="maps"></gv-legend>
     </div>
 </template>
 
@@ -16,22 +13,28 @@
     import isTouch from '../util/isTouch'
     import setDrag from '../util/setDrag'
     import getProtocol from '../util/getProtocol'
-    import Vue from 'vue'
-    import VueResource from 'vue-resource'
-
-    Vue.use(VueResource)
-
-    import * as gvMap from './Map'
-    import * as gvLegend from './Legend'
-
     import infoWmsManager from '../infoWmsManager'
+    import getConfig from '../services/getConfig'
+
+    import Vue from 'vue'
+
+    // Componenti Vue
+    import gvMap from './Map'
+    Vue.component('gv-map', gvMap)
+    import gvLegend from './Legend'
+    Vue.component('gv-legend', gvLegend)
+    import IFrame from './IFrame'
+    Vue.component('gv-iframe-panel', IFrame)
+    import InfoWmsList from './InfoWmsList.vue'
+    Vue.component(InfoWmsList.name, InfoWmsList)
+    import InfoWmsHtml from './InfoWmsHtml.vue'
+    Vue.component(InfoWmsHtml.name, InfoWmsHtml)
+    import Geocoder from './Geocoder.vue'
+    Vue.component('gv-geocoder', Geocoder)
+
 
     export default {
         name: 'gv-app',
-        components: {
-            gvMap,
-            gvLegend
-        },
         data: function () {
             return config
         },
@@ -45,6 +48,10 @@
             showAddMap: function () {
                 return config.getButtonOption('legend', 'showAddMap')
             },
+            showBaseLayerSwitcher: function () {
+                return config.getButtonOption('legend', 'showBaseLayerSwitcher')
+            },
+
             showInfoMap: function () {
                 return config.getButtonOption('legend', 'showInfoMap')
             }
@@ -54,6 +61,7 @@
             GV.app = this
         },
         mounted: function () {
+
             if (GV.config.debug) {
                 console.log('gv-app: mounted')
             }
@@ -72,8 +80,9 @@
             }
 
             // Gestione caricamento mappe/livelli da configurazione
-            config.maps.forEach((mapConfig) => {
-                this.addMap(mapConfig)
+            config.optionsMaps.forEach((mapConfig) => {
+                config.addMapConfig(mapConfig)
+                this.setTitle(mapConfig)
             })
 
             // Gestione caricamento mappe RL da servizio
@@ -128,43 +137,33 @@
                     throw new Error('Bottone ' + item.name + ' non esistente')
                 }
             },
-
             addRlMap(idMap, callback) {
-                if (!idMap || idMap === 'null') {
-                    throw new Error('addRlMap: prametro idMap mancante')
+                if (config.getMapConfig(idMap)) {
+                    return
                 }
 
-                let url = `${window.location.href.split(':')[0]}://${globals.RL_MAP_CONFIG_SERVICE}${idMap}`
-                if (config.geoserverUrl) {
-                    url += "?geoserverUrl=" + config.geoserverUrl
-                }
-
-                this.$http.get(url, {headers: {'Accept': 'application/json'}}).then(response => {
+                getConfig(idMap).then(response => {
                     if (!response.data.success) {
-                        throw new Error('Errore Caricamento Configurazione Mappa: ' + response.data.message)
+                       throw new Error('Errore Caricamento Configurazione Mappa: ' + response.data.message)
                     }
                     // Aggiorno array delle mappe
                     config.addMapConfig(response.data.data)
-                    this.addMap(response.data.data)
+                    this.setTitle(response.data.data)
                     // Gestione callback
                     if (callback) {
                         callback(this)
                     }
-                }).catch(error => console.error(error))
+                }).catch(error => {
+                    console.error(error)
+                    // TODO gestione messaggio errore
+                })
             },
-            addMap(mapConfig) {
+            setTitle(mapConfig) {
                 // Imposto titolo
                 if (config.application.layout.title === '{map.title}') {
                     config.title = mapConfig.name
                 }
-                // Aggiungo livelli alla mappa
-                GV.map.loadLayers(mapConfig.layers)
-                //gestione extent
-                if (mapConfig.extent_3857) {
-                    GV.map.setInitialExtent(mapConfig.extent_3857)
-                }
-                //TODO: gestione find
-            }
+           }
         }
     }
 </script>

@@ -8,12 +8,6 @@ function init (options) {
   // imposto configurazione applicazione
   config.set(options)
 
-
-
-
-
-
-
   // istanzio App
   const vm = new Vue({
     el: '#gv-container',

@@ -1,16 +1,19 @@
-export default function parseXML (xmlString) {
+import isBrowserIE from './isBrowserIE'
+
+export default function parseXML (data) {
   try {
-    var xmlDoc = null
-    if (window.DOMParser && window.XSLTProcessor) {
-      var parser = new DOMParser()
-      xmlDoc = parser.parseFromString(xmlString, 'text/xml')
+    let xml = null
+    if (isBrowserIE()) {
+      let xmlDoc = new ActiveXObject('Microsoft.XMLDOM')
+      xmlDoc.async = 'false'
+      xmlDoc.loadXML(data)
+      xml = xmlDoc
     } else {
-      xmlDoc = new ActiveXObject('Msxml2.DOMDocument.3.0')
-      xmlDoc.async = false
-      xmlDoc.loadXML(xmlString)
+      var parser = new DOMParser()
+      xml = parser.parseFromString(data, 'text/xml')
     }
-    return xmlDoc
+    return xml
   } catch (exception) {
-    throw new Error('GV.util.parseXml: errore parsing xml - ' + exception.message)
+    console.error(exception)
   }
 }

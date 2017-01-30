@@ -7,7 +7,9 @@ require('style!./assets/css/mapskin/css/mapskin.css')
 require('style!font-awesome/css/font-awesome.css')
 // -------------------------------------------------------------------------------- //
 // Shims/Polyfill
-require('./util/findIndex')
+require('./polyfill/findIndex')
+require('./polyfill/find')
+require('es6-promise').polyfill();
 // -------------------------------------------------------------------------------- //
 // Definizione globale oggetto GV
 import GV from './GV'
@@ -23,14 +25,4 @@ require('./buttons/geocoder')
 // -------------------------------------------------------------------------------- //
 // Direttive
 require('./directives/draggable')
-// -------------------------------------------------------------------------------- //
-// Registrazione Componenti Generici Vue
-import Vue from 'vue'
-import * as App from './components/App'
-Vue.component('gv-app', App)
-import * as IFrame from './components/IFrame'
-Vue.component('gv-iframe-panel', IFrame)
-import * as WmsInfoList from './components/WmsInfoList.vue'
-Vue.component('gv-wms-info-list', WmsInfoList)
-import * as Geocoder from './components/Geocoder.vue'
-Vue.component('gv-geocoder', Geocoder)
+

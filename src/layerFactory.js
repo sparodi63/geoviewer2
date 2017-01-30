@@ -9,6 +9,7 @@ import GV from './GV'
 import interpolateString from './util/interpolateString'
 import getParamString from './util/getParamString'
 import getZoomFromScaleDenom from './util/getZoomFromScaleDenom'
+import getGeoJSON from './services/getGeoJSON'
 
 var esriLink = '<a href="http://www.esri.com/">Esri</a>'
 
@@ -62,121 +63,6 @@ var layerFactory = {
     }
     return L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-    })
-  },
-
-  STAMEN_TERRAIN (layerConfig) {
-    layerConfig.legend = {
-      label: 'Stamen Terrain'
-    }
-    return L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
-      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: 'abcd',
-      minZoom: 0,
-      maxZoom: 18,
-      ext: 'png'
-    })
-  },
-
-  STAMEN_TONER_LIGHT (layerConfig) {
-    layerConfig.legend = {
-      label: 'Stamen Toner Light'
-    }
-    return L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
-      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: 'abcd',
-      minZoom: 0,
-      maxZoom: 20,
-      ext: 'png'
-    })
-  },
-
-  CARTODB_POSITRON (layerConfig) {
-    layerConfig.legend = {
-      label: 'CartoDb Positron'
-    }
-    return L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-      subdomains: 'abcd',
-      maxZoom: 19
-    })
-  },
-
-  CARTODB_DARKMATTER (layerConfig) {
-    layerConfig.legend = {
-      label: 'CartoDb DarkMatter'
-    }
-    return L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-      subdomains: 'abcd',
-      maxZoom: 19
-    })
-  },
-
-  OPENMAPSURFER_ROADS (layerConfig) {
-    layerConfig.legend = {
-      label: 'OpenMapSurfer Roads'
-    }
-    return L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', {
-      maxZoom: 20,
-      attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    })
-  },
-
-  MAPBOX_STREETS (layerConfig) {
-    layerConfig.legend = {
-      label: 'Mapbox Streets'
-    }
-    return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
-      attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: 'abcd',
-      id: 'mapbox.streets',
-      accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
-    })
-  },
-
-  MAPBOX_SATELLITE (layerConfig) {
-    layerConfig.legend = {
-      label: 'Mapbox Satellite'
-    }
-    return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
-      attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: 'abcd',
-      id: 'mapbox.satellite',
-      accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
-    })
-  },
-
-  MAPBOX_OUTDOOR (layerConfig) {
-    layerConfig.legend = {
-      label: 'Mapox Outdoor'
-    }
-    return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
-      attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: 'abcd',
-      id: 'mapbox.outdoors',
-      accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
-    })
-  },
-
-  MAPBOX_LIGHT (layerConfig) {
-    layerConfig.legend = {
-      label: 'Mapox Light'
-    }
-    return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
-      attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: 'abcd',
-      id: 'mapbox.light',
-      accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
-    })
-  },
-
-  HYDDA (layerConfig) {
-    layerConfig.legend = {
-      label: 'Hydda'
-    }
-    return L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
-      attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     })
   },
 
@@ -239,6 +125,121 @@ var layerFactory = {
       }
     )
   },
+
+  MAPBOX_STREETS (layerConfig) {
+    layerConfig.legend = {
+      label: 'Mapbox Streets'
+    }
+    return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
+      attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: 'abcd',
+      id: 'mapbox.streets',
+      accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
+    })
+  },
+
+  MAPBOX_SATELLITE (layerConfig) {
+    layerConfig.legend = {
+      label: 'Mapbox Satellite'
+    }
+    return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
+      attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: 'abcd',
+      id: 'mapbox.satellite',
+      accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
+    })
+  },
+
+  MAPBOX_OUTDOOR (layerConfig) {
+    layerConfig.legend = {
+      label: 'Mapox Outdoor'
+    }
+    return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
+      attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: 'abcd',
+      id: 'mapbox.outdoors',
+      accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
+    })
+  },
+
+  MAPBOX_LIGHT (layerConfig) {
+    layerConfig.legend = {
+      label: 'Mapox Light'
+    }
+    return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
+      attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: 'abcd',
+      id: 'mapbox.light',
+      accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
+    })
+  },
+
+  STAMEN_TERRAIN (layerConfig) {
+    layerConfig.legend = {
+      label: 'Stamen Terrain'
+    }
+    return L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 18,
+      ext: 'png'
+    })
+  },
+
+  STAMEN_TONER_LIGHT (layerConfig) {
+    layerConfig.legend = {
+      label: 'Stamen Toner Light'
+    }
+    return L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 20,
+      ext: 'png'
+    })
+  },
+
+  /*
+  CARTODB_POSITRON (layerConfig) {
+    layerConfig.legend = {
+      label: 'CartoDb Positron'
+    }
+    return L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    })
+  },
+  CARTODB_DARKMATTER (layerConfig) {
+    layerConfig.legend = {
+      label: 'CartoDb DarkMatter'
+    }
+    return L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    })
+  },
+  OPENMAPSURFER_ROADS (layerConfig) {
+    layerConfig.legend = {
+      label: 'OpenMapSurfer Roads'
+    }
+    return L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    })
+  },
+  HYDDA (layerConfig) {
+    layerConfig.legend = {
+      label: 'Hydda'
+    }
+    return L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+      attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    })
+  },
+
+*/
 
   WMS (layerConfig) {
     let {name, geomType, cacheMinZoomLevel, minScale, maxScale, wmsParams, flagGeoserver, zIndex} = layerConfig
@@ -314,7 +315,7 @@ var layerFactory = {
             switch (style.iconUrl) {
             case 'default':
               icon = L.icon({
-                iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/images/legend/marker-icon.png',
+                iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/static/img/marker-icon.png',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [0, -41]
@@ -322,7 +323,7 @@ var layerFactory = {
               break
             case 'default-small':
               icon = L.icon({
-                iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/images/legend/marker-icon.png',
+                iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/static/img/marker-icon.png',
                 iconSize: [12, 20],
                 iconAnchor: [6, 10],
                 popupAnchor: [0, -20]
@@ -460,8 +461,8 @@ var layerFactory = {
     }
 
     if (url) {
-      Vue.http.get(url, {headers: {'Accept': 'application/json'}}).then(response => {
-        var geoJson = buildGeoJson(response.data, esParams)
+      getGeoJSON(url).then(response => {
+        const geoJson = buildGeoJson(response.data, esParams)
         layer.addData(geoJson)
         if (cluster) {
           clusterLayer.addLayer(layer)

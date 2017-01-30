@@ -102,7 +102,7 @@ const Map = L.Map.extend({
 
     config.baseLayers.forEach(function (layerConfig) {
       var layer = layerFactory.create(layerConfig, this)
-      this.baseLayers[layer.config.legend.label] = layer
+      this.baseLayers[layer.config.type] = layer
       if (layer && layerConfig.visible) {
         layer.on('loading', function () {
           this.loading(true, layer)

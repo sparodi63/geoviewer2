@@ -1,9 +1,5 @@
 <template>
-    <div v-show="visible" :class="cls">
-        <div class="gv-panel-title gv-color-scheme">
-            {{title}}
-            <button class="gv-close" type="button" @click="closePanel">×</button>
-        </div>
+    <div>
         <div>
             <div class="gv-html-panel-body">
                 <iframe id="iframe" :src="src" :height="height" :width="width" style="border: none;"></iframe>
@@ -14,18 +10,15 @@
 
 <script>
     import Vue from 'vue';
-
+/*
+  import Title from './Title.vue'
+  Vue.use(Title)
+*/
     export default {
         name: 'gv-iframe-panel',
-        props: ['html', 'src', 'visible', 'cls', 'title', 'width', 'height'],
-        methods: {
-            closePanel: function () {
-                this.$el.parentNode.removeChild(this.$el);
-            }
-        },
+        props: ['html', 'src', 'width', 'height'],
         mounted: function () {
             var vm = this;
-
             if (vm.html) {
                 // firefox non aggiorna innerHTML - devo aspettare 1ms
                 setTimeout(function () {
