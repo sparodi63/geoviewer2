@@ -1,20 +1,15 @@
 import Vue from 'vue'
-import * as config from './config'
-import App from 'components/App.vue'
+import gvApp from 'components/App.vue'
+Vue.component('gv-app', gvApp)
 
-function init (options) {
+export default function (options) {
   'use strict'
 
-  // imposto configurazione applicazione
-  config.set(options)
-
-  // istanzio App
-  const vm = new Vue({
+  return new Vue({
     el: '#gv-container',
-    render: h => h(App)
+    template: '<gv-app :options="options"></gv-app>',
+    data () {
+      return {options: options}
+    }
   })
-
-  return vm
 }
-
-export default init

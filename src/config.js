@@ -1,3 +1,5 @@
+'use strict'
+
 import globals from './globals'
 import GV from './GV'
 
@@ -39,22 +41,24 @@ function set (options) {
     baseLayers = options.baseLayers
   }
   baseLayers.forEach( layer => {
-    "use strict";
     layer.name = layer.type
     layer.label = globals.BASE_LAYERS[layer.type].label
     layer.icon = globals.BASE_LAYERS[layer.type].icon
   })
 
-  // Gestione mappe in configurazione iniziale
-  this.optionsMaps = options.maps
+// TODO CANCELLARE
+// Gestione mappe in configurazione iniziale
+//  this.optionsMaps = options.maps
+/*
+  if (options.maps) {
+    options.maps.forEach(
+      (mapConfig) => {
+        addMapConfig(mapConfig)
+      }
+    )
+  }
+*/
 
-    // if (options.maps) {
-    // options.maps.forEach(
-    //   (mapConfig) => {
-    //     addMapConfig(mapConfig)
-    //   }
-    // )
-    // }
 }
 
 function addMapConfig (mapConfig) {
@@ -159,20 +163,31 @@ function setButtonOption (buttonName, optionName, value) {
 }
 
 function getActiveBaseLayer() {
-  'use strict'
   let activeLayer = null
   baseLayers.forEach(layer => {
     if (layer.visible) activeLayer = layer
   })
   return activeLayer
-
 }
 
 function setActiveBaseLayer(layerName) {
-  'use strict'
   baseLayers.forEach(layer => {
     layer.visible = (layer.name === layerName)
   })
+}
+
+function removeMap (idMap) {
+  const mapConfig = getMapConfig(idMap)
+  GV.app.$emit('config-remove-map', {
+    config: mapConfig
+  })
+
+  const index = maps.findIndex(function (map) {
+    return map.id === idMap
+  })
+  if (index > -1) {
+    maps.splice(index, 1)
+  }
 }
 
 export {
@@ -190,6 +205,7 @@ export {
   getLayerConfig,
   getActiveBaseLayer,
   getMapConfig,
+  removeMap,
   getButton,
   getButtonOption,
   setButtonOption,

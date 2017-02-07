@@ -10,10 +10,14 @@
                 </tbody>
             </table>
             <el-row type="flex" class="row-bg" justify="left">
-
-                <el-col :span="5">
+                <el-col :span="8">
                     <el-button type="primary" @click="download" class="gv-button-download fa fa-download" size="mini">
                         <span> Download</span>
+                    </el-button>
+                </el-col>
+                <el-col v-if="addToMapButton" :span="18">
+                    <el-button type="primary" @click="addToMap" class="gv-button-download fa fa-eye" size="mini">
+                        <span> Visualizza</span>
                     </el-button>
                 </el-col>
                 <el-col>
@@ -34,22 +38,20 @@
     import * as config from '../config'
     import Vue from 'vue'
     import mountComponent from '../util/mountComponent'
+    import getConfig from '../services/getConfig'
 
     import { Button, ButtonGroup, Row, Col } from 'element-ui'
-    Vue.use(Button)
-    Vue.use(ButtonGroup)
-    Vue.use(Row)
-    Vue.use(Col)
+    Vue.use(Button, ButtonGroup, Row, Col)
 
     import * as MapMetadataPanel from './MapMetadataPanel.vue'
     Vue.component('gv-map-metadata-panel', MapMetadataPanel)
 
     export default {
         name: 'gv-map-info-panel',
-        props: ['idMap','visible'],
+        props: ['idMap','visible','addToMapButton'],
         data() {
             let items = []
-            var metaData = config.getMapConfig(this.idMap).metaData
+            var metaData = config.schedaInfoCartografia
             if (metaData) {
                 items.push({label: 'Origine del dato', value: metaData.origine})
                 items.push({label: 'Anno', value: metaData.anno})
@@ -63,13 +65,14 @@
                 items: items,
                 name: metaData.descrizione,
                 flagDownload: metaData.flag_download,
-                title: ("Scheda - " + metaData.descrizione).substr(0,83) + "...",
+                title: ("SCHEDA - " + metaData.descrizione).substr(0,83) + "...",
                 linkWms: metaData.link_wms,
                 linkWfs: metaData.link_wfs,
                 linkDownload: metaData.link_download
             }
         },
         mounted() {
+//          console.log(this.idMap)
         },
         methods: {
             closePanel() {
@@ -77,6 +80,15 @@
             },
             download() {
                 window.open(this.linkDownload)
+            },
+            addToMap() {
+                getConfig(this.idMap).then(response => {
+                    if (!response.data.success) {
+                        throw new Error('Errore Caricamento Mappa: ' + response.data.message)
+                    }
+                    // Aggiorno array delle mappe
+                    config.addMapConfig(response.data.data)
+                })
             },
             openMetadataPanel(type) {
                 const xmlUrl = `http://geoportale.regione.liguria.it:8080/geoservices/REST/metadata/scheda_xml/${this.idMap}?type=${type}&`
@@ -131,7 +143,7 @@
       position: absolute;
       left: 0;
       top: 0;
-      margin-left: 10px;
+      margin-left: 30px;
       margin-top: 100px;
       background-color: #fff;
       z-index: 800;
@@ -166,12 +178,12 @@
     }
 
     .gv-button-download span {
-        font-family: "Raleway",Arial,sans-serif !important;
+        font-family: "Raleway",Arial,sans-serif;
         font-weight: bold;
     }
     .gv-button-group span {
         font-size: 12px;
-        font-family: "Raleway",Arial,sans-serif !important;
+        font-family: "Raleway",Arial,sans-serif;
         font-weight: bold;
     }
 

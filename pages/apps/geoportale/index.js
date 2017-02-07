@@ -10,7 +10,7 @@ GV.init({
       click: 'info'
     },
     layout: {
-      //title: '{map.title}',
+      // title: '{map.title}',
       toolbar: [
         {
           position: 'topleft',
@@ -31,7 +31,53 @@ GV.init({
               show: true,
               showAddMap: true,
               showInfoMap: true,
-              showBaseLayerSwitcher: true
+              showBaseLayerSwitcher: true,
+              addMapConfig: {
+                /*                panels: [
+                 {
+                 'type': 'tree',
+                 'name': 'repertorio',
+                 'label': 'Repertorio Cartografico',
+                 'options': {
+                 'treeServiceUrl': 'http://srvcarto.regione.liguria.it/geoservices/REST/config/catalog/'
+                 },
+                 'tree': null
+                 },
+                 {
+                 'type': 'tree',
+                 'name': 'canali',
+                 'label': 'Canali Tematici',
+                 'options': {
+                 'treeServiceUrl': 'http://geoportale.regione.liguria.it/geoservices/REST/config/ag_app_canali_tree/ECO3/'
+                 },
+                 'tree': null
+                 }
+                 ]*/
+                panels: {
+                  'repertorio': {
+                    'type': 'tree',
+                    'name': 'repertorio',
+                    'label': 'Repertorio Cartografico',
+                    'options': {
+                      'treeServiceUrl': 'http://srvcarto.regione.liguria.it/geoservices/REST/config/catalog/'
+                    },
+                    'tree': null
+                  }
+/*
+                  ,
+                  'canali': {
+                    'type': 'tree',
+                    'name': 'canali',
+                    'label': 'Canali Tematici',
+                    'options': {
+                      'applicazione': 'ECO3',
+                      'tematici': 'SI'
+                    },
+                    'tree': null
+                  }
+*/
+                }
+              }
             }
           }]
         },
@@ -47,6 +93,8 @@ GV.init({
       // GV.app.addRlMap(1735)
       // GV.app.addRlMap(5)
       // GV.app.addRlMap(1646)
+      // Creo una cache del catalogo mappe da ES
+      GV.app.loadCatalog({})
     }
   },
   baseLayers: [

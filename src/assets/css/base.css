@@ -371,8 +371,6 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
 /* ----------------------------------------------- */
 .el-row {
   padding: 5px 5px 5px 15px;
-  margin-left: 0px !important;
-  margin-right: 0px !important;
 }
 
 .row-bg {
@@ -395,4 +393,8 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   color: #24386C !important;
   background-color: #ccc !important;
   border-color: #ccc !important;
+}
+
+.el-select-dropdown__wrap {
+  overflow: auto;
 }

@@ -243,7 +243,7 @@ var layerFactory = {
 
   WMS (layerConfig) {
     let {name, geomType, cacheMinZoomLevel, minScale, maxScale, wmsParams, flagGeoserver, zIndex} = layerConfig
-    if (GV.config.debug) console.log('layerFactory - Creazione Layer WMS: ' + name)
+    if (GV.app.debug) console.log('layerFactory - Creazione Layer WMS: ' + name)
 
     let isCached = (cacheMinZoomLevel) ? true : false
     let format = (geomType === 'VECTOR') ? 'image/png8' : (cacheMinZoomLevel) ? 'image/jpeg' : 'image/png'

@@ -4,7 +4,7 @@
             <b>LEGENDA</b>
             <button class="gv-legend-close" type="button" @click="hideLegend">×</button>
             <el-button v-show="showAddMap" type="primary" @click="addMap" class="gv-inverted-color-scheme gv-legend-add ms ms-layers-add" size="mini">
-                <span> CATALOGO </span>
+                <span> CATALOGHI </span>
             </el-button>
         </div>
         <div id="gv-legend-body">
@@ -14,8 +14,10 @@
                     {{map.name}}
                 </li>
                 <div v-if="checkAddMap(map)" class="gv-legend-map-info gv-inverted-color-scheme">
-                    <el-button type="primary" @click="showMapInfoPanel(map)" class="gv-legend-map-info-button ms ms-txt-o" size="mini">
+                    <el-button title="Visualizza scheda" type="primary" @click="showMapInfoPanel(map)" class="gv-legend-map-info-button fa fa-file-text-o" size="mini">
                         <!--<span> SCHEDA</span>-->
+                    </el-button>
+                    <el-button title="Cancella" type="primary" @click="remove(map)" class="gv-legend-map-info-button fa fa-trash" size="mini">
                     </el-button>
                 </div>
                 </div>
@@ -38,6 +40,7 @@
 
 
 <script>
+    'use strict'
     import Vue from 'vue'
     import Map from '../leaflet/Map.js'
     import GV from '../GV'
@@ -50,6 +53,8 @@
     Vue.component('gv-base-layer-switcher', BaseLayerSwitcher)
     import MultiLegendPanel from './MultiLegendPanel.vue'
     Vue.component(MultiLegendPanel.name, MultiLegendPanel)
+    import MapCatalogPanel from './MapCatalogPanel.vue'
+    Vue.component('gv-map-catalog-panel', MapCatalogPanel)
 
     import { Select, Option, Button } from 'element-ui'
     Vue.use(Select)
@@ -64,7 +69,7 @@
             }
         },
         mounted () {
-            if (GV.config.debug) console.log('gv-legend: mounted')
+            if (GV.app.debug) console.log('gv-legend: mounted')
         },
         methods: {
             checkAddMap(map) {
@@ -74,8 +79,10 @@
                 config.setButtonOption('legend', 'show', false)
             },
             showMapInfoPanel: function (map) {
-                'use strict'
+
                 //alert(map.id)
+
+                config.schedaInfoCartografia = config.getMapConfig(map.id).metaData
                 mountComponent({
                     elId: 'gv-map-info-panel',
                     clear: true,
@@ -84,8 +91,19 @@
                     })
                 })
             },
+            remove: function (map) {
+                config.removeMap(map.id)
+            },
             addMap: function () {
-                GV.app.addRlMap(1735)
+                //GV.app.addRlMap(1735)
+                mountComponent({
+                    elId: 'gv-map-catalog-panel',
+                    toggleEl: true,
+                    vm: new Vue({
+                        template: `<gv-map-catalog-panel visible="true"></gv-map-catalog-panel>`
+                    })
+                })
+                //console.log(this.addMapConfig.panels)
             },
             iconUrl: function (layer) {
                 return layer.legend.icon
@@ -244,15 +262,14 @@
         border: 1px solid #ddd;
         font-size: 13px;
         font-weight: bold;
-        width: 260px;
     }
 
     .gv-legend-map-info-button {
         position: relative;
         right: 0;
         bottom: 0;
-        margin-right: 15px;
         margin-bottom: 5px;
+        font-size: 14px;
     }
 
     .gv-legend-map-info span {

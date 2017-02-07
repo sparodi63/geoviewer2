@@ -1,10 +1,12 @@
-/**
- * Created by parodi on 19/09/2016.
- */
+import GV from '../GV'
+import globals from '../globals'
+import L from 'leaflet'
+import easyButton from '../controls/EasyButton'
+
 GV.Buttons.print = function (btnOptions, map) {
-  "use strict";
-  if (GV.globals.SMALL_SCREEN) {
-    return null;
+  'use strict'
+  if (globals.SMALL_SCREEN) {
+    return null
   }
 
   var options = Object.assign(btnOptions, {
@@ -12,12 +14,12 @@ GV.Buttons.print = function (btnOptions, map) {
     states: [{
       stateName: 'print',
       onClick: function (button, map) {
-        console.log('print');
+        console.log('print')
       },
       title: 'Stampa',
       icon: 'fa-print'
     }]
-  });
+  })
 
-  return L.easyButton(options);
-};
+  return L.easyButton(options)
+}

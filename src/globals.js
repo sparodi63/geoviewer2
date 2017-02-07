@@ -3,9 +3,13 @@ var L = require('leaflet')
 var globals = {
   DEFAULT_PROXY: '/geoservices/proxy/proxy.jsp?url=',
 
-  RL_MAP_CONFIG_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/config/map/',
+//  RL_MAP_CONFIG_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/config/map/',
+  RL_MAP_CONFIG_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/geoportale/map/',
   RL_CREATE_SLD_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/config/create_sld/',
-  RL_CATALOG_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/config/catalogo',
+  RL_CATALOG_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/geoportale/catalogo/',
+  RL_CANALI_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/config/ag_app_canali_tree/',
+  RL_SCHEDA_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/geoportale/scheda/',
+  RL_ENTI_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/geoportale/enti/',
 
   RL_METADATA_URL: '/geoservices/REST/metadata/scheda_xml/',
 

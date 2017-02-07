@@ -14,7 +14,7 @@
         methods: {
             closePanel: function () {
                 (this.hide)?
-                        this.$el.parentNode.parentNode.removeChild(this.$el.parentNode):
+                        this.$el.parentNode.style.display = 'none':
                         this.$el.parentNode.parentNode.removeChild(this.$el.parentNode)
             }
         },

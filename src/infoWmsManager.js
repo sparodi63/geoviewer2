@@ -15,7 +15,7 @@ var _numRequests = 0
 var _features = []
 
 function _request (e) {
-  if (GV.config.debug) {
+  if (GV.app.debug) {
     console.log('start info request: ' + new Date())
   }
   _requestCount = 0
@@ -88,7 +88,7 @@ function _handleResponse (features) {
     GV.map._container.style.cursor = 'default'
 
     if (_features.length === 0) {
-      if (GV.config.debug) {
+      if (GV.app.debug) {
         console.log('Nessun elemento trovato')
       }
       return
@@ -109,7 +109,7 @@ function _handleResponse (features) {
       _showFeatureInfo(_features[0])
     }
 
-    if (GV.config.debug) {
+    if (GV.app.debug) {
       console.log('end info request: ' + new Date())
     }
   }
@@ -286,7 +286,7 @@ function _showFeatureInfo (feature) {
 
 export default {
   activate: function () {
-    if (GV.config.debug) {
+    if (GV.app.debug) {
       console.log('GV.app.infoWmsManager.activate')
     }
     // Aggiungo layer per evidenziazione

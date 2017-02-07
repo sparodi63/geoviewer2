@@ -41,8 +41,18 @@ const Map = L.Map.extend({
 
   setInitialExtent: function () {
     'use strict'
-
     var extent = this.mapOptions.initialExtent || '830036,5402959,1123018,5597635'
+    var extArray = extent.split(',')
+    var swPoint = L.point(extArray[0], extArray[1])
+    var nePoint = L.point(extArray[2], extArray[3])
+    var swLatLng = L.Projection.SphericalMercator.unproject(swPoint)
+    var neLatLng = L.Projection.SphericalMercator.unproject(nePoint)
+    this.initialExtent = L.latLngBounds(swLatLng, neLatLng)
+    this.fitBounds(this.initialExtent)
+  },
+
+  setExtent: function (extent) {
+    'use strict'
     var extArray = extent.split(',')
     var swPoint = L.point(extArray[0], extArray[1])
     var nePoint = L.point(extArray[2], extArray[3])
@@ -174,14 +184,14 @@ const Map = L.Map.extend({
 
     if (state) {
       if (this._spinning === 0) {
-        if (GV.config.debug) console.log('start load: ' + layer.config.name)
+        if (GV.app.debug) console.log('start load: ' + layer.config.name)
         this._container.style.cursor = 'progress'
       }
       this._spinning++
     } else {
       this._spinning--
       if (this._spinning <= 0) {
-        if (GV.config.debug) console.log('end load: ' + layer.config.name)
+        if (GV.app.debug) console.log('end load: ' + layer.config.name)
         this._container.style.cursor = 'default'
       }
     }
