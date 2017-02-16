@@ -45,20 +45,6 @@ function set (options) {
     layer.label = globals.BASE_LAYERS[layer.type].label
     layer.icon = globals.BASE_LAYERS[layer.type].icon
   })
-
-// TODO CANCELLARE
-// Gestione mappe in configurazione iniziale
-//  this.optionsMaps = options.maps
-/*
-  if (options.maps) {
-    options.maps.forEach(
-      (mapConfig) => {
-        addMapConfig(mapConfig)
-      }
-    )
-  }
-*/
-
 }
 
 function addMapConfig (mapConfig) {
@@ -67,7 +53,7 @@ function addMapConfig (mapConfig) {
   }
   mapConfig.layers.forEach(function (layer) {
     layer.minScale = (layer.minScale === 0) ? 591657550 : layer.minScale
-    layer.inRange = (GV.map) ? GV.map.layerInRange(layer) : true
+    layer.inRange = (GV.app.lMap) ? GV.app.lMap.layerInRange(layer) : true
     layer.zIndex = _lastZIndex++
   })
   mapConfig.layers.reverse()

@@ -5,6 +5,7 @@ GV.init({
   idMap: id,
   // geoserverUrl: 'http://geoservizi.regione.liguria.it:8081/',
   application: {
+    name: "geoportale",
     mapOptions: {
       controls: [{name: 'scale'}],
       click: 'info'
@@ -18,7 +19,7 @@ GV.init({
             {
               name: 'geocoder',
               options: {
-                autoClick: true
+                autoClick: false
               }
             }
           ]

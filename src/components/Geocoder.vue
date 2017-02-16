@@ -81,14 +81,20 @@
                         title: result.label
                     }
                     this.marker = L.marker(result.location, opts);
-                    this.marker.addTo(GV.map);
-                    GV.map.setView(result.location, 14);
+                    this.marker.addTo(GV.app.lMap);
+                    GV.app.lMap.setView(result.location, 14);
                 } else {
                     if (this.marker) {
-                        GV.map.removeLayer(this.marker)
+                        GV.app.lMap.removeLayer(this.marker)
                     }
                 }
             }
+        },
+        mounted: function () {
+            const rect = document.getElementById('gv-btn-geocoder').getBoundingClientRect()
+            console.log(rect)
+            document.getElementById('gv-geocoder').style.top = `${rect.top}px`
+            document.getElementById('gv-geocoder').style.marginLeft = `${rect.right}px`
         }
     }
 </script>
@@ -96,15 +102,13 @@
     .geocoder {
         height: 26px;
         width: 180px;
-        position: absolute;
+        position: fixed;
         left: 0;
         top: 0;
-        margin-left: 50px;
-        margin-top: 20px;
         z-index: 800;
     }
     .el-select {
-        position: relative;
+        position: fixed;
         padding: 2px;
     }
 </style>

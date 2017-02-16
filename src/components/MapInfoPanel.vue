@@ -1,6 +1,7 @@
+<script src="../../../../../../Progetti/Fototeca/Fototeca.js"></script>
 <template>
     <div v-show="visible" class="gv-map-info-panel gv-inverted-color-scheme" id="gv-map-info-panel">
-        <gv-title :title="title"></gv-title>
+        <gv-title :title="title" :fullTitle="fullTitle"></gv-title>
         <div class="gv-map-info-panel-body">
             <table>
                 <tbody>
@@ -65,7 +66,8 @@
                 items: items,
                 name: metaData.descrizione,
                 flagDownload: metaData.flag_download,
-                title: ("SCHEDA - " + metaData.descrizione).substr(0,83) + "...",
+                title: (metaData.descrizione).substr(0,80),
+                fullTitle: (metaData.descrizione),
                 linkWms: metaData.link_wms,
                 linkWfs: metaData.link_wfs,
                 linkDownload: metaData.link_download
@@ -82,7 +84,7 @@
                 window.open(this.linkDownload)
             },
             addToMap() {
-                getConfig(this.idMap).then(response => {
+                getConfig(this.idMap,config.application.name).then(response => {
                     if (!response.data.success) {
                         throw new Error('Errore Caricamento Mappa: ' + response.data.message)
                     }
@@ -185,6 +187,13 @@
         font-size: 12px;
         font-family: "Raleway",Arial,sans-serif;
         font-weight: bold;
+    }
+
+    @media (pointer: coarse) {
+        .gv-map-info-panel-body {
+            max-height: 300px;
+            overflow: auto;
+        }
     }
 
 

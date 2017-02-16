@@ -57,8 +57,7 @@
         mounted () {
             if (GV.app.debug) console.log('gv-map: mounted')
 
-            this.lMap = GV.map = new Map()
-            //this.lMap = GV.map
+            this.lMap = new Map()
 
             this.registerMapEvents()
 

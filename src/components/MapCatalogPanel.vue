@@ -2,7 +2,7 @@
     <div v-show="visible" class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
         <gv-title :title="title" :hide="true"></gv-title>
         <div class="gv-map-catalog-panel-body">
-            <el-tabs type="border-card">
+            <el-tabs>
                 <el-tab-pane v-if="panels.repertorio" :label="panels.repertorio.label" name="repertorio">
                     <form @submit.prevent.stop @keyup.enter="submit">
                         <el-row class="gv-map-catalog-panel-form" type="flex" justify="left">
@@ -33,11 +33,13 @@
                                     </el-option>
                                 </el-select>
                             </el-col>
+<!--
                             <el-col  :span="1">
                                 <el-button type="primary" @click="submit" class="gv-button-ricerca" size="mini">
                                     <span> Ricerca</span>
                                 </el-button>
                             </el-col>
+-->
                         </el-row>
                     </form>
                     <div class="gv-map-catalog-tree">
@@ -101,7 +103,7 @@
             let panels = config.getButtonOption('legend', 'addMapConfig').panels
 
             return {
-                title: "CATALOGHI CARTOGRAFIE",
+                title: "CATALOGO CARTOGRAFIE",
                 panels: panels,
                 defaultProps: {
                     children: 'children',
@@ -208,6 +210,7 @@
         overflow: auto;
     }
 
+
     .gv-map-catalog-panel {
         position: absolute;
         left: 0;
@@ -247,10 +250,10 @@
     }
 
     .gv-map-catalog-panel-form {
-        padding: 0px;
-        padding-bottom: 5px;
+        padding: 0px 10px 5px;
         width: 500px;
     }
+
     .gv-button-ricerca {
         font-size: 12px;
         margin-left: 35px;
@@ -267,6 +270,15 @@
         font-family: "Raleway",Arial,sans-serif;
     }
 
+    @media (pointer: coarse) {
+        .gv-map-catalog-tree {
+            width: 345px;
+        }
+        .gv-map-catalog-panel-form {
+
+            width: 340px;
+        }
+    }
 
 </style>
 
@@ -278,4 +290,10 @@
         color: #24386c !important;
     }
 
+    @media (pointer: coarse) {
+    .el-select {
+        position: relative;
+        width: 110px;
+    }
+    }
 </style>

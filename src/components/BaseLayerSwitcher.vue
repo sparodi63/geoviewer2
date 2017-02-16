@@ -39,8 +39,8 @@
                 // altrimenti levo layer precedente e carico livello in mappa e rendo visibile
                 const activeLayerName = config.getActiveBaseLayer().name
                 if (activeLayerName !== value){
-                    GV.map.removeLayer(GV.map.baseLayers[activeLayerName])
-                    GV.map.baseLayers[value].addTo(GV.map)
+                    GV.app.lMap.removeLayer(GV.app.lMap.baseLayers[activeLayerName])
+                    GV.app.lMap.baseLayers[value].addTo(GV.app.lMap)
                     config.setActiveBaseLayer(value)
                 }
             }

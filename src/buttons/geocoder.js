@@ -24,10 +24,10 @@ GV.Buttons.geocoder = function (btnOptions, map) {
         })
         // Allineo div Geocoder al bottone
         const rect = document.getElementById('gv-btn-geocoder').getBoundingClientRect()
-        document.getElementById('gv-geocoder').style.marginTop = `${rect.top}px`
+        document.getElementById('gv-geocoder').style.top = `${rect.top}px`
         document.getElementById('gv-geocoder').style.marginLeft = `${rect.right}px`
       },
-      title: 'Geocoder',
+      title: 'Ricerca Indirizzo...',
       icon: 'ms ms-search-zoom'
     }]
 

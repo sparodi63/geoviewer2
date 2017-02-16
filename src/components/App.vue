@@ -1,15 +1,22 @@
 <template>
     <div id="gv-container">
-        <gv-map ref="gv-map" :maps="config.maps"></gv-map>
-        <div v-show="showTitle" class="gv-color-scheme" id="gv-title">{{this.getTitle()}}</div>
-        <gv-legend ref="gv-legend"
-                   v-show="showLegend"
-                   :show-add-map="showAddMap"
-                   :show-base-layer-switcher="showBaseLayerSwitcher"
-                   :show-info-map="showInfoMap"
-                   :base-layers="config.baseLayers"
-                   :maps="config.maps"
-        ></gv-legend>
+        <!--
+        <div id="gv-header"></div>
+        <div>
+        -->
+            <gv-map ref="gv-map" :maps="config.maps"></gv-map>
+            <div v-show="showTitle" class="gv-color-scheme" id="gv-title">{{this.getTitle()}}</div>
+            <gv-legend ref="gv-legend"
+                       v-show="showLegend"
+                       :show-add-map="showAddMap"
+                       :show-base-layer-switcher="showBaseLayerSwitcher"
+                       :show-info-map="showInfoMap"
+                       :base-layers="config.baseLayers"
+                       :maps="config.maps"
+            ></gv-legend>
+    <!--
+        </div>
+    -->
     </div>
 </template>
 
@@ -137,16 +144,20 @@
             },
             addButton(item) {
                 if (GV.Buttons[item.name]) {
-                    var button = GV.Buttons[item.name](item.options, GV.map)
+                    var button = GV.Buttons[item.name](item.options, GV.app.lMap)
                     if (button) {
                         button.name = item.name
-                        button.addTo(GV.map)
-                        GV.map.buttons.push(button)
+                        button.addTo(GV.app.lMap)
+                        GV.app.lMap.buttons.push(button)
                         if (item.options.callBack) {
                             item.options.callBack(button)
                         }
                         if (item.options.autoClick) {
-                            button.button.click()                        }
+                            setTimeout(function () {
+                                button.button.click()
+                            }, 1);
+
+                        }
                     }
                 } else {
                     throw new Error('Bottone ' + item.name + ' non esistente')
@@ -161,6 +172,10 @@
                     if (!response.data.success) {
                        throw new Error('Errore Caricamento Mappa: ' + response.data.message)
                     }
+                    if (!response.data.data) {
+                        throw new Error('Errore Caricamento Mappa: configurazione mappa nulla')
+                    }
+
                     // Aggiorno array delle mappe
                     config.addMapConfig(response.data.data)
                     this.setTitle(response.data.data)

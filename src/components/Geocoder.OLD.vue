@@ -45,15 +45,15 @@
                     title: result.name
                 }
                 this.marker = L.marker(result.latlng, opts);
-                this.marker.addTo(GV.map);
-                GV.map.setView(result.latlng, 14);
+                this.marker.addTo(GV.app.lMap);
+                GV.app.lMap.setView(result.latlng, 14);
             },
             handleOnSuggestions(e) {
                 //console.log('handleOnSuggestions',e)
             },
             handleOnClear() {
                 //console.log('clear')
-                GV.map.removeLayer(this.marker);
+                GV.app.lMap.removeLayer(this.marker);
             },
 
         },

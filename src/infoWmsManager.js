@@ -23,11 +23,11 @@ function _request (e) {
   _features = []
 
   var buildWMSOptions = function (url, layers, latlng) {
-    var point = GV.map.latLngToContainerPoint(latlng, GV.map.getZoom())
-    var size = GV.map.getSize()
-    var bounds = GV.map.getBounds()
-    var sw = GV.map.options.crs.project(bounds.getSouthWest())
-    var ne = GV.map.options.crs.project(bounds.getNorthEast())
+    var point = GV.app.lMap.latLngToContainerPoint(latlng, GV.app.lMap.getZoom())
+    var size = GV.app.lMap.getSize()
+    var bounds = GV.app.lMap.getBounds()
+    var sw = GV.app.lMap.options.crs.project(bounds.getSouthWest())
+    var ne = GV.app.lMap.options.crs.project(bounds.getNorthEast())
     var params = {
       request: 'GetFeatureInfo',
       service: 'WMS',
@@ -57,7 +57,7 @@ function _request (e) {
 
     // Ciclo sui layer caricati sulla mappa leaflet
     mapConfig.layers.forEach(function (layerConfig) {
-      if (layerConfig.idMap === mapConfig.id && layerConfig.type === 'WMS' && layerConfig.queryable && layerConfig.visible && GV.map.layerInRange(layerConfig)) {
+      if (layerConfig.idMap === mapConfig.id && layerConfig.type === 'WMS' && layerConfig.queryable && layerConfig.visible && GV.app.lMap.layerInRange(layerConfig)) {
         url = layerConfig.wmsParams.url
         layersArray.push(layerConfig.wmsParams.name)
       }
@@ -68,7 +68,7 @@ function _request (e) {
     if (url && layersArray.length > 0) {
       var wmsUrl = buildWMSOptions(url, layers, e.latlng)
       _numRequests++
-      GV.map._container.style.cursor = 'progress'
+      GV.app.lMap._container.style.cursor = 'progress'
       getFeatureInfo(wmsUrl).then(features => _handleResponse(features)).catch(error => console.error(error))
     }
   })
@@ -79,13 +79,13 @@ function _handleResponse (features) {
   features.forEach(function (feature) {
     var layerName = feature.id.split('.')[0]
     feature.layerName = layerName
-    feature.layer = GV.map.getLayerByName(layerName)
+    feature.layer = GV.app.lMap.getLayerByName(layerName)
     feature.label = setFeatureLabel(layerName, feature.properties)
     feature.infoOptions = feature.layer.config.infoOptions
   })
   Array.prototype.push.apply(_features, features)
   if (_requestCount === _numRequests) {
-    GV.map._container.style.cursor = 'default'
+    GV.app.lMap._container.style.cursor = 'default'
 
     if (_features.length === 0) {
       if (GV.app.debug) {
@@ -129,7 +129,7 @@ function _handleResponse (features) {
   }
 
   function getField (layerName, fieldName) {
-    var layerConfig = GV.map.getLayerByName(layerName).config
+    var layerConfig = GV.app.lMap.getLayerByName(layerName).config
     return (layerConfig && layerConfig.infoOptions && layerConfig.infoOptions[fieldName]) ? layerConfig.infoOptions[fieldName] : null
   }
 
@@ -272,12 +272,12 @@ function _showFeatureInfo (feature) {
   }
 
   getFeatureHilite(feature).then(features => {
-    const layer = GV.map.getLayerByName('InfoWmsHilite')
+    const layer = GV.app.lMap.getLayerByName('InfoWmsHilite')
     if (features && features[0] && features[0].geometry) {
       layer.clearLayers()
       layer.addData(features[0].geometry)
-      GV.map.fitBounds(layer.getBounds(), {maxZoom: 15})
-      GV.map._container.style.cursor = 'default'
+      GV.app.lMap.fitBounds(layer.getBounds(), {maxZoom: 15})
+      GV.app.lMap._container.style.cursor = 'default'
     }
   }).catch(error => {
     console.error(error)
@@ -290,7 +290,7 @@ export default {
       console.log('GV.app.infoWmsManager.activate')
     }
     // Aggiungo layer per evidenziazione
-    GV.map.loadLayers([{
+    GV.app.lMap.loadLayers([{
       name: 'InfoWmsHilite',
       type: 'JSON',
       style: {
@@ -313,11 +313,11 @@ export default {
       visible: true
     }])
     // Attivo evento click
-    GV.map.on('click', _request)
+    GV.app.lMap.on('click', _request)
   },
 
   deactivate: function () {
-    GV.map.off('click')
+    GV.app.lMap.off('click')
   },
 
   showFeatureInfo: _showFeatureInfo

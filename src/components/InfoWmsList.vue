@@ -21,7 +21,7 @@
         methods: {
             closePanel: function () {
                 this.$el.parentNode.removeChild(this.$el)
-                GV.map.getLayerByName('InfoWmsHilite').clearLayers()
+                GV.app.lMap.getLayerByName('InfoWmsHilite').clearLayers()
             },
             featureInfo: function (item) {
                 infoWmsManager.showFeatureInfo(item)

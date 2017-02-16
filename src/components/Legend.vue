@@ -4,9 +4,10 @@
             <b>LEGENDA</b>
             <button class="gv-legend-close" type="button" @click="hideLegend">×</button>
             <el-button v-show="showAddMap" type="primary" @click="addMap" class="gv-inverted-color-scheme gv-legend-add ms ms-layers-add" size="mini">
-                <span> CATALOGHI </span>
+                <span> CATALOGO </span>
             </el-button>
         </div>
+        <div>
         <div id="gv-legend-body">
             <ul v-for="map in maps" class="gv-list-group">
                 <div class="gv-list-legend-map-item gv-inverted-color-scheme">
@@ -31,9 +32,10 @@
                     </li>
                 </ul>
             </ul>
-            <div class="gv-legend-footer gv-inverted-color-scheme">
-                <gv-base-layer-switcher v-show="showBaseLayerSwitcher" :base-layers="baseLayers"></gv-base-layer-switcher>
-            </div>
+        </div>
+        <div class="gv-legend-footer gv-inverted-color-scheme">
+            <gv-base-layer-switcher v-show="showBaseLayerSwitcher" :base-layers="baseLayers"></gv-base-layer-switcher>
+        </div>
         </div>
     </div>
 </template>
@@ -112,7 +114,7 @@
                 return (layer.inRange) ? 'gv-list-legend-layer-item' : 'gv-list-legend-layer-item gv-list-legend-layer-disabled-item'
             },
             setLayerVisible: function (layer, event) {
-                GV.map.setLayerVisible(layer, event.currentTarget.checked)
+                GV.app.lMap.setLayerVisible(layer, event.currentTarget.checked)
             },
             showLegendPanel: function (layer) {
                 if (layer.inRange && (layer.multiClasse || layer.legend.popUpFlag)) {
@@ -296,16 +298,15 @@
     }
 
     .gv-legend-footer {
-        position: relative;
         display: block;
         padding: 0.3rem 0.5rem;
         margin-bottom: -1px;
-        width: 260px;
         cursor: default;
     }
 
     #gv-legend {
-        position: absolute;
+        position: relative;
+        float: right;
         right: 0;
         top: 0;
         margin-right: 10px;
@@ -333,7 +334,6 @@
     */
 
     #gv-legend-body {
-        position: absolute;
         width: 260px;
         max-height: 400px;
         cursor: default;

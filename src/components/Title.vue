@@ -1,7 +1,9 @@
 <template>
     <div class="gv-panel-title gv-color-scheme">
+        <span :title="fullTitle" class="gv-color-scheme">
         {{title}}
-        <button class="gv-close" type="button" @click="closePanel">×</button>
+        </span>
+        <button class="gv-close gv-color-scheme" type="button" @click="closePanel">×</button>
     </div>
 </template>
 
@@ -10,7 +12,7 @@
 
     export default {
         name: 'gv-title',
-        props: ['title','hide'],
+        props: ['title','fullTitle','hide'],
         methods: {
             closePanel: function () {
                 (this.hide)?
@@ -37,6 +39,7 @@
     .gv-panel-title span {
         font-size: 14px;
         font-weight: bold;
+        height: 20px
     }
 
     .gv-close {
