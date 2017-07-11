@@ -4,19 +4,19 @@
         <div id="gv-header"></div>
         <div>
         -->
-            <gv-map ref="gv-map" :maps="config.maps"></gv-map>
-            <div v-show="showTitle" class="gv-color-scheme" id="gv-title">{{this.getTitle()}}</div>
-            <gv-legend ref="gv-legend"
-                       v-show="showLegend"
-                       :show-add-map="showAddMap"
-                       :show-base-layer-switcher="showBaseLayerSwitcher"
-                       :show-info-map="showInfoMap"
-                       :base-layers="config.baseLayers"
-                       :maps="config.maps"
-            ></gv-legend>
-    <!--
-        </div>
-    -->
+        <gv-map ref="gv-map" :maps="config.maps"></gv-map>
+        <div v-show="showTitle" class="gv-color-scheme" id="gv-title">{{this.getTitle()}}</div>
+        <gv-legend ref="gv-legend"
+                   v-show="showLegend"
+                   :show-add-map="showAddMap"
+                   :show-base-layer-switcher="showBaseLayerSwitcher"
+                   :show-info-map="showInfoMap"
+                   :base-layers="config.baseLayers"
+                   :maps="config.maps"
+        ></gv-legend>
+        <!--
+            </div>
+        -->
     </div>
 </template>
 
@@ -31,7 +31,7 @@
     import getConfig from '../services/getConfig'
     import getCatalog from '../services/getCatalog'
     import getEnti from '../services/getEnti'
-
+    import mountComponent from '../util/mountComponent'
     import Vue from 'vue'
 
     // Componenti Vue
@@ -48,7 +48,7 @@
     import Geocoder from './Geocoder.vue'
     Vue.component('gv-geocoder', Geocoder)
     //
-    import { Notification  } from 'element-ui';
+    import {Notification} from 'element-ui';
     //Vue.use(Message)
 
     export default {
@@ -63,10 +63,10 @@
         },
         computed: {
             lMap() {
-               return this.$refs['gv-map'].lMap
+                return this.$refs['gv-map'].lMap
             },
             showTitle() {
-                return (config.application.layout.title && !globals.SMALL_SCREEN && this.config.maps.length > 0)
+                return (config.application.layout.title && !globals.SMALL_SCREEN && this.config.maps.length>0)
             },
             showLegend() {
                 return (config.getButton('legend') && config.getButtonOption('legend', 'show'))
@@ -113,13 +113,12 @@
 
             // Gestione caricamento mappe RL da servizio
             if (config.idMap) {
-                this.addRlMap(config.idMap, config.application.callback)
+                this.addRlMap(config.idMap, config.application.callback, true)
             } else {
                 if (config.application.callback) {
                     config.application.callback(this)
                 }
             }
-
 
         },
         methods: {
@@ -149,6 +148,17 @@
                         button.name = item.name
                         button.addTo(GV.app.lMap)
                         GV.app.lMap.buttons.push(button)
+                        if (item.options.vueComponent) {
+                            const template = '<' + item.options.vueComponent.id + '></' + item.options.vueComponent.id + '>'
+                            mountComponent({
+                                containterId: `gv-button-${item.name}`,
+                                elId: item.options.vueComponent.id,
+                                vm: new Vue({
+                                    template: template
+                                }),
+                                toggleEl: item.options.vueComponent.toggleEl
+                            })
+                        }
                         if (item.options.callBack) {
                             item.options.callBack(button)
                         }
@@ -163,26 +173,32 @@
                     throw new Error('Bottone ' + item.name + ' non esistente')
                 }
             },
-            addRlMap(idMap, callback) {
+            addRlMap(idMap, callback, setBaseLayer) {
                 if (config.getMapConfig(idMap)) {
-                    return
+                    return config.getMapConfig(idMap)
                 }
 
                 getConfig(idMap).then(response => {
                     if (!response.data.success) {
-                       throw new Error('Errore Caricamento Mappa: ' + response.data.message)
+                        throw new Error('Errore Caricamento Mappa: ' + response.data.message)
                     }
                     if (!response.data.data) {
-                        throw new Error('Errore Caricamento Mappa: configurazione mappa nulla')
+                        throw new Error('Errore Caricamento Mappa: configurazione non trovata')
                     }
 
                     // Aggiorno array delle mappe
-                    config.addMapConfig(response.data.data)
-                    this.setTitle(response.data.data)
+                    const mapConfig = response.data.data
+                    config.addMapConfig(mapConfig)
+                    this.setTitle(mapConfig)
+                    if (mapConfig.type && mapConfig.type == "R" && setBaseLayer && config.getBaseLayerConfig("BLANK")) {
+                        GV.app.lMap.changeBaseLayer("BLANK")
+                        GV.app.$refs["gv-legend"].$refs["gv-base-layer-switcher"].activeBaseLayer = "BLANK"
+                    }
                     // Gestione callback
                     if (callback) {
                         callback(this)
                     }
+                    return mapConfig
                 }).catch(error => {
                     console.error(error)
                     Notification.error({
@@ -199,15 +215,24 @@
                 if (config.application.layout.title === '{map.title}') {
                     config.title = mapConfig.name
                 }
-           },
+            },
             loadCatalog(params) {
                 getCatalog().then(data => {
                     config.catalog = config.catalogFull = data.children
+                    getEnti().then(data => {
+                        config.enti = data
+                        if (params.showMapCatalogPanel) {
+                            // Mount Pannello
+                            mountComponent({
+                                elId: 'gv-map-catalog-panel',
+                                toggleEl: true,
+                                vm: new Vue({
+                                    template: `<gv-map-catalog-panel visible="true"></gv-map-catalog-panel>`
+                                })
+                            })
+                        }
+                    })
                 })
-                getEnti().then(data => {
-                    config.enti = data
-                })
-
             }
         }
     }

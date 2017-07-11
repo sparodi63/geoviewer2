@@ -15,11 +15,9 @@
                     {{map.name}}
                 </li>
                 <div v-if="checkAddMap(map)" class="gv-legend-map-info gv-inverted-color-scheme">
-                    <el-button title="Visualizza scheda" type="primary" @click="showMapInfoPanel(map)" class="gv-legend-map-info-button fa fa-file-text-o" size="mini">
-                        <!--<span> SCHEDA</span>-->
-                    </el-button>
-                    <el-button title="Cancella" type="primary" @click="remove(map)" class="gv-legend-map-info-button fa fa-trash" size="mini">
-                    </el-button>
+                    <el-button title="Visualizza scheda" type="primary" @click="showMapInfoPanel(map)" class="gv-legend-map-info-button fa fa-file-text-o" size="mini"></el-button>
+                    <el-button title="Cancella" type="primary" @click="remove(map)" class="gv-legend-map-info-button fa fa-trash" size="mini"></el-button>
+                    <el-button title="Download" v-show="isDownloadable(map)" type="primary" @click="download(map)" class="gv-button-download fa fa-download" size="mini"></el-button>
                 </div>
                 </div>
                 <ul class="gv-list-group">
@@ -34,7 +32,7 @@
             </ul>
         </div>
         <div class="gv-legend-footer gv-inverted-color-scheme">
-            <gv-base-layer-switcher v-show="showBaseLayerSwitcher" :base-layers="baseLayers"></gv-base-layer-switcher>
+            <gv-base-layer-switcher ref="gv-base-layer-switcher" v-show="showBaseLayerSwitcher" :base-layers="baseLayers"></gv-base-layer-switcher>
         </div>
         </div>
     </div>
@@ -73,7 +71,13 @@
         mounted () {
             if (GV.app.debug) console.log('gv-legend: mounted')
         },
+        computed: {
+
+        },
         methods: {
+            isDownloadable(map) {
+                return map.metaData.flag_download
+            },
             checkAddMap(map) {
                 return (this.showAddMap && config.getMapConfig(map.id).metaData)
             },
@@ -96,8 +100,10 @@
             remove: function (map) {
                 config.removeMap(map.id)
             },
+            download(map) {
+                window.open(map.metaData.link_download)
+            },
             addMap: function () {
-                //GV.app.addRlMap(1735)
                 mountComponent({
                     elId: 'gv-map-catalog-panel',
                     toggleEl: true,

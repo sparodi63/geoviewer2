@@ -33,22 +33,25 @@
                                     </el-option>
                                 </el-select>
                             </el-col>
-<!--
-                            <el-col  :span="1">
-                                <el-button type="primary" @click="submit" class="gv-button-ricerca" size="mini">
-                                    <span> Ricerca</span>
-                                </el-button>
-                            </el-col>
--->
+                            <!--
+                                                        <el-col  :span="1">
+                                                            <el-button type="primary" @click="submit" class="gv-button-ricerca" size="mini">
+                                                                <span> Ricerca</span>
+                                                            </el-button>
+                                                        </el-col>
+                            -->
                         </el-row>
                     </form>
                     <div class="gv-map-catalog-tree">
-                        <el-tree :data="panels.repertorio.tree" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
+                        <el-tree :data="panels.repertorio.tree" :props="defaultProps" @node-click="handleNodeClick"
+                                 node-key="id" accordion :render-content="renderContent"
+                                 :default-expanded-keys="expanded_nodes"></el-tree>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane v-if="panels.canali" :label="panels.canali.label" name="canali">
                     <div class="gv-map-catalog-tree">
-                        <el-tree :data="panels.canali.tree" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                        <el-tree :data="panels.canali.tree" :props="defaultProps"
+                                 @node-click="handleNodeClick"></el-tree>
                     </div>
                 </el-tab-pane>
             </el-tabs>
@@ -82,7 +85,6 @@
     Vue.use(Select)
     Vue.use(Option)
 
-
     import lang from 'element-ui/lib/locale/lang/it'
     import locale from 'element-ui/lib/locale'
     locale.use(lang)
@@ -93,7 +95,7 @@
         data() {
             const enti = config.enti.filter(ente => ente !== 'REGIONE LIGURIA').map(ente => {
                 return {
-                    value: ente.toLowerCase().replace(/\b\w/g, l => l.toUpperCase()).replace('Di','di')
+                    value: ente.toLowerCase().replace(/\b\w/g, l => l.toUpperCase()).replace('Di', 'di')
                 }
             })
             enti.unshift({
@@ -115,7 +117,8 @@
                     ente: '',
                     download: false
                 },
-                enti: enti
+                enti: enti,
+                expanded_nodes: []
             }
         },
         mounted() {
@@ -142,13 +145,25 @@
                     }
                     getCatalog(params).then(data => {
                         panel.tree = config.catalog = data.children
+                        panel.tree.forEach(macro => {
+                            this.expanded_nodes.push(macro.id)
+                            if (params.ente !== "REGIONE LIGURIA" || params.q) {
+                                macro.children.forEach(cat => {
+                                    this.expanded_nodes.push(cat.id)
+                                })
+                            }
+                        })
                     })
+                    this.expanded_nodes = ["REPERTORIO ENTI LOCALI"]
                     this.catalogoCompleto = false
                 } else {
                     if (this.catalogoCompleto) {
                         return
                     }
                     panel.tree = config.catalog = config.catalogFull
+                    panel.tree.forEach(node => {
+                        this.expanded_nodes.push(node.id)
+                    })
                     this.catalogoCompleto = true
                 }
             },
@@ -182,10 +197,15 @@
                         // Se repertorio è in cache lo recupero
                         if (config.catalog) {
                             panel.tree = config.catalog
-                            return
+                            panel.tree.forEach(node => {
+                                this.expanded_nodes.push(node.id)
+                            })
                         } else {
                             getCatalog().then(data => {
                                 panel.tree = config.catalog = config.catalogFull = data.children
+                                panel.tree.forEach(node => {
+                                    this.expanded_nodes.push(node.id)
+                                })
                             })
                         }
                         break
@@ -194,6 +214,19 @@
                             panel.tree = data.children
                         })
                         break
+                }
+            },
+            renderContent(h, {node, data, store}) {
+                if (node.data.type === 'MAPPA') {
+                    return (<span style = "font-size: 12px; ">{node.label}</span>);
+                }
+
+                if (node.data.type === 'CATEGORIA') {
+                    return (<span style = "font-size: 12px; font-weight: bold; ">{node.label}</span>);
+                }
+
+                if (node.data.type === 'MACROCATEGORIA') {
+                    return (<span style = "font-size: 12px; font-weight: bold; background-color: #ddd; padding: 5px; ">{node.label}</span>);
                 }
             }
         }
@@ -210,7 +243,6 @@
         overflow: auto;
     }
 
-
     .gv-map-catalog-panel {
         position: absolute;
         left: 0;
@@ -221,32 +253,26 @@
         z-index: 800;
     }
 
-
     .gv-map-catalog-panel table {
-      border: 1px solid #ddd ;
-      width: 100%;
-      padding: 10px;
+        border: 1px solid #ddd;
+        width: 100%;
+        padding: 10px;
     }
 
-
     .gv-map-catalog-panel-th {
-      white-space: nowrap;
-      width: auto;
-      padding: 5px 5px;
-      text-align: left;
-      font-weight: 400;
-      font-size: 12px;
-      border: 1px solid #e5e5e5;
+        white-space: nowrap;
+        width: auto;
+        padding: 5px 5px;
+        text-align: left;
+        font-weight: 400;
+        font-size: 12px;
+        border: 1px solid #e5e5e5;
     }
 
     .gv-map-catalog-panel table tr td {
-      padding: 5px;
-      font-size: 12px;
-      border: 1px solid #e5e5e5;
-    }
-
-    .gv-button-download {
+        padding: 5px;
         font-size: 12px;
+        border: 1px solid #e5e5e5;
     }
 
     .gv-map-catalog-panel-form {
@@ -254,30 +280,26 @@
         width: 500px;
     }
 
-    .gv-button-ricerca {
-        font-size: 12px;
-        margin-left: 35px;
-    }
-
     .gv-button-ricerca span {
-        font-family: "Raleway",Arial,sans-serif;
+        font-family: "Raleway", Arial, sans-serif;
         font-weight: bold;
     }
 
     .gv-map-catalog-label {
         font-size: 12px;
         padding-left: 5px;
-        font-family: "Raleway",Arial,sans-serif;
+        font-family: "Raleway", Arial, sans-serif;
     }
 
     @media (pointer: coarse) {
+/*
         .gv-map-catalog-tree {
             width: 345px;
         }
         .gv-map-catalog-panel-form {
-
             width: 340px;
         }
+*/
     }
 
 </style>
@@ -286,14 +308,19 @@
     .el-tree-node__label {
         font-size: 12px !important;
     }
+
     .el-tabs__item.is-active {
         color: #24386c !important;
     }
 
-    @media (pointer: coarse) {
-    .el-select {
-        position: relative;
-        width: 110px;
+    .el-tabs__header {
+        margin: 0 0 5px !important;
     }
+
+    @media (pointer: coarse) {
+        .el-select {
+            position: relative;
+            width: 110px;
+        }
     }
 </style>

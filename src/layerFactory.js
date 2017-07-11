@@ -1,3 +1,5 @@
+'use strict'
+
 var L = require('leaflet')
 require('./leaflet/MarkerCluster.js')
 require('./leaflet/NonTiledLayer.js')
@@ -10,6 +12,7 @@ import interpolateString from './util/interpolateString'
 import getParamString from './util/getParamString'
 import getZoomFromScaleDenom from './util/getZoomFromScaleDenom'
 import getGeoJSON from './services/getGeoJSON'
+import getTmsMaxLevel from './util/getTmsMaxLevel'
 
 var esriLink = '<a href="http://www.esri.com/">Esri</a>'
 
@@ -241,6 +244,52 @@ var layerFactory = {
 
 */
 
+  RL_ORTOFOTO_2013 () {
+    return this.TMS({
+      visible: false,
+      tmsParams: {
+        name: 'L4419/webmercator',
+        url: 'http://mapproxy.regione.liguria.it/mapproxy/1661/tiles/'
+      },
+      zIndex: 1
+    })
+  },
+
+  RL_ORTOFOTO_2016 () {
+    return this.TMS({
+      visible: false,
+      tmsParams: {
+        name: 'L5802/webmercator',
+        url: 'http://mapproxy.regione.liguria.it/mapproxy/1828/tiles/'
+      },
+      zIndex: 1
+    })
+  },
+
+  RL_CARTE_BASE () {
+    return this.TMS({
+      visible: false,
+      tmsParams: {
+        name: 'C1623/webmercator',
+        url: 'http://mapproxy.regione.liguria.it/mapproxy/1623/tiles/'
+      },
+      zIndex: 1
+    })
+  },
+
+  TMS (layerConfig) {
+    const url = layerConfig.tmsParams.url.replace('/tms/', '/tiles/')
+    const name = layerConfig.tmsParams.name
+    const tmsUrl = `${url}/1.0.0/${name}/{z}/{x}/{y}.png`
+    const maxLevel = getTmsMaxLevel(layerConfig.maxScale)
+    const layer = new L.TileLayer(tmsUrl, {
+      minZoom: 1,
+      maxZoom: maxLevel
+    })
+    layer.setZIndex(layerConfig.zIndex)
+    return layer
+  },
+
   WMS (layerConfig) {
     let {name, geomType, cacheMinZoomLevel, minScale, maxScale, wmsParams, flagGeoserver, zIndex} = layerConfig
     if (GV.app.debug) console.log('layerFactory - Creazione Layer WMS: ' + name)
@@ -250,6 +299,9 @@ var layerFactory = {
     let minZoom = (minScale) ? getZoomFromScaleDenom(minScale) : 8
     let maxZoom = (maxScale) ? getZoomFromScaleDenom(maxScale) : 20
     let url = wmsParams.url
+
+
+
     let opacity = layerConfig.opacity || 1
 
     if (!flagGeoserver) {
@@ -258,6 +310,7 @@ var layerFactory = {
     }
 
     let options = {
+      'subdomains': ['1', '2'],
       'transparent': true,
       'FORMAT_OPTIONS': 'antialias:text',
       'layers': name,
@@ -266,15 +319,20 @@ var layerFactory = {
       'minZoom': minZoom,
       'maxZoom': maxZoom,
       'bounds': globals.MAX_BOUNDS
+
       //, 'pane': name
     }
 
     let layer = null
     if (isCached) {
+      if (globals.USE_SUBDOMAINS && url.indexOf('geoservizi.regione.liguria.it') > 0) {
+        url = url.replace('geoservizi', 'geoservizi{s}')
+      }
       Object.assign(options, {
         'tiled': true,
         'TILESORIGIN': '-20037508,-20037508',
-        'tileSize': 256
+        'tileSize': 256,
+        'CACHE_VERSION': layerConfig.cacheVersion
       })
       layer = L.tileLayer.wms(url, options)
     } else {

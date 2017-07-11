@@ -1,5 +1,5 @@
 <template>
-    <div id="gv-geocoder" class="geocoder gv-color-scheme">
+    <div id="gv-geocoder" class="geocoder">
         <el-select
             v-model="address"
             filterable
@@ -91,10 +91,10 @@
             }
         },
         mounted: function () {
-            const rect = document.getElementById('gv-btn-geocoder').getBoundingClientRect()
-            console.log(rect)
-            document.getElementById('gv-geocoder').style.top = `${rect.top}px`
-            document.getElementById('gv-geocoder').style.marginLeft = `${rect.right}px`
+//            const rect = document.getElementById('gv-btn-geocoder').getBoundingClientRect()
+//            console.log(rect)
+//            document.getElementById('gv-geocoder').style.top = `${rect.top}px`
+//            document.getElementById('gv-geocoder').style.marginLeft = `${rect.right}px`
         }
     }
 </script>
@@ -102,13 +102,6 @@
     .geocoder {
         height: 26px;
         width: 180px;
-        position: fixed;
-        left: 0;
-        top: 0;
         z-index: 800;
-    }
-    .el-select {
-        position: fixed;
-        padding: 2px;
     }
 </style>

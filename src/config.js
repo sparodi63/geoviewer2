@@ -10,7 +10,7 @@ let title = null
 let geoserverUrl
 let application = {}
 let baseLayers = [
-  { 'type': 'ESRI_IMAGERY', visible: true }
+  {'type': 'ESRI_IMAGERY', visible: true}
 ]
 let maps = []
 let optionsMaps = []
@@ -40,7 +40,7 @@ function set (options) {
   if (options.baseLayers) {
     baseLayers = options.baseLayers
   }
-  baseLayers.forEach( layer => {
+  baseLayers.forEach(layer => {
     layer.name = layer.type
     layer.label = globals.BASE_LAYERS[layer.type].label
     layer.icon = globals.BASE_LAYERS[layer.type].icon
@@ -97,6 +97,12 @@ function getLayerConfig (layerName) {
   }
 }
 
+function getBaseLayerConfig (layerName) {
+  let foundLayer = baseLayers.find(function (layer) {
+    return layer.name === layerName
+  })
+  return foundLayer
+}
 function getMapConfig (idMap) {
   return maps.find(function (map) {
     return map.id == idMap
@@ -148,15 +154,17 @@ function setButtonOption (buttonName, optionName, value) {
   return option
 }
 
-function getActiveBaseLayer() {
+function getActiveBaseLayer () {
   let activeLayer = null
   baseLayers.forEach(layer => {
-    if (layer.visible) activeLayer = layer
+    if (layer.visible) {
+      activeLayer = layer
+    }
   })
   return activeLayer
 }
 
-function setActiveBaseLayer(layerName) {
+function setActiveBaseLayer (layerName) {
   baseLayers.forEach(layer => {
     layer.visible = (layer.name === layerName)
   })
@@ -171,7 +179,7 @@ function removeMap (idMap) {
   const index = maps.findIndex(function (map) {
     return map.id === idMap
   })
-  if (index > -1) {
+  if (index> -1) {
     maps.splice(index, 1)
   }
 }
@@ -189,6 +197,7 @@ export {
   addMapConfig,
   getAllLayersConfig,
   getLayerConfig,
+  getBaseLayerConfig,
   getActiveBaseLayer,
   getMapConfig,
   removeMap,

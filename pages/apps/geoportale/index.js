@@ -5,7 +5,7 @@ GV.init({
   idMap: id,
   // geoserverUrl: 'http://geoservizi.regione.liguria.it:8081/',
   application: {
-    name: "geoportale",
+    name: 'geoportale',
     mapOptions: {
       controls: [{name: 'scale'}],
       click: 'info'
@@ -19,7 +19,12 @@ GV.init({
             {
               name: 'geocoder',
               options: {
-                autoClick: false
+                // autoClick: false,
+                type: 'control',
+                vueComponent: {
+                  id: 'gv-geocoder',
+                  toggleEl: false
+                }
               }
             }
           ]
@@ -91,16 +96,19 @@ GV.init({
       ]
     },
     callback: function (app) {
-      // GV.app.addRlMap(1735)
-      // GV.app.addRlMap(5)
-      // GV.app.addRlMap(1646)
       // Creo una cache del catalogo mappe da ES
-      GV.app.loadCatalog({})
+      var showMapCatalogPanel = false
+      if (!id) {
+        showMapCatalogPanel = true
+      }
+      GV.app.loadCatalog({showMapCatalogPanel: showMapCatalogPanel})
     }
   },
   baseLayers: [
     {'type': 'ESRI_IMAGERY', visible: true},
     {'type': 'MAPBOX_STREETS'},
+    {'type': 'RL_ORTOFOTO_2016'},
+    {'type': 'RL_CARTE_BASE'},
     {'type': 'BLANK'}
   ],
   maps: []

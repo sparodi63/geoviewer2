@@ -59,6 +59,8 @@ function _request (e) {
     mapConfig.layers.forEach(function (layerConfig) {
       if (layerConfig.idMap === mapConfig.id && layerConfig.type === 'WMS' && layerConfig.queryable && layerConfig.visible && GV.app.lMap.layerInRange(layerConfig)) {
         url = layerConfig.wmsParams.url
+        //  url = url.replace('regione.liguria.it', 'datasiel.net')
+        url = '/geoservices/proxy/proxy.jsp?url=' + url
         layersArray.push(layerConfig.wmsParams.name)
       }
     })
@@ -80,6 +82,8 @@ function _handleResponse (features) {
     var layerName = feature.id.split('.')[0]
     feature.layerName = layerName
     feature.layer = GV.app.lMap.getLayerByName(layerName)
+    // TODO gestione attributi per livelli PostGIS
+    feature.properties = setFeatureProperties(layerName,feature.properties)
     feature.label = setFeatureLabel(layerName, feature.properties)
     feature.infoOptions = feature.layer.config.infoOptions
   })
@@ -113,6 +117,28 @@ function _handleResponse (features) {
       console.log('end info request: ' + new Date())
     }
   }
+
+  function setFeatureProperties (layerName, properties) {
+    var layerConfig = GV.app.lMap.getLayerByName(layerName).config
+    var newProperties
+    if (layerConfig.cachePostGIS) {
+      newProperties = upperProperties(properties)
+    } else {
+      newProperties = properties
+    }
+    return newProperties
+  }
+
+  function upperProperties(props) {
+    var newProps = {}
+    for (var key in props) {
+      if (props.hasOwnProperty(key)) {
+        newProps[key.toUpperCase()] = props[key]
+      }
+    }
+    return newProps
+  }
+
 
   function setFeatureLabel (layerName, attributes) {
     var infoLabelAttr,

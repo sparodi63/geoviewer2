@@ -11,11 +11,13 @@
                 </tbody>
             </table>
             <el-row type="flex" class="row-bg" justify="left">
+<!--
                 <el-col :span="8">
                     <el-button type="primary" @click="download" class="gv-button-download fa fa-download" size="mini">
                         <span> Download</span>
                     </el-button>
                 </el-col>
+-->
                 <el-col v-if="addToMapButton" :span="18">
                     <el-button type="primary" @click="addToMap" class="gv-button-download fa fa-eye" size="mini">
                         <span> Visualizza</span>
@@ -183,6 +185,7 @@
         font-family: "Raleway",Arial,sans-serif;
         font-weight: bold;
     }
+
     .gv-button-group span {
         font-size: 12px;
         font-family: "Raleway",Arial,sans-serif;

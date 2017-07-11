@@ -307,7 +307,6 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
 /* ----------------------------------------------- */
 
 #gv-container {
-  position: absolute;
   width: 100%;
   height: 100%;
 }
@@ -329,6 +328,11 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   max-width: 800px;
 }
 
+#gv-geocoder {
+  border: none;
+  width: 180px;
+  height: 26px;
+}
 
 /* INFO WMS */
 

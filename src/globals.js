@@ -3,6 +3,8 @@ var L = require('leaflet')
 var globals = {
   DEFAULT_PROXY: '/geoservices/proxy/proxy.jsp?url=',
 
+  USE_SUBDOMAINS: true,
+
 //  RL_MAP_CONFIG_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/config/map/',
   RL_MAP_CONFIG_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/geoportale/map/',
   RL_CREATE_SLD_SERVICE: 'srvcarto.regione.liguria.it/geoservices/REST/config/create_sld/',
@@ -42,7 +44,9 @@ var globals = {
     9027.977761,
     4513.988880,
     2256.994440,
-    1128.497220
+    1128.497220,
+    564.24861,
+    282.124305
   ],
 
   BASE_SCALE_LABELS: {
@@ -65,6 +69,18 @@ var globals = {
     'BLANK': {
       label: 'Sfondo Bianco',
       icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/bianco.gif'
+    },
+    'RL_ORTOFOTO_2013': {
+      label: 'AGEA: Ortofoto 2013',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/sfondi_rl.jpg'
+    },
+    'RL_ORTOFOTO_2016': {
+      label: 'AGEA: Ortofoto 2016',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/sfondi_rl.jpg'
+    },
+    'RL_CARTE_BASE': {
+      label: 'Carte di base regionali',
+      icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/sfondi_rl.jpg'
     },
     'OSM': {
       label: 'OpenStreetMap',

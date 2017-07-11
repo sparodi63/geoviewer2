@@ -9,6 +9,22 @@ require('../controls/EasyButton')
 GV.Buttons.geocoder = function (btnOptions, map) {
   'use strict'
 
+  // TODO - se button=true mostro bottone per rendere componente vue visibile/invisibile
+  // TODO - altrimenti mostro direttamente componente Vue
+
+  const Geocoder = L.Control.extend({
+    onAdd: function (map) {
+      let container = document.createElement('div')
+      container.id = `gv-button-geocoder`
+      container.className = 'leaflet-bar leaflet-control'
+
+      return container
+    }
+  })
+
+  return new Geocoder(btnOptions)
+
+/*
   const options = Object.assign(btnOptions, {
     leafletClasses: true,
     id: 'gv-btn-geocoder',
@@ -23,15 +39,16 @@ GV.Buttons.geocoder = function (btnOptions, map) {
           toggleEl: true
         })
         // Allineo div Geocoder al bottone
-        const rect = document.getElementById('gv-btn-geocoder').getBoundingClientRect()
-        document.getElementById('gv-geocoder').style.top = `${rect.top}px`
-        document.getElementById('gv-geocoder').style.marginLeft = `${rect.right}px`
+        //const rect = document.getElementById('gv-btn-geocoder').getBoundingClientRect()
+        //document.getElementById('gv-geocoder').style.top = `${rect.top}px`
+        //document.getElementById('gv-geocoder').style.marginLeft = `${rect.right}px`
       },
       title: 'Ricerca Indirizzo...',
       icon: 'ms ms-search-zoom'
     }]
 
   })
-
   return L.easyButton(options)
+  */
+
 }

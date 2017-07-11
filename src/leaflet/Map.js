@@ -154,6 +154,17 @@ const Map = L.Map.extend({
     return foundLayer
   },
 
+  changeBaseLayer: function (layerName) {
+    // se livello è presente in mappa e visibile non faccio niente
+    // altrimenti levo layer precedente e carico livello in mappa e rendo visibile
+    const activeLayerName = config.getActiveBaseLayer().name
+    if (activeLayerName !== layerName) {
+      this.removeLayer(this.baseLayers[activeLayerName])
+      this.baseLayers[layerName].addTo(this)
+      config.setActiveBaseLayer(layerName)
+    }
+  },
+
   getScaleLabel: function () {
     'use strict'
     return globals.BASE_SCALE_LABELS[this._zoom]
