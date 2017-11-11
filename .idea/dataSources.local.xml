@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="AMB_DB_AMB" uuid="4820b410-b14c-4391-b441-bbe7c7d05907">
+      <secret-storage>memory</secret-storage>
+      <first-sync>true</first-sync>
+      <user-name>CBASE</user-name>
+    </data-source>
+  </component>
+</project>

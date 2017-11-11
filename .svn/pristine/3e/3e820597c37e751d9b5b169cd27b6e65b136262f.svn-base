@@ -1,0 +1,24 @@
+import GV from '../GV'
+//import L from 'leaflet'
+import {Control} from 'leaflet'
+
+GV.Buttons.search = function (btnOptions, map) {
+  'use strict'
+
+  const containerId = 'gv-button-search'
+  const componentId = 'gv-search'
+
+  const Search = Control.extend({
+    onAdd: function (map) {
+      let container = document.createElement('div')
+      container.id = containerId
+            container.className = 'leaflet-control-search'
+
+      return container
+    }
+  })
+
+  btnOptions.vueComponent = { containerId: containerId, id: componentId }
+  
+  return new Search(btnOptions)
+}

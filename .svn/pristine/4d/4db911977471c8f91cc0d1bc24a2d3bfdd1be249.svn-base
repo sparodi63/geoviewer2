@@ -1,0 +1,42 @@
+GV.init({
+    el: '#gv-container',
+    debug: true,
+    application: {
+        mapOptions: {
+//            initialExtent: "830036,5402959,1123018,5597635",
+            infoWms: true
+        },
+        layout: {
+            controls: [],
+            toolbar: [
+                {
+                    position: "topleft",
+                    items: [
+                        {name: "fullscreen"},
+                        {name: "baselayers"}
+                    ]
+                }
+            ],
+            legend: null
+        }
+    },
+    baseLayers: [
+        { 'type': 'MAPBOX_STREETS', visible: true },
+        { 'type': 'MAPBOX_SATELLITE'},
+        { 'type': 'MAPBOX_OUTDOOR'},
+        { 'type': 'MAPBOX_LIGHT'},
+        { 'type': 'HYDDA'},
+        { 'type': 'STAMEN_TERRAIN'},
+        { 'type': 'STAMEN_TONER_LIGHT'},
+        { 'type': 'CARTODB_POSITRON'},
+        { 'type': 'CARTODB_DARKMATTER'},
+        { 'type': 'OPENMAPSURFER_ROADS'},
+        { 'type': 'ESRI_STREETS'},
+        { 'type': 'ESRI_TOPOGRAPHIC' },
+        { 'type': 'ESRI_DARKGRAY' },
+        { 'type': 'ESRI_GRAY' }
+    ],
+    maps: []
+});
+
+

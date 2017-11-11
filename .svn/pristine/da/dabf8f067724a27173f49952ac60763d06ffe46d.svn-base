@@ -1,0 +1,142 @@
+<template>
+    <div id="gv-search" class="gv-search">
+        <el-select
+            v-model="address"
+            filterable
+            clearable
+            remote
+            size="mini"
+            placeholder="Ricerca Scuola.."
+            :remote-method="search"
+            @change="onChange"
+            :loading="loading"
+            loading-text="Caricamento... "
+            no-match-text="Nessuna scuola trovata"
+            no-data-text="Nessuna scuola trovata"
+        >
+            <el-option
+                v-for="item in results"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+        </el-select>
+    </div>
+</template>
+
+
+<script>
+import GV from '../GV'
+
+import Vue from 'vue'
+import { Select, Option } from 'element-ui'
+Vue.use(Select)
+Vue.use(Option)
+
+export default {
+  data() {
+    return {
+      results: [],
+      address: [],
+      recordsCache: {},
+      layers: null,
+      cachedLayers: [],
+      propertyName: null,
+      loading: false,
+      marker: null,
+    }
+  },
+  mounted: function() {
+    this.layers = GV.config.getButtonOption('search', 'layers')
+    this.propertyName = GV.config.getButtonOption('search', 'propertyName')
+
+    // carico i layer già presenti in mappa all'avvio
+    GV.app.map.eachLayer(layer => {
+      this.layers.forEach(sLayer => {
+        this.cacheLayer(layer, sLayer)
+      })
+    })
+    // carico i layer caricati in seguito
+    GV.eventBus.$on('layer-loaded-json', layer => {
+      this.layers.forEach(sLayer => {
+        this.cacheLayer(layer, sLayer)
+      })
+    })
+  },
+  methods: {
+    cacheLayer(layer, sLayer) {
+      if (layer.name === sLayer && !this.isLayerCached(layer.name)) {
+        if (layer instanceof L.LayerGroup) {
+          layer.eachLayer(m => {
+            let loc = m.getLatLng()
+            loc.layer = m
+            this.recordsCache[m.feature.properties[this.propertyName]] = loc
+          })
+          this.cachedLayers.push(layer.name)
+        }
+      }
+    },
+    isLayerCached(layerName) {
+      return this.cachedLayers && this.cachedLayers.find(layer => layer === layerName)  
+    },
+    search(query) {
+      this.results = []
+      if (query.length < 4) {
+        return
+      }
+      const results = this.filterData(query, this.recordsCache)
+
+      if (Object.keys(results).length > 0) {
+        Object.keys(results).forEach((key, index) => {
+          this.results.push({
+            label: key,
+            value: key,
+            location: results[key],
+          })
+        })
+      } else {
+        this.results = []
+      }
+    },
+    filterData(text, records) {
+      text = text.replace(/[.*+?^${}()|[\]\\]/g, '')
+      if (text === '') {
+        return []
+      }
+
+      let frecords = {}
+
+      Object.keys(records)
+        .filter(key => new RegExp(text, 'i').test(key))
+        .forEach(key => {
+          frecords[key] = records[key]
+        })
+
+      return frecords
+    },
+    onChange(value) {
+      let marker = this.results.find(item => item.value === value)
+      if (marker) {
+        marker.type = 'circle'
+        marker.zoomLevel = 16
+        this.marker = GV.app.map.addMarker(marker)
+      } else {
+        if (this.marker) {
+          GV.app.map.removeLayer(this.marker)
+        }
+      }
+    },
+  },
+}
+</script>
+
+<style>
+.gv-search {
+  height: 26px;
+  width: 250px;
+  z-index: 800;
+}
+.el-select {
+  width: 250px;
+}
+</style>

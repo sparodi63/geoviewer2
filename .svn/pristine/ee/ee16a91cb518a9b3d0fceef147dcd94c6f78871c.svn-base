@@ -1,0 +1,24 @@
+/**
+ * Created by parodi on 19/09/2016.
+ */
+GV.Buttons.zoomout = function(btnOptions, map) {
+    "use strict";
+
+    var action = L.ToolbarAction.extend({
+
+        options: {
+            toolbarIcon: {
+                html: '-',
+                tooltip: 'Zoom Out'
+            }
+        },
+
+        addHooks: function () {
+            map.zoomOut();
+        }
+
+    });
+
+    return action;
+
+};

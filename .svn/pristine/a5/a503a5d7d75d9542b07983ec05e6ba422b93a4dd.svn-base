@@ -1,0 +1,216 @@
+var idMap = decodeURIComponent(GV.Util.getUrlParam('id'));
+
+var config = {
+    application: {
+        mapOptions: {
+//            initialExtent: "830036,5402959,1123018,5597635",
+//            maxBounds: GV.Globals.MAX_BOUNDS,
+            infoWms: true
+        },
+        layout: {
+            controls: [],
+            toolbar: [
+                {
+                    position: "topleft",
+                    items: [
+                        {name: "fullscreen"},
+                        {name: "geocoder"},
+                        {name: "baselayers"},
+                        {name: "print"}
+                    ]
+                },
+/*
+                {
+                    position: "topright",
+                    items: [
+                        {
+                            name: "legend",
+                            options: {
+                                show: false
+                            }
+                        }
+                    ]
+                },
+                */
+                {
+                    position: "bottomright",
+                    items: [
+                        {
+                            name: "locate",
+                            options: {
+                                drawCircle: false
+                            }
+                        },
+                        {name: "navbar"},
+                        {name: "zoom"}
+                    ]
+                }
+            ]
+        }
+    },
+    baseLayers: [
+        {'type': 'ESRI_IMAGERY', visible: true},
+        {'type': 'BLANK'}
+    ],
+    maps: []
+};
+
+
+var callback = function (app) {
+    "use strict";
+
+    //console.log(app.map.getLayerByName("L3"));
+
+    //GV.app.addRlMap(1735);
+    //GV.app.addRlMap(5);
+    //GV.app.addRlMap(1646);
+
+    // contiene array delle mappe
+    GV.rlMaps = {maps: []};
+
+
+    GV.rlMaps.maps.push({
+        id: 56,
+        layers: [
+            {
+                id: 3
+            }
+        ]
+    });
+
+    // sostituisce MapView
+    Vue.component('gv-map', {
+        // declare the props
+        props: ['options'],
+        // just like data, the prop can be used inside templates
+        // and is also made available in the vm as this.message
+        template: '<div id= "gv-map"></div>',
+        mounted: function() {
+            console.log('gv-map mounted', this.options);
+            this.map = new GV.Map(this.options);
+            GV.map = this.map;
+            if (this.map && this.map.loadBaseLayers) {
+                this.map.loadBaseLayers(this.options.config.baseLayers);
+            }
+            // aggiungo controlli
+            if (this.map && this.map.loadControls) {
+                this.map.loadControls(this.options);
+            }
+
+            // aggiungo toolbar
+            if (this.options.config.toolbar) {
+                //this.addToolbars(this.config.toolbar);
+            }
+        },
+        created: function () {
+            console.log('gv-map created ');
+        }
+    });
+
+    //TODO creare componente layout che costruisce il layout
+    //TODO migrare tutti i metodi da Layout
+    //TODO creare componenti per legenda
+
+    // sostituisce GV.app
+    //TODO far diventare componente e creare oggetto GV.App che crea componente
+    GV.AppVue = Vue.extend({
+        template: '<div id="gv-container"><gv-map v-bind:options="this.$options"></gv-map></div>',
+        data: function () {
+            return GV.rlMaps;
+        },
+        created: function () {
+            //console.log('value ' + this.models[0].id);
+            this.options = this.$options;
+
+            console.log('GV.AppVue created ', this.options);
+
+            GV.debug = this.options.debug;
+            this.proxy = this.options.proxy || GV.Globals.DEFAULT_PROXY;
+
+            // inizializzo layerFactory
+            GV.layerFactory = new GV.LayerFactory();
+        },
+        mounted: function() {
+            console.log('GV.AppVue mounted', this.options);
+            // aggiungo toolbar
+            if (this.options.config.application.layout.toolbar) {
+                this.addToolbars(this.options.config.application.layout.toolbar);
+            }
+        },
+        computed: {
+            layers: function () {
+                return this.maps[0].layers;
+            }
+        },
+        methods: {
+            getMaps: function () {
+                return this.maps;
+            },
+            addToolbars: function (toolbar) {
+                "use strict";
+                _.each(toolbar, function (tb) {
+                    var position = tb.position || "topleft";
+                    _.each(tb.items, function (item) {
+                        item.options = item.options || {};
+                        item.options.position = item.options.position || position;
+                        this.addButton(item);
+                    }, this);
+                }, this);
+            },
+            addButton: function (item) {
+                "use strict";
+
+                if (GV.Buttons[item.name]) {
+                    var button = GV.Buttons[item.name](item.options, GV.map);
+                    if (button) {
+                        button.name = item.name;
+                        //TODO this.controls.push(button);
+                        button.addTo(GV.map);
+                    }
+                } else {
+                    GV.Util.log("Bottone " + item.name + " non esistente");
+                }
+            }
+
+        }
+    });
+};
+
+    callback();
+
+    GV.appVue = new GV.AppVue({
+        el: '#gv-container',
+        config: config,
+        idMap: idMap,
+        callback: null,
+        setMapTitle: true,
+        debug: true
+    });
+
+
+//GV.app.getContainer().append('<div id="gv-legend-vue"><p>{{ message }}</p></div>');
+//
+//new Vue({
+//    el: '#gv-legend-vue',
+//    data: {
+//        message: 'Hello Vue.js!'
+//    }
+//});
+
+
+
+
+/*
+var app = new GV.App({
+    el: '#gv-container',
+    config: config,
+    idMap: idMap,
+    callback: callback,
+    setMapTitle: true,
+    debug: true
+});
+*/
+
+
+
+

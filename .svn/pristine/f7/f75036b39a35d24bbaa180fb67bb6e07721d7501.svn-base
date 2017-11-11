@@ -1,0 +1,18 @@
+import Vue from 'vue'
+import * as config from './config'
+import App from 'components/App.vue'
+
+function init (options) {
+  'use strict'
+
+  // imposto configurazione applicazione
+  config.set(options)
+
+  // istanzio App
+  new Vue({
+    el: '#gv-container',
+    render: h => h(App)
+  })
+}
+
+export default init

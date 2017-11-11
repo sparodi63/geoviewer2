@@ -1,0 +1,10 @@
+import GV from '../GV'
+import L from 'leaflet'
+import { Control } from 'leaflet'
+require('../controls/Locate')
+
+GV.Buttons.locate = function (btnOptions, map) {
+  'use strict'
+
+  return new Control.Locate(btnOptions)
+}

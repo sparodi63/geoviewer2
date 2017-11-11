@@ -1,0 +1,35 @@
+body {
+    background-color: #24386c;
+}
+
+#gptMainWrap {
+    margin: 0pt auto;
+    width: 880px;
+    width: expression(document.body.clientWidth > 1070 ? "1068px" : "auto" );
+    border-left: 1px #666666;
+    border-right: 1px #666666;
+    padding: 0;
+    position: static;
+}
+
+#titolo {
+    height: 53px;
+    background: #24386C;
+}
+
+#titolo div {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 53px;
+    padding-left: 20px;
+    text-transform: uppercase;
+}
+
+#gv-legend {
+    margin-top: 70px; 
+}
+
+#gv-map-catalog-panel {
+    margin-top: 70px; 
+}

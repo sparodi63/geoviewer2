@@ -1,0 +1,14 @@
+/**
+ * Created by parodi on 19/09/2016.
+ */
+GV.Buttons.search = function(btnOptions, map) {
+    "use strict";
+
+    var layers = [];
+    _.each(btnOptions.layers, function (layerName) {
+        layers.push(map.getLayerByName(layerName));
+    });
+    btnOptions.layer = L.layerGroup(layers);
+
+    return new L.Control.Search(btnOptions);
+};

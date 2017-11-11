@@ -1,0 +1,124 @@
+<template>
+    <div id="gv-map" :style="style">
+      <gv-info-wms-manager ref="info"></gv-info-wms-manager>
+    </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import Map from '../leaflet/Map.js'
+
+
+import InfoWmsManager from './InfoWmsManager'
+Vue.component('gv-info-wms-manager', InfoWmsManager)
+
+const events = [
+  'click',
+  'dblclick',
+  'mousedown',
+  'mouseup',
+  'mouseover',
+  'mouseout',
+  'mousemove',
+  'contextmenu',
+  'focus',
+  'blur',
+  'preclick',
+  'load',
+  'unload',
+  'viewreset',
+  'movestart',
+  'move',
+  'moveend',
+  'dragstart',
+  'drag',
+  'dragend',
+  'zoomstart',
+  'zoomend',
+  'zoomanim',
+  'zoomlevelschange',
+  'resize',
+  'autopanstart',
+  'layeradd',
+  'layerremove',
+  'baselayerchange',
+  'overlayadd',
+  'overlayremove',
+  'locationfound',
+  'locationerror',
+  'popupopen',
+  'popupclose',
+]
+
+export default {
+  name: 'gv-map',
+  data () {
+      const height = document.documentElement.clientHeight
+      return {
+          style: `height:${height}px`
+      }
+  },
+  mounted() {
+    GV.app.map = new Map()
+
+    this.registerMapEvents()
+
+    this.subscribeConfigEvents()
+
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize()
+
+    if (GV.config.application.mapOptions && GV.config.application.mapOptions.click) {
+      this.$refs.info.activate()
+    }
+    
+    GV.log('gv-map: mounted')
+  },
+  methods: {
+    handleResize (event) {
+        const height = document.documentElement.clientHeight - document.getElementById('gv-map').getBoundingClientRect().top 
+        this.style = `height:${height}px`
+    },
+    registerMapEvents() {
+      events.forEach(eventName => {
+        const exposedName = 'map-' + eventName
+        GV.app.map.on(eventName, ev => {
+          GV.eventBus.$emit(exposedName, ev)
+        })
+      })
+    },
+    subscribeConfigEvents() {
+      // Ascolto evento config-add-map e aggiungo layer alla mappa
+      GV.eventBus.$on('config-add-map', ev => {
+        const mapConfig = ev.config
+        // Aggiungo livelli alla mappa
+        GV.app.map.loadLayers(mapConfig.layers)
+        //gestione extent
+        if (mapConfig.extent_3857) {
+          GV.app.map.setExtent(mapConfig.extent_3857)
+        }
+      })
+      // Ascolto evento config-remove-map e levo layer alla mappa
+      GV.eventBus.$on('config-remove-map', ev => {
+        const mapConfig = ev.config
+        // Levo i livelli dalla mappa
+        mapConfig.layers.forEach(layerConfig => {
+          const layer = GV.app.map.getLayerByName(layerConfig.name)
+          if (layer) {
+            GV.app.map.removeLayer(layer)
+          }
+        })
+      })
+    },
+  },
+}
+</script>
+
+<style scoped>
+#gv-map {
+  position: absolute;
+  width: 100%;
+  margin-top: 0px;
+  z-index: 1;
+}
+</style>

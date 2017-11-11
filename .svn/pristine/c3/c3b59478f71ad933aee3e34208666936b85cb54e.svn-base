@@ -1,0 +1,8 @@
+/**
+ * Created by parodi on 19/09/2016.
+ */
+GV.Buttons.navbar = function(btnOptions, map) {
+    "use strict";
+
+    return L.control.navbar(btnOptions);
+};

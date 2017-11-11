@@ -1,0 +1,96 @@
+
+GV.Views.HtmlPanelTitle = Mn.View.extend({
+    className: 'gv-panel-title gv-bgcolor',
+    events: {
+        'click .gv-close': 'hide'
+    },
+    hide: function () {
+//        GV.app.layout.getRegion(this.options.regionId).empty();
+        GV.app.layout.removeRegion(this.options.regionId);
+        var element = document.getElementById(this.options.regionId);
+        if (element) {
+            element.outerHTML = "";
+            delete element;
+        }
+        if (this.options.closeAction) {
+            this.options.closeAction();
+        }
+    },
+    getTemplate: function () {
+        var tpl = [
+            '<div>',
+            '<b>' + this.options.title + '</b>',
+            '<button class="gv-close" type="button">×</button>',
+            '</div>',
+            ''
+        ].join('\n');
+        return _.template(tpl);
+    }
+});
+
+GV.Views.HtmlPanelBody = Mn.View.extend({
+    tagName: 'div',
+    className: 'gv-html-panel-body',
+    getTemplate: function () {
+        var tpl = [
+            "<iframe id='",
+            this.options.iFrameId,
+            "' style='border:none'  width=",
+            this.options.width,
+            " height= ",
+            this.options.height,
+            '<% if (url){ %>',
+            ' src = <%= url %>',
+            '<% } %>',
+            " ></iframe>",
+            ''
+        ].join('');
+        return _.template(tpl)({
+            url: this.options.url
+        });
+    },
+    render: function() {
+        this.el.innerHTML = this.getTemplate();
+        return this;
+    }
+});
+
+
+GV.Views.HtmlPanelLayout = Mn.View.extend({
+    template: _.template("<div id='gv-html-panel-title'></div><div id='gv-html-panel-body'></div>"),
+    regions: {
+        title: "#gv-html-panel-title",
+        body: "#gv-html-panel-body"
+    },
+    onRender: function() {
+        "use strict";
+        this.options.iFrameId = this.options.divId + '-frame';
+        this.showChildView('title', new GV.Views.HtmlPanelTitle({
+            regionId: this.options.regionId,
+            title: this.options.title,
+            closeAction: this.options.closeAction
+        }));
+        this.showChildView('body', new GV.Views.HtmlPanelBody({
+            width: this.options.width,
+            height: this.options.height,
+            url: this.options.url,
+            iFrameId: this.options.iFrameId
+        }));
+        $('#' + this.options.regionId).css({ display: 'block' });
+    },
+    onAttach: function() {
+        "use strict";
+        var frameSelector = '#' + this.options.iFrameId;
+        if (this.options.html) {
+            $(frameSelector).contents().find('body').html(this.options.html);
+        }
+        setTimeout(function() {
+            // Set the height of the iframe to the height of the content
+            var height = parseInt($(frameSelector).contents().find('body').height() + 8);
+            $(frameSelector).css('height', height + 'px');
+            var width = parseInt($(frameSelector).contents().find('body').width() );
+            $(frameSelector).css('width', width + 'px');
+        },50);
+    }
+
+});

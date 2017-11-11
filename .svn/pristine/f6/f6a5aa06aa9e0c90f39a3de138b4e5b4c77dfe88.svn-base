@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+   The <project> tag defines the ant project and
+   the default build task to run initiated. It
+   also defines the base directory which is set
+   to the current folder this file lives in.
+-->
+<project name="Geoviewer2" default="build" basedir=".">
+    <!--
+       The <property> tag defines variables we
+       are using to store the path to different
+       files and tools required and input/output
+       directories. You use those variables by
+       like this: ${variable}
+    -->
+    <property name="BUILD_DIR" value="."/>
+    <property name="SOURCE_DIR" value="src"/>
+    <property name="CSS_DIR" value="../../css"/>
+    <property name="POLYFILLS_DIR" value="src/polyfills"/>
+    <property name="BUTTONS_DIR" value="src/buttons"/>
+    <property name="CONTROLS_DIR" value="src/controls"/>
+    <property name="COMPONENTS_DIR" value="src/components"/>
+    <property name="DIRECTIVES_DIR" value="src/directives"/>
+    <property name="MIXINS_DIR" value="src/mixins"/>
+    <property name="LEAFLET_DIR" value="src/leaflet"/>
+    <property name="BASE_LIBS_DIR" value="../"/>
+    <property name="YUI_COMPRESSOR"
+              value="E:\Tomcat6\webapps\ROOT\geoviewer\tools\yuicompressor\yuicompressor-2.4.2.jar"/>
+
+
+    <!--
+       The <target> tags defines an ant task.
+       You have to give it a unique name and
+       list other task (if any) this task
+       depends on. Ant will run those task first.
+
+       This task below is the default task defined
+       in the <project> tag. It will run all the
+       dependents.
+    -->
+    <target name="build" depends="base_lib, gv, gv-full, delete_temp_files, compress_javascript "/>
+
+    <target name="base_lib">
+        <echo>Build Base Libs</echo>
+        <!-- buttons.js -->
+        <concat destfile="${BUILD_DIR}/base.js">
+<!--
+            <filelist dir="${BASE_LIBS_DIR}/jQuery"
+                      files="jquery-1.11.custom.js"
+                    />
+-->
+            <filelist dir="${BASE_LIBS_DIR}/underscore"
+                      files="underscore.js"
+                    />
+            <filelist dir="${BASE_LIBS_DIR}/leaflet"
+                      files="leaflet-src.js"
+                    />
+            <filelist dir="${BASE_LIBS_DIR}/interact"
+                      files="interact.js"
+                    />
+            <filelist dir="${BASE_LIBS_DIR}/vue"
+                      files="vue.js,vue-resource.js"
+                    />
+        </concat>
+        <concat destfile="${BUILD_DIR}/base.min.js">
+<!--
+            <filelist dir="${BASE_LIBS_DIR}/jQuery"
+                      files="jquery-1.11.custom.min.js"
+                    />
+-->
+            <filelist dir="${BASE_LIBS_DIR}/underscore"
+                      files="underscore.min.js"
+                    />
+            <filelist dir="${BASE_LIBS_DIR}/leaflet"
+                      files="leaflet.js"
+                    />
+            <filelist dir="${BASE_LIBS_DIR}/interact"
+                      files="interact.min.js"
+                    />
+            <filelist dir="${BASE_LIBS_DIR}/vue"
+                      files="vue.min.js,vue-resource.min.js"
+                    />
+        </concat>
+
+        <echo>Base Libs Done!!!</echo>
+    </target>
+
+
+    <target name="gv">
+        <echo>Build GV</echo>
+        <!-- polyfill.js -->
+        <concat destfile="${SOURCE_DIR}/polyfills.js">
+            <fileset dir="${POLYFILLS_DIR}" casesensitive="yes">
+                <include name="*.js"/>
+            </fileset>
+        </concat>
+        <!-- buttons.js -->
+        <concat destfile="${SOURCE_DIR}/buttons.js">
+            <fileset dir="${BUTTONS_DIR}" casesensitive="yes">
+                <include name="*.js"/>
+            </fileset>
+        </concat>
+        <!-- controls.js -->
+        <concat destfile="${SOURCE_DIR}/controls.js">
+            <fileset dir="${CONTROLS_DIR}" casesensitive="yes">
+                <include name="*.js"/>
+            </fileset>
+        </concat>
+        <!-- components.js -->
+        <concat destfile="${SOURCE_DIR}/components.js">
+            <fileset dir="${COMPONENTS_DIR}" casesensitive="yes">
+                <include name="*.js"/>
+            </fileset>
+        </concat>
+
+        <!-- directives.js -->
+        <concat destfile="${SOURCE_DIR}/directives.js">
+            <fileset dir="${DIRECTIVES_DIR}" casesensitive="yes">
+                <include name="*.js"/>
+            </fileset>
+        </concat>
+
+        <!-- directives.js -->
+        <concat destfile="${SOURCE_DIR}/mixins.js">
+            <fileset dir="${MIXINS_DIR}" casesensitive="yes">
+                <include name="*.js"/>
+            </fileset>
+        </concat>
+
+        <!-- directives.js -->
+        <concat destfile="${SOURCE_DIR}/leaflet_ext.js">
+            <fileset dir="${LEAFLET_DIR}" casesensitive="yes">
+                <include name="*.js"/>
+            </fileset>
+        </concat>
+
+        <!-- cwn2-debug.js -->
+
+        <concat destfile="${BUILD_DIR}/gv.js">
+            <filelist dir="${SOURCE_DIR}"
+                      files="polyfills.js,GV.js,util.js,globals.js,components.js,directives.js"
+                    />
+            <fileset dir="${SOURCE_DIR}"
+                     includes="*.js"
+                     excludes="polyfills.js,GV.js,util.js,globals.js,components.js,directives.js"
+                    />
+        </concat>
+
+        <!-- CSS -->
+        <concat destfile="${CSS_DIR}/libs.css">
+            <fileset dir="${CSS_DIR}/libs/" casesensitive="yes">
+                <include name="*.css"/>
+            </fileset>
+        </concat>
+        <concat destfile="${CSS_DIR}/gv.css">
+            <filelist dir="${CSS_DIR}"
+                      files="libs.css,base.css"
+                    />
+        </concat>
+
+        <echo>GV Done!!!</echo>
+    </target>
+
+    <target name="gv-full">
+        <echo>Build GV FULL</echo>
+        <concat destfile="${BUILD_DIR}/gv-full.js">
+            <filelist dir="${BUILD_DIR}"
+                      files="base.js, gv.js"
+                    />
+        </concat>
+        <echo>Base Libs Done!!!</echo>
+    </target>
+
+    <target name="compress_javascript" depends="gv">
+        <echo>Compressing JavaScript Files...</echo>
+
+        <apply executable="java" parallel="false">
+            <fileset dir="${BUILD_DIR}" includes="gv.js"/>
+            <arg line="-jar"/>
+            <arg path="${YUI_COMPRESSOR}"/>
+            <srcfile/>
+            <arg line="-o"/>
+            <mapper type="glob" from="*.js" to="${BUILD_DIR}/gv.min.js"/>
+            <targetfile/>
+        </apply>
+
+        <concat destfile="${BUILD_DIR}/gv-full.min.js">
+            <filelist dir="${BUILD_DIR}"
+                      files="base.min.js, gv.min.js"
+                    />
+        </concat>
+
+        <echo>Compressing CSS Files...</echo>
+        <apply executable="java" parallel="false">
+            <fileset dir="${CSS_DIR}" includes="gv.css"/>
+            <arg line="-jar"/>
+            <arg path="${YUI_COMPRESSOR}"/>
+            <srcfile/>
+            <arg line="-o"/>
+            <mapper type="glob" from="*.css" to="${CSS_DIR}/gv.min.css"/>
+            <targetfile/>
+        </apply>
+        <echo>Compression Done!!!</echo>
+    </target>
+
+    <target name="delete_temp_files" depends="gv">
+        <echo>Deleting Temp Files...</echo>
+        <delete file="${SOURCE_DIR}/polyfills.js"/>
+        <delete file="${SOURCE_DIR}/buttons.js"/>
+        <delete file="${SOURCE_DIR}/controls.js"/>
+        <delete file="${SOURCE_DIR}/components.js"/>
+        <delete file="${SOURCE_DIR}/directives.js"/>
+        <delete file="${SOURCE_DIR}/mixins.js"/>
+        <delete file="${SOURCE_DIR}/leaflet_ext.js"/>
+        <echo>Delete Done!!!</echo>
+    </target>
+
+
+</project>

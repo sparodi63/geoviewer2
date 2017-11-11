@@ -1,0 +1,8 @@
+import * as config from './config'
+import { EventBus } from './eventBus.js'
+
+export default function (options) {
+  GV.eventBus = EventBus
+
+  config.set(options)
+}

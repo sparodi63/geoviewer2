@@ -1,0 +1,36 @@
+/**
+ * Created by parodi on 19/09/2016.
+ */
+GV.Buttons.legend = function(btnOptions, map) {
+    "use strict";
+
+    // costruisco pannello legenda (se passato nelle options del bottone altrimenti costruisco pannello default
+    if (btnOptions.buildLegendPanel) {
+        btnOptions.buildLegendPanel(btnOptions);
+    } else {
+        buildLegendPanel(btnOptions);
+    }
+
+    var options = _.extend(btnOptions, {
+        leafletClasses: true,
+        states: [{
+            stateName: 'print',
+            onClick: function (button, map){
+                $('#gv-legend').fadeIn("slow");
+            },
+            title: 'Legenda',
+            icon: 'ms ms-layers'
+        }]
+    });
+
+    return L.easyButton(options);
+
+    function buildLegendPanel(btnOptions) {
+        GV.app.getContainer().append("<div id='gv-legend' style='display:none;'></div>");
+        GV.app.layout.addRegion('legend', '#gv-legend');
+        GV.app.layout.getRegion('legend').show(new GV.Views.LegendLayout(btnOptions));
+        if (btnOptions.show && !GV.Globals.SMALL_SCREEN && !GV.Util.isTouch()) {
+            $('#gv-legend').css({ display: 'block' });
+        }
+    }
+};

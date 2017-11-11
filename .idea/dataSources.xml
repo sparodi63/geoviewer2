@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="611967626">
+    <data-source source="LOCAL" name="AMB_DB_AMB" uuid="4820b410-b14c-4391-b441-bbe7c7d05907">
+      <driver-ref>oracle</driver-ref>
+      <auto-commit>false</auto-commit>
+      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
+      <jdbc-url>jdbc:oracle:thin:@amb_db.regione.liguria.it:1522:SIT</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
+</project>

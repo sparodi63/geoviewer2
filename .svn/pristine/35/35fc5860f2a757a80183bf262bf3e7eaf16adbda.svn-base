@@ -1,0 +1,17 @@
+/**
+ * Created by parodi on 02/08/2016.
+ */
+/**
+ *
+ *
+ *
+ */
+
+var GV = GV || {};
+
+GV.Models = {};
+
+GV.Buttons = {};
+
+GV.Views = {};
+

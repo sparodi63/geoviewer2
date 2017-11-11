@@ -1,0 +1,4 @@
+require('../../../src/_entry')
+
+require('./index')
+require('./index.css')

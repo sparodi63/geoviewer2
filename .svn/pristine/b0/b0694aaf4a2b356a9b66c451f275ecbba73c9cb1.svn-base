@@ -1,0 +1,115 @@
+
+GV.Views.Layout = Mn.View.extend({
+
+    template: false,
+
+    controls: [],
+
+    initialize: function(options) {
+        "use strict";
+
+        this.el = options.el;
+
+        this.config = options.config.application.layout;
+
+        // creo mappa leaflet/ol3
+        this.addMap(options);
+
+        if (options.config.application.mapOptions && options.config.application.mapOptions.infoWms) {
+            GV.app.infoWmsManager = new GV.InfoWmsManager();
+            GV.app.infoWmsManager.activate(this.map, options.config);
+            GV.app.infoWmsList = new Backbone.Collection();
+            GV.app.getContainer().append("<div id='gv-info-wms' draggable='true'></div>");
+            GV.Util.enableDrag('gv-info-wms');
+            this.addRegion('infowms', '#gv-info-wms');
+        }
+
+        // gestione eventi
+        this.listenTo(GV.rlMaps, "add", this.onAddMap);
+    },
+
+    render: function (options){
+        "use strict";
+
+        // aggiungo layer di base
+        if (this.map && this.map.loadBaseLayers) {
+            this.map.loadBaseLayers(options.config.baseLayers);
+        }
+        // aggiungo controlli
+        if (this.map && this.map.loadControls) {
+            this.map.loadControls(options);
+        }
+
+        // aggiungo toolbar
+        if (this.config.toolbar) {
+            this.addToolbars(this.config.toolbar);
+        }
+
+        return this;
+    },
+
+    addMap: function (options) {
+        "use strict";
+
+        var mapView = new GV.Views.MapView();
+        $(options.el).append(mapView.el);
+        mapView.render(options);
+        this.map = mapView.map;
+
+
+    },
+
+
+    addToolbars: function (toolbar) {
+        "use strict";
+        _.each(toolbar, function (tb) {
+            var position = tb.position || "topleft";
+            _.each(tb.items, function (item) {
+                item.options = item.options || {};
+                item.options.position = item.options.position || position;
+                this.addButton(item);
+            }, this);
+        }, this);
+
+    },
+
+    addButton: function (item) {
+        "use strict";
+
+        if (GV.Buttons[item.name]) {
+            var button = GV.Buttons[item.name](item.options, this.map);
+            if (button) {
+                button.name = item.name;
+                this.controls.push(button);
+                button.addTo(this.map);
+            }
+        } else {
+            console.log("Bottone " + item.name + " non esistente");
+        }
+    },
+
+    // Funzione richiamata quando si aggiungono mappe alla collection GV.rlMaps
+    onAddMap: function(data){
+        "use strict";
+        var layers = data.attributes.layers.toJSON();
+        this.map.loadLayers(layers);
+    },
+
+    getControl: function(controlName) {
+        "use strict";
+        return _.find(GV.app.layout.controls, function(control) {
+            return control.name === controlName;
+        });
+    },
+
+    getControlOption: function(controlName, optionName) {
+        "use strict";
+        var control = this.getControl(controlName);
+        if (control) {
+            return control.options[optionName];
+        }
+    }
+
+
+
+});

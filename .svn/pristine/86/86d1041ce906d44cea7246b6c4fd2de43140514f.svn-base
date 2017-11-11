@@ -1,0 +1,26 @@
+
+Vue.component('gv-map', {
+    template: '<div id= "gv-map"></div>',
+    props: ['options', 'maps'],
+    mounted: function() {
+        console.log('gv-map mounted', this.options);
+        this.map = new GV.Map(this.options);
+        GV.map = this.map;
+        if (this.map && this.map.loadBaseLayers) {
+            this.map.loadBaseLayers(this.options.config.baseLayers);
+        }
+        // aggiungo controlli
+        if (this.map && this.map.loadControls) {
+            this.map.loadControls(this.options);
+        }
+    },
+    created: function () {
+        console.log('gv-map created ');
+    },
+    beforeUpdate: function() {
+        console.log('gv-map update ', this.maps);
+    },
+    methods: {
+    }
+});
+

@@ -1,0 +1,103 @@
+var idMap = decodeURIComponent(GV.Util.getUrlParam('id'));
+
+var config = {
+    application: {
+        mapOptions: {
+//            initialExtent: "830036,5402959,1123018,5597635",
+//            maxBounds: GV.Globals.MAX_BOUNDS,
+            infoWms: true
+        },
+        layout: {
+            controls: [],
+            toolbar: [
+                {
+                    position: "topleft",
+                    items: [
+                        {name: "fullscreen"},
+                        {name: "geocoder"},
+                        {name: "baselayers"},
+                        {name: "print"}
+                    ]
+                },
+                {
+                    position: "topright",
+                    items: [
+                        {
+                            name: "legend",
+                            options: {
+                                show: false,
+                                showAddMap: true,
+                                showInfoMap: true
+                            }
+                        }
+                    ]
+                },
+                {
+                    position: "bottomright",
+                    items: [
+                        {
+                            name: "locate",
+                            options: {
+                                drawCircle: false
+                            }
+                        },
+                        {name: "navbar"},
+                        {name: "zoom"}
+                    ]
+                }
+            ]
+        }
+    },
+    baseLayers: [
+        {'type': 'ESRI_IMAGERY', visible: true},
+        { 'type': 'MAPBOX_SATELLITE'},
+        { 'type': 'MAPBOX_OUTDOOR'},
+        { 'type': 'MAPBOX_LIGHT'},
+        {'type': 'BLANK'}
+    ],
+    maps: [
+
+    ]
+};
+
+
+var callback = function (app) {
+    "use strict";
+
+    //console.log(app.map.getLayerByName("L3"));
+    //GV.app.addRlMap(1735);
+    //GV.app.addRlMap(5);
+    //GV.app.addRlMap(1646);
+
+    var vm = new Vue({
+        template:
+            '<gv-iframe-panel :html="html" height="200" width="300" cls="draggable" visible="true" title="PROVA"></gv-iframe-panel-body>' ,
+        data: {
+            src: null,
+            html: '<div>PIPPO</div>'
+        },
+        created: function() {
+            $("#gv-container").append("<div id='prova'></div>");
+        }
+     });
+    vm.$mount("#prova");
+
+
+
+};
+
+
+GV.app = new GV.App({
+    el: '#gv-container',
+    config: config,
+    idMap: idMap,
+    callback: null,
+    setMapTitle: true,
+    debug: true
+});
+
+
+
+
+
+

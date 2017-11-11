@@ -1,0 +1,34 @@
+/**
+ * Created by parodi on 08/08/2016.
+ */
+/*global GV:false, window:false, jQuery:false, $:false , console:false  , Marionette:false  , Backbone:false  */
+GV.Models.RlLayer = Backbone.Model.extend({
+/*    defaults: {
+        id: 0,
+        name: '',
+        type: '',
+        title: '',
+        visible: false,
+        visible: '',
+        cacheMinZoomLevel: 0,
+        minScale: 0,
+        maxScale: 0,
+        opacity: 0,
+        url: '',
+        legend_label: '',
+    }*/
+    initialize: function () {
+        if (this.get('minScale') === 0) {
+            this.set('minScale', 591657550);
+        }
+        // calcolo zIndex
+        this.set('zIndex', GV.layerFactory.lastZIndex++);
+        // calcolo inRange
+        if (GV.app.map) {
+            this.set('inRange', GV.app.map.layerInRange(this.attributes));
+        } else {
+            this.set('inRange', true);
+        }
+
+    }
+});

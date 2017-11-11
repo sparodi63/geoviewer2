@@ -1,0 +1,127 @@
+
+var popupTemplate = '<p><b>{DENOMINAZIONE}</b></p><p>{INDIRIZZO}  - {CAP} {COMUNE}</p><p> <a href=scheda.html?COD_MECC={COD_MECC} target="_blank">Scheda</a>  </p>';
+
+var config = {
+    application: {
+        layout: {
+            controls: [],
+            toolbar: [
+                {
+                    position: "topleft",
+                    items: [
+                        {name: "zoom"}
+                    ]
+                }
+            ],
+        }
+    },
+    baseLayers: [
+        //{ "type": "OSM"},
+        { 'type': 'OSM'},
+        { "type": "ESRI_IMAGERY" },
+        { "type": "ESRI_STREETS" },
+        { "type": "ESRI_TOPOGRAPHIC", visible: true  },
+        { "type": "ESRI_DARKGRAY" },
+        { "type": "ESRI_GRAY" }
+    ],
+    maps: [
+        {
+            id: 100001,
+            name: "Scuole",
+            layers: [
+                {
+                    type: 'JSON',
+                    dataType: 'json',
+                    name: 'scuole',
+                    visible: true,
+                    geomSubType: 'POINT',
+                    //wfsParams: {
+                    //    url: 'http://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs',
+                    //    typeName: 'V_SCUOLE_2014_COMPL'
+                    //},
+                    url: 'data.json',
+                    legend: {
+                        label: 'Scuole'
+                    },
+                    tooltip: '{DENOMINAZIONE}',
+                    popup: popupTemplate,
+                    classes: [
+                        {
+                            name: "TIPO 01",
+                            filter: {
+                                key: 'TIPO',
+                                value: '01'
+                            },
+                            style: {
+                                iconUrl: "http://geoportale.regione.liguria.it/geoviewer2/images/legend/scuola/cfa.png",
+                                iconSize: [32,37],
+                                iconAnchor: [16,37],
+                                popupAnchor: [0,-37]
+                            }
+                        },
+                        {
+                            name: "TIPO 02",
+                            filter: {
+                                key: 'TIPO',
+                                value: '02'
+                            },
+                            style: {
+                                iconUrl: "http://geoportale.regione.liguria.it/geoviewer2/images/legend/scuola/school01.png",
+                                iconSize: [32,37],
+                                iconAnchor: [16,37],
+                                popupAnchor: [0,-37]
+                            }
+                        },
+                        {
+                            name: "TIPO 03",
+                            filter: {
+                                key: 'TIPO',
+                                value: '03'
+                            },
+                            style: {
+                                iconUrl: "http://geoportale.regione.liguria.it/geoviewer2/images/legend/scuola/school02.png",
+                                iconSize: [32,37],
+                                iconAnchor: [16,37],
+                                popupAnchor: [0,-37]
+                            }
+                        },
+                        {
+                            name: "TIPO 04",
+                            filter: {
+                                key: 'TIPO',
+                                value: '04'
+                            },
+                            style: {
+                                iconUrl: "http://geoportale.regione.liguria.it/geoviewer2/images/legend/scuola/school03.png",
+                                iconSize: [32,37],
+                                iconAnchor: [16,37],
+                                popupAnchor: [0,-37]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+
+    ]
+};
+
+function filter(app) {
+    "use strict";
+
+    app.map.on('click', function () {
+        app.map.getLayerByName("scuole").filter([
+            { key: 'TIPO', value: '01' },
+            { key: 'TIPO', value: '02' }
+        ]);
+    });
+
+}
+
+var app = new GV.App({
+    el: '#mapdiv',
+    config: config,
+    callback: null,
+    debug: true
+});
+

@@ -1,0 +1,202 @@
+
+GV.util = (function () {
+    "use strict";
+
+    return {
+
+        getUrlParam: function (paramName) {
+            var results = new RegExp("[\\?&]" + paramName + "=([^&#]*)").exec(window.location.href);
+            GV.util.log("GV.util.getUrlParam");
+
+            return results ? decodeURIComponent(results[1]) : null;
+        },
+
+        getUrlParamFromString: function (url, paramName) {
+            var results = new RegExp("[\\?&]" + paramName + "=([^&#]*)").exec(url);
+            if (!results) {
+                return null;
+            }
+            return results[1] || null;
+        },
+
+        log: function (message, level) {
+            var action = "log";
+
+            if (!GV.config.debug) {
+                return;
+            }
+
+            switch (level) {
+            case 0:
+                action = "warn";
+                break;
+            case 1:
+            case 2:
+                action = "error";
+                break;
+            default:
+                action = "info";
+                break;
+            }
+
+            try {
+                console[action](message + ' - ' + new Date());
+            } catch (e) {
+            }
+        },
+
+        msgBox: function (msg) {
+            window.alert(msg);
+        },
+
+        getXML: function (options, callback) {
+            var url = options.url,
+                data = options.data,
+                method = options.method;
+
+            $.ajax({
+                url: url,
+                dataType: (GV.util.isBrowserIE()) ? "text" : "xml",
+                data: data,
+                method: method || 'GET'
+            }).done(function (response) {
+                try {
+                    var xml = response;
+                    if (GV.util.isBrowserIE()) {    // Only for IE
+                        var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                        xmlDoc.async = "false";
+                        xmlDoc.loadXML(response);
+                        xml = xmlDoc;
+                    }
+                    callback(xml);
+                } catch (exception) {
+                    GV.util.log(exception,2);
+                }
+            });
+
+        },
+
+        parseXML: function (xmlString) {
+            GV.util.log("GV.util.parseXML");
+            try {
+                var xmlDoc = null;
+                if (window.DOMParser && window.XSLTProcessor) {
+                    var parser = new DOMParser();
+                    xmlDoc = parser.parseFromString(xmlString, "text/xml");
+                } else {
+                    xmlDoc = new ActiveXObject("Msxml2.DOMDocument.3.0");
+                    xmlDoc.async = false;
+                    xmlDoc.loadXML(xmlString);
+                }
+                return xmlDoc;
+            } catch (exception) {
+                GV.util.log("GV.util.parseXml: errore parsing xml - " + exception.message,1);
+            }
+        },
+
+        isPointInLig: function (x, y) {
+            GV.util.log("GV.util.isPointInLig");
+
+            if (!x || !y) {
+                return false;
+            }
+
+            var minX = 7.4, minY = 43.7, maxX = 10.1, maxY = 44.8;
+
+            return (x > minX) && (x < maxX) && (y > minY) && (y < maxY);
+        },
+
+        getParamString: function (obj, existingUrl, uppercase) {
+            var params = [];
+            for (var i in obj) {
+                params.push(encodeURIComponent(uppercase ? i.toUpperCase() : i) + '=' + encodeURIComponent(obj[i]));
+            }
+            return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
+        },
+
+        template: function (str, data) {
+            var templateRe = /\{ *([\w_\-]+) *\}/g;
+            return str.replace(templateRe, function (str, key) {
+                var value = data[key];
+
+                if (value === undefined) {
+                    throw new Error('No value provided for variable ' + str);
+
+                } else if (typeof value === 'function') {
+                    value = value(data);
+                }
+                return value;
+            });
+        },
+
+        getZoomFromScaleDenom: function (scaleDenom) {
+            return _.findIndex(GV.globals.BASE_SCALES, function (scale) {
+                return scaleDenom > scale;
+            });
+        },
+
+        getScaleLabelsFromZoom: function (zoom) {
+            return GV.globals.BASE_SCALE_LABELS[zoom]
+        },
+
+        getScaleFromZoom: function (zoom) {
+            return GV.globals.BASE_SCALES[zoom]
+        },
+
+        endsWith: function (str, suffix) {
+            return str.indexOf(suffix, str.length - suffix.length) !== -1;
+        },
+
+        isTouch: function () {
+            return window.matchMedia('(pointer: coarse)').matches;
+        },
+
+        isBrowserIE: function () {
+            return navigator.userAgent.indexOf("MSIE ") > 0 || navigator.userAgent.indexOf("Trident") > 0 || navigator.userAgent.indexOf("Edge") > 0;
+        },
+
+        setDrag: function() {
+            "use strict";
+            interact('.draggable')
+                .draggable({
+                    // enable inertial throwing
+                    inertia: true,
+                    // keep the element within the area of it's parent
+                    restrict: {
+                        restriction: "parent",
+                        endOnly: true,
+                        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+                    },
+                    // enable autoScroll
+                    autoScroll: true,
+
+                    // call this function on every dragmove event
+                    onmove: dragMoveListener,
+                    // call this function on every dragend event
+                    onend: function (event) {
+                        var textEl = event.target.querySelector('p');
+
+                        textEl && (textEl.textContent = 'moved a distance of ' + (Math.sqrt(event.dx * event.dx + event.dy * event.dy)|0) + 'px');
+                    }
+                });
+
+            function dragMoveListener (event) {
+                var target = event.target,
+                // keep the dragged position in the data-x/data-y attributes
+                    x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                    y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                // translate the element
+                target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+
+                // update the posiion attributes
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            }
+
+            // this is used later in the resizing and gesture demos
+            window.dragMoveListener = dragMoveListener;
+        }
+    };
+})();
+

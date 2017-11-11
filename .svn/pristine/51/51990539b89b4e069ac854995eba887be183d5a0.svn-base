@@ -1,0 +1,240 @@
+/* ----------------------------------------------- */
+/* Gestione colori customizzabili */
+/* ----------------------------------------------- */
+
+.leaflet-bar a, .leaflet-bar a:hover, .leaflet-bar a.leaflet-disabled {
+    background-color: #42537f;
+    color: #ccc;
+}
+
+.gv-color-scheme {
+    background-color: #42537f;
+    color: #CCC;
+}
+
+.gv-inverted-color-scheme {
+    color: #42537f;
+    background-color: #CCC;
+}
+
+/* ----------------------------------------------- */
+/* Cluster */
+/* ----------------------------------------------- */
+
+.cluster_01 {
+    background-image: url(/geoviewer2/static/img/scuoladigitale/legend/cfa-nq.png);
+    text-align: center;
+    font-size: 20px;
+    color: white;
+}
+.cluster_02 {
+    background-image: url(/geoviewer2/static/img/scuoladigitale/legend/school02-nq.png);
+    text-align: center;
+    font-size: 20px;
+    color: white;
+}
+.cluster_03 {
+    background-image: url(/geoviewer2/static/img/scuoladigitale/legend/school01-nq.png);
+    text-align: center;
+    font-size: 20px;
+    color: white;
+}
+.cluster_04 {
+    background-image: url(/geoviewer2/static/img/scuoladigitale/legend/school03-nq.png);
+    text-align: center;
+    font-size: 20px;
+    color: white;
+}
+
+/* ----------------------------------------------- */
+/* GV */
+/* ----------------------------------------------- */
+
+#gv-title {
+    height: 0;
+    width: 0;
+}
+
+@media only screen and (min-width: 700px) {
+    /* For desktop only: */
+    #gv-title {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        height: 94px;
+        width: 230px;
+        padding-left: 10px;
+        z-index: 799;
+        background: #fff url(/geoviewer2/static/img/scuoladigitale/logo-ProgettoScuola.png) no-repeat 10% 50%;
+        opacity: 1;
+        filter: alpha(opacity=100);
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    .leaflet-container .leaflet-control-search {
+        top: 94px;
+    }
+}
+
+#gv-legend {
+    height: auto;
+}
+
+#gv-legend-body {
+    height: auto;
+    overflow-y: hidden;
+}
+
+.gv-legend-layer-icon {
+    width: 24px;
+    height: 27px;
+}
+.gv-list-legend-map-item {
+    height: 0;
+    padding: 0;
+}
+
+.gv-layer-visibility-span {
+    position: absolute;
+    top: 25%;
+    left: 32px;
+}
+
+input[type=text]:focus {
+    outline: none;
+}
+
+/* Popup */
+
+.leaflet-popup-content-wrapper {
+    color:#31708f;
+}
+.leaflet-popup-content-wrapper a {
+    color:#31708f;
+    text-decoration: underline;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+    color: #31708f;
+}
+
+/* LEAFLET SEARCH */
+
+.leaflet-container .leaflet-control-search {
+    position:relative;
+    float:left;
+    color:#ccc;
+    background-color: #31708f;
+    z-index:1000;
+    box-shadow: 0 1px 7px rgba(0,0,0,0.65);
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.leaflet-control-search.search-exp {/*expanded*/
+    box-shadow: 0 1px 7px #999;
+    background: #31708f;
+}
+.leaflet-control-search .search-input {
+    display:block;
+    float:left;
+    background: #31708f;
+    color:#ccc;
+    border: none;
+    height:18px;
+    width: 200px;
+    padding:0 18px 0 2px;
+    margin:3px 0 3px 3px;
+}
+.leaflet-control-search.search-load .search-cancel {
+    visibility:hidden;
+}
+.leaflet-control-search .search-cancel {
+    display:block;
+    width:22px;
+    height:18px;
+    position:absolute;
+    right:22px;
+    margin:-1px 0;
+    filter: alpha(opacity=80);
+    opacity: 0.8;
+    background: #31708f;
+    border-radius:4px;
+    color: #ccc;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    padding-top: 5px;
+}
+
+.leaflet-control-search .search-cancel:hover {
+    filter: alpha(opacity=100);
+    opacity: 1;
+}
+.leaflet-control-search .search-cancel span {
+    display:none;/* comment for cancel button imageless */
+    font-size:18px;
+    line-height:20px;
+    color:#ccc;
+    font-weight:bold;
+}
+.leaflet-control-search .search-cancel:hover span {
+    color:#aaa;
+}
+.leaflet-control-search .search-button {
+    display:block;
+    float:left;
+    width:26px;
+    height:22px;
+    background: #31708f;
+    border-radius:4px;
+    color: #ccc;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    padding-top: 5px;
+}
+.leaflet-control-search .search-tooltip {
+    position:absolute;
+    top:57%;
+    left:0;
+    float:left;
+    list-style: none;
+    padding-left: 0;
+    min-width:120px;
+    max-height:122px;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+    background-color: #31708f;
+    z-index:1010;
+    overflow-y:auto;
+    overflow-x:hidden;
+    cursor: pointer;
+}
+.leaflet-control-search .search-tip {
+    margin:2px;
+    padding:2px 4px;
+    display:block;
+    color:#ccc;
+    background: #31708f;
+    border-radius:.25em;
+    text-decoration:none;
+    /*    white-space:nowrap; */
+}
+.leaflet-control-search .search-button:hover {
+    background-color:#31708f;
+}
+.leaflet-control-search .search-tip-select,
+.leaflet-control-search .search-tip:hover {
+    background-color: #31708f;
+}
+.leaflet-control-search .search-alert {
+    cursor:pointer;
+    clear:both;
+    font-size:.75em;
+    margin-bottom:5px;
+    padding:0 .25em;
+    color:#ccc;
+    font-weight:bold;
+    border-radius:.25em;
+}
+

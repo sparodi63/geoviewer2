@@ -1,0 +1,15 @@
+
+GV.Views.MapView = Backbone.View.extend({
+    id: "gv-map",
+    render: function (options) {
+        'use strict';
+
+        // creazione mappa leaflet
+        var mapType = options.mapType || 'leaflet';
+        if (mapType === 'leaflet') {
+            this.map = new GV.Map(options);
+        }
+
+        return this;
+    }
+});

@@ -1,0 +1,52 @@
+/**
+ * Created by parodi on 08/08/2016.
+ */
+GV.Models.RlMaps = Backbone.Collection.extend({
+    model: GV.Models.RlMap,
+    url: '/geoservices/REST/config/map/',
+    add: function(models, options) {
+        "use strict";
+        // carico mappe in ordine inverso
+        var opts = {at: 0};
+        if (options) {
+            _.extend(opts,options);
+        }
+        Backbone.Collection.prototype.add.call(this, models, opts);
+    },
+    getLayerConfig: function (layerName) {
+        "use strict";
+        var foundLayer = null;
+        _.each(this.models, function (map) {
+            var layers = map.get('layers').models;
+            foundLayer = _.find(layers, function (layer) {
+                return layer.attributes.name === layerName;
+            });
+        });
+        if (foundLayer) {
+            return foundLayer.attributes;
+        }
+    },
+    getAllLayersConfig: function () {
+        "use strict";
+        var layers = [];
+        _.each(this.models, function (map) {
+            _.each(map.get('layers').toJSON(), function (layer) {
+                layers.push(layer);
+            });
+        });
+        return layers;
+    },
+    setLayerAttribute: function (layerName, attribute, value) {
+        "use strict";
+        var foundLayer = null;
+        _.each(this.models, function (map) {
+            var layers = map.get('layers').models;
+            _.each(layers, function (layer) {
+                if (layer.get("name") === layerName) {
+                    layer.set(attribute, value);
+                }
+            });
+        });
+    }
+});
+

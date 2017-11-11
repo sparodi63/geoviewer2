@@ -1,0 +1,1078 @@
+{
+  "type": "FeatureCollection",
+  "totalFeatures": 67,
+  "features": [{
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6316",
+    "geometry": {"type": "Point", "coordinates": [8.477791144117601, 44.316290456348455]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVPS01000V",
+      "DENOMINAZIONE": "LICEO SCIENTIFICO STATALE \"ORAZIO GRASSI\"",
+      "INDIRIZZO": "VIA F. CORRIDONI, 2R",
+      "CAP": "17100",
+      "COMUNE": "Savona",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.liceograssi.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6315",
+    "geometry": {"type": "Point", "coordinates": [9.400497288967703, 44.270758426893586]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS011008",
+      "DENOMINAZIONE": "I.I.S. \"NATTA - DEAMBROSIS\"",
+      "INDIRIZZO": "VIA DELLA CHIUSA, 107",
+      "CAP": "16039",
+      "COMUNE": "Sestri Levante",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.nattadeambrosis.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6314",
+    "geometry": {"type": "Point", "coordinates": [7.853069381735269, 43.863698011585335]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMIS00400L",
+      "DENOMINAZIONE": "I.I.S. \"E. RUFFINI - D. AICARDI\"",
+      "INDIRIZZO": "VIA LUNGOMARE N.141",
+      "CAP": "18018",
+      "COMUNE": "Taggia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.ruffiniaicardi.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6313",
+    "geometry": {"type": "Point", "coordinates": [7.61440328818413, 43.78858894566058]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMIS001005",
+      "DENOMINAZIONE": "I.T. \"FERMI - POLO - MONTALE\"",
+      "INDIRIZZO": "VIA ROMA, 61",
+      "CAP": "18039",
+      "COMUNE": "Ventimiglia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.fermipolomontale.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6312",
+    "geometry": {"type": "Point", "coordinates": [7.620992688778303, 43.787009266082286]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMPS03000E",
+      "DENOMINAZIONE": "LICEO STATALE APROSIO",
+      "INDIRIZZO": "VIA BRUNO CORTI, 7",
+      "CAP": "18039",
+      "COMUNE": "Ventimiglia",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.liceoaprosio.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6311",
+    "geometry": {"type": "Point", "coordinates": [8.478259170147865, 44.31192551145017]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVPM01000X",
+      "DENOMINAZIONE": "LICEO LINGUISTICO - ECONOMICO-SOCIALE \"GIULIANO DELLA ROVERE\"",
+      "INDIRIZZO": "VIA MONTURBANO, 8",
+      "CAP": "17100",
+      "COMUNE": "Savona",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.liceodellarovere.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6310",
+    "geometry": {"type": "Point", "coordinates": [8.161800773161584, 44.002646246936834]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVIS00700N",
+      "DENOMINAZIONE": "I.I.S. \"GIANCARDI - GALILEI - AICARDI\"",
+      "INDIRIZZO": "VIA FRANCESCO  PETRARCA 7",
+      "CAP": "17021",
+      "COMUNE": "Alassio",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.isgiancardigalileiaicardi.com/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-630f",
+    "geometry": {"type": "Point", "coordinates": [8.213271861770727, 44.052975794845764]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVPS030004",
+      "DENOMINAZIONE": "LICEO STATALE \"GIORDANO BRUNO\"",
+      "INDIRIZZO": "VIALE PONTELUNGO,  83",
+      "CAP": "17031",
+      "COMUNE": "Albenga",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.liceogbruno.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-630e",
+    "geometry": {"type": "Point", "coordinates": [8.278711151117275, 44.40360188122962]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVIS00300A",
+      "DENOMINAZIONE": "I.S. CAIRO MONTENOTTE",
+      "INDIRIZZO": "CORSO XXV APRILE, 76",
+      "CAP": "17014",
+      "COMUNE": "Cairo Montenotte",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.isscairo.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-630d",
+    "geometry": {"type": "Point", "coordinates": [8.288111270668166, 44.35898642795271]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVPC030001",
+      "DENOMINAZIONE": "LICEO STATALE \"SAN GIUSEPPE CALASANZIO\"",
+      "INDIRIZZO": "PIAZZA CALASANZIO, 3",
+      "CAP": "17043",
+      "COMUNE": "Carcare",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.liceocarcare.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-630c",
+    "geometry": {"type": "Point", "coordinates": [9.325506745366924, 44.31946841980807]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS01900V",
+      "DENOMINAZIONE": "I.I.S. \"G. CABOTO\"",
+      "INDIRIZZO": "VIA G.B. GHIO 2/4",
+      "CAP": "16043",
+      "COMUNE": "Chiavari",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.caboto-el.eu/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-630b",
+    "geometry": {"type": "Point", "coordinates": [8.333181707482794, 44.17546669553944]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVIS00200E",
+      "DENOMINAZIONE": "I.I.S. \"MIGLIORINI - DA VINCIi\"",
+      "INDIRIZZO": "VIA A. MANZONI  12",
+      "CAP": "17024",
+      "COMUNE": "Finale Ligure",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.iisfinale.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-630a",
+    "geometry": {"type": "Point", "coordinates": [8.327161770721753, 44.17779165293186]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVPS02000D",
+      "DENOMINAZIONE": "LICEO STATALE \"A. ISSEL\"",
+      "INDIRIZZO": "VIA FIUME, 42",
+      "CAP": "17024",
+      "COMUNE": "Finale Ligure",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.liceoissel.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6309",
+    "geometry": {"type": "Point", "coordinates": [8.984762382352171, 44.403905856186334]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS003009",
+      "DENOMINAZIONE": "I.I.S.E. \"MONTALE - NUOVO I.P.C\"",
+      "INDIRIZZO": "VIA TIMAVO, 63",
+      "CAP": "16132",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.iscsmontalegenova.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6308",
+    "geometry": {"type": "Point", "coordinates": [8.909133245962693, 44.41614250252251]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS004005",
+      "DENOMINAZIONE": "I.I.S.S. \"EINAUDI - CASAREGIS - GALILEI\"",
+      "INDIRIZZO": "PIAZZA SOPRANIS, 5",
+      "CAP": "16126",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.ecg-genova.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6307",
+    "geometry": {"type": "Point", "coordinates": [8.93026300183247, 44.41334659391651]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS00600R",
+      "DENOMINAZIONE": "I.S. \"VITTORIO EMANUELE II - RUFFINI\"",
+      "INDIRIZZO": "LARGO ZECCA, 4",
+      "CAP": "16124",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.vittorioemanueleruffini.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6306",
+    "geometry": {"type": "Point", "coordinates": [8.952172744872335, 44.41138568015778]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS00700L",
+      "DENOMINAZIONE": "I.S. \"FIRPO - BUONARROTI\"",
+      "INDIRIZZO": "VIA CANEVARI, 51",
+      "CAP": "16137",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.firpobuonarroti.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6305",
+    "geometry": {"type": "Point", "coordinates": [9.058931570038142, 44.384146289876306]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS012004",
+      "DENOMINAZIONE": "I.T. \"BERNARDO MARSANO\"",
+      "INDIRIZZO": "VIA ALLA SCUOLA DI AGRICOLTURA, 9",
+      "CAP": "16167",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.marsano.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6304",
+    "geometry": {"type": "Point", "coordinates": [8.855453868218248, 44.4254962407289]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS01400Q",
+      "DENOMINAZIONE": "I.S. \"I. CALVINO\"",
+      "INDIRIZZO": "VIA BORZOLI, 21",
+      "CAP": "16153",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.calvino.ge.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6303",
+    "geometry": {"type": "Point", "coordinates": [8.906723301603575, 44.41239653482781]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS01600B",
+      "DENOMINAZIONE": "I.I.S. \"GASTALDI - ABBA\"",
+      "INDIRIZZO": "VIA DINO COL,  32",
+      "CAP": "16149",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.gastaldi-abba.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6302",
+    "geometry": {"type": "Point", "coordinates": [8.975112229872524, 44.45244726625168]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS018003",
+      "DENOMINAZIONE": "I.T.S. \"E. MAJORANA - GIORGI\"",
+      "INDIRIZZO": "VIA S.ALLENDE, 41",
+      "CAP": "16138",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.majorana.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6301",
+    "geometry": {"type": "Point", "coordinates": [8.94335290890702, 44.401536767345085]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPC01000P",
+      "DENOMINAZIONE": "LICEO GINNASIO STATALE \"ANDREA D'ORIA\"",
+      "INDIRIZZO": "VIA A. DIAZ, 8",
+      "CAP": "16121",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liceodoria.altervista.org/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-6300",
+    "geometry": {"type": "Point", "coordinates": [8.928473021555588, 44.41466657152661]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPC020009",
+      "DENOMINAZIONE": "LICEO CLASSICO - LINGUISTICO \"CRISTOFORO COLOMBO\"",
+      "INDIRIZZO": "VIA D. BELLUCCI, 2",
+      "CAP": "16124",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liceocolombo.genova.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62ff",
+    "geometry": {"type": "Point", "coordinates": [8.887333529984376, 44.41344547316782]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPC04000E",
+      "DENOMINAZIONE": "LICEO CLASSICO - LINGUISTICO \"GIUSEPPE MAZZINI\"",
+      "INDIRIZZO": "VIA P. RETI, 25",
+      "CAP": "16151",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liceomazzinigenova.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62fe",
+    "geometry": {"type": "Point", "coordinates": [8.89837342174674, 44.41011554109141]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPM030004",
+      "DENOMINAZIONE": "LICEO STATALE \"PIETRO GOBETTI\"",
+      "INDIRIZZO": "VIA SPINOLA DI SAN PIETRO, 1",
+      "CAP": "16149",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.gobetti.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62fd",
+    "geometry": {"type": "Point", "coordinates": [8.952792818080159, 44.39620785590862]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPM04000P",
+      "DENOMINAZIONE": "LICEO STATALE \"SANDRO PERTINI\"",
+      "INDIRIZZO": "VIA C. BATTISTI, 5",
+      "CAP": "16145",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liceopertini.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62fc",
+    "geometry": {"type": "Point", "coordinates": [8.88863349729766, 44.416604442603344]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPS02000C",
+      "DENOMINAZIONE": "LICEO SCIENTIFICO STATALE \"ENRICO FERMI\"",
+      "INDIRIZZO": "VIA W. ULANOWSKI, 56",
+      "CAP": "16151",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.fermi.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62fb",
+    "geometry": {"type": "Point", "coordinates": [8.942347685784299, 44.40825936839986]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPS030003",
+      "DENOMINAZIONE": "LICEO SCIENTIFICO STATALE \"GIAN DOMENICO CASSINI\"",
+      "INDIRIZZO": "VIA GALATA, 34 CANC.",
+      "CAP": "16121",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liceocassini.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62fa",
+    "geometry": {"type": "Point", "coordinates": [9.323078108596635, 44.32057168091497]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPS17000A",
+      "DENOMINAZIONE": "LICEO CLASSICO - SCIENTIFICO \"MARCONI - DELPINO\"",
+      "INDIRIZZO": "PIAZZA CADUTI DI NASSIRIYA, 14",
+      "CAP": "16043",
+      "COMUNE": "Chiavari",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.marconidelpino.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62f9",
+    "geometry": {"type": "Point", "coordinates": [9.326841395356347, 44.32013007487433]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GESD010008",
+      "DENOMINAZIONE": "LICEO ARTISTICO \"EMANUELE LUZZATI\"",
+      "INDIRIZZO": "VIA G.B. GHIO, 14",
+      "CAP": "16043",
+      "COMUNE": "Chiavari",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liceoartisticoluzzati.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62f8",
+    "geometry": {"type": "Point", "coordinates": [9.323010936653757, 44.320435603875275]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GETD03000V",
+      "DENOMINAZIONE": "I.T.S. \"IN MEMORIA DEI MORTI PATRIA\"",
+      "INDIRIZZO": "CORSO E.MILLO, 1",
+      "CAP": "16043",
+      "COMUNE": "Chiavari",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.itchiavari.org/servizi/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62f7",
+    "geometry": {"type": "Point", "coordinates": [8.947438018854566, 44.41322301428293]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPS050008",
+      "DENOMINAZIONE": "LICEO SCIENTIFICO STATALE \"LEONARDO DA VINCI\"",
+      "INDIRIZZO": "VIA ARECCO 2",
+      "CAP": "16122",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liceoleodavincige.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62f6",
+    "geometry": {"type": "Point", "coordinates": [8.979572474152864, 44.39861489749826]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPS07000D",
+      "DENOMINAZIONE": "LICEO CLASSICO - SCIENTIFICO \"MARTIN LUTHER KING\"",
+      "INDIRIZZO": "VIA STURLA, 63",
+      "CAP": "16131",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liceoking.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62f5",
+    "geometry": {"type": "Point", "coordinates": [8.747675180640865, 44.428344904779145]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEPS080004",
+      "DENOMINAZIONE": "LICEO SCIENTIFICO - LICEO ECONOMICO-SOCIALE LANFRANCONI",
+      "INDIRIZZO": "VIA AI CANTIERI, 2",
+      "CAP": "16158",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.lanfranconi.org/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62f4",
+    "geometry": {"type": "Point", "coordinates": [8.987909394377223, 44.394731970323186]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GERH01000G",
+      "DENOMINAZIONE": "I.P.S.S.A. \"M. POLO\"",
+      "INDIRIZZO": "VIA SCIACCALUGA, 9",
+      "CAP": "16147",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.marcopolo.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62f3",
+    "geometry": {"type": "Point", "coordinates": [8.854943878961063, 44.423283268317114]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GERH020006",
+      "DENOMINAZIONE": "I.P.S.S.A. \"N. BERGESE\"",
+      "INDIRIZZO": "VIA GIOTTO, 8",
+      "CAP": "16153",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.istitutobergese.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62f2",
+    "geometry": {"type": "Point", "coordinates": [8.841334020379614, 44.42875416537561]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GERI02000N",
+      "DENOMINAZIONE": "I.P.S.I.A. \"A. ODERO\"",
+      "INDIRIZZO": "VIA BRISCATA, 4",
+      "CAP": "16154",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.ipsiaodero.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62f1",
+    "geometry": {"type": "Point", "coordinates": [8.900713132727892, 44.457912991284466]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GERI07000P",
+      "DENOMINAZIONE": "I.P.S.I.S. \"GASLINI - MEUCCI\"",
+      "INDIRIZZO": "VIA PASTORINO, 15",
+      "CAP": "16162",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.ipsisgaslinimeucci.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62f0",
+    "geometry": {"type": "Point", "coordinates": [8.991142341953017, 44.39609896033166]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GESL01000P",
+      "DENOMINAZIONE": "LICEO ARTISTICO STATALE \"PAUL KLEE - NICOLO' BARABINO\"",
+      "INDIRIZZO": "VIA G. MAGGIO, 11",
+      "CAP": "16147",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liceokleebarabino.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62ef",
+    "geometry": {"type": "Point", "coordinates": [8.855608872170768, 44.42310126867355]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GETD09000E",
+      "DENOMINAZIONE": "I.T.S. \"C. ROSSELLI\"",
+      "INDIRIZZO": "VIA GIOTTO, 10",
+      "CAP": "16153",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.istitutorosselli.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62ee",
+    "geometry": {"type": "Point", "coordinates": [8.924623078654827, 44.412755587254516]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GETH020002",
+      "DENOMINAZIONE": "I.T.T.L. \"NAUTICO SAN GIORGIO\"",
+      "INDIRIZZO": "EDIFICIO CALATA DARSENA",
+      "CAP": "16126",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.itnautico.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62ed",
+    "geometry": {"type": "Point", "coordinates": [8.04607683016557, 43.89033923641624]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMIS002001",
+      "DENOMINAZIONE": "I.I.S. \"G. GALILEI - POLO TECNOLOGICO IMPERIESE\"",
+      "INDIRIZZO": "VIA SANTA LUCIA, 31",
+      "CAP": "18100",
+      "COMUNE": "Imperia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.polotecnologicoimperiese.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62ec",
+    "geometry": {"type": "Point", "coordinates": [8.015621212134395, 43.88073486778204]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMIS006008",
+      "DENOMINAZIONE": "I.I.S. \"G. RUFFINI\"",
+      "INDIRIZZO": "VIA TERRE BIANCHE,  1",
+      "CAP": "18100",
+      "COMUNE": "Imperia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.ruffini.org/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62eb",
+    "geometry": {"type": "Point", "coordinates": [8.03492197770422, 43.88804724060894]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMIS00800X",
+      "DENOMINAZIONE": "I.I.S. \"G. MARCONI\"",
+      "INDIRIZZO": "VIA GIBELLI, 4",
+      "CAP": "18100",
+      "COMUNE": "Imperia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.istitutoistruzionesuperioremarconi.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62ea",
+    "geometry": {"type": "Point", "coordinates": [8.04241891419504, 43.89067787070501]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMPM01000A",
+      "DENOMINAZIONE": "LICEO STATALE \"CARLO AMORETTI\"",
+      "INDIRIZZO": "PIAZZETTA DENEGRI, 2",
+      "CAP": "18100",
+      "COMUNE": "Imperia",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.liceoamoretti.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62e9",
+    "geometry": {"type": "Point", "coordinates": [8.015655609332562, 43.88011415858455]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMPS010009",
+      "DENOMINAZIONE": "LICEO SCIENTIFICO STATALE \"G.P. VIEUSSEUX\"",
+      "INDIRIZZO": "VIA TERRE BIANCHE, 1",
+      "CAP": "18100",
+      "COMUNE": "Imperia",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.liceoimperia.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62e8",
+    "geometry": {"type": "Point", "coordinates": [8.042406764086465, 43.89076092481356]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMSD01000Q",
+      "DENOMINAZIONE": "LICEO ARTISTICO STATALE DI IMPERIA",
+      "INDIRIZZO": "VIA AGNESI, 19",
+      "CAP": "18100",
+      "COMUNE": "Imperia",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.arteimperia.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62e7",
+    "geometry": {"type": "Point", "coordinates": [9.84889321475916, 44.11731360680067]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SPIS00900V",
+      "DENOMINAZIONE": "I.S. \"FOSSATI - DA PASSANO\"",
+      "INDIRIZZO": "VIA BRAGARINA, 32/A",
+      "CAP": "19126",
+      "COMUNE": "La Spezia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "LA SPEZIA",
+      "SITOWEB": "http://www.fossatidapassano.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62e6",
+    "geometry": {"type": "Point", "coordinates": [9.843723305591931, 44.11358962921316]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SPIS002004",
+      "DENOMINAZIONE": "I.S. \"V. CARDARELLI\"",
+      "INDIRIZZO": "VIA CARDUCCI, 120",
+      "CAP": "19126",
+      "COMUNE": "La Spezia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "LA SPEZIA",
+      "SITOWEB": "http://www.istitutocardarelli.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62e5",
+    "geometry": {"type": "Point", "coordinates": [9.83623340877826, 44.11115663587238]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SPIS00600B",
+      "DENOMINAZIONE": "I.I.S. \"G. CAPELLINI - N. SAURO\"",
+      "INDIRIZZO": "VIA  DORIA 2",
+      "CAP": "19124",
+      "COMUNE": "La Spezia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "LA SPEZIA",
+      "SITOWEB": "http://www.capellinisauro.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62e4",
+    "geometry": {"type": "Point", "coordinates": [9.811283717665136, 44.1111715729023]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SPIS007007",
+      "DENOMINAZIONE": "I.P.S.S.C.T.P. \"L. EINAUDI - D. CHIODO\"",
+      "INDIRIZZO": "VIA LAMARMORA, 32",
+      "CAP": "19122",
+      "COMUNE": "La Spezia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "LA SPEZIA",
+      "SITOWEB": "http://www.einaudichiodo.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62e3",
+    "geometry": {"type": "Point", "coordinates": [9.826603545608432, 44.106692666618926]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SPPC010009",
+      "DENOMINAZIONE": "LICEO CLASSICO STATALE \"LORENZO COSTA\"",
+      "INDIRIZZO": "PIAZZA VERDI, 15",
+      "CAP": "19121",
+      "COMUNE": "La Spezia",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "LA SPEZIA",
+      "SITOWEB": "http://www.liceocosta.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62e2",
+    "geometry": {"type": "Point", "coordinates": [9.80856375186795, 44.1098135756271]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SPPM01000D",
+      "DENOMINAZIONE": "LICEO STATALE \"GIUSEPPE MAZZINI\"",
+      "INDIRIZZO": "VIALE ALDO FERRARI, 37",
+      "CAP": "19122",
+      "COMUNE": "La Spezia",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "LA SPEZIA",
+      "SITOWEB": "http://www.liceomazzini.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62e1",
+    "geometry": {"type": "Point", "coordinates": [9.80768478245465, 44.10760960149463]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SPPS01000C",
+      "DENOMINAZIONE": "LICEO SCIENTIFICO \"ANTONIO PACINOTTI\"",
+      "INDIRIZZO": "VIA XV GIUGNO",
+      "CAP": "19123",
+      "COMUNE": "La Spezia",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "LA SPEZIA",
+      "SITOWEB": "http://www.liceopacinotti.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62e0",
+    "geometry": {"type": "Point", "coordinates": [9.842363255362022, 44.12552948598823]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SPRH010006",
+      "DENOMINAZIONE": "I.T. \"G. CASINI\"",
+      "INDIRIZZO": "VIA FONTEVIVO, 129",
+      "CAP": "19125",
+      "COMUNE": "La Spezia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "LA SPEZIA",
+      "SITOWEB": "http://www.alberghierolaspezia.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62df",
+    "geometry": {"type": "Point", "coordinates": [8.249103055269183, 44.11953611919302]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVIS00100P",
+      "DENOMINAZIONE": "I.T. \"G. FALCONE\"",
+      "INDIRIZZO": "VIA AURELIA, 297",
+      "CAP": "17025",
+      "COMUNE": "Loano",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.isfalcone.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62de",
+    "geometry": {"type": "Point", "coordinates": [9.235249578735361, 44.348449197101736]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS00100N",
+      "DENOMINAZIONE": "I.T. \"G. DA VIGO\"",
+      "INDIRIZZO": "VIA DON MINZONI, 1",
+      "CAP": "16035",
+      "COMUNE": "Rapallo",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liceodavigonicoloso.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62dd",
+    "geometry": {"type": "Point", "coordinates": [9.220419724465208, 44.35508607999493]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS01300X",
+      "DENOMINAZIONE": "I.I.S.S. \"F. LICETI\"",
+      "INDIRIZZO": "PIAZZA E. BONTA', 8",
+      "CAP": "16035",
+      "COMUNE": "Rapallo",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.iissliceti.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62dc",
+    "geometry": {"type": "Point", "coordinates": [8.937931972993725, 44.58585260726599]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "GEIS017007",
+      "DENOMINAZIONE": "I.T. \"PRIMO LEVI\"",
+      "INDIRIZZO": "CORSO TRENTO E TRIESTE, 87",
+      "CAP": "16019",
+      "COMUNE": "Ronco Scrivia",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.isprimolevi.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62db",
+    "geometry": {"type": "Point", "coordinates": [7.774330603071391, 43.81790932973239]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMIS007004",
+      "DENOMINAZIONE": "I.I.S. \"CRISTOFORO COLOMBO\"",
+      "INDIRIZZO": "P.ZZA EROI SANREMESI 77 A",
+      "CAP": "18038",
+      "COMUNE": "San Remo",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.iiscolombo.org/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62da",
+    "geometry": {"type": "Point", "coordinates": [7.785480450398371, 43.82121732208806]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "IMPC040002",
+      "DENOMINAZIONE": "LICEO CLASSICO - LINGUISTICO - SCIENTIFICO \"GIAN DOMENICO CASSINI\"",
+      "INDIRIZZO": "CORSO FELICE CAVALLOTTI, 53",
+      "CAP": "18038",
+      "COMUNE": "San Remo",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "IMPERIA",
+      "SITOWEB": "http://www.liceogdcassini.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62d9",
+    "geometry": {"type": "Point", "coordinates": [9.963985273732206, 44.11582889245092]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SPIS01100V",
+      "DENOMINAZIONE": "I.I.S. \"PARENTUCELLI - ARZELA'\"",
+      "INDIRIZZO": "PIAZZA RICCHETTI",
+      "CAP": "19038",
+      "COMUNE": "Sarzana",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "LA SPEZIA",
+      "SITOWEB": "http://www.parentucelli-arzela.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62d8",
+    "geometry": {"type": "Point", "coordinates": [8.482139141149462, 44.30874356139606]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVIS00600T",
+      "DENOMINAZIONE": "I.P. \"MAZZINI - DA VINCI\"",
+      "INDIRIZZO": "VIA AONZO, 2",
+      "CAP": "17100",
+      "COMUNE": "Savona",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.mazzinidavinci.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62d7",
+    "geometry": {"type": "Point", "coordinates": [8.483137135998847, 44.30630658551853]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVIS00800D",
+      "DENOMINAZIONE": "LICEO STATALE \"CHIABRERA-MARTINI\"",
+      "INDIRIZZO": "VIA CABOTO, 2",
+      "CAP": "17100",
+      "COMUNE": "Savona",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.chiabreramartini.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62d6",
+    "geometry": {"type": "Point", "coordinates": [8.466609333131489, 44.30843452229463]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVIS009009",
+      "DENOMINAZIONE": "I.T. \"FERRARIS - PANCALDO\"",
+      "INDIRIZZO": "VIA ROCCA DI LEGINO, 35N",
+      "CAP": "17100",
+      "COMUNE": "Savona",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.ferrarispancaldo.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62d5",
+    "geometry": {"type": "Point", "coordinates": [8.476229201728536, 44.31057452250154]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "SVIS011009",
+      "DENOMINAZIONE": "I.T. \"BOSELLI - ALBERTI\"",
+      "INDIRIZZO": "VIA S. GIOVANNI BOSCO, 6",
+      "CAP": "17100",
+      "COMUNE": "Savona",
+      "DESCR_TIPO": "Istituti Tecnici Professionali",
+      "TIPO": "02",
+      "PROV": "SAVONA",
+      "SITOWEB": "http://www.isbosellialberti.gov.it/"
+    }
+  }, {
+    "type": "Feature",
+    "id": "V_SCUOLE_2014_COMPL.fid--70d5136_1579830d2d2_-62d4",
+    "geometry": {"type": "Point", "coordinates": [8.933717992136636, 44.406927616055974]},
+    "geometry_name": "GEOMETRY",
+    "properties": {
+      "COD_MECC": "TEST01000V",
+      "DENOMINAZIONE": "Scuola Test",
+      "INDIRIZZO": "PIAZZA DE FERRARI",
+      "CAP": "16100",
+      "COMUNE": "Genova",
+      "DESCR_TIPO": "Licei",
+      "TIPO": "02",
+      "PROV": "GENOVA",
+      "SITOWEB": "http://www.liguriadigitale.it"
+    }
+  }],
+  "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::4326"}}
+}

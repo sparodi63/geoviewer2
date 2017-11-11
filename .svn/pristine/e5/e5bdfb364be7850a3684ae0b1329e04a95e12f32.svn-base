@@ -1,0 +1,195 @@
+Vue.component('gv-app', {
+    template:
+    '<div :id="el">' +
+    '<div id="gv-container">' +
+    '<gv-map></gv-map>' +
+    '<div v-if="showTitle" id="gv-title">{{this.mapTitle}}</div>' +
+    '<gv-legend v-if="showLegend" ref="gv-legend" :showAddMap="showAddMap" :showInfoMap="showInfoMap"></gv-legend>' +
+    '</div>' +
+    '</div>',
+    props: [
+        "el",
+        "idMap",
+        "callback",
+        "setMapTitle",
+        "debug"
+    ],
+    data: function () {
+        return GV.config;
+    },
+    computed: {
+        showTitle: function () {
+            return (GV.options.setMapTitle && !GV.Globals.SMALL_SCREEN);
+        },
+        showLegend: function() {
+            return this.getButton("legend") ? true : false;
+        },
+        showAddMap: function() {
+            return this.getButtonOption("legend", "showAddMap");
+        },
+        showInfoMap: function() {
+            return this.getButtonOption("legend", "showInfoMap");
+        }
+    },
+    created: function () {
+        GV.Util.log('GV.App created ');
+
+        GV.app = this;
+
+        GV.config.options = this.$options;
+
+        GV.config.application = GV.config.options.config.application;
+        GV.config.baseLayers = GV.config.options.config.baseLayers;
+
+        this.checkOptions(this.$options);
+
+        GV.config.options.proxy = GV.config.options.proxy || GV.Globals.DEFAULT_PROXY;
+
+        // imposto metodo per drag panelli
+        GV.Util.setDrag();
+    },
+    mounted: function() {
+        GV.Util.log('GV.App mounted');
+
+        var self = this;
+
+        // gestione toolbar
+        this.addToolbars(GV.config.application.layout.toolbar);
+
+        // gestione infoWms
+        if (GV.config.application.mapOptions && GV.config.application.mapOptions.infoWms && !GV.Util.isTouch()) {
+            this.infoWmsManager = new GV.InfoWmsManager();
+            this.infoWmsManager.activate(GV.map, this.infoWmsManager.request);
+        }
+
+        // Gestione caricamento mappe/livelli da configurazione (options.config.maps)
+        if (GV.config.options.config && GV.config.options.config.maps && GV.config.options.config.maps.length > 0) {
+            _.each(GV.config.options.config.maps, function (mapConfig) {
+                self.addMap(mapConfig);
+            });
+        }
+
+        // Gestione caricamento mappe RL da servizio
+        if (GV.config.options.idMap) {
+            this.addRlMap(GV.config.options);
+        } else {
+            if (GV.config.options && GV.config.options.callback) {
+                GV.config.options.callback(this);
+            }
+        }
+    },
+    methods: {
+        checkOptions: function () {
+            "use strict";
+            if (!this.el) {
+                GV.Util.log('Parametro "el" non definito', 2);
+                return false;
+            }
+            if (!document.getElementById(this.el.replace('#',''))) {
+                GV.Util.log('Elemento ' + options.el.replace('#','') + ' non presente', 2);
+                return false;
+            }
+
+            return true;
+        },
+        getMaps: function () {
+            return this.maps;
+        },
+        getContainer: function () {
+            return this.$el;
+        },
+        addToolbars: function () {
+            if (GV.config.application.layout.toolbar) {
+                var toolbar = GV.config.application.layout.toolbar;
+                _.each(toolbar, function (tb) {
+                    var position = tb.position || "topleft";
+                    _.each(tb.items, function (item) {
+                        item.options = item.options || {};
+                        item.options.position = item.options.position || position;
+                        this.addButton(item);
+                    }, this);
+                }, this);
+            }
+        },
+        addButton: function (item) {
+            if (GV.Buttons[item.name]) {
+                var button = GV.Buttons[item.name](item.options, GV.map);
+                if (button) {
+                    button.name = item.name;
+                    button.addTo(GV.map);
+                }
+            } else {
+                GV.Util.log("Bottone " + item.name + " non esistente");
+            }
+        },
+        getButton: function(buttonName) {
+            "use strict";
+            var button = null;
+            _.each(GV.config.application.layout.toolbar, function (tb) {
+                _.each(tb.items, function (item) {
+                    if(item.name === buttonName) {
+                        button = item
+                    }
+                }, this);
+            }, this);
+            return button;
+        },
+        getButtonOption: function(buttonName, optionName) {
+            "use strict";
+            var option = null;
+            _.each(GV.config.application.layout.toolbar, function (tb) {
+                _.each(tb.items, function (item) {
+                    if(item.name === buttonName) {
+                        option = item.options[optionName]
+                    }
+                }, this);
+            }, this);
+            return option;
+        },
+        addRlMap: function (options) {
+            var self = this,
+                idMap = options.idMap || options; // può essere chiamata con parametro singolo idMap (es: 56) o con oggetto options ({ idMap: 56})
+            if (!idMap) {
+                GV.Util.log('addRlMap: prametro idMap mancante', 2);
+                return;
+            }
+            $.ajax({
+                url: GV.Globals.RL_MAP_CONFIG_SERVICE + idMap,
+                //url: '/geoservices/REST/config/map/' + idMap,
+                dataType: 'jsonp'
+            }).done(function (response) {
+                if (!response.success) {
+                    GV.Util.log('Errore Caricamento Configurazione Mappa: ' + response.message, 2);
+                    return;
+                }
+                self.addMap(response.data);
+                // Gestione callback
+                if (options && options.callback) {
+                    options.callback(self);
+                }
+                //TODO gestione titolo
+                if (options.setMapTitle && !GV.Globals.SMALL_SCREEN) {
+                    //GV.app.getContainer().append("<div id='gv-title' title='" + mapConfig.name + "'>" + mapConfig.name + "</div>");
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                GV.Util.log(errorThrown,2);
+            });
+        },
+        addMap: function (mapConfig) {
+            // Imposto titolo
+            this.mapTitle = mapConfig.name;
+            // Aggiorno array delle mappe
+            GV.config.addMapConfig(mapConfig);
+            // Aggiungo livelli alla mappa
+            GV.map.loadLayers(mapConfig.layers);
+            //gestione extent
+            if (mapConfig.extent_3857) {
+                GV.map.setInitialExtent(mapConfig.extent_3857);
+            }
+            //TODO: gestione find
+
+        }
+
+    }
+});
+

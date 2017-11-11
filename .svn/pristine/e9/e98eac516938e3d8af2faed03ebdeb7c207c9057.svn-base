@@ -1,0 +1,4 @@
+01 - http://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=V_SCUOLE_2014_COMPL&cql_filter=TIPO=%2701%27
+02 - http://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=V_SCUOLE_2014_COMPL&cql_filter=TIPO=%2702%27
+03 - http://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=V_SCUOLE_2014_COMPL&cql_filter=TIPO=%2703%27
+04 - http://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=V_SCUOLE_2014_COMPL&cql_filter=TIPO=%2704%27

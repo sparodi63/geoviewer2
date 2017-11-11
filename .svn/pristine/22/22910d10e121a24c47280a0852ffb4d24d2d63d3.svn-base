@@ -1,0 +1,160 @@
+
+GV.Views.Layout = Mn.View.extend({
+
+    template: false,
+
+    controls: [],
+
+    initialize: function(options) {
+        "use strict";
+
+        this.setDrag();
+
+        this.el = options.el;
+
+        this.config = options.config.application.layout;
+
+        // creo mappa leaflet
+        this.addMapView(options);
+
+        if (options.config.application.mapOptions && options.config.application.mapOptions.infoWms && !GV.Util.isTouch()) {
+            GV.app.infoWmsManager = new GV.InfoWmsManager();
+            GV.app.infoWmsManager.activate(this.map, options.config);
+            GV.app.infoWmsList = new Backbone.Collection();
+            GV.app.getContainer().append("<div id='gv-info-wms' class='draggable'></div>");
+            this.addRegion('infowms', '#gv-info-wms');
+        }
+
+
+        // gestione eventi
+        this.listenTo(GV.rlMaps, "add", this.onAddMap);
+    },
+
+    setDrag: function() {
+        "use strict";
+        interact('.draggable')
+            .draggable({
+                // enable inertial throwing
+                inertia: true,
+                // keep the element within the area of it's parent
+                restrict: {
+                    restriction: "parent",
+                    endOnly: true,
+                    elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+                },
+                // enable autoScroll
+                autoScroll: true,
+
+                // call this function on every dragmove event
+                onmove: dragMoveListener,
+                // call this function on every dragend event
+                onend: function (event) {
+                    var textEl = event.target.querySelector('p');
+
+                    textEl && (textEl.textContent = 'moved a distance of ' + (Math.sqrt(event.dx * event.dx + event.dy * event.dy)|0) + 'px');
+                }
+            });
+
+        function dragMoveListener (event) {
+            var target = event.target,
+            // keep the dragged position in the data-x/data-y attributes
+                x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+            // translate the element
+            target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+
+            // update the posiion attributes
+            target.setAttribute('data-x', x);
+            target.setAttribute('data-y', y);
+        }
+
+        // this is used later in the resizing and gesture demos
+        window.dragMoveListener = dragMoveListener;
+    },
+
+    render: function (options){
+        "use strict";
+
+        // aggiungo layer di base
+        if (this.map && this.map.loadBaseLayers) {
+            this.map.loadBaseLayers(options.config.baseLayers);
+        }
+        // aggiungo controlli
+        if (this.map && this.map.loadControls) {
+            this.map.loadControls(options);
+        }
+
+        // aggiungo toolbar
+        if (this.config.toolbar) {
+            this.addToolbars(this.config.toolbar);
+        }
+
+        return this;
+    },
+
+    addMapView: function (options) {
+        "use strict";
+
+        var mapView = new GV.Views.MapView();
+        $(options.el).append(mapView.el);
+        mapView.render(options);
+        this.map = mapView.map;
+
+
+    },
+
+
+    addToolbars: function (toolbar) {
+        "use strict";
+        _.each(toolbar, function (tb) {
+            var position = tb.position || "topleft";
+            _.each(tb.items, function (item) {
+                item.options = item.options || {};
+                item.options.position = item.options.position || position;
+                this.addButton(item);
+            }, this);
+        }, this);
+
+    },
+
+    addButton: function (item) {
+        "use strict";
+
+        if (GV.Buttons[item.name]) {
+            var button = GV.Buttons[item.name](item.options, this.map);
+            if (button) {
+                button.name = item.name;
+                this.controls.push(button);
+                button.addTo(this.map);
+            }
+        } else {
+            console.log("Bottone " + item.name + " non esistente");
+        }
+    },
+
+    // Funzione richiamata quando si aggiungono mappe alla collection GV.rlMaps
+    onAddMap: function(data){
+        "use strict";
+        var layers = data.attributes.layers.toJSON();
+        this.map.loadLayers(layers);
+    },
+
+    getControl: function(controlName) {
+        "use strict";
+        return _.find(GV.app.layout.controls, function(control) {
+            return control.name === controlName;
+        });
+    },
+
+    getControlOption: function(controlName, optionName) {
+        "use strict";
+        var control = this.getControl(controlName);
+        if (control) {
+            return control.options[optionName];
+        }
+    }
+
+
+
+});

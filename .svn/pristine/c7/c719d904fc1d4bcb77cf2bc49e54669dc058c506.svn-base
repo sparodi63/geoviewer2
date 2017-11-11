@@ -1,0 +1,20 @@
+import Vue from 'vue'
+
+GV.Buttons.geocoder = function(btnOptions, map) {
+  const containerId = 'gv-button-geocoder'
+  const componentId = 'gv-geocoder'
+
+  const Button = L.Control.extend({
+    onAdd: function(map) {
+      let container = document.createElement('div')
+      container.id = containerId
+      container.className = 'leaflet-bar leaflet-control'
+      return container
+    },
+  })
+
+  Vue.component('gv-geocoder', () => import('../Components/Geocoder.vue'))
+  btnOptions.vueComponent = { containerId: containerId, id: componentId }
+
+  return new Button(btnOptions)
+}

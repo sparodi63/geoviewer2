@@ -1,0 +1,302 @@
+/**
+ * Created by parodi on 02/08/2016.
+ */
+
+
+GV.InfoWmsManager = function () {
+    'use strict';
+    return {
+        _requestCount: 0,
+        _numRequests: 0,
+        _features: [],
+
+        activate: function (map) {
+            GV.Util.log('GV.app.infoWmsManager.activate');
+            this.map = map;
+
+            // Attivo evento click
+            map.on('click', GV.app.infoWmsManager.request);
+        },
+
+        buildWMSOptions: function (url, layers, latlng) {
+            var point = GV.app.map.latLngToContainerPoint(latlng, GV.app.map.getZoom()),
+                size = GV.app.map.getSize(),
+                bounds = GV.app.map.getBounds(),
+                sw = GV.app.map.options.crs.project(bounds.getSouthWest()),
+                ne = GV.app.map.options.crs.project(bounds.getNorthEast());
+
+            var params = {
+                request: 'GetFeatureInfo',
+                service: 'WMS',
+                crs: 'EPSG:3857',
+                styles: '',
+                version: '1.1.0',
+                format: 'application/json',
+                bbox: sw.x + ',' + sw.y + ',' + ne.x + ',' + ne.y,
+                height: size.y,
+                width: size.x,
+                layers: layers,
+                query_layers: layers,
+                FEATURE_COUNT: 100,
+                buffer: 10,
+                info_format: 'application/json'
+            };
+
+            _.extend(params, {});
+            params[params.version === '1.3.0' ? 'i' : 'x'] = point.x;
+            params[params.version === '1.3.0' ? 'j' : 'y'] = point.y;
+
+            return GV.app.proxy + url + GV.Util.getParamString(params, url, true);
+        },
+
+        handleResponse: function(features) {
+            GV.app.infoWmsManager._requestCount++;
+            _.each(features, function (feature) {
+                var layerName = feature.id.split('.')[0];
+                feature.layerName = layerName;
+                feature.layer = GV.map.getLayerByName(layerName);
+                feature.label = setFeatureLabel(layerName, feature.properties);
+                feature.infoOptions = feature.layer.config.infoOptions;
+
+            });
+            Array.prototype.push.apply(GV.app.infoWmsManager._features, features);
+            if (GV.app.infoWmsManager._requestCount === GV.app.infoWmsManager._numRequests) {
+                this.map._container.style.cursor = "default";
+
+                GV.app.infoWmsList.reset(GV.app.infoWmsManager._features);
+
+                if (GV.app.infoWmsManager._features.length > 1) {
+                    GV.app.layout.getRegion('infowms').show(new GV.Views.InfoWmsListLayout());
+                } else {
+                    $('#gv-info-wms').css({ display: 'none' });
+                    this.showFeatureInfo(GV.app.infoWmsList.models[0]);
+                }
+                console.log('end info request', GV.app.infoWmsManager._features, new Date());
+            }
+
+            function setFeatureLabel(layerName, attributes) {
+                var infoLabelAttr,
+                    infoIdAttr;
+                infoLabelAttr = getField(layerName, "infoLabelAttr");
+                infoIdAttr = getField(layerName, "infoIdAttr");
+                if (infoLabelAttr && attributes[infoLabelAttr]) {
+                    return attributes[infoLabelAttr];
+                }
+                if (infoIdAttr && attributes[infoIdAttr]) {
+                    return attributes[infoIdAttr];
+                }
+                return attributes[getFirstAttribute(attributes)];
+            }
+
+            function getField(layerName, fieldName) {
+                try {
+                    var layerConfig = GV.map.getLayerByName(layerName).config;
+                    if (layerConfig && layerConfig.infoOptions && layerConfig.infoOptions[fieldName]) {
+                        return layerConfig.infoOptions[fieldName];
+                    } else {
+                        return null;
+                    }
+                } catch (exception) {
+                    console.log(exception);
+                    return null;
+                }
+            }
+
+            function getFirstAttribute(attributes) {
+
+                for (var i in attributes) {
+                    if (attributes.hasOwnProperty(i) && typeof(i) !== "function") {
+                        return i;
+                    }
+                }
+                return null;
+            }
+
+        },
+
+        showFeatureInfo: function(model) {
+
+            var infoOptions = model.attributes.infoOptions,
+                infoUrl = infoOptions.infoUrl;
+
+            // Se non impostato infoUrl oppure getfeatureinfogenerico apro finestra generica
+            if (!infoUrl || infoUrl.toLowerCase().indexOf('cwgetfeatureinfogenerico.xsl') !== -1) {
+                //TODO GV.Views.InfoWmsBase
+            } else {
+                buildAndShowHtml(infoOptions, model.attributes);
+/*
+                //TODO gestione html/asp
+                if ((infoUrl.substr(infoUrl.length - 4) === ".xsl") || (infoUrl.substr(infoUrl.length - 5) === ".xslt")) {
+                    // Gestione xsl
+                    buildHtmlDoc(infoOptions, model.attributes);
+                } else {
+                    // Gestione html/asp
+                    if (!infoOptions.infoTarget || infoOptions.infoTarget === "panel") {
+                        showPanel(infoUrl, null, infoOptions);
+                    } else {
+                        openPopup(infoUrl, null, infoOptions);
+                    }
+                }
+*/
+            }
+
+            function buildAndShowHtml(infoOptions, data) {
+                // costruisco il gml in formato getFeatureInfo Mapserver
+                var xmlDoc = buildGml(data);
+
+                var options = {
+                    url: "/geoservices/REST/config/xsl_info_service?",
+                    data: {
+                        xslUrl: infoOptions.infoUrl,
+                        ambiente: null,
+                        idLayer: data.layerName.replace("L", ""),
+                        featureAttributes: data.properties
+                    }
+                };
+
+                GV.Util.getXML(options, function (xslDoc) {
+                    // Aggiungo Nome Layer
+                    var el = $(xslDoc).find('td').each( function(){
+                        if(this.id === "Titolo") {
+                            this.textContent = data.layer.legend.label;
+                            this.text = data.layer.legend.label;
+                        }
+                    });
+                    // applico la trasformazione xslt
+                    var result = xslTransform(xmlDoc, xslDoc);
+                    // levo i caratteri di encoding %0A e %09 dai link
+                    result = result.replace(new RegExp('%0A', 'g'), '').replace(new RegExp('%09', 'g'), '').replace(new RegExp('%20', 'g'), '');
+                    // visualizzo il risultato
+                    openPopup(result, null, infoOptions);
+/*
+                    //TODO: gestione output su div (panel)
+                    if (!infoOptions.infoTarget || infoOptions.infoTarget === "panel") {
+                        showPanel(result, null, infoOptions);
+                    } else {
+                        openPopup(result, null, infoOptions);
+                    }
+*/
+                });
+
+                // costruisce un documento GML in formato getFeatureInfo Mapserver
+                function buildGml(feature) {
+                    try {
+                        var baseXml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><msGMLOutput xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"></msGMLOutput>",
+                            xmlDoc = GV.Util.parseXML(baseXml),
+                            layerName = feature.layerName + "_layer",
+                            layerNode = xmlDoc.createElement(layerName),
+                            featureName = feature.layerName + "_feature",
+                            featureNode = xmlDoc.createElement(featureName),
+                            attributes = feature.properties;
+
+                        for (var key in attributes) {
+                            if (attributes.hasOwnProperty(key)) {
+                                var text = null;
+                                if (attributes[key]) {
+                                    text = xmlDoc.createTextNode(attributes[key]);
+                                } else {
+                                    text = xmlDoc.createTextNode("");
+                                }
+                                var attrNode = xmlDoc.createElement(key);
+                                attrNode.appendChild(text);
+                                featureNode.appendChild(attrNode);
+                            }
+                        }
+                        layerNode.appendChild(featureNode);
+                        xmlDoc.documentElement.appendChild(layerNode);
+                        return xmlDoc;
+                    } catch (exception) {
+                        console.log(exception);
+                    }
+                }
+
+                // trasformo xml in html applicando xslt
+                function xslTransform(xmlDoc, xslDoc) {
+                    try {
+                        if (window.XSLTProcessor) {
+                            var xsltProcessor = new XSLTProcessor();
+                            xsltProcessor.importStylesheet(xslDoc);
+                            var transformedDoc = xsltProcessor.transformToDocument(xmlDoc);
+                            return (new XMLSerializer()).serializeToString(transformedDoc);
+                        } else {
+                            return xmlDoc.transformNode(xslDoc);
+                        }
+                    } catch (exception) {
+                        console.log(exception);
+                    }
+                }
+
+
+
+                // apre una popup con un documento html
+
+            }
+
+            // apre una panel div con un documento html
+            function showPanel(html, url, configOptions) {
+                var width = configOptions.infoWidth || 400,
+                    height = configOptions.infoHeight || 500;
+            }
+
+            function openPopup(html, url, options) {
+                var width = options.infoWidth || 400,
+                    height = options.infoHeight || 500,
+                    popup = window.open(url, null, "status=yes, toolbar=yes, menubar=no, width=" + width + ", height=" + height + ", resizable=yes, scrollbars=yes");
+
+                popup.document.open();
+                popup.document.write(html);
+                popup.document.close();
+                popup.focus();
+            }
+
+            //TODO evidenziazione oggetto con feature.geometry
+
+        },
+
+        showWaiting: function() {
+            // Hook to customize AJAX wait animation
+            if (!this.map) {
+                return;
+            }
+            this.map._container.style.cursor = "progress";
+        },
+
+        request: function (e) {
+            console.log('start info request', new Date());
+
+            GV.app.infoWmsManager._requestCount = 0;
+            GV.app.infoWmsManager._numRequests = 0;
+            GV.app.infoWmsManager._features = [];
+
+            // Ciclo sulle mappe caricate
+            var rlMaps = GV.rlMaps.toJSON();
+            _.each(rlMaps, function (rlMap) {
+                var url = null,
+                    layersArray = [];
+
+                // Ciclo sui layer caricati sulla mappa leaflet
+                _.each(rlMap.layers, function (layerConfig) {
+                    if (layerConfig.idMap === rlMap.id && layerConfig.type === 'WMS' && layerConfig.queryable && layerConfig.visible && GV.app.map.layerInRange(layerConfig)) {
+                        url = layerConfig.wmsParams.url;
+                        layersArray.push(layerConfig.wmsParams.name);
+                    }
+                });
+
+                var layers = layersArray.join(',');
+
+                if (url && layersArray.length > 0) {
+                    var wmsUrl = GV.app.infoWmsManager.buildWMSOptions(url, layers, e.latlng);
+                    GV.app.infoWmsManager._numRequests++;
+                    this._container.style.cursor = "progress";
+                    $.ajax({
+                        url: wmsUrl,
+                        dataType: 'json'
+                    }).done(function (response) {
+                        GV.app.infoWmsManager.handleResponse(response.features);
+                    });
+                }
+            }, this);
+        }
+    };
+
+};

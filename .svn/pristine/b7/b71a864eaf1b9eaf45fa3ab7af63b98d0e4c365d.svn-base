@@ -1,0 +1,154 @@
+/**
+ * Created by parodi on 02/08/2016.
+ */
+/*global GV:false, window:false, jQuery:false, $:false , console:false  , Marionette:false  , Backbone:false  , _:false , L:false  */
+GV.Map = L.Map.extend({
+    //https://github.com/mapbox/mapbox.js/blob/mb-pages/src/map.js
+
+    // array delle mappe RL caricate
+    rlMaps: [],
+
+    layers: [],
+
+    initialExtent: [],
+
+    mapOptions: {
+        zoomControl: false
+    },
+
+    initialize: function (options) {
+        "use strict";
+
+        this.setMapOptions(options);
+
+        L.Map.prototype.initialize.call(this, 'gv-map', _.extend(L.Map.prototype.options, this.mapOptions));
+
+        this.setInitialExtent();
+
+        this.setInfoWms(options);
+
+        this.setLayersInRange();
+    },
+
+    setMapOptions: function (options) {
+        "use strict";
+
+        if (options.config.application && options.config.application.layout && options.config.application.mapOptions) {
+            _.extend(this.mapOptions, options.config.application.mapOptions);
+        }
+    },
+
+    setInitialExtent: function () {
+        "use strict";
+
+        var extent = this.mapOptions.initialExtent || "830036,5402959,1123018,5597635";
+        var extArray = extent.split(',');
+        var swPoint = L.point(extArray[0], extArray[1]);
+        var nePoint = L.point(extArray[2], extArray[3]);
+        var swLatLng = L.Projection.SphericalMercator.unproject(swPoint);
+        var neLatLng = L.Projection.SphericalMercator.unproject(nePoint);
+        this.initialExtent = L.latLngBounds(swLatLng, neLatLng);
+        this.fitBounds(this.initialExtent);
+    },
+
+    setInfoWms: function (options) {
+        "use strict";
+        if (this.mapOptions.infoWms) {
+            GV.infoWmsManager = new GV.InfoWmsManager();
+            GV.infoWmsManager.activate(this, options.config);
+        }
+    },
+
+    setLayersInRange: function () {
+        "use strict";
+        this.on('zoom', function () {
+            var layers = GV.rlMaps.getAllLayersConfig();
+            _.each(layers, function (layer) {
+                GV.rlMaps.setLayerAttribute(layer.name, 'inRange', this.layerInRange(layer));
+            }, this);
+        });
+    },
+
+    setLayerVisible: function (layerConfig, visible) {
+        "use strict";
+        if (visible) {
+            this.loadLayers([layerConfig]);
+        } else {
+            this.removeLayer(this.getLayerByName(layerConfig.name));
+        }
+    },
+
+    layerInRange: function (layerConfig) {
+        "use strict";
+        return (this.getScale() < layerConfig.minScale && this.getScale() > layerConfig.maxScale );
+    },
+
+    loadControls: function (options) {
+        "use strict";
+        if (options.config.application && options.config.application.layout && options.config.application.layout.controls) {
+            var controls = options.config.application.layout.controls;
+            var cntrl;
+            this.controls = {};
+            _.each(controls, function (control) {
+                switch (control.name) {
+                    case 'scaleControl':
+                        cntrl = L.control.scale({imperial: false}).addTo(this);
+                        this.controls[control] = cntrl;
+                        break;
+                    case 'zoomControl':
+                        cntrl = L.control.zoom(control.options).addTo(this);
+                        this.controls[control] = cntrl;
+                        break;
+                    default:
+                        break;
+                }
+            }, this);
+        }
+    },
+
+    loadBaseLayers: function (baseLayers) {
+        "use strict";
+        _.each(baseLayers, function (layerConfig) {
+            var layer = GV.layerFactory.create(layerConfig, this);
+            if (layer && layerConfig.visible) {
+                layer.addTo(this);
+            }
+        }, this);
+    },
+
+    loadLayers: function (layers) {
+        "use strict";
+        _.each(layers, function (layerConfig) {
+            if (!this.getLayerByName(layerConfig.name)) {
+                var layer = GV.layerFactory.create(layerConfig, this);
+                if (layer && layerConfig.visible && !this.getLayerByName(layerConfig.name)) {
+                    layer.addTo(this);
+                }
+            }
+        }, this);
+    },
+
+    getLayerByName: function (layerName) {
+        "use strict";
+        var foundLayer = null;
+        this.eachLayer(function (layer) {
+            if (layer.config && layer.config.name && layer.config.name === layerName) {
+                foundLayer = layer;
+            }
+        });
+        return foundLayer;
+    },
+
+    getScaleLabel: function () {
+        'use strict';
+        return GV.Util.getScaleLabelsFromZoom(this._zoom);
+    },
+
+    getScale: function () {
+        'use strict';
+        return GV.Util.getScaleFromZoom(this._zoom);
+    }
+
+
+
+});

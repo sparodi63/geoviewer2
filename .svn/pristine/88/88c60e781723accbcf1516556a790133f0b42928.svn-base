@@ -1,0 +1,78 @@
+var config = require('../config')
+var webpack = require('webpack')
+var merge = require('webpack-merge')
+var utils = require('./utils')
+var baseWebpackConfig = require('./webpack.base.conf')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+
+
+module.exports = function(app) {
+
+  var entries = {
+    geoportale: './pages/apps/geoportale/index.dev.js',
+    scuoladigitale: './pages/apps/scuoladigitale/index.dev.js',
+    provacwn2: './pages/apps/provacwn2/index.dev.js'
+  }
+
+  if (!entries[app]) {
+    console.log("Applicazione " + app + " non trovata nella lista delle entries in webpack.dev.config")
+    return null
+  }
+  console.log("Lancio ambiente di sviluppo per Applicazione: " + app)
+
+
+  var entry = {app: entries[app]} 
+  var htmlEntry = 'index.html'
+
+  Object.keys(entry).forEach(function (name) {
+    baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(entry[name])
+  })
+  
+  return  merge(baseWebpackConfig, {
+    module: {
+      loaders: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+    },
+    // eval-source-map is faster for development
+    devtool: 'eval-source-map',
+    plugins: [
+      //    new BundleAnalyzerPlugin(),
+      new webpack.DefinePlugin({
+        'process.env': config.dev.env
+      }),
+      new webpack.optimize.OccurenceOrderPlugin(),
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoErrorsPlugin(),
+      new HtmlWebpackPlugin({
+        filename: htmlEntry,
+        template: htmlEntry,
+        inject: true
+      })
+    ]
+  })
+  
+}
+
+// module.exports = merge(baseWebpackConfig, {
+//   module: {
+//     loaders: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+//   },
+//   // eval-source-map is faster for development
+//   devtool: 'eval-source-map',
+//   plugins: [
+// //    new BundleAnalyzerPlugin(),
+//     new webpack.DefinePlugin({
+//       'process.env': config.dev.env
+//     }),
+//     new webpack.optimize.OccurenceOrderPlugin(),
+//     new webpack.HotModuleReplacementPlugin(),
+//     new webpack.NoErrorsPlugin(),
+//     new HtmlWebpackPlugin({
+//       filename: htmlEntry,
+//       template: htmlEntry,
+//       inject: true
+//     })
+//   ]
+// })

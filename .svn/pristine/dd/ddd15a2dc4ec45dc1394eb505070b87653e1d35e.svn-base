@@ -1,0 +1,135 @@
+GV.Views.LegendItem = Marionette.CompositeView.extend({
+    tagName: "ul",
+    className: "gv-list-group",
+    getTemplate: function () {
+        var tpl;
+        if (this.model.get("type") === 'map') {
+            if (GV.app.config.application.layout.legend.showMapInfoButton) {
+                tpl = [
+                    '<li class="gv-list-legend-map-item"><%= name %>',
+                    '<a class="gv-legend-map-info ms ms-information" title="Scheda metadati" href="/geoservices/REST/metadata/scheda_xml/<%= id %>?style=metadati.xsl" target="_blank"></a>',
+                    '</li>'
+                ].join('\n');
+                return _.template(tpl);
+            } else {
+                return _.template("<li class='gv-list-legend-map-item'><%= name %></li>");
+            }
+        } else {
+            if (this.model.get("inRange")) {
+                if (this.model.get("visible")) {
+                    // layer visibili (checked)
+                    tpl = [
+                        '<li class="gv-list-legend-layer-item">',
+                        '<div>',
+                        '<img class="gv-legend-layer-icon" src="<%= legend.icon %>" width="24px" height="24px">',
+                        '<span class="gv-layer-visibility-span"><input type="checkbox" class="gv-layer-visibility-cb" checked></span>',
+                        '<span class="gv-layer-title-span"><%= title %></span>',
+                        '</div>',
+                        '</li>'
+                    ].join('\n');
+                    return _.template(tpl);
+                } else {
+                    // layer non visibili
+                    tpl = [
+                        '<li class="gv-list-legend-layer-item">',
+                        '<img class="gv-legend-layer-icon" src="<%= legend.icon %>" width="24px" height="24px">',
+                        '<span class="gv-layer-visibility-span"><input type="checkbox" class="gv-layer-visibility-cb"></span>',
+                        '<span class="gv-layer-title-span"><%= title %></span>',
+                        '</li>'
+                    ].join('\n');
+                    return _.template(tpl);
+                }
+            } else {
+                // layer fuori range (disabled)
+                tpl = [
+                    '<li class="gv-list-legend-layer-disabled-item">',
+                    '<img class="gv-legend-layer-icon" src="<%= legend.icon %>" width="24px" height="24px">',
+                    '<span class="gv-layer-visibility-span"><input type="checkbox" class="gv-layer-visibility-cb" disabled></span>',
+                    '<span class="gv-layer-title-span"><%= title %></span>',
+                    '</li>'
+                ].join('\n');
+                return _.template(tpl);
+            }
+        }
+    },
+    initialize: function () {
+        this.collection = this.model.get("layers");
+        this.listenTo(this.collection, "change:inRange", this.onChangeInRangeLayer);
+    },
+    onChangeInRangeLayer: function (layer) {
+        console.log('GV.Views.LegendItem: onChangeInRangeLayer');
+        console.log(layer);
+        this.render();
+    },
+    events: {
+        'click .gv-layer-visibility-cb': 'setLayerVisibility'
+        //,'click .gv-legend-map-info' : 'showMapInfo'
+    },
+    setLayerVisibility: function (e) {
+        var layerConfig = this.model.attributes;
+        if (layerConfig.type !== "map") {
+            var checked = e.currentTarget.checked;
+            e.stopPropagation();
+            this.model.set("visible", checked);
+            GV.app.map.setLayerVisible(layerConfig, checked);
+        }
+    }
+});
+
+GV.Views.LegendBody = Marionette.CollectionView.extend({
+    tagName: "ul",
+    className: "gv-list-group",
+    childView: GV.Views.LegendItem
+});
+
+GV.Views.LegendTitle = Marionette.ItemView.extend({
+//    template: _.template("<div><b>LEGENDA</b><button class='ms ms-plus' type='button'>+</button><button class='gv-close' type='button'>×</button></div>"),
+    className: 'gv-legend-title gv-bgcolor',
+    events: {
+        'click .gv-close': 'hideLegend',
+        'click .gv-legend-add': 'addMap'
+    },
+    hideLegend: function () {
+        $('#gv-legend').fadeOut("slow"); //.css({display: 'none'});
+        $('#gv-legend-button').css({display: 'block'});
+    },
+    addMap: function () {
+        //TODO finestra aggiungi mappa
+/*
+     Finestra con tab configurabili
+     * Repertorio, con funzioni di ricerca ES
+     * Servizi WMS
+     * File KLM/GPX
+     * Canali Tematici
+ */
+    },
+    getTemplate: function () {
+        var tpl = [
+            "<div>",
+            "<b>LEGENDA</b>",
+            "<button class='gv-close' type='button'>×</button>",
+            "<button class='gv-legend-add ms ms-layers-add' title='Aggiungi Mappa' type='button'></button>",
+            "</div>",
+            ""
+        ].join('\n');
+        return _.template(tpl);
+    }
+});
+
+GV.Views.LegendLayout = Marionette.LayoutView.extend({
+    template: _.template("<div id='gv-legend-title'></div><div id='gv-legend-body'></div>"),
+    regions: {
+        title: "#gv-legend-title",
+        body: "#gv-legend-body"
+    }
+});
+
+GV.Views.LegendButton = Marionette.ItemView.extend({
+    template: _.template("<div  class='gv-legend-button gv-bgcolor gv-legend-button ms ms-layers-o' title='Legenda'></div>"),
+    events: {
+        'click': 'showLegend'
+    },
+    showLegend: function () {
+        $('#gv-legend').fadeIn("slow"); //.css({display: 'block'});
+    }
+});

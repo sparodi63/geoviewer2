@@ -1,0 +1,9 @@
+
+Vue.directive('draggable', {
+    // When the bound element is inserted into the DOM...
+    inserted: function (el) {
+        // Focus the element
+        el.className += " draggable";
+    }
+});
+

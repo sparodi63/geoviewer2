@@ -1,0 +1,111 @@
+
+
+Vue.component('gv-legend-layer', {
+    template:
+    '<li :class="getClass">' +
+    '<img class="gv-legend-layer-icon" :src="iconUrl" width="24px" height="24px" @click="showLegendPanel">' +
+    '<span class="gv-layer-visibility-span"><input type="checkbox" class="gv-layer-visibility-cb" v-model="layer.visible" @click="setLayerVisible"></span>' +
+    '<span class="gv-layer-title-span">{{layer.legend.label}}</span>' +
+    '</li>',
+    props: ['layer'],
+    computed: {
+        iconUrl: function() {
+            return this.layer.legend.icon;
+        },
+        getClass: function() {
+            return (this.layer.inRange) ? "gv-list-legend-layer-item" : "gv-list-legend-layer-disabled-item";
+        }
+    },
+    methods: {
+        setLayerVisible: function(event) {
+            this.layer.visible = event.srcElement.checked;
+            GV.map.setLayerVisible(this.layer,event.srcElement.checked);
+        },
+        showLegendPanel: function(event) {
+            console.log('showLegendPanel');
+            var layerConfig = this.layer;
+            //if (layerConfig.inRange && (layerConfig.multiClasse || layerConfig.legend.popUpFlag)) {
+            if ((layerConfig.multiClasse || layerConfig.legend.popUpFlag)) {
+                var url = null, html = null, width, height;
+                if (layerConfig.legend.popUpUrl && layerConfig.legend.popUpFlag) {
+                    // se impostato attributo legendPopupUrl apro una finestra con il documento
+                    url = layerConfig.legend.popUpUrl;
+                    width = (GV.Util.SMALL_SCREEN) ? 400 : 600;
+                    height = (GV.Util.SMALL_SCREEN) ? 400 : 600;
+                } else if (layerConfig.multiClasse) {
+                    // se livello multiclasse apro una finestra con la legenda dei livelli multiclasse
+                    if (layerConfig.flagGeoserver) {
+                        url = layerConfig.wmsParams.url + "LAYER=" + layerConfig.name + "&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&";
+                        width = 400;
+                        height = 350;
+                    } else {
+                        var classes = layerConfig.classes;
+                        html = '<table width=100% border=0>';
+                        _.each(classes, function (cls) {
+                            html += '<tr>';
+                            html += '<td width=30><img src="' + cls.legendIcon + '"></td>';
+                            html += '<td >' + cls.legendLabel + '</td>';
+                            html += '</tr>';
+                        });
+                        html += '</table>';
+                    }
+                }
+
+                var vm = new Vue({
+                    template:
+                        '<gv-iframe-panel visible="true" :src="src" :html="html" :height="height" :width="width" :cls="cls" :title="title"></gv-iframe-panel>' ,
+                    data: {
+                        title: 'LEGENDA - ' + layerConfig.legend.label,
+                        src: url,
+                        html: html,
+                        width: width,
+                        height: height,
+                        cls: "draggable gv-legend-multi"
+                    },
+                    created: function() {
+                        $("#gv-container").append("<div id='gv-legend-multi'></div>");
+                    }
+                });
+                vm.$mount("#gv-legend-multi");
+            }
+        }
+    }
+});
+
+
+Vue.component('gv-legend-map', {
+    template:
+    '<ul class="gv-list-group">' +
+        '<li class="gv-list-legend-map-item">{{map.name}}' +
+            '<a v-show="showInfoMap" class="gv-legend-map-info ms ms-information" title="Scheda metadati" href="" target="_blank"></a>' +
+        '</li>' +
+        '<ul class="gv-list-group">' +
+            '<gv-legend-layer v-for="layer in map.layers" :layer="layer" track-by="id"></gv-legend-layer>' +
+        '</ul>' +
+    '</ul>',
+    props: ['showInfoMap', 'map']
+});
+
+
+Vue.component('gv-legend', {
+    template:
+        '<div id="gv-legend">' +
+            '<div id="gv-legend-title">' +
+                '<div class="gv-panel-title gv-bgcolor">' +
+                '<b>LEGENDA</b>' +
+                    '<button class="gv-close" type="button" @click="hideLegend">×</button>' +
+                    '<button v-show="showAddMap" class="gv-legend-add ms ms-layers-add" title="Aggiungi Mappa" type="button"></button>' +
+                '</div>' +
+            '</div>' +
+            '<div id="gv-legend-body">' +
+                '<gv-legend-map v-for="map in maps" :map="map" :showInfoMap="showInfoMap" track-by="id"></gv-legend-map>' +
+            '</div>' +
+        '</div>',
+    props: ['showAddMap', 'showInfoMap', 'maps'],
+    methods: {
+        hideLegend: function(event) {
+            $('#gv-legend').css({display: 'none'});
+            $('#gv-legend-button').css({display: 'block'});
+        }
+    }
+});

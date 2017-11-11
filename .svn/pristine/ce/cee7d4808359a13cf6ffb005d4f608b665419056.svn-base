@@ -1,0 +1,58 @@
+<html>
+
+<head>
+    <title>Applicazioni ed esempi Geoviewer</title>
+</head>
+
+<body>
+    <br>
+    <a href='http://dts-parodi_s.datasiel.net:8081/?id=56' target="_blank">AMBIENTE NODE-DEV</a>
+    <br>
+    <br>
+    <br>
+    <b>SVILUPPO</b>
+    <br>
+    <br>
+    <a href='apps/scuoladigitale/mappa.html' target="_blank">Scuola Digitale</a>
+    <br>
+    <a href='apps/geoportale/index.html?id=56' target="_blank">Geoportale</a>
+    <br>
+    <a href='apps/mt/index.html?id=56' target="_blank">Marketing Territoriale</a>
+    <br>
+    <a href='/geoviewer/pages/apps/geoportale/index.html?id=56' target="_blank">Integrazione CWN2</a>
+    <br>
+    <br>
+    <b>STAGING</b>
+    <br>
+    <br>
+    <a href='http://srvcarto.regione.liguria.it/geoviewer2_staging/pages/apps/scuoladigitale/mappa.html' target="_blank">Scuola Digitale</a>
+    <br>
+    <a href='http://srvcarto.regione.liguria.it/geoviewer2_staging/apps/geoportale/index.html?id=56' target="_blank">Geoportale</a>
+    <br>
+    <a href='http://srvcarto.regione.liguria.it/geoviewer2_staging/apps/mt/index.html?id=56' target="_blank">Marketing Territoriale</a>
+    <br>
+    <br>
+    <b>PRODUZIONE</b>
+    <br>
+    <br>
+    <a href='http://srvcarto.regione.liguria.it/geoviewer2/pages/apps/scuoladigitale/mappa.html' target="_blank">Scuola Digitale</a>
+    <br>
+    <a href='http://srvcarto.regione.liguria.it/geoviewer2/apps/geoportale/index.html?id=56' target="_blank">Geoportale</a>
+    <br>
+    <a href='http://srvcarto.regione.liguria.it/geoviewer2/apps/mt/index.html?id=56' target="_blank">Marketing Territoriale</a>
+    <br>
+    <a href='http://srvcarto.regione.liguria.it/geoviewer/pages/apps/geoportale/index.html?id=56' target="_blank">Integrazione CWN2</a>
+    <br>
+
+
+
+    <!-- <br><br>
+        <b>ESEMPI</b>
+        <br><br>
+        <a href='esempi/baselayers/mappa.html' target="_blank">Base Layers</a><br>
+        <a href='esempi/elasticsearch/toponimi.html?q=*' target="_blank">ElasticSearch Topomimi</a><br> -->
+
+
+</body>
+
+</html>

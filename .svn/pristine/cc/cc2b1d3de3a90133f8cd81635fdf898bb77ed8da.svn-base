@@ -1,0 +1,17 @@
+import GV from '../GV'
+import L from 'leaflet'
+
+GV.Buttons.geocoder = function (btnOptions, map) {
+  'use strict'
+
+  const Geocoder = L.Control.extend({
+    onAdd: function (map) {
+      let container = document.createElement('div')
+      container.id = `gv-button-geocoder`
+      container.className = 'leaflet-bar leaflet-control'
+      return container
+    }
+  })
+
+  return new Geocoder(btnOptions)
+}

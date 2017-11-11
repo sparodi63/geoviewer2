@@ -1,0 +1,100 @@
+GV.Views.LegendItem = Mn.CompositeView.extend({
+    tagName: "ul",
+    className: "gv-list-group",
+    getTemplate: function () {
+        var tpl;
+        if (this.model.get("type") === 'map') {
+            tpl = [
+                '<li class="gv-list-legend-map-item"><%= name %>',
+                '<% if (!GV.app.layout.getControlOption("legend", "noInfoMap")){ %>',
+                    '<a class="gv-legend-map-info ms ms-information" title="Scheda metadati" href="/geoservices/REST/metadata/scheda_xml/<%= id %>?style=metadati.xsl" target="_blank"></a>',
+                '<% } %>',
+                '</li>'
+            ].join('\n');
+        } else {
+            tpl = [
+                '<li class= <%= (inRange) ? "gv-list-legend-layer-item" : "gv-list-legend-layer-disabled-item" %> >',
+                '<img class="gv-legend-layer-icon" src="<%= legend.icon %>" width="24px" height="24px">',
+                '<% if (inRange){ %>',
+                '<span class="gv-layer-visibility-span"><input type="checkbox" class="gv-layer-visibility-cb" <%= (visible) ? "checked" : "" %> ></span>',
+                '<% } else { %>',
+                '<span class="gv-layer-visibility-span"><input type="checkbox" class="gv-layer-visibility-cb" disabled></span>',
+                '<% } %>',
+                '<span class="gv-layer-title-span"><%= legend.label %></span>',
+                '</li>'
+            ].join('\n');
+        }
+        return _.template(tpl);
+    },
+    initialize: function () {
+        this.collection = this.model.get("layers");
+        this.listenTo(this.collection, "change:inRange", this.onChangeInRangeLayer);
+    },
+    onChangeInRangeLayer: function (layer) {
+        console.log('GV.Views.LegendItem: onChangeInRangeLayer');
+        console.log(layer);
+        this.render();
+    },
+    events: {
+        'click .gv-layer-visibility-cb': 'setLayerVisibility'
+        //,'click .gv-legend-map-info' : 'showMapInfo'
+    },
+    setLayerVisibility: function (e) {
+        var layerConfig = this.model.attributes;
+        if (layerConfig.type !== "map") {
+            var checked = e.currentTarget.checked;
+            e.stopPropagation();
+            this.model.set("visible", checked);
+            GV.app.map.setLayerVisible(layerConfig, checked);
+        }
+    }
+});
+
+GV.Views.LegendBody = Mn.CollectionView.extend({
+    tagName: "ul",
+    className: "gv-list-group",
+    childView: GV.Views.LegendItem
+});
+
+GV.Views.LegendTitle = Mn.View.extend({
+    className: 'gv-legend-title gv-bgcolor',
+    events: {
+        'click .gv-close': 'hideLegend',
+        'click .gv-legend-add': 'addMap'
+    },
+    hideLegend: function () {
+        $('#gv-legend').fadeOut("slow"); //.css({display: 'none'});
+        $('#gv-legend-button').css({display: 'block'});
+    },
+    addMap: function () {
+        //TODO finestra aggiungi mappa
+    },
+    getTemplate: function () {
+        var tpl = [
+            '<div>',
+            '<b>LEGENDA</b>',
+            '<button class="gv-close" type="button">×</button>',
+            '<% if (!noAddMapButton){ %>',
+                '<button class="gv-legend-add ms ms-layers-add" title="Aggiungi Mappa" type="button"></button>',
+            '<% } %>',
+            '</div>',
+            ''
+        ].join('\n');
+        return _.template(tpl)({
+            noAddMapButton: this.options.noAddMap
+        });
+    }
+});
+
+GV.Views.LegendLayout = Mn.View.extend({
+    template: _.template("<div id='gv-legend-title'></div><div id='gv-legend-body'></div>"),
+    regions: {
+        title: "#gv-legend-title",
+        body: "#gv-legend-body"
+    },
+    onRender: function() {
+        "use strict";
+        this.showChildView('title', new GV.Views.LegendTitle({ noAddMap: this.options.noAddMap }));
+        this.showChildView('body', new GV.Views.LegendBody({ collection: GV.rlMaps }));
+    }
+});

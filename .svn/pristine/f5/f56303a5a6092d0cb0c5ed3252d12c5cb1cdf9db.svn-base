@@ -1,0 +1,75 @@
+
+var idMap = decodeURIComponent(GV.Util.getUrlParam('id'));
+
+var config = {
+    application: {
+        mapOptions: {
+//            initialExtent: "830036,5402959,1123018,5597635",
+            infoWms: true
+        },
+        layout: {
+            controls: [],
+            toolbar: [
+                {
+                    position: "topleft",
+                    items: [
+                        {name: "fullscreen"},
+                        {name: "geocoder"},
+                        {name: "print"}
+                    ]
+                },
+                {
+                    position: "bottomright",
+                    items: [
+                        {
+                            name: "locate",
+                            options: {
+                                drawCircle: false
+                            }
+                        },
+                        {name: "navbar"},
+                        {name: "zoom"}
+                    ]
+                }
+            ],
+            legend: {
+                show: false,
+                showMapInfoButton: true
+            }
+        }
+    },
+    baseLayers: [
+        { 'type': 'ESRI_IMAGERY', visible: true },
+//        { 'type': 'OSM' , visible: true },
+        { 'type': 'ESRI_STREETS'},
+        { 'type': 'ESRI_TOPOGRAPHIC' },
+        { 'type': 'ESRI_DARKGRAY' },
+        { 'type': 'ESRI_GRAY' }
+    ],
+    maps: []
+};
+
+
+
+var callback = function (app) {
+    "use strict";
+
+    //console.log(app.map.getLayerByName("L3"));
+
+    //GV.app.addRlMap(1735);
+    //GV.app.addRlMap(5);
+    //GV.app.addRlMap(1646);
+
+};
+
+
+var app = new GV.App({
+    el: '#gv-container',
+    config: config,
+    idMap: idMap,
+    callback: callback,
+    setMapTitle: true,
+    debug: true
+});
+
+

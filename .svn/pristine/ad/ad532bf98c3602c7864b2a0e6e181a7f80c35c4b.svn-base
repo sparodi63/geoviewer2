@@ -1,0 +1,18 @@
+/**
+ * Created by parodi on 19/09/2016.
+ */
+GV.Buttons.zoomhome = function(btnOptions, map) {
+    "use strict";
+
+    return L.easyButton({
+        position: btnOptions.position,
+        states: [{
+            stateName: 'zoom-home',
+            onClick: function(button, map){
+                map.fitBounds(map.initialExtent);
+            },
+            title: 'Zoom alla estensione iniziale',
+            icon: 'fa-home'
+        }]
+    });
+};

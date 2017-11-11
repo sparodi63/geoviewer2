@@ -1,0 +1,30 @@
+
+<html> 
+    <head> 
+        <title>Applicazioni ed esempi Geoviewer</title>
+	</head>
+	<body>
+
+
+
+    <br>
+    <a href='http://dts-parodi_s.datasiel.net:8081/?id=56' target="_blank">DEV</a><br>
+
+
+    <br>
+    <b>APPLICAZIONI</b>
+    <br><br>
+    <a href='apps/geoportale/index.html?id=56' target="_blank">Geoportale</a><br>
+    <a href='apps/scuoladigitale/mappa.html'target="_blank">Scuola Digitale</a><br>
+
+
+    <br><br>
+        <b>ESEMPI</b>
+        <br><br>
+        <a href='esempi/baselayers/mappa.html' target="_blank">Base Layers</a><br>
+        <a href='esempi/elasticsearch/toponimi.html?q=*' target="_blank">ElasticSearch Topomimi</a><br>
+
+
+	</body>
+</html>
+

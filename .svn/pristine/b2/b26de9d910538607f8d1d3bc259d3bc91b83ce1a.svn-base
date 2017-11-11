@@ -1,0 +1,6 @@
+import * as config from './config'
+
+export default function (options) {
+  GV.config = config
+  config.set(options)
+}
