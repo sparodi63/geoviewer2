@@ -1,3 +1,0 @@
-GV.Buttons.locate = function (btnOptions, map) {
-  return L.control.Locate(btnOptions)
-}

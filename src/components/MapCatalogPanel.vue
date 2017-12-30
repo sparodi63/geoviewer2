@@ -1,18 +1,17 @@
 <template>
-    <div class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
-      <vue-draggable-resizable :w="width" :resizable="false">
-        <gv-title :title="title" :hide="true" :divId="'gv-map-catalog-panel'"></gv-title>
+    <div  class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
+        <gv-title v-draggable :title="title" :hide="true" :divId="'gv-map-catalog-panel'"></gv-title>
         <div class="gv-map-catalog-panel-body">
             <el-tabs v-model="activeTab" type="border-card">
                 <el-tab-pane v-if="panels.repertorio" :label="panels.repertorio.label" name="repertorio">
-                    <form @submit.prevent.stop @keyup.enter="submit">
+                    <form @submit.prevent.stop @keyup.enter="submitRepertorio">
                         <el-row class="gv-map-catalog-panel-form" type="flex" justify="left">
                             <el-col :span="11">
-                                <el-input placeholder="Ricerca..." v-model="formData.query" size="mini">
-                                <i style="cursor:default;" slot="suffix" class="el-input__icon el-icon-circle-close" @click="handleIconClick"></i>
+                                <el-input id="gv-map-catalog-panel-repertorio-search" placeholder="Ricerca..." v-model="formData.query" size="mini">
+                                <i style="cursor:default;" slot="suffix" class="el-input__icon el-icon-circle-close" @click="handleRepertorioIconClick"></i>
                                 </el-input>
                             </el-col>
-                            <el-col v-if="showEnti":span="20">
+                            <el-col v-if="showEnti" :span="20">
                                 <span class="gv-map-catalog-label">nelle cartografie di </span>
                                 <el-select v-model="formData.ente" size="mini" filterable clearable placeholder="tutti gli enti" @change="onChangeEnte">
                                     <el-option v-for="item in enti" :key="item.value" :label="item.value" :value="item.value">
@@ -22,17 +21,70 @@
                         </el-row>
                     </form>
                     <div class="gv-map-catalog-tree">
-                        <el-tree :data="panels.repertorio.tree" :props="defaultProps" @node-click="handleNodeClick" node-key="id" accordion :render-content="renderContent" :default-expanded-keys="expanded_nodes"></el-tree>
+                        <el-tree id="gv-map-catalog-repertorio-tree" :data="panels.repertorio.tree" :props="defaultProps" @node-click="handleNodeClick" node-key="id" accordion :render-content="renderContent" :default-expanded-keys="expanded_nodes"></el-tree>
                     </div>
                 </el-tab-pane>
+
                 <el-tab-pane v-if="panels.canali" :label="panels.canali.label" name="canali">
                     <div class="gv-map-catalog-tree">
                         <el-tree :data="panels.canali.tree" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
                     </div>
                 </el-tab-pane>
+
+                <el-tab-pane v-if="panels.wms" :label="panels.wms.label" name="wms">
+                  <div @submit.prevent.stop @keyup.enter="submitWms">
+                    <el-form :inline="true" :model="wmsForm" ref="wms-form" >
+                      <el-form-item >
+                        <el-input style="width: 450px;" size="mini" placeholder="URL Servizio (http://example.org/?&service=WMS&request=GetCapabilities) " v-model="wmsForm.URL" ref="wmsUrl"></el-input>
+                      </el-form-item>
+                      <el-form-item>
+                        <el-button type="primary" size="mini" @click="submitWms">Lista Livelli</el-button>
+                      </el-form-item>
+                      <el-form-item v-if="wmsForm.showLayerList" :label="wmsForm.serviceTitle">
+                      </el-form-item>
+                      <el-form-item v-if="wmsForm.showLayerList" label="Livelli">
+                        <el-select v-model="wmsForm.layerList.name" style="width: 350px;" size="mini" placeholder="Seleziona Livello per caricarlo in mappa" @change="onChangeWmsLayerList">
+                            <el-option v-for="layer in wmsForm.layerList" :key="layer.name" :label="layer.title" :value="layer.name">
+                            </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-form>
+                  </div>
+                </el-tab-pane>
+
+                <el-tab-pane v-if="panels.kml" :label="panels.kml.label" name="kml">
+                  <div @submit.prevent.stop @keyup.enter="submitKml">
+                    <el-form :model="kmlForm" ref="kml-form" >
+                      <el-form-item >
+                        <el-input style="width: 450px;" size="mini" placeholder="Inserisci la URL di un file KML/GPX/JSON - Es.: http://example.org/file.kml " v-model="kmlForm.URL">
+                                                        <i style="cursor:default;" slot="suffix" class="el-input__icon el-icon-circle-close" @click="handleKmlIconClick"></i>
+
+                        </el-input>
+                      </el-form-item>
+                      <el-form-item >
+
+                        <el-upload
+                          action="/geoservices/REST/utils/file_upload"
+                          :limit="1"
+                          :file-list="kmlForm.fileList"
+                          :auto-upload="false"
+                          :on-success="onKmlUploadSuccess"
+                          ref="kmlUpload">
+                          <el-button slot="trigger" size="small" type="primary">Seleziona un file locale di tipo KML/GPX/JSON</el-button>
+                        </el-upload>
+
+                      </el-form-item>
+                      <el-form-item>
+                        <el-button type="primary" size="mini" @click="submitKml">Carica Livello</el-button>
+                      </el-form-item>
+                    </el-form>
+                  </div>
+
+                </el-tab-pane>
+
+
             </el-tabs>
         </div>
-      </vue-draggable-resizable>
     </div>
 </template>
 
@@ -43,12 +95,12 @@ import mountComponent from '../util/mountComponent'
 import getCatalog from '../services/getCatalog'
 import getScheda from '../services/getScheda'
 import getCanali from '../services/getCanali'
+import getWmsCapabilities from '../services/getWmsCapabilities'
+import getKmlUrl from '../services/getKmlUrl'
 
-Vue.component('vue-draggable-resizable', () => import('vue-draggable-resizable'))
-Vue.component('gv-title', () => import('./Title.vue'))
 Vue.component('gv-map-info-panel', () => import('./MapInfoPanel.vue'))
 
-import { Button, ButtonGroup, Row, Col, Tabs, TabPane, Tree, Input, Form, FormItem, Select, Option } from 'element-ui'
+import { Button, ButtonGroup, Row, Col, Tabs, TabPane, Tree, Input, Form, FormItem, Select, Option, Upload } from 'element-ui'
 Vue.use(Button)
 Vue.use(ButtonGroup)
 Vue.use(Row)
@@ -61,6 +113,7 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Upload)
 
 import lang from 'element-ui/lib/locale/lang/it'
 import locale from 'element-ui/lib/locale'
@@ -87,13 +140,12 @@ export default {
     const config = GV.config.application.layout.legend.options.addMapConfig
 
     let panels = config.panels
-
     let activeTab = config.activePanel || Object.keys(config.panels)[0]
 
     const width = window.matchMedia('(min-width: 620px)').matches ? 600 : 400
 
     return {
-      title: 'CATALOGO CARTOGRAFIE',
+      title: 'CATALOGHI CARTOGRAFIE',
       panels: panels,
       showEnti: window.matchMedia('(min-width: 620px)').matches,
       defaultProps: {
@@ -110,6 +162,17 @@ export default {
       activeTab: activeTab,
       expanded_nodes: [],
       width: width,
+      wmsForm: {
+        // URL: 'http://geoservizi2.regione.liguria.it/geoserver/M1662/wms?&service=WMS&request=GetCapabilities',
+        URL: '',
+        serviceTitle: '',
+        showLayerList: false,
+        layerList: [],
+      },
+      kmlForm: {
+        URL: '',
+        fileList: [],
+      },
     }
   },
   mounted() {
@@ -122,10 +185,152 @@ export default {
     })
   },
   methods: {
-    onChangeEnte(value) {
-      this.submit()
+    submitWms() {
+      const url = this.$refs.wmsUrl.value
+      if (!url) {
+        return
+      }
+      getWmsCapabilities(url).then(capabilities => {
+        this.wmsForm.showLayerList = true
+        const serviceTitle = capabilities.WMS_Capabilities.Service.Title
+        // const version = capabilities.WMS_Capabilities.Service._version
+        const url = capabilities.WMS_Capabilities.Service.OnlineResource['_xlink:href']
+        let layers = capabilities.WMS_Capabilities.Capability.Layer.Layer
+        if (!Array.isArray(layers)) {
+          layers = [layers]
+        }
+        const formats = capabilities.WMS_Capabilities.Capability.Request.GetMap.Format
+        let format = null
+        formats.forEach(item => {
+          if ((item === 'image/png' || item === 'image/jpeg' || item === 'image/gif') && !format) {
+            format = item
+          }
+        })
+
+        this.wmsForm.serviceTitle = 'Servizio: ' + serviceTitle
+
+        layers.forEach(layer => {
+          const popUpUrl =
+            layer.Style && layer.Style.LegendURL && layer.Style.LegendURL.OnlineResource ? layer.Style.LegendURL.OnlineResource['_xlink:href'] : null
+
+          this.wmsForm.layerList.push({
+            serviceTitle: serviceTitle,
+            name: layer.Name,
+            title: layer.Title,
+            type: 'WMS',
+            opacity: 1,
+            visible: true,
+            legend: {
+              popUpFlag: popUpUrl ? 1 : 0,
+              popUpUrl: popUpUrl,
+              label: layer.Title,
+              icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/classi.gif',
+            },
+            wmsParams: {
+              url: url,
+              format: format,
+              name: layer.Name,
+              layers: layer.Name,
+              transparent: true
+            },
+          })
+        })
+      })
     },
-    submit() {
+    onChangeWmsLayerList(value) {
+      this.wmsForm.layerList.forEach(layer => {
+        if (layer.name === value) {
+          GV.config.addMapConfig({
+            addLayerConfig: true,
+            id: layer.serviceTitle,
+            name: layer.serviceTitle,
+            layers: [layer],
+          })
+        }
+      })
+    },
+    wmsKeyEnterHandler() {
+      submitWms()
+    },
+    // INIZIO KML
+    submitKml() {
+      const url = this.kmlForm.URL
+      if (url) {
+        getKmlUrl(url).then(data => {
+          const url = data.file
+          const fileName = data.name
+          const type = data.type
+          this.loadKml(url, fileName, type)
+        })
+      } else {
+        this.$refs.kmlUpload.submit()
+      }
+    },
+    onKmlUploadSuccess() {
+      var file = this.$refs.kmlUpload.uploadFiles[0].name
+      if (file) {
+        const url = '/geoservices/temp/' + file
+        let type = null
+        if (url.indexOf('.kml') > -1) type = 'KML'
+        if (url.indexOf('.gpx') > -1) type = 'GPX'
+        if (url.indexOf('.json') > -1) type = 'JSON'
+
+        if (!type) {
+          console.log('Tipo File non ammesso: I file devono avere estensione kml o gpx o json')
+          return
+        }
+        const fileName = file
+          .replace('.kml', '')
+          .replace('.gpx', '')
+          .replace('.json', '')
+        this.loadKml(url, fileName, type)
+      }
+    },
+    loadKml(url, fileName, type) {
+      this.$refs.kmlUpload.clearFiles()
+      this.kmlForm.URL = ''
+      GV.config.addMapConfig({
+        addLayerConfig: true,
+        id: 'kml-gpx-json',
+        name: 'KML/GPX/JSON',
+        layers: [
+          {
+            url: url,
+            name: fileName,
+            title: fileName,
+            visible: true,
+            type: 'JSON',
+            subType: type,
+            projection: 'EPSG:4326',
+            infoOptions: { infoPopUp: 'simple', infoWidth: 300, infoHeight: 300 },
+            inRange: true,
+            pointToLayer: function(feature, latlng) {
+              return L.marker(latlng, {
+                icon: L.icon({
+                  iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/static/img/marker-icon.png',
+                  iconSize: [12, 20],
+                  iconAnchor: [6, 10],
+                  popupAnchor: [0, -20],
+                }),
+              })
+            },
+            zoomToLayerExtent: true,
+            basePopup: true,
+            legend: {
+              label: fileName,
+              icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/classi.gif',
+            },
+          },
+        ],
+      })
+    },
+    handleKmlIconClick() {
+      this.kmlForm.URL = ''
+    },
+    onChangeEnte(value) {
+      this.submitRepertorio()
+    },
+    submitRepertorio() {
       const panel = this.panels['repertorio']
       const filtriImpostati = this.formData.query !== '' || this.formData.ente !== ''
 
@@ -158,9 +363,9 @@ export default {
         this.catalogoCompleto = true
       }
     },
-    handleIconClick() {
+    handleRepertorioIconClick() {
       this.formData.query = ''
-      this.submit()
+      this.submitRepertorio()
     },
     handleNodeClick(data) {
       const idMap = data.idMap
@@ -170,7 +375,7 @@ export default {
       getScheda(idMap).then(data => {
         if (!data) {
           console.error('Scheda non trovata')
-          return 
+          return
         }
         GV.config.schedaInfoCartografia = data
         mountComponent({
@@ -307,5 +512,4 @@ export default {
 .el-tabs__header {
   margin: 0 0 5px !important;
 }
-
 </style>

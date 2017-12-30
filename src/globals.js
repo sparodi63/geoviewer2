@@ -4,17 +4,22 @@ export default {
     USE_SUBDOMAINS: true,
 
     RL_MAP_CONFIG_SERVICE: '/geoservices/REST/geoportale/map/',
+    RL_LAYER_CONFIG_SERVICE: '/geoservices/REST/config/layer/',
+    RL_QUERY_LAYER_VALUE_LIST_SERVICE: '/geoservices/REST/config/query_layer_valuelist/',
+    RL_QUERY_LAYER_SERVICE: '/geoservices/REST/config/query_layer/',
     RL_DYN_MAP_CONFIG_SERVICE: '/geoservices/REST/config/map/',
     RL_CREATE_SLD_SERVICE: '/geoservices/REST/config/create_sld/',
     RL_XSL_INFO_SERVICE: '/geoservices/REST/config/xsl_info_service?',
     RL_CATALOG_SERVICE: '/geoservices/REST/geoportale/catalogo/',
     RL_CANALI_SERVICE: '/geoservices/REST/config/ag_app_canali_tree/',
     RL_SCHEDA_SERVICE: '/geoservices/REST/geoportale/scheda/',
+    RL_DOWNLOAD_CONFIG_SERVICE: '/geoservices/REST/download/map/',
+    RL_DOWNLOAD_INSERT_SERVICE: '/geoservices/REST/download/insert_richiesta/',
     RL_ENTI_SERVICE: '/geoservices/REST/geoportale/enti/',
-
     RL_METADATA_URL: '/geoservices/REST/metadata/scheda_xml/',
+    RL_TRANSFORM_POINT_SERVICE: '/geoservices/REST/coordinate/transform_point/',
 
-    GOOGLE_GEOCODE_PROXY: 'geoportale.regione.liguria.it/geoservices/REST/proxy/google_geocode?region=it&language=it&sensor=false&bounds=7.43,43.75|10.00,44.70',
+    HERE_GEOCODE_PROXY: '/geoservices/REST/proxy/here_geocode',
 
     MAX_BOUNDS: {
         X_MIN: 43.4,
@@ -22,12 +27,6 @@ export default {
         X_MAX: 44.8,
         Y_MAX: 10.5
     },
-
-    // LOADING_OPTIONS: {
-    //     target: 'gv-map',
-    //     spinner: 'el-icon-loading',
-    //     background: 'rgba(0, 0, 0, 0.7)',
-    // },
 
     INFO_WMS_MAX_FEATURES: 10,
 

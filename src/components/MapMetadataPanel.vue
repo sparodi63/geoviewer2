@@ -1,7 +1,6 @@
 <template>
         <div class="gv-map-metadata-panel" id="gv-map-metadata-panel">
-            <vue-draggable-resizable :w="width" :resizable="false">
-            <gv-title :title="title" :divId="'gv-map-metadata-panel'"></gv-title>
+            <gv-title v-draggable :title="title" :divId="'gv-map-metadata-panel'"></gv-title>
             <gv-iframe-panel class="gv-iframe-panel" visible="true" :src="src" :height="height" :width="width"></gv-iframe-panel>
             <el-row type="flex" class="row-bg gv-metadata-row" justify="left">
                 <el-col :span="4">
@@ -11,16 +10,12 @@
                     <el-button @click="openCapabilities" type="primary" class="gv-button-metadata fa fa-external-link" size="mini"><span> Capabilities Servizio</span></el-button>
                 </el-col>
             </el-row>
-            </vue-draggable-resizable>    
         </div>
 </template>
 
 
 <script>
 import Vue from 'vue'
-
-Vue.component('vue-draggable-resizable', () => import('vue-draggable-resizable'))
-Vue.component('gv-title', () => import('./Title.vue'))
 
 import { Button, ButtonGroup, Row, Col } from 'element-ui'
 Vue.use(Button)

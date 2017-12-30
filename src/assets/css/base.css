@@ -1,236 +1,165 @@
 /* ----------------------------------------------- */
+
 /* BASE */
+
 /* ----------------------------------------------- */
 
-html, body {
+html,
+body {
   height: 100%;
   padding: 0;
   margin: 0;
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
 }
 
 /* ----------------------------------------------- */
+
 /* Gestione colori customizzabili */
+
 /* ----------------------------------------------- */
 
-.leaflet-bar a, .leaflet-bar a:hover, .leaflet-bar a.leaflet-disabled {
-  background-color: #24386c;
-  color: #ccc;
+.draggable {
+  cursor: move;
 }
 
 .gv-color-scheme {
-  background-color: #24386c ;
-  color: #CCC;
+  background-color: #24386c;
+  color: #ccc;
+  border-color: #ccc;
 }
 
 .gv-inverted-color-scheme {
   color: #24386c;
-  background-color: #CCC;
+  background-color: #ccc;
 }
 
 .gv-secondary-color-scheme {
   background-color: #527c41;
-  color: #CCC;
+  color: #ccc;
 }
 
 .gv-default-font {
-  font-family: "Raleway",Arial,sans-serif !important;
+  font-family: 'Raleway', Arial, sans-serif !important;
   font-size: 14px;
   font-weight: bold;
 }
 
-
-/* ----------------------------------------------- */
-/* LEAFLET */
-/* ----------------------------------------------- */
-
-/* LEAFLET MODIFICHE CUSTOM */
-
-/* Impostazione cursore su mappa leaflet */
-.leaflet-container {
-  background: #fff;
-  cursor: default;
+.gv-button {
+  background-color: #24386c;
+  color: #ccc;
+  border-color: #ccc;
+  cursor: pointer;
+  height: 24px;
+  border-width: 1px;
+  border-radius: 2px;
+  border-style: solid;
+  width: 36px;
+  margin-right: 10px;
+  padding: 4px 10px;
 }
 
-/* Imposto z-index per bottoni in alto */
-.leaflet-control-container {
+.gv-button-selected {
+  background: rgb(70, 99, 170);
+  border-color: rgb(68, 129, 221);
+  color: #fff;
+}
+
+.gv-button:hover {
+  background: rgb(80, 96, 137);
+  border-color: rgb(80, 96, 137);
+  color: #fff;
+}
+
+.gv-button.is-active,
+.gv-button:active {
+  background-color: #24386c;
+  color: #ccc;
+  border-color: #ccc;
+}
+
+.gv-button:active {
+  outline: 0;
+}
+
+.gv-tool-container {
   z-index: 800;
 }
 
-/* Toolbar */
-.leaflet-bar {
-  border-radius: 0px;
+.gv-tool {
+  float: left;
+  clear: both;
+  position: absolute;
 }
 
-.leaflet-touch .leaflet-bar a {
-  width: 26px;
-  height: 26px;
-  line-height: 26px;
+/* .gv-tool-top,
+.gv-tool-bottom {
+  position: absolute;
+  z-index: 1000;
+} */
+
+.gv-tool-left {
+  left: 0;
+  margin-left: 10px;
 }
 
-.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
-  border: 0px;
+.gv-tool-right {
+  right: 0;
+
+  float: right;
+  margin-right: 10px;
 }
 
-.leaflet-top.leaflet-left {
-  left: 10px !important;
-  top: 10px;
+.gv-tool-top {
+  z-index: 700;
+  position: absolute;
+  top: 0;
+  padding-top: 10px;
 }
 
-.leaflet-top.leaflet-left .leaflet-control {
+.gv-tool-bottom {
+  z-index: 700;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10px;
+}
+
+.gv-tool-top.gv-tool-left .gv-tool {
   margin: 0px 0px;
 }
 
-.leaflet-bottom.leaflet-right {
+.gv-tool-bottom.gv-tool-right {
   display: block;
   position: absolute;
   right: 10px !important;
   bottom: 10px;
 }
 
-.leaflet-bottom.leaflet-right .leaflet-control {
+.gv-tool-bottom.gv-tool-right .gv-tool {
   margin: 0px 0px;
 }
 
-.leaflet-bar a:first-child {
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
+/* ----------------------------------------------- */
+/* LEAFLET */
+/* ----------------------------------------------- */
+.leaflet-control-container {
+  z-index: 800;
 }
 
-.leaflet-bar a:last-child {
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  border-bottom: none;
-}
-
-.leaflet-control-attribution {
-  margin-top: 10px !important;
-  margin-left: 10px !important;
-}
-
-.leaflet-bar a, .leaflet-bar a:hover {
-  border-bottom: none;
+.leaflet-container {
+  background-color: #fff;
 }
 
 /* FINE LEAFLET MODIFICHE CUSTOM */
 
-/* LEAFLET GEOCODER
-TODO Levare dopo sviluppo modulo Geocoder Custom
-*/
-.leaflet-control-geocoder {
-  background-color: #31708f;
-  color: #ccc;
-  font-size: 12px;
-  display: block;
-}
-
-.leaflet-control-geocoder a, .leaflet-control-geocoder {
-  border-bottom: none;
-  display: inline-block;
-}
-
-.leaflet-control-geocoder .leaflet-control-geocoder-alternatives a {
-  width: inherit;
-  height: inherit;
-  line-height: inherit;
-}
-
-.leaflet-control-geocoder a:hover, .leaflet-control-geocoder {
-  border-bottom: none;
-  display: inline-block;
-}
-
-.leaflet-control-geocoder-form {
-  display: none;
-  vertical-align: middle;
-}
-
-.leaflet-control-geocoder-expanded .leaflet-control-geocoder-form {
-  display: inline-block;
-}
-
-.leaflet-control-geocoder-form input {
-  font-size: 120%;
-  border: 0;
-  background-color: transparent;
-  width: 246px;
-}
-
-.leaflet-control-geocoder-form-no-error {
-  display: none;
-}
-
-.leaflet-control-geocoder-form input:focus {
-  outline: none;
-}
-
-.leaflet-control-geocoder-form button {
-  display: none;
-}
-
-.leaflet-control-geocoder-error {
-  margin-top: 8px;
-  margin-left: 8px;
-  display: block;
-  color: #444;
-}
-
-.leaflet-control-geocoder-alternatives {
-  display: block;
-  width: 272px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.leaflet-control-geocoder-alternatives-minimized {
-  display: none;
-  height: 0;
-}
-
-.leaflet-control-geocoder-alternatives li {
-  white-space: nowrap;
-  display: block;
-  overflow: hidden;
-  padding: 5px 8px;
-  text-overflow: ellipsis;
-  border-bottom: 1px solid #ccc;
-  cursor: pointer;
-}
-
-.leaflet-control-geocoder-alternatives li a, .leaflet-control-geocoder-alternatives li a:hover {
-  width: inherit;
-  height: inherit;
-  line-height: inherit;
-  background: inherit;
-  border-radius: inherit;
-  text-align: left;
-}
-
-.leaflet-control-geocoder-alternatives li:last-child {
-  border-bottom: none;
-}
-
-.leaflet-control-geocoder-alternatives li:hover, .leaflet-control-geocoder-selected {
-  background-color: #f5f5f5;
-}
-
-.leaflet-control-geocoder-address-detail {
-
-}
-
-.leaflet-control-geocoder-address-context {
-  color: #ccc;
-}
-
 /* CLUSTER MARKER */
 
-.leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {
+.leaflet-cluster-anim .leaflet-marker-icon,
+.leaflet-cluster-anim .leaflet-marker-shadow {
   -webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-in;
   -moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-in;
   -o-transition: -o-transform 0.3s ease-out, opacity 0.3s ease-in;
@@ -279,32 +208,19 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   height: 30px;
   margin-left: 5px;
   margin-top: 5px;
-
   text-align: center;
   border-radius: 15px;
-  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font: 12px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 
 .marker-cluster span {
   line-height: 30px;
 }
 
-/* BOTTONI */
-
-.easy-button {
-  border: none;
-  width: 26px;
-  height: 26px;
-  color: #ccc;
-}
-
-.leaflet-control-locate a {
-  font-size: 1.4em;
-  color: #ccc;
-}
-
 /* ----------------------------------------------- */
+
 /* GV */
+
 /* ----------------------------------------------- */
 
 #gv-container {
@@ -329,8 +245,8 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   max-width: 800px;
 }
 
-
-.ap-input, .ap-hint {
+.ap-input,
+.ap-hint {
   border-radius: 0px;
   border: 1px solid #24386c;
   color: #24386c;
@@ -342,9 +258,10 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
   display: none;
 }
 
-
 /* ----------------------------------------------- */
+
 /* ELEMENT */
+
 /* ----------------------------------------------- */
 
 .el-row {
@@ -352,32 +269,15 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
 }
 
 .row-bg {
-  background-color: #CCC;
-}
-
-.el-button--primary {
-  color: #CCC;
-  background-color: #24386C !important;
-  border-color: #24386C !important;
-}
-
-.el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover {
-  color: #bfcbd9;
-  cursor: default !important;
-  background-image: none;
-}
-
-.el-button--inverted {
-  color: #24386C !important;
-  background-color: #ccc !important;
-  border-color: #ccc !important;
+  background-color: #ccc;
 }
 
 .el-select-dropdown__wrap {
   overflow: auto;
 }
 
-.el-button--mini, .el-button--mini.is-round {
+.el-button--mini,
+.el-button--mini.is-round {
   padding: 4px 10px;
 }
 
@@ -388,4 +288,21 @@ TODO Levare dopo sviluppo modulo Geocoder Custom
 .el-select-dropdown__item {
   height: 40px;
   font-size: 12px;
+}
+
+.el-button {
+  border: 0px;
+}
+
+.el-button:focus, .el-button:hover {
+  /* color: rgb(189, 206, 211);
+  background: transparent; */
+} 
+
+.el-input--mini .el-input__inner {
+  height: 24px;
+}
+
+.el-form-item {
+  margin-bottom: 2px !important;
 }

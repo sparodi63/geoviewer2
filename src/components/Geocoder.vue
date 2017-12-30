@@ -1,5 +1,4 @@
 <template>
-    <div id="gv-geocoder" class="geocoder">
         <el-select
             v-model="address"
             filterable
@@ -13,21 +12,23 @@
             loading-text="Caricamento... "
             no-match-text="Nessun indirizzo trovato"
             no-data-text="Nessun indirizzo trovato"
+            class="gv-geocoder"
+            id="gv-geocoder"
         >
             <el-option
+                class="gv-geocoder-options"
                 v-for="item in results"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
             </el-option>
         </el-select>
-    </div>
 </template>
 
 
 <script>
 
-import getGoogleGeocode from '../services/getGoogleGeocode'
+import geocoder from '../services/getHereGeocode'
 
 import Vue from 'vue'
 import { Select, Option } from 'element-ui'
@@ -50,7 +51,7 @@ export default {
         return
       }
       this.loading = true
-      getGoogleGeocode(query)
+      geocoder(query)
         .then(results => {
           this.loading = false
           if (results && results.length > 0) {
@@ -83,15 +84,15 @@ export default {
 }
 </script>
 
-<style scoped >
-.geocoder {
-  height: 26px;
+<style scoped>
+.gv-geocoder {
+  margin-right: 10px;
   width: 180px;
-  z-index: 800;
 }
 @media only screen and (max-width: 540px) {
-  .geocoder {
+  .gv-geocoder {
     width: 140px;
   }
 }
+
 </style>

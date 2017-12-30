@@ -1,35 +1,41 @@
 <template>
     <div class="gv-info-wms gv-inverted-color-scheme" id="gv-info-wms-list">
-    <vue-draggable-resizable :w="width" :resizable="false">
-        <gv-title title="Risultato Info - Lista":divId="'gv-info-wms-list'"></gv-title>
+        <gv-title v-draggable title="Risultato Info - Lista":divId="'gv-info-wms-list'"></gv-title>
         <div class="gv-info-wms-body gv-inverted-color-scheme">
-          <el-select @change="onChange" value='' size="mini" placeholder="Lista Risultati" style="width: 250px;">
-              <el-option v-for="item in items" :label="item.label" :value="item" :key="item.id" :value-key="item.id">
-                          <span class="gv-info-wms-list-item-span">{{item.label}} ( {{item.layer.legend.label}} )</span>
-              </el-option>
-          </el-select>
+          <el-table
+            :data="items"
+            :show-header="showHeader"
+            highlight-current-row
+            @current-change="onChange"
+            size="mini"
+            style="width: 100%">
+            <el-table-column
+              style="word-wrap: break-word"
+              property="label">
+            </el-table-column>    
+          </el-table>
         </div>
-    </vue-draggable-resizable> 
     </div>
 </template>
 
 <script>
-import InfoWmsManager from './InfoWmsManager'
+import InfoWmsManager from '../controls/InfoWmsManager'
 
 import Vue from 'vue'
-import { Select, Option } from 'element-ui'
-Vue.use(Select)
-Vue.use(Option)
-
-Vue.component('vue-draggable-resizable', () => import('vue-draggable-resizable'))
-Vue.component('gv-title', () => import('./Title.vue'))
+import { Table, TableColumn } from 'element-ui'
+Vue.use(Table)
+Vue.use(TableColumn)
 
 export default {
   name: 'gv-info-wms-list',
   props: ['items', 'visible'],
   data() {
+    this.items.forEach(item => {
+      item.label = `${item.label} (${item.layer.legend.label})` 
+    });
     return {
-      width: 260,
+      showHeader: false,
+      width: 310,
       value: ''
     }
   },
@@ -39,7 +45,7 @@ export default {
       GV.app.map.getLayerByName('InfoWmsHilite').clearLayers()
     },
     onChange: function(item) {
-      InfoWmsManager.methods.showFeatureInfo(item)
+      InfoWmsManager.showFeatureInfo(item)
     },
   },
 }
@@ -50,9 +56,9 @@ export default {
   position: absolute;
   left: 0px;
   top: 0px;
+  width: 310px;
   margin-left: 10px;
   margin-top: 50px;
-  width: 260px;
   z-index: 800;
   max-height: 430px;
 }
@@ -61,9 +67,9 @@ export default {
   position: absolute;
   padding: 5px;
   overflow-y: auto;
-  width: 250px;
-  height: 30px;
-  max-height: 200px;
+  width: 300px;
+  height: auto;
+  max-height: 300px;
 }
 
 .gv-info-wms-list-item-span {

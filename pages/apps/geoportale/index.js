@@ -28,29 +28,33 @@ GV.init({
                 },
                 tree: null,
               },
+              wms: {
+                label: 'Servizi WMS',
+              },
+              kml: {
+                label: 'KML/GPX/JSON',
+              },
             },
           },
         },
       },
-      toolbar: [
-        {
-          position: 'topleft',
-          items: [
-            { name: 'geocoder'},
-          ],
-        },
-        {
-          position: 'bottomright',
-          items: [
-            { name: 'zoom' }
-          ],
-        },
-        {
-          position: 'bottomleft',
-          items: [
-            { name: 'scalebar' },
-          ],
-        },
+      // tools: [
+      //   {
+      //     position: 'topleft',
+      //     items: [{ name: 'geocoder' }],
+      //   },
+      //   {
+      //     position: 'bottomright',
+      //     items: [{ name: 'zoom' }],
+      //   },
+      //   {
+      //     position: 'bottomleft',
+      //     items: [{ name: 'scalebar' }],
+      //   },
+      // ],
+      tools: [
+        { name: 'gv-geocoder' , position: 'topleft'},
+        { name: 'gv-scalebar', position: 'bottomleft'}
       ],
     },
   },

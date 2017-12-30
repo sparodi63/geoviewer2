@@ -1,16 +1,19 @@
 <template>
     <div id="gv-container">
         <gv-header v-if="showHeader"></gv-header>
-        <gv-map ref="gv-map"></gv-map>
-        <div v-show="showTitle" class="gv-color-scheme" id="gv-title">{{this.getTitle()}}</div>
-        <gv-legend ref="gv-legend" v-if="showLegend"></gv-legend>
+        <gv-map v-if="leafletMap" ref="gv-map"></gv-map>
+        <gv-legend v-if="showLegend" ref="gv-legend"></gv-legend>
+        <div class="gv-tool-container">
+          <div id="gv-tool-topleft" class="gv-tool-top gv-tool-left"/>
+          <div id="gv-tool-topright" class="gv-tool-top gv-tool-right" />
+          <div id="gv-tool-bottomleft" class="gv-tool-bottom gv-tool-left" />
+          <div id="gv-tool-bottomright" class="gv-tool-bottom gv-tool-right" />
+        </div>
     </div>
 </template>
 
 
 <script>
-import globals from '../globals'
-
 import isTouch from '../util/isTouch'
 import getProtocol from '../util/getProtocol'
 import mountComponent from '../util/mountComponent'
@@ -23,94 +26,76 @@ import Legend from './Legend'
 Vue.component('gv-legend', Legend)
 import Header from './Header'
 Vue.component('gv-header', Header)
+import Title from './Title'
+Vue.component('gv-title', Title)
+
 // Componenti lazy
-Vue.component('gv-iframe-panel', () => import('./IFrame.vue'))
-Vue.component('gv-info-wms-list', () => import('./InfoWmsList.vue'))
-Vue.component('gv-info-wms-html', () => import('./InfoWmsHtml.vue'))
+// Vue.component('gv-map', () => import(/* webpackChunkName: "Map" */ './Map.vue'))
+Vue.component('gv-iframe-panel', () => import(/* webpackChunkName: "iFrame" */ './IFrame.vue'))
+Vue.component('gv-info-wms-list', () => import(/* webpackChunkName: "InfoWmsList" */ './InfoWmsList.vue'))
+Vue.component('gv-info-wms-html', () => import(/* webpackChunkName: "InfoWmsHtml" */ './InfoWmsHtml.vue'))
 
 export default {
   name: 'gv-app',
   data() {
+    let mapType = 'leaflet'
+    if (GV.config.application.mapOptions && GV.config.application.mapOptions.type) {
+      mapType = GV.config.application.mapOptions.type
+    }
     return {
+      leafletMap: mapType === 'leaflet',
       showHeader: GV.config.application.layout.header,
-      showTitle: GV.config.application.layout.title,
       showLegend: GV.config.application.layout.legend,
+      showToolbar: GV.config.application.layout.toolbar,
     }
   },
   created() {
     GV.log('gv-app: created')
-    // imposto GV.app in modo da averlo a disposizione appena creato il componente
     GV.app = this
   },
   mounted() {
     GV.log('gv-app: mounted')
-    // gestione toolbar
-    this.addToolbars(GV.config.application.layout.toolbar)
+
+    this.addTools(GV.config.application.layout.tools)
 
     GV.eventBus.$emit('gv-app-mounted', this)
-
-    if (GV.loadingInstance) {
-      GV.loadingInstance.close()
-    }
   },
   methods: {
-    getTitle() {
-      return GV.config.title
-    },
-    getMaps() {
-      return GV.config.maps
-    },
-    addToolbars() {
-      if (GV.config.application.layout.toolbar) {
-        var toolbar = GV.config.application.layout.toolbar
-        toolbar.forEach(tb => {
-          const position = tb.position || 'topleft'
-          tb.items.forEach(item => {
-            item.options = item.options || {}
-            item.options.position = item.options.position || position
-            this.addButton(item)
-          })
+    addTools() {
+      if (GV.config.application.layout.tools) {
+        var tools = GV.config.application.layout.tools
+        tools.forEach(item => {
+          const position = item.position || 'topleft'
+          item.options = item.options || {}
+          this.addTool(item, position)
         })
       }
     },
-    addButton(item) {
-      if (GV.Buttons[item.name]) {
-        var button = GV.Buttons[item.name](item.options, GV.app.map)
-        if (button) {
-          button.name = item.name
-          button.addTo(GV.app.map)
-          GV.app.map.buttons.push(button)
-          if (button.options.vueComponent) {
-            this.mountBtnComponent(button.options.vueComponent)
-          }
-          if (button.options.callBack) {
-            button.options.callBack(button)
-          }
-          if (button.options.autoClick) {
-            setTimeout(function() {
-              button.button.click()
-            }, 1)
-          }
+    addTool(item, position) {
+      GV.tools.forEach(tool => {
+        if (item.name === tool.name) {
+          const itemId = item.name
+          GV.log('gv-app: addTool -> ' + itemId)
+          if (item.active) item.options.active = true
+          const props = item.options.props
+            ? item.options.props
+                .map(prop => {
+                  return `${Object.keys(prop)[0]}='${Object.values(prop)[0]}'`
+                })
+                .join(' ')
+            : ''
+
+          const containerId = 'gv-tool-' + position
+          mountComponent({
+            containerId: containerId,
+            elId: itemId,
+            vm: new Vue({
+              template: `<${itemId} ${props}></${itemId}>`,
+            }),
+            toggleEl: false,
+          })
         }
-      } else {
-        throw new Error('Bottone ' + item.name + ' non esistente')
-      }
-    },
-    mountBtnComponent(options) {
-      mountComponent({
-        containerId: options.containerId,
-        elId: options.id,
-        vm: new Vue({
-          template: `<${options.id}></${options.id}>`,
-        }),
-        toggleEl: false,
       })
-    },
-    setTitle(mapConfig) {
-      // Imposto titolo
-      if (GV.config.application.layout.title === '{map.title}') {
-        GV.config.title = mapConfig.name
-      }
     },
   },
 }

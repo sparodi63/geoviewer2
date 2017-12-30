@@ -8,6 +8,8 @@ import getParamString from '../util/getParamString'
 import getZoomFromScaleDenom from '../util/getZoomFromScaleDenom'
 import getGeoJSON from '../services/getGeoJSON'
 import getTmsMaxLevel from '../util/getTmsMaxLevel'
+import toGeoJSON from 'togeojson'
+import parseXML from '../util/parseXML'
 
 var esriLink = '<a href="http://www.esri.com/">Esri</a>'
 
@@ -19,47 +21,46 @@ function buildGeoJson(data, esParams) {
         var geomField = esParams.geomField || 'location'
         var features = data.hits.hits
         geoJson = {
-            'type': 'FeatureCollection',
-            'totalFeatures': data.hits.total,
-            'features': [],
-            'crs': {
-                'type': 'name',
-                'properties': {
-                    'name': 'urn:ogc:def:crs:EPSG::4326'
-                }
-            }
+            type: 'FeatureCollection',
+            totalFeatures: data.hits.total,
+            features: [],
+            crs: {
+                type: 'name',
+                properties: {
+                    name: 'urn:ogc:def:crs:EPSG::4326',
+                },
+            },
         }
         features.forEach(function(feature) {
             var coords = feature._source[geomField]
             geoJson.features.push({
-                'type': 'Feature',
-                'id': feature._id,
-                'geometry': { 'type': 'Point', 'coordinates': coords },
-                'geometry_name': 'GEOMETRY',
-                'properties': feature._source
+                type: 'Feature',
+                id: feature._id,
+                geometry: { type: 'Point', coordinates: coords },
+                geometry_name: 'GEOMETRY',
+                properties: feature._source,
             })
         })
     } else {
-        geoJson = (typeof data === 'string') ? JSON.parse(data) : data
+        geoJson = typeof data === 'string' ? JSON.parse(data) : data
     }
     return geoJson
 }
 
 var layerFactory = {
-
     BLANK(layerConfig) {
         layerConfig.legend = {
-            label: 'Sfondo Bianco'
+            label: 'Sfondo Bianco',
         }
         return L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { opacity: 0.0 })
     },
 
     OSM(layerConfig) {
         layerConfig.legend = {
-            label: 'OpenStreetMap'
+            label: 'OpenStreetMap',
         }
         return L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
         })
     },
 
@@ -67,185 +68,142 @@ var layerFactory = {
         layerConfig.legend = { label: 'ESRI Imagery' }
         layerConfig.name = layerConfig.type
         var attr = 'DigitalGlobe, GeoEye, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community'
-        return L.tileLayer(
-            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                attribution: `&copy; ${esriLink}, ${attr}`,
-                maxZoom: 19 //, pane: layerConfig.name
-            }
-        )
+        return L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: `&copy; ${esriLink}, ${attr}`,
+            maxZoom: 19, //, pane: layerConfig.name
+        })
     },
 
     ESRI_STREETS(layerConfig) {
         layerConfig.legend = { label: 'ESRI Streets' }
         layerConfig.name = layerConfig.type
         var attr = 'USGS, NOAA'
-        return L.tileLayer(
-            'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-                attribution: `&copy; ${esriLink}, ${attr}`,
-                maxZoom: 19 //, pane: layerConfig.name
-            }
-        )
+        return L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+            attribution: `&copy; ${esriLink}, ${attr}`,
+            maxZoom: 19, //, pane: layerConfig.name
+        })
     },
 
     ESRI_TOPOGRAPHIC(layerConfig) {
         layerConfig.legend = { label: 'ESRI Topographic' }
         layerConfig.name = layerConfig.type
         var attr = 'USGS, NOAA'
-        return L.tileLayer(
-            'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
-                attribution: `&copy; ${esriLink}, ${attr}`,
-                maxZoom: 19 //, pane: layerConfig.name
-            }
-        )
+        return L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+            attribution: `&copy; ${esriLink}, ${attr}`,
+            maxZoom: 19, //, pane: layerConfig.name
+        })
     },
 
     ESRI_GRAY(layerConfig) {
         layerConfig.legend = { label: 'ESRI Gray' }
         layerConfig.name = layerConfig.type
         var attr = 'HERE, DeLorme, MapmyIndia, OpenStreetMap contributors'
-        return L.tileLayer(
-            'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-                attribution: `&copy; ${esriLink}, ${attr}`,
-                maxZoom: 16 //, pane: layerConfig.name
-            }
-        )
+        return L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+            attribution: `&copy; ${esriLink}, ${attr}`,
+            maxZoom: 16, //, pane: layerConfig.name
+        })
     },
 
     ESRI_DARKGRAY(layerConfig) {
         layerConfig.legend = { label: 'ESRI Dark Gray' }
         layerConfig.name = layerConfig.type
         var attr = 'HERE, DeLorme, MapmyIndia, OpenStreetMap contributors'
-        return L.tileLayer(
-            'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-                attribution: `&copy; ${esriLink}, ${attr}`,
-                maxZoom: 16 //, pane: layerConfig.name
-            }
-        )
+        return L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+            attribution: `&copy; ${esriLink}, ${attr}`,
+            maxZoom: 16, //, pane: layerConfig.name
+        })
     },
 
     MAPBOX_STREETS(layerConfig) {
         layerConfig.legend = {
-            label: 'Mapbox Streets'
+            label: 'Mapbox Streets',
         }
-        return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
-            attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            subdomains: 'abcd',
-            id: 'mapbox.streets',
-            accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
-        })
+        return L.tileLayer(
+            'http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
+                attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                subdomains: 'abcd',
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g',
+            }
+        )
     },
 
     MAPBOX_SATELLITE(layerConfig) {
         layerConfig.legend = {
-            label: 'Mapbox Satellite'
+            label: 'Mapbox Satellite',
         }
-        return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
-            attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            subdomains: 'abcd',
-            id: 'mapbox.satellite',
-            accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
-        })
+        return L.tileLayer(
+            'http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
+                attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                subdomains: 'abcd',
+                id: 'mapbox.satellite',
+                accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g',
+            }
+        )
     },
 
     MAPBOX_OUTDOOR(layerConfig) {
         layerConfig.legend = {
-            label: 'Mapox Outdoor'
+            label: 'Mapox Outdoor',
         }
-        return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
-            attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            subdomains: 'abcd',
-            id: 'mapbox.outdoors',
-            accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
-        })
+        return L.tileLayer(
+            'http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
+                attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                subdomains: 'abcd',
+                id: 'mapbox.outdoors',
+                accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g',
+            }
+        )
     },
 
     MAPBOX_LIGHT(layerConfig) {
         layerConfig.legend = {
-            label: 'Mapox Light'
+            label: 'Mapox Light',
         }
-        return L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
-            attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            subdomains: 'abcd',
-            id: 'mapbox.light',
-            accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
-        })
+        return L.tileLayer(
+            'http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g', {
+                attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                subdomains: 'abcd',
+                id: 'mapbox.light',
+                accessToken: 'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g',
+            }
+        )
     },
 
     STAMEN_TERRAIN(layerConfig) {
         layerConfig.legend = {
-            label: 'Stamen Terrain'
+            label: 'Stamen Terrain',
         }
         return L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
             attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
             subdomains: 'abcd',
             minZoom: 0,
             maxZoom: 18,
-            ext: 'png'
+            ext: 'png',
         })
     },
 
     STAMEN_TONER_LIGHT(layerConfig) {
         layerConfig.legend = {
-            label: 'Stamen Toner Light'
+            label: 'Stamen Toner Light',
         }
         return L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
             attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
             subdomains: 'abcd',
             minZoom: 0,
             maxZoom: 20,
-            ext: 'png'
+            ext: 'png',
         })
     },
-
-    /*
-  CARTODB_POSITRON (layerConfig) {
-    layerConfig.legend = {
-      label: 'CartoDb Positron'
-    }
-    return L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-      subdomains: 'abcd',
-      maxZoom: 19
-    })
-  },
-  CARTODB_DARKMATTER (layerConfig) {
-    layerConfig.legend = {
-      label: 'CartoDb DarkMatter'
-    }
-    return L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-      subdomains: 'abcd',
-      maxZoom: 19
-    })
-  },
-  OPENMAPSURFER_ROADS (layerConfig) {
-    layerConfig.legend = {
-      label: 'OpenMapSurfer Roads'
-    }
-    return L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', {
-      maxZoom: 20,
-      attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    })
-  },
-  HYDDA (layerConfig) {
-    layerConfig.legend = {
-      label: 'Hydda'
-    }
-    return L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
-      attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    })
-  },
-
-*/
 
     RL_ORTOFOTO_2013() {
         return this.TMS({
             visible: false,
             tmsParams: {
                 name: 'L4419/webmercator',
-                url: 'http://mapproxy.regione.liguria.it/mapproxy/1661/tiles/'
+                url: 'http://mapproxy.regione.liguria.it/mapproxy/1661/tiles/',
             },
-            zIndex: 1
+            zIndex: 1,
         })
     },
 
@@ -254,9 +212,9 @@ var layerFactory = {
             visible: false,
             tmsParams: {
                 name: 'L5802/webmercator',
-                url: 'http://mapproxy.regione.liguria.it/mapproxy/1828/tiles/'
+                url: 'http://mapproxy.regione.liguria.it/mapproxy/1828/tiles/',
             },
-            zIndex: 1
+            zIndex: 1,
         })
     },
 
@@ -265,9 +223,9 @@ var layerFactory = {
             visible: false,
             tmsParams: {
                 name: 'C1623/webmercator',
-                url: 'http://mapproxy.regione.liguria.it/mapproxy/1623/tiles/'
+                url: 'http://mapproxy.regione.liguria.it/mapproxy/1623/tiles/',
             },
-            zIndex: 1
+            zIndex: 1,
         })
     },
 
@@ -276,9 +234,9 @@ var layerFactory = {
         const name = layerConfig.tmsParams.name
         const tmsUrl = `${url}/1.0.0/${name}/{z}/{x}/{y}.png`
         const maxLevel = getTmsMaxLevel(layerConfig.maxScale)
-        const layer = new L.TileLayer(tmsUrl, {
+        const layer = L.tileLayer(tmsUrl, {
             minZoom: 1,
-            maxZoom: maxLevel
+            maxZoom: maxLevel,
         })
         layer.setZIndex(layerConfig.zIndex)
         layer.name = name.replace('/webmercator', '')
@@ -286,51 +244,46 @@ var layerFactory = {
     },
 
     WMS(layerConfig) {
-        let { name, geomType, cacheMinZoomLevel, minScale, maxScale, wmsParams, flagGeoserver, zIndex } = layerConfig
+        let { name, cacheMinZoomLevel, minScale, maxScale, wmsParams, flagGeoserver, zIndex } = layerConfig
         GV.log('layerFactory - Creazione Layer WMS: ' + name)
-
-        let isCached = (cacheMinZoomLevel) ? true : false
-        let format = (geomType === 'VECTOR') ? 'image/png8' : (cacheMinZoomLevel) ? 'image/jpeg' : 'image/png'
-        let minZoom = (minScale) ? getZoomFromScaleDenom(minScale) : 8
-        let maxZoom = (maxScale) ? getZoomFromScaleDenom(maxScale) : 20
-        let url = wmsParams.url
-
-        let opacity = layerConfig.opacity || 1
-
-        if (!flagGeoserver) {
-            cacheMinZoomLevel = null
-            format = (geomType === 'VECTOR') ? 'image/png' : 'image/jpeg'
-        }
-
-        let options = {
-            'subdomains': ['1', '2'],
-            'transparent': true,
-            'FORMAT_OPTIONS': 'antialias:text',
-            'layers': name,
-            'format': format,
-            'opacity': opacity,
-            'minZoom': minZoom,
-            'maxZoom': maxZoom,
-            //      'bounds': globals.MAX_BOUNDS
-            'bounds': L.latLngBounds(L.latLng(globals.MAX_BOUNDS.X_MIN, globals.MAX_BOUNDS.Y_MIN), L.latLng(globals.MAX_BOUNDS.X_MAX, globals.MAX_BOUNDS.Y_MAX))
-        }
-
         let layer = null
+
+        const isCached = cacheMinZoomLevel ? true : false
+        const format = wmsParams.format
+        const minZoom = minScale ? getZoomFromScaleDenom(minScale) : 8
+        const maxZoom = maxScale ? getZoomFromScaleDenom(maxScale) : 20
+        const opacity = layerConfig.opacity || 1
+        let options = {
+            subdomains: ['1', '2'],
+            transparent: true,
+            FORMAT_OPTIONS: 'antialias:text',
+            layers: name,
+            format: format,
+            opacity: opacity,
+            minZoom: minZoom,
+            maxZoom: maxZoom,
+            bounds: L.latLngBounds(
+                L.latLng(globals.MAX_BOUNDS.X_MIN, globals.MAX_BOUNDS.Y_MIN),
+                L.latLng(globals.MAX_BOUNDS.X_MAX, globals.MAX_BOUNDS.Y_MAX)
+            ),
+        }
+
+        let url = wmsParams.url
         if (isCached) {
             if (globals.USE_SUBDOMAINS && url.indexOf('geoservizi.regione.liguria.it') > 0) {
                 url = url.replace('geoservizi', 'geoservizi{s}')
             }
             Object.assign(options, {
-                'tiled': true,
-                'TILESORIGIN': '-20037508,-20037508',
-                'tileSize': 256,
-                'CACHE_VERSION': layerConfig.cacheVersion
+                tiled: true,
+                TILESORIGIN: '-20037508,-20037508',
+                tileSize: 256,
+                CACHE_VERSION: layerConfig.cacheVersion,
             })
             layer = L.tileLayer.wms(url, options)
         } else {
             Object.assign(options, {
-                'tiled': false,
-                'pane': 'tilePane'
+                tiled: false,
+                pane: 'tilePane',
             })
             layer = L.nonTiledLayer.wms(url, options)
         }
@@ -343,7 +296,7 @@ var layerFactory = {
     },
 
     JSON(layerConfig) {
-        let { data, url, name, wfsParams, esParams, classes, style, pointToLayer, tooltip, popup, cluster } = layerConfig
+        let { data, url, name, wfsParams, esParams, classes, style, pointToLayer, tooltip, popup, basePopup, cluster, subType, legend, onEachFeature } = layerConfig
         let clusterLayer = null
         let options = {}
 
@@ -368,7 +321,7 @@ var layerFactory = {
                                     iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/static/img/marker-icon.png',
                                     iconSize: [25, 41],
                                     iconAnchor: [12, 41],
-                                    popupAnchor: [0, -41]
+                                    popupAnchor: [0, -41],
                                 })
                                 break
                             case 'default-small':
@@ -376,7 +329,7 @@ var layerFactory = {
                                     iconUrl: 'http://geoportale.regione.liguria.it/geoviewer2/static/img/marker-icon.png',
                                     iconSize: [12, 20],
                                     iconAnchor: [6, 10],
-                                    popupAnchor: [0, -20]
+                                    popupAnchor: [0, -20],
                                 })
                                 break
                             default:
@@ -384,7 +337,7 @@ var layerFactory = {
                                     iconUrl: style.iconUrl,
                                     iconSize: style.iconSize,
                                     iconAnchor: style.iconAnchor,
-                                    popupAnchor: style.popupAnchor
+                                    popupAnchor: style.popupAnchor,
                                 })
                         }
                         return L.marker(latlng, { icon: icon })
@@ -440,10 +393,41 @@ var layerFactory = {
                     layer.bindPopup(interpolateString(popup, feature.properties))
                 }
             }
+        } else {
+            options.onEachFeature = onEachFeature
         }
 
         var layer = L.geoJson(data, options)
         layer.name = name
+
+        function simplePopup(props) {
+            var popUp = '<div><b>' + legend.label + '</b><br><br></div>'
+            popUp += "<div>"
+            props.forEach(prop => {
+                popUp += prop.key + ':' + prop.value + '<br>'
+            })
+            popUp += '</div>'
+            return popUp
+        }
+
+        if (basePopup) {
+            layer.on('ready', () => {
+                layer.eachLayer(function(_layer) {
+                    //   console.log(_layer.feature.properties)
+                    let props = []
+                    Object.keys(_layer.feature.properties).forEach(key => {
+                        const value = _layer.feature.properties[key]
+                        if (typeof value === 'string' || value instanceof String || typeof value === 'number') {
+                            props.push({
+                                key: key,
+                                value: value,
+                            })
+                        }
+                    })
+                    layer.bindPopup(simplePopup(props))
+                })
+            })
+        }
 
         layer.setFilter = function(filters) {
             layer.filter = filters
@@ -475,7 +459,7 @@ var layerFactory = {
                 srsName: 'EPSG:4326',
                 outputFormat: 'text/javascript',
                 format_options: 'callback: getJson',
-                typeName: wfsParams.typeName
+                typeName: wfsParams.typeName,
             }
             url = wfsParams.url + getParamString(parameters)
         }
@@ -512,14 +496,26 @@ var layerFactory = {
         }
 
         if (url) {
-            getGeoJSON(url).then(response => {
-                const geoJson = buildGeoJson(response.data, esParams)
-                layer.addData(geoJson)
-                if (cluster) {
-                    clusterLayer.addLayer(layer)
-                }
-                GV.eventBus.$emit('layer-loaded-json', layer)
-            }).catch(error => console.error(error))
+            getGeoJSON(url)
+                .then(response => {
+                    let geoJson
+                    if (subType === 'KML') {
+                        const xml = parseXML(response.data)
+                        geoJson = toGeoJSON.kml(xml)
+                    } else if (subType === 'GPX') {
+                        const xml = parseXML(response.data)
+                        geoJson = toGeoJSON.gpx(xml)
+                    } else {
+                        geoJson = buildGeoJson(response.data, esParams)
+                    }
+                    layer.addData(geoJson)
+                    if (cluster) {
+                        clusterLayer.addLayer(layer)
+                    }
+                    layer.fire('ready')
+                    GV.eventBus.$emit('layer-loaded-json', layer)
+                })
+                .catch(error => console.error(error))
         }
 
         if (data) {
@@ -528,9 +524,8 @@ var layerFactory = {
             }
         }
 
-        return (cluster) ? clusterLayer : layer
-
-    }
+        return cluster ? clusterLayer : layer
+    },
 }
 
 function create(layerConfig, map) {

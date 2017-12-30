@@ -5,336 +5,337 @@ import getCatalog from './services/getCatalog'
 import getEnti from './services/getEnti'
 import mountComponent from './util/mountComponent'
 import { Notification } from 'element-ui'
+import getDownloadConfig from './services/getDownloadConfig'
 
-let _lastZIndex = 21
-let debug = false
-let containerId = 'gv-container'
-let idMap = null
-let title = null
-let geoserverUrl
-let application = {}
-let baseLayers = [{ type: 'ESRI_IMAGERY', visible: true }]
-let maps = []
+export default {
+    _lastZIndex: 21,
+    debug: false,
+    containerId: 'gv-container',
+    idMap: null,
+    title: null,
+    findOptions: null,
+    geoserverUrl: null,
+    application: {},
+    baseLayers: [{ type: 'ESRI_IMAGERY', visible: true }],
+    maps: [],
+    hilitedLayer: [],
 
-function set(options) {
-    if (!options) {
-        throw new Error('Opzioni di inizializzazione non impostate!')
-    }
+    init(options) {
+        if (!options) {
+            throw new Error('Opzioni di inizializzazione non impostate!')
+        }
 
-    debug = options.debug
-    idMap = options.idMap
-    geoserverUrl = options.geoserverUrl
-    if (options.application) {
-        application = options.application
-    }
-    if (options.containerId) {
-        containerId = options.containerId
-    }
+        this.debug = options.debug
+        this.idMap = options.idMap
+        this.findOptions = options.findOptions
 
-    application.layout = options.application && options.application.layout ? options.application.layout : {}
+        this.geoserverUrl = options.geoserverUrl
+        if (options.application) {
+            this.application = options.application
+        }
+        if (options.containerId) {
+            this.containerId = options.containerId
+        }
 
-    if (options.application) {
-        application.proxy = options.application.proxy || globals.DEFAULT_PROXY
-    }
-    if (options.application && options.application.layout && options.application.layout.title) {
-        title = options.application.layout.title
-    }
+        this.application.layout = options.application && options.application.layout ? options.application.layout : {}
 
-    // Gestione BaseLayers
-    baseLayers = options.baseLayers
-    baseLayers.forEach(layer => {
-        layer.name = layer.type
-        layer.label = globals.BASE_LAYERS[layer.type].label
-        layer.icon = globals.BASE_LAYERS[layer.type].icon
-    })
+        if (options.application) {
+            this.application.proxy = options.application.proxy || globals.DEFAULT_PROXY
+        }
+        if (options.application && options.application.layout && options.application.layout.title) {
+            this.title = options.application.layout.title
+        }
 
-    if (options.idMap) {
-        const callback = options.application ? options.application.callback : null
-        const idMaps = options.idMap.split(',')
-        idMaps.forEach(id => addRlMap(id, callback, true))
-            // addRlMap(options.idMap, callback, true)
-    } else {
-        GV.eventBus.$on('gv-app-mounted', app => {
-            options.maps.forEach(mapConfig => {
+        // Gestione BaseLayers
+        this.baseLayers = options.baseLayers
+        this.baseLayers.forEach(layer => {
+            layer.name = layer.type
+            layer.label = globals.BASE_LAYERS[layer.type].label
+            layer.icon = globals.BASE_LAYERS[layer.type].icon
+        })
+
+        if (options.idMap) {
+            const callback = options.application ? options.application.callback : null
+            const idMaps = options.idMap.split(',')
+            this.initLoadingMaps = idMaps.length
+            this.initLoadedMaps = 0
+
+            idMaps.forEach((id) => {
+                this.addRlMap(id, true)
+            })
+            GV.eventBus.$on('gv-config-init', app => {
+                if (this.application && this.application.callback) {
+                    this.application.callback(app)
+                }
+            })
+
+        } else {
+            GV.eventBus.$on('gv-app-mounted', app => {
+                options.maps.forEach(mapConfig => {
+                    this.addMapConfig(mapConfig)
+                })
+                if (this.application && this.application.callback) {
+                    this.application.callback(app)
+                }
+            })
+        }
+
+        GV.eventBus.$on('map-zoom', event => {
+            var layers = this.getAllLayersConfig()
+            layers.forEach(layer => {
+                this.setLayerAttribute(layer.name, 'inRange', GV.app.map.layerInRange(layer))
+            })
+        })
+    },
+
+    addMapConfig(mapConfig) {
+        mapConfig.layers.forEach(layer => {
+            layer.minScale = layer.minScale === 0 ? 591657550 : layer.minScale
+            layer.inRange = GV.app && GV.app.map ? GV.app.map.layerInRange(layer) : true
+            layer.opacityBase100 = layer.opacity * 100
+            layer.zIndex = this._lastZIndex++
+        })
+        mapConfig.layers.reverse()
+
+        if (mapConfig.addLayerConfig && this.getMapConfig(mapConfig.id)) {
+            mapConfig.layers.forEach(layer => this.getMapConfig(mapConfig.id).layers.push(layer))
+        } else {
+            if (this.getMapConfig(mapConfig.id)) {
+                return
+            }
+            if (mapConfig.ancillaryMaps) {
+                mapConfig.ancillaryMaps.forEach(map => this.addMapConfig(map))
+            }
+            mapConfig.showLayersInLegend = true
+            this.maps.unshift(mapConfig)
+        }
+
+        GV.eventBus.$emit('config-add-map', { config: mapConfig })
+    },
+
+    setLayerAttribute(layerName, attribute, value) {
+        this.maps.forEach(function(map) {
+            let layers = map.layers
+            layers.forEach(function(layer) {
+                if (layer.name === layerName) {
+                    layer[attribute] = value
+                }
+            })
+        })
+    },
+
+    removeMap(idMap) {
+        const mapConfig = this.getMapConfig(idMap)
+
+        if (!mapConfig) return
+
+        GV.eventBus.$emit('config-remove-map', {
+            config: mapConfig,
+        })
+
+        const index = this.maps.findIndex(function(map) {
+            return map.id === idMap
+        })
+        if (index > -1) {
+            this.maps.splice(index, 1)
+        }
+    },
+
+    removeLayer(idLayer) {
+        this.maps.forEach(map => {
+            let layerIndex = -1
+            map.layers.forEach(function(layer, index) {
+                if (layer.name === idLayer) {
+                    layerIndex = index
+                }
+            })
+            if (layerIndex > -1) {
+                map.layers.splice(layerIndex, 1)
+            }
+            if (map.layers.length === 0) {
+                this.removeMap(map.id)
+            }
+        })
+        GV.eventBus.$emit('config-remove-layer', {
+            config: idLayer,
+        })
+    },
+
+    addRlMap(idMap, setBaseLayer) {
+        if (this.getMapConfig(idMap)) {
+            return this.getMapConfig(idMap)
+        }
+
+        getConfig(idMap)
+            .then(response => {
+                if (!response.data.success) {
+                    throw new Error('Errore Caricamento Mappa: ' + response.data.message)
+                }
+                if (!response.data.data) {
+                    throw new Error('Errore Caricamento Mappa: configurazione non trovata')
+                }
+
+                const mapConfig = response.data.data
+
+                // Aggiorno array delle mappe
                 this.addMapConfig(mapConfig)
-                GV.app.setTitle(mapConfig)
+                if (GV.app && GV.app.map && mapConfig.type && mapConfig.type == 'R' && setBaseLayer && this.getBaseLayerConfig('BLANK')) {
+                    GV.app.map.changeBaseLayer('BLANK')
+                    if (GV.baseLayerSwitcher)
+                        GV.baseLayerSwitcher.activeBaseLayer = 'BLANK'
+                }
+
+                // Aggiorno layer base
+                if (mapConfig.activeBaseLayer) {
+                    GV.app.map.changeBaseLayer(mapConfig.activeBaseLayer)
+                    if (GV.baseLayerSwitcher)
+                        GV.baseLayerSwitcher.activeBaseLayer = mapConfig.activeBaseLayer
+                }
+
+                if (GV.config.findOptions) {
+                    GV.app.map.find(GV.config.findOptions)
+                }
+
+                // Gestione callback
+                this.initLoadedMaps = this.initLoadedMaps + 1
+                if (this.initLoadingMaps === this.initLoadedMaps) {
+                    GV.eventBus.$emit('gv-config-init', GV.app)
+                }
+
+                if (mapConfig.metaData.flag_download) {
+                    getDownloadConfig(idMap).then(resp => {
+                        this.maps.forEach(map => {
+                            if (map.id.toString() === idMap) {
+                                map.downloadConfig = resp
+                                GV.eventBus.$emit('config-add-download', mapConfig)
+                            }
+                        })
+                    })
+                }
+
+                return mapConfig
             })
-            if (application && application.callback) {
-                application.callback(app)
-            }
-        })
-    }
+            .catch(error => {
+                console.error(error)
+                Notification.error({
+                    title: 'Attenzione',
+                    type: 'error',
+                    duration: 5000,
+                    offset: 70,
+                    message: error.message,
+                })
+            })
+    },
 
-    GV.eventBus.$on('map-zoom', event => {
-        var layers = this.getAllLayersConfig()
-        layers.forEach(layer => {
-            this.setLayerAttribute(layer.name, 'inRange', GV.app.map.layerInRange(layer))
-        })
-    })
-}
-
-function addMapConfig(mapConfig) {
-    if (getMapConfig(mapConfig.id)) {
-        return
-    }
-
-    if (mapConfig.ancillaryMaps) {
-        mapConfig.ancillaryMaps.forEach(map => addMapConfig(map))
-    }
-
-    mapConfig.layers.forEach(function(layer) {
-        layer.minScale = layer.minScale === 0 ? 591657550 : layer.minScale
-        layer.inRange = GV.app && GV.app.map ? GV.app.map.layerInRange(layer) : true
-        layer.opacityBase100 = layer.opacity * 100
-        layer.zIndex = _lastZIndex++
-    })
-    mapConfig.layers.reverse()
-
-    mapConfig.showLayersInLegend = true
-    
-    maps.unshift(mapConfig)
-
-    GV.eventBus.$emit('config-add-map', {
-        config: mapConfig,
-    })
-}
-
-function getAllLayersConfig() {
-    let layers = []
-    maps.forEach(function(map) {
-        map.layers.forEach(function(layer) {
-            layers.push(layer)
-        })
-    })
-    return layers
-}
-
-function setLayerAttribute(layerName, attribute, value) {
-    maps.forEach(function(map) {
-        let layers = map.layers
-        layers.forEach(function(layer) {
-            if (layer.name === layerName) {
-                layer[attribute] = value
-            }
-        })
-    })
-}
-
-function getLayerConfig(layerName) {
-    let foundLayer = null
-    maps.forEach(function(map) {
-        let layers = map.layers
-        foundLayer = layers.find(function(layer) {
-            return layer.name === layerName
-        })
-    })
-    if (foundLayer) {
-        return foundLayer
-    }
-}
-
-function getBaseLayerConfig(layerName) {
-    let foundLayer = baseLayers.find(function(layer) {
-        return layer.name === layerName
-    })
-    return foundLayer
-}
-
-function getMapConfig(idMap) {
-    return maps.find(function(map) {
-        return map.id == idMap
-    })
-}
-
-function getButton(buttonName) {
-    let button = null
-    if (!application.layout || !application.layout.toolbar) {
-        return null
-    }
-    application.layout.toolbar.forEach(function(tb) {
-        tb.items.forEach(function(item) {
-            if (item.name === buttonName) {
-                button = item
-            }
-        }, this)
-    }, this)
-    return button
-}
-
-function getButtonOption(buttonName, optionName) {
-    let option = null
-    if (!application.layout || !application.layout.toolbar) {
-        return null
-    }
-    application.layout.toolbar.forEach(function(tb) {
-        tb.items.forEach(function(item) {
-            if (item.name === buttonName) {
-                option = item.options[optionName]
-            }
-        }, this)
-    }, this)
-    return option
-}
-
-function setButtonOption(buttonName, optionName, value) {
-    let option = null
-    if (!application.layout || !application.layout.toolbar) {
-        return null
-    }
-    application.layout.toolbar.forEach(function(tb) {
-        tb.items.forEach(function(item) {
-            if (item.name === buttonName) {
-                item.options[optionName] = value
-            }
-        }, this)
-    }, this)
-    return option
-}
-
-function getActiveBaseLayer() {
-    let activeLayer = null
-    baseLayers.forEach(layer => {
-        if (layer.visible) {
-            activeLayer = layer
-        }
-    })
-    return activeLayer
-}
-
-function setActiveBaseLayer(layerName) {
-    baseLayers.forEach(layer => {
-        layer.visible = layer.name === layerName
-    })
-}
-
-function removeMap(idMap) {
-    const mapConfig = getMapConfig(idMap)
-    GV.eventBus.$emit('config-remove-map', {
-        config: mapConfig,
-    })
-
-    const index = maps.findIndex(function(map) {
-        return map.id === idMap
-    })
-    if (index > -1) {
-        maps.splice(index, 1)
-    }
-}
-
-function removeLayer(idLayer) {
-    var self = this
-    maps.forEach(function(map) {
-        let layerIndex = -1
-        map.layers.forEach(function(layer, index) {
-            if (layer.name === idLayer) {
-                layerIndex = index
-            }
-        })
-        if (layerIndex > -1) {
-            map.layers.splice(layerIndex, 1)
-        }
-        if (map.layers.length === 0) {
-            self.removeMap(map.id)
-        }
-    })
-
-    GV.eventBus.$emit('config-remove-layer', {
-        config: idLayer,
-    })
-}
-
-function addRlMap(idMap, callback, setBaseLayer) {
-    if (getMapConfig(idMap)) {
-        return getMapConfig(idMap)
-    }
-
-    getConfig(idMap)
-        .then(response => {
-            if (!response.data.success) {
-                throw new Error('Errore Caricamento Mappa: ' + response.data.message)
-            }
-            if (!response.data.data) {
-                throw new Error('Errore Caricamento Mappa: configurazione non trovata')
-            }
-
-            const mapConfig = response.data.data
-
-            // Aggiorno array delle mappe
-            addMapConfig(mapConfig)
-            if (GV.app && GV.app.setTitle) {
-                GV.app.setTitle(mapConfig)
-            }
-            if (GV.app && GV.app.map && mapConfig.type && mapConfig.type == 'R' && setBaseLayer && getBaseLayerConfig('BLANK')) {
-                GV.app.map.changeBaseLayer('BLANK')
-                GV.baseLayerSwitcher.activeBaseLayer = 'BLANK'
-            }
-
-            // Aggiorno layer base
-            if (mapConfig.activeBaseLayer) {
-                GV.app.map.changeBaseLayer(mapConfig.activeBaseLayer)
-                GV.baseLayerSwitcher.activeBaseLayer = mapConfig.activeBaseLayer
-            }
-
-            // Gestione callback
-            if (callback) {
-                callback(this)
-            }
-            return mapConfig
-        })
-        .catch(error => {
-            console.error(error)
-            Notification.error({
-                title: 'Attenzione',
-                type: 'error',
-                duration: 5000,
-                offset: 70,
-                message: error.message,
+    loadCatalog(params) {
+        getCatalog().then(data => {
+            this.catalog = this.catalogFull = data.children
+            getEnti().then(data => {
+                this.enti = data
+                if (params.showMapCatalogPanel) {
+                    // Mount Pannello
+                    mountComponent({
+                        elId: 'gv-map-catalog-panel',
+                        toggleEl: false,
+                        vm: new Vue({
+                            template: `<gv-map-catalog-panel></gv-map-catalog-panel>`,
+                        }),
+                    })
+                }
             })
         })
-}
+    },
 
-function loadCatalog(params) {
-    getCatalog().then(data => {
-        this.catalog = this.catalogFull = data.children
-        getEnti().then(data => {
-            this.enti = data
-            if (params.showMapCatalogPanel) {
-                // Mount Pannello
-                mountComponent({
-                    elId: 'gv-map-catalog-panel',
-                    toggleEl: false,
-                    vm: new Vue({
-                        template: `<gv-map-catalog-panel></gv-map-catalog-panel>`,
-                    }),
+    getAllLayersConfig() {
+        let layers = []
+        this.maps.forEach(function(map) {
+            map.layers.forEach(function(layer) {
+                layers.push(layer)
+            })
+        })
+        return layers
+    },
+
+    getLayersNameByMapId(idMap) {
+        if (!idMap) {
+            console.error('Parametro "idMap" non definito')
+            return null
+        }
+        let layers = []
+        this.maps.forEach(function(map) {
+            if (map.id.toString() === idMap) {
+                map.layers.forEach(function(layer) {
+                    if (layer.idMap.toString() === idMap) layers.push(layer.name)
                 })
             }
         })
-    })
-}
+        return layers
+    },
 
-export {
-    debug,
-    idMap,
-    application,
-    baseLayers,
-    maps,
-    title,
-    geoserverUrl,
-    set,
-    addMapConfig,
-    addRlMap,
-    getAllLayersConfig,
-    getLayerConfig,
-    getBaseLayerConfig,
-    getActiveBaseLayer,
-    getMapConfig,
-    loadCatalog,
-    removeMap,
-    removeLayer,
-    getButton,
-    getButtonOption,
-    setButtonOption,
-    setLayerAttribute,
-    setActiveBaseLayer,
-    containerId,
+    getLayerConfig(layerName) {
+        let foundLayer = null
+        this.maps.forEach(map => {
+            map.layers.forEach(layer => {
+                if (layer.name === layerName) {
+                    foundLayer = layer
+                }
+            })
+        })
+        return foundLayer
+    },
+
+    getBaseLayerConfig(layerName) {
+        let foundLayer = this.baseLayers.find(function(layer) {
+            return layer.name === layerName
+        })
+        return foundLayer
+    },
+
+    getMapConfig(idMap) {
+        return this.maps.find(function(map) {
+            return map.id == idMap
+        })
+    },
+
+    getToolOptions(toolName) {
+        let options = null
+        if (!this.application.layout || !this.application.layout.tools) {
+            return null
+        }
+        this.application.layout.tools.forEach(item => {
+            if (item.name === toolName && item.options) {
+                options = item.options
+            }
+        })
+        return options
+    },
+
+    getButtonOptions(buttonName) {
+        let options = null
+        if (!this.application.layout || !this.application.layout.toolbar) {
+            return null
+        }
+        this.application.layout.toolbar.items.forEach(item => {
+            if (item.name === buttonName && item.options) {
+                options = item.options
+            }
+        })
+        return options
+    },
+
+    getActiveBaseLayer() {
+        let activeLayer = null
+        this.baseLayers.forEach(layer => {
+            if (layer.visible) {
+                activeLayer = layer
+            }
+        })
+        return activeLayer
+    },
+
+    setActiveBaseLayer(layerName) {
+        this.baseLayers.forEach(layer => {
+            layer.visible = layer.name === layerName
+        })
+    },
 }

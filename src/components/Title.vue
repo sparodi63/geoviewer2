@@ -3,7 +3,8 @@
         <span :title="fullTitle" class="gv-color-scheme">
             {{title}}
         </span>
-        <button class="gv-close gv-color-scheme" type="button" @click="closePanel">×</button>
+        <el-button v-if="!noClose" class="gv-close gv-color-scheme" icon="el-icon-close"  type="button" @click="closePanel" title="Chiudi Panello"></el-button>
+        <button v-if="collapsible" :class="toggleCollapseClass()" size="mini" @click="collapse" title="Minimizza Panello"></button>
     </div>
 </template>
 
@@ -12,22 +13,38 @@ import Vue from 'vue'
 
 export default {
   name: 'gv-title',
-  props: ['divId', 'title', 'fullTitle', 'hide'],
+  props: ['divId', 'title', 'fullTitle', 'hide', 'noClose', 'collapsible', 'width'],
+  data() {
+    return {
+      collapsed: false,
+    }
+  },
   methods: {
     closePanel: function() {
-      let div = document.getElementById(this.divId) 
+      let div = document.getElementById(this.divId)
       if (div) {
         this.hide ? (div.style.display = 'none') : div.parentNode.removeChild(div)
-      } 
-    //   else {
-    //     div = this.$el.parentNode  
-    //     this.hide
-    //       ? (div.style.display = 'none')
-    //       : div.parentNode.removeChild(this.$el.parentNode)
-    //   }
+      }
+    },
+    collapse: function() {
+      if (this.collapsed) {
+        document.getElementById(this.collapsible).style.display = 'block'
+      } else {
+        document.getElementById(this.collapsible).style.display = 'none'
+      }
+      this.collapsed = !this.collapsed
+    },
+    toggleCollapseClass() {
+      return this.collapsed ? 'gv-title-collapse gv-color-scheme el-icon-arrow-down' : 'gv-title-collapse gv-color-scheme el-icon-arrow-up'
     },
   },
-  mounted: function() {},
+  mounted: function() {
+    this.$el.id = this.divId + '-title'
+    if (this.width) {
+      this.$el.style.width = this.width
+      // console.log(this.$el.style)
+    }
+  },
 }
 </script>
 
@@ -38,14 +55,28 @@ export default {
   padding: 0.3rem 0.5rem;
   margin-bottom: -1px;
   color: #ccc;
-  cursor: default;
   font-weight: bold;
+}
+
+.gv-panel-title :focus {
+  outline: -webkit-focus-ring-color auto 0px; 
 }
 
 .gv-panel-title span {
   font-size: 14px;
   font-weight: bold;
   height: 20px;
+}
+
+.gv-title-collapse {
+  cursor: pointer;
+  border: 0;
+  -webkit-appearance: none;
+  float: right;
+  font-size: 14px;
+  margin-right: -4px;
+  margin-top: 3px;
+  opacity: 1;
 }
 
 .gv-close {

@@ -1,0 +1,5 @@
+.svn/**
+dist/**
+
+.svn/wc.db
+cypress/videos/4088i.mp4

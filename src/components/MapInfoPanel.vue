@@ -1,7 +1,6 @@
 <template>
     <div v-show="visible" class="gv-map-info-panel gv-inverted-color-scheme" id="gv-map-info-panel">
-    <vue-draggable-resizable :w="width" :resizable="false">
-        <gv-title :title="title" :fullTitle="fullTitle" :divId="'gv-map-info-panel'"></gv-title>
+        <gv-title v-draggable :title="title" :fullTitle="fullTitle" :divId="'gv-map-info-panel'"></gv-title>
         <div class="gv-map-info-panel-body">
             <table>
                 <tbody>
@@ -14,7 +13,7 @@
         </div>
         <el-row type="flex" class="row-bg" justify="left">
             <el-col v-if="addToMapButton" :span="16">
-                <el-button type="primary" @click="addToMap" class="gv-button-download fa fa-eye" size="mini">
+                <el-button id="gv-map-info-panel-add-map" type="primary" @click="addToMap" class="gv-button-download fa fa-eye" size="mini">
                     <span> Visualizza</span>
                 </el-button>
             </el-col>
@@ -35,19 +34,18 @@
                 </el-button-group>
             </el-col>
         </el-row>
-    </vue-draggable-resizable>    
     </div>
 </template>
-
+ 
 
 <script>
 import Vue from 'vue'
 import mountComponent from '../util/mountComponent'
 import getConfig from '../services/getConfig'
+import getDownloadConfig from '../services/getDownloadConfig'
+
 import globals from '../globals'
 
-Vue.component('vue-draggable-resizable', () => import('vue-draggable-resizable'))
-Vue.component('gv-title', () => import('./Title.vue'))
 Vue.component('gv-map-metadata-panel', () => import('./MapMetadataPanel.vue'))
 
 import { Button, ButtonGroup, Row, Col } from 'element-ui'
@@ -57,146 +55,133 @@ Vue.use(Row)
 Vue.use(Col)
 
 export default {
-    name: 'gv-map-info-panel',
-    props: ['idMap', 'visible', 'addToMapButton'],
-    data() {
-
-        let items = []
-        var metaData = GV.config.schedaInfoCartografia
-        if (metaData) {
-            items.push({ label: 'Origine del dato', value: metaData.origine })
-            items.push({ label: 'Anno', value: metaData.anno })
-            items.push({ label: 'Scala', value: metaData.scala })
-        }
-        if (metaData && window.matchMedia('(min-height: 500px)').matches) {
-            items.push({ label: 'Rappresentazione', value: metaData.rappresentazione })
-            items.push({ label: 'Ellissoide e Datum', value: metaData.elissoide_datum })
-            items.push({ label: 'Copertura', value: metaData.copertura })
-            items.push({ label: 'Note', value: metaData.note })
-        }
-        return {
-            items: items,
-            name: metaData.descrizione,
-            flagDownload: metaData.flag_download, 
-            title: (window.matchMedia('(max-width: 600px)').matches)? (metaData.descrizione).substr(0, 52) : (metaData.descrizione).substr(0, 68),
-            showMetadata: !(window.matchMedia('(max-width: 600px)').matches),
-            width: (window.matchMedia('(max-width: 600px)').matches)? 350 : 500,
-            fullTitle: (metaData.descrizione),
-            linkWms: metaData.link_wms,
-            linkWfs: metaData.link_wfs,
-            linkDownload: metaData.link_download
-        }
-    },
-    methods: {
-        closePanel() {
-            this.$el.parentNode.removeChild(this.$el)
-        },
-        download() {
-            window.open(this.linkDownload)
-        },
-        addToMap() {
-            getConfig(this.idMap, GV.config.application.name).then(response => {
-                if (!response.data.success) {
-                    throw new Error('Errore Caricamento Mappa: ' + response.data.message)
-                }
-                // Aggiorno array delle mappe
-                GV.config.addMapConfig(response.data.data)
-                // chiudo finestra
-                this.closePanel()
-            })
-        },
-        openMetadataPanel(type) {
-            const xmlUrl = `${globals.RL_METADATA_URL}${this.idMap}?type=${type}&`
-            const linkWms = this.linkWms
-            const linkWfs = this.linkWfs
-            // const prefix = (type === 'DATA') ? 'Scheda Metadati Dataset' :
-            //     (type === 'VS') ? 'Scheda Metadati Servizio Visualizzazione' :
-            //         'Scheda Metadati Servizio Scarico'
-            const prefix = 'Metadati - '
-
-            mountComponent({
-                elId: 'gv-map-metadata-panel',
-                clear: true,
-                vm: new Vue({
-                    template: `<gv-map-metadata-panel :xmlUrl="xmlUrl" :title="title" :type="type" :linkWms="linkWms" :linkWfs="linkWfs" ></gv-map-metadata-panel>`,
-                    data: {
-                        title: `${prefix}: ${this.title}`,
-                        type: type,
-                        xmlUrl: xmlUrl,
-                        linkWms: linkWms,
-                        linkWfs: linkWfs
-                    }
-                })
-            })
-        }
+  name: 'gv-map-info-panel',
+  props: ['idMap', 'visible', 'addToMapButton'],
+  data() {
+    let items = []
+    var metaData = GV.config.schedaInfoCartografia
+    if (metaData) {
+      items.push({ label: 'Origine del dato', value: metaData.origine })
+      items.push({ label: 'Anno', value: metaData.anno })
+      items.push({ label: 'Scala', value: metaData.scala })
     }
-}
+    if (metaData && window.matchMedia('(min-height: 500px)').matches) {
+      items.push({ label: 'Rappresentazione', value: metaData.rappresentazione })
+      items.push({ label: 'Ellissoide e Datum', value: metaData.elissoide_datum })
+      items.push({ label: 'Copertura', value: metaData.copertura })
+      items.push({ label: 'Note', value: metaData.note })
+    }
+    return {
+      items: items,
+      name: metaData.descrizione,
+      flagDownload: metaData.flag_download,
+      title: window.matchMedia('(max-width: 600px)').matches ? metaData.descrizione.substr(0, 52) : metaData.descrizione.substr(0, 68),
+      showMetadata: !window.matchMedia('(max-width: 600px)').matches,
+      width: window.matchMedia('(max-width: 600px)').matches ? 350 : 500,
+      fullTitle: metaData.descrizione,
+      linkWms: metaData.link_wms,
+      linkWfs: metaData.link_wfs,
+      linkDownload: metaData.link_download,
+    }
+  },
+  methods: {
+    closePanel() {
+      this.$el.parentNode.removeChild(this.$el)
+    },
+    download() {
+      window.open(this.linkDownload)
+    },
+    addToMap() {
+        GV.config.addRlMap(this.idMap)
+        this.closePanel()
+    },
+    openMetadataPanel(type) {
+      const xmlUrl = `${globals.RL_METADATA_URL}${this.idMap}?type=${type}&`
+      const linkWms = this.linkWms
+      const linkWfs = this.linkWfs
+      const prefix = 'Metadati - '
 
+      mountComponent({
+        elId: 'gv-map-metadata-panel',
+        clear: true,
+        vm: new Vue({
+          template: `<gv-map-metadata-panel :xmlUrl="xmlUrl" :title="title" :type="type" :linkWms="linkWms" :linkWfs="linkWfs" ></gv-map-metadata-panel>`,
+          data: {
+            title: `${prefix}: ${this.title}`,
+            type: type,
+            xmlUrl: xmlUrl,
+            linkWms: linkWms,
+            linkWfs: linkWfs,
+          },
+        }),
+      })
+    },
+  },
+}
 </script>
 
 <style scoped>
 .gv-map-metadata-panel {
-    position: absolute;
-    left: 0;
-    top: 0;
-    margin-left: 10px;
-    margin-top: 100px;
-    background-color: #fff;
-    z-index: 800;
-    width: 860px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-left: 10px;
+  margin-top: 100px;
+  background-color: #fff;
+  z-index: 800;
+  width: 860px;
 }
 
 .gv-map-info-panel {
-    position: absolute;
-    left: 0;
-    top: 0;
-    margin-left: 10px;
-    margin-top: 100px;
-    background-color: #fff;
-    z-index: 800;
-    max-width: 600px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-left: 10px;
+  margin-top: 100px;
+  background-color: #fff;
+  z-index: 800;
+  max-width: 600px;
 }
 
 .gv-map-info-panel table {
-    border: 1px solid #ddd;
-    width: 100%;
-    padding: 10px;
+  border: 1px solid #ddd;
+  width: 100%;
+  padding: 10px;
 }
 
-
 .gv-map-info-panel-th {
-    white-space: nowrap;
-    width: auto;
-    padding: 5px 5px;
-    text-align: left;
-    font-weight: 400;
-    font-size: 12px;
-    border: 1px solid #e5e5e5;
+  white-space: nowrap;
+  width: auto;
+  padding: 5px 5px;
+  text-align: left;
+  font-weight: 400;
+  font-size: 12px;
+  border: 1px solid #e5e5e5;
 }
 
 .gv-map-info-panel table tr td {
-    padding: 5px;
-    font-size: 12px;
-    border: 1px solid #e5e5e5;
+  padding: 5px;
+  font-size: 12px;
+  border: 1px solid #e5e5e5;
 }
 
 .gv-button-download {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .gv-button-download span {
-    font-family: "Raleway", Arial, sans-serif;
-    font-weight: bold;
+  font-family: 'Raleway', Arial, sans-serif;
+  font-weight: bold;
 }
 
 .gv-button-group span {
-    font-size: 12px;
-    font-family: "Raleway", Arial, sans-serif;
-    font-weight: bold;
+  font-size: 12px;
+  font-family: 'Raleway', Arial, sans-serif;
+  font-weight: bold;
 }
 
 .gv-map-info-panel-body {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 /* @media (pointer: coarse) {
@@ -207,10 +192,9 @@ export default {
 } */
 
 @media (max-width: 500px) {
-    .gv-map-info-panel {
-        width: 350px;
-        /* overflow: auto; */
-    }
+  .gv-map-info-panel {
+    width: 350px;
+    /* overflow: auto; */
+  }
 }
-
 </style>

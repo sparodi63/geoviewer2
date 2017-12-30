@@ -10,61 +10,84 @@ require('./polyfill/findIndex')
 require('./polyfill/find')
 require('./polyfill/startsWith')
 require('es6-promise').polyfill()
-
-//
+// -------------------------------------------------------------------------------- //
+// Imports
+import draggable from './directives/draggable'
 import globals from './globals'
 import getUrlParam from './util/getUrlParam'
 import log from './util/log'
+import dragbox from './util/dragbox'
 import mountComponent from './util/mountComponent'
-import * as config from './config'
+import buildFindOptionsFromQueryStringParams from './util/buildFindOptionsFromQueryStringParams'
+import config from './config'
 import Vue from 'vue'
 import App from './components/App.vue'
-Vue.component('gv-app', App)
+// -------------------------------------------------------------------------------- //
+// Tools
+let tools = []
+tools.push({ name: 'gv-geocoder'})
+import Geocoder from './components/Geocoder.vue'
+Vue.component('gv-geocoder', Geocoder)
+tools.push({ name: 'gv-search'})
+import Search from './components/Search.vue'
+Vue.component('gv-search', Search)
+tools.push({ name: 'gv-scalebar'})
+import Scalebar from './components/Scalebar.vue'
+Vue.component('gv-scalebar', Scalebar)
+tools.push({ name: 'gv-inner-html'})
+import InnerHtml from './components/InnerHtml.vue'
+Vue.component('gv-inner-html', InnerHtml)
+tools.push({ name: 'gv-add-map-button'})
+import AddMap from './components/buttons/AddMap.vue'
+Vue.component('gv-add-map-button', AddMap)
+tools.push({ name: 'gv-info-button'})
+import Info from './components/buttons/Info.vue'
+Vue.component('gv-info-button', Info)
+tools.push({ name: 'gv-coordinate-button' })
+import Coordinate from './components/buttons/Coordinate.vue'
+Vue.component('gv-coordinate-button', Coordinate)
 
-const eventBus = new Vue()
+tools.push({ name: 'gv-layer-search-button' })
+import LayerSearch from './components/buttons/LayerSearch.vue'
+Vue.component('gv-layer-search-button', LayerSearch)
 
-const initConfig = function(options) {
-  GV.config = config
-  config.set(options)
-}
+tools.push({ name: 'atlante-geochimico-livelli'})
+import AtlanteGeochimicoLivelli from './components/AtlanteGeochimicoLivelli.vue'
+Vue.component('atlante-geochimico-livelli', AtlanteGeochimicoLivelli)
 
-const init = function(options) {
-  initConfig(options)
-  return new Vue({
-    el: '#gv-container',
-    template: '<gv-app></gv-app>',
-  })
-}
-
-const mountLegend = function() {
-  mountComponent({
-    elId: 'gv-legend',
-    clear: true,
-    containerId: GV.config.containerId,
-    vm: new Vue({
-      template: `<gv-legend ref="gv-legend"></gv-legend>`,
-    }),
-  })
-}
-
-window.GV = {
-  initConfig,
-  init,
-  globals,
-  log,
-  eventBus,
-  mountLegend,
-  utils: {
-    getUrlParam: getUrlParam,
-  },
-  Buttons: [],
-}
 
 // -------------------------------------------------------------------------------- //
-// Bottoni
-var req = require.context('./buttons', true, /^(.*\.(js$))[^.]*$/gim)
-req.keys().forEach(function(script) {
-  //   console.log(script.replace('./','').replace('.js',''))
-  req(script)
-})
-
+window.GV = {
+  init(options) {
+    this.initConfig(options)
+    Vue.component('gv-app', App)
+    const vm = new Vue({
+      el: '#gv-container',
+      template: '<gv-app></gv-app>',
+    })
+    return vm
+  },
+  initConfig(options) {
+    GV.config = config
+    config.init(options)
+  },
+  mountLegend() {
+    mountComponent({
+      elId: 'gv-legend',
+      clear: true,
+      containerId: GV.config.containerId,
+      vm: new Vue({
+        template: `<gv-legend ref="gv-legend"></gv-legend>`,
+      }),
+    })
+  },
+  dragbox,
+  globals,
+  log,
+  eventBus: new Vue(),
+  utils: {
+    getUrlParam: getUrlParam,
+    buildFindOptionsFromQueryStringParams: buildFindOptionsFromQueryStringParams,
+  },
+  tools: tools,
+}

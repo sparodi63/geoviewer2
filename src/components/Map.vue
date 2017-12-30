@@ -6,9 +6,8 @@
 <script>
 import Vue from 'vue'
 import Map from '../leaflet/Map.js'
-
-
-import InfoWmsManager from './InfoWmsManager'
+import InfoWmsManager from '../controls/InfoWmsManager'
+import Coordinate from '../controls/Coordinate'
 
 const events = [
   'click',
@@ -50,15 +49,18 @@ const events = [
 
 export default {
   name: 'gv-map',
-  data () {
-      const height = document.documentElement.clientHeight
-      return {
-          style: `height:${height}px`
-      }
+  data() {
+    const height = document.documentElement.clientHeight
+    return {
+      style: `height:${height}px`,
+      map: null
+    }
   },
   mounted() {
-    GV.app.map = new Map()
-
+    // if (GV.config.application.mapOptions.type === 'leaflet') {}
+    GV.app.map = new Map() 
+    this.map = GV.app.map
+    
     this.registerMapEvents()
 
     this.subscribeConfigEvents()
@@ -67,15 +69,23 @@ export default {
     this.handleResize()
 
     if (GV.config.application.mapOptions && GV.config.application.mapOptions.click) {
-      InfoWmsManager.methods.activate()
+      switch (GV.config.application.mapOptions.click) {
+        case 'info':
+          InfoWmsManager.activate()
+          break
+        case 'coordinate':
+          Coordinate.activate()
+          break
+      }
     }
-    
+
     GV.log('gv-map: mounted')
+    GV.eventBus.$emit('gv-map-mounted', GV.app.map)
   },
   methods: {
-    handleResize (event) {
-        const height = document.documentElement.clientHeight - document.getElementById('gv-map').getBoundingClientRect().top 
-        this.style = `height:${height}px`
+    handleResize(event) {
+      const height = document.documentElement.clientHeight - document.getElementById('gv-map').getBoundingClientRect().top
+      this.style = `height:${height}px`
     },
     registerMapEvents() {
       events.forEach(eventName => {
@@ -90,6 +100,7 @@ export default {
       GV.eventBus.$on('config-add-map', ev => {
         const mapConfig = ev.config
         // Aggiungo livelli alla mappa
+        GV.app.map.loadLayers(mapConfig.layers)
         GV.app.map.loadLayers(mapConfig.layers)
         //gestione extent
         if (mapConfig.extent_3857) {

@@ -1,9 +1,11 @@
 <template>
     <div id="gv-legend" class="gv-inverted-color-scheme">
         <div class="gv-legend-title gv-color-scheme">
-            <b>LEGENDA</b>
-            <button class="gv-legend-close fa fa-times" type="button" @click="hideLegend"></button>
-            <el-button title="Aggiungi Mappe" v-show="options.showAddMap" type="primary" @click="addMap" class="gv-inverted-color-scheme gv-legend-buttons ms ms-layers-add" size="mini" />
+            <b>LEGENDA</b> 
+            <!-- <el-button class="gv-legend-close" type="button" icon="el-icon-close" size="mini" @click="hideLegend"></el-button> -->
+        <button :class="toggleCollapseClass()" size="mini" @click="hideLegend" title="Minimizza Panello"></button>
+
+            <el-button id="gv-legend-add-map" title="Aggiungi Mappe" v-show="options.showAddMap" @click="addMap" class="gv-color-scheme gv-legend-buttons ms ms-layers-add" size="mini" />
         </div>
         <div id="gv-legend-wrapper" class="gv-legend-wrapper">
             <div id="gv-legend-body">
@@ -14,16 +16,16 @@
                             {{map.name}}
                         </li>
                         <div class="gv-legend-map-tools gv-inverted-color-scheme">
-                            <el-button title="Visualizza Scheda" v-if="checkAddMap(map)" type="primary" @click="showMapInfoPanel(map)" class="gv-legend-map-tools-button fa fa-file-text-o" size="mini"></el-button>
-                            <el-button title="Download Mappa" v-if="isDownloadable(map)" type="primary" @click="download(map)" class="gv-legend-map-tools-button fa fa-download" size="mini"></el-button>
-                            <el-button title="Elimina Mappa" type="primary" @click="remove(map)" class="gv-legend-map-tools-button fa fa-trash" size="mini"></el-button>
-                            <el-button title="Trasparenza Livelli" v-if="options.showLayersTransparency" type="primary" @click="layerTransparency(map)" class="gv-legend-map-tools-button ms ms-transparency" size="mini"></el-button>
-                            <el-button title="Nascondi/Mostra Livelli in Legenda" type="primary" @click="toggleLayers(map)" :class="getToggleLayersClass(map)" size="mini"></el-button>
+                            <el-button title="Nascondi/Mostra Livelli in Legenda" @click="toggleLayers(map)" :class="getToggleLayersClass(map)" size="mini"></el-button>
+                            <el-button :id="'gv-legend-scheda-'+map.id" title="Visualizza Scheda" v-if="checkAddMap(map)" @click="showMapInfoPanel(map)" class="gv-inverted-color-scheme gv-legend-map-tools-button" icon="el-icon-document" size="mini"></el-button>
+                            <el-button :id="'gv-legend-delete-'+map.id" title="Elimina Mappa" v-if="!options.noDeleteButton" @click="remove(map)" class="gv-inverted-color-scheme gv-legend-map-tools-button" icon="el-icon-delete" size="mini"></el-button>
+                            <el-button :id="'gv-legend-transparency-'+map.id" title="Trasparenza Livelli" v-if="options.showLayersTransparency" @click="layerTransparency(map)" class="gv-inverted-color-scheme gv-legend-map-tools-button fa fa-sliders" size="mini"></el-button>
+                            <el-button :id="'gv-legend-download-'+map.id" title="Download Mappa" v-if="isDownloadable(map)" @click="download(map)" class="gv-inverted-color-scheme gv-legend-map-tools-button" icon="el-icon-download" size="mini"></el-button>
                         </div>
                     </div>
                     <!-- LIVELLI -->
                     <ul class="gv-list-group" v-show="showMapLayers(map)" >
-                        <li v-for="layer in map.layers" :layer="layer" :class="getClass(layer)" :key="layer.id">
+                        <li :id="'gv-legend-layer-'+layer.id" v-for="layer in map.layers" :layer="layer" :class="getClass(layer)" :key="layer.id">
                             <img class="gv-legend-layer-icon" :src="iconUrl(layer)" @click="showLegendPanel(layer)">
                             <span class="gv-layer-visibility-span"><input type="checkbox" class="gv-layer-visibility-cb" v-model="layer.visible" @click="setLayerVisible(layer, $event)"></span>
                             <span class="gv-layer-title-span">{{layer.legend.label}}</span>
@@ -32,7 +34,7 @@
                 </ul>
             </div>
             <div class="gv-legend-footer gv-inverted-color-scheme">
-                <gv-base-layer-switcher ref="gv-base-layer-switcher" v-show="options.showBaseLayerSwitcher"></gv-base-layer-switcher>
+                <gv-base-layer-switcher ref="gv-base-layer-switcher" v-if="options.showBaseLayerSwitcher"></gv-base-layer-switcher>
             </div>
         </div>
     </div>
@@ -44,11 +46,14 @@
 import Vue from 'vue'
 import mountComponent from '../util/mountComponent'
 
+import BaseLayerSwitcher from './BaseLayerSwitcher.vue'
+Vue.component('gv-base-layer-switcher', BaseLayerSwitcher)
+
 Vue.component('gv-map-info-panel', () => import('./MapInfoPanel.vue'))
-Vue.component('gv-base-layer-switcher', () => import('./BaseLayerSwitcher.vue'))
 Vue.component('gv-multi-legend-panel', () => import('./MultiLegendPanel.vue'))
 Vue.component('gv-map-catalog-panel', () => import('./MapCatalogPanel.vue'))
 Vue.component('gv-layers-transparency', () => import('./LayersTransparency.vue'))
+Vue.component('gv-map-download', () => import('./Download.vue'))
 
 import { Select, Option, Button } from 'element-ui'
 Vue.use(Select)
@@ -72,6 +77,17 @@ export default {
       const showMapCatalogPanel = GV.config.idMap ? false : true
       GV.config.loadCatalog({ showMapCatalogPanel: showMapCatalogPanel })
     }
+    if (this.options.showDownloadPanelOnLoad) {
+      GV.eventBus.$on('config-add-download', config => {
+        if (config.id == GV.config.idMap) {
+            this.openDownloadPanel(config.id)
+        } 
+      })      
+    }
+    if (this.options.collapsed) {
+      this.hideLegend()
+    }
+    
   },
   methods: {
     showMapLayers(map) {
@@ -80,8 +96,13 @@ export default {
     toggleLayers(map) {
       map.showLayersInLegend = !map.showLayersInLegend
     },
+    toggleCollapseClass() {
+      return this.show ? 'gv-legend-collapse gv-color-scheme el-icon-arrow-down' : 'gv-legend-collapse gv-color-scheme el-icon-arrow-up'
+    },
     getToggleLayersClass(map) {
-      return (map.showLayersInLegend)? 'gv-legend-map-tools-button el-icon-arrow-up' : 'gv-legend-map-tools-button el-icon-arrow-down'
+      return map.showLayersInLegend
+        ? 'gv-inverted-color-scheme gv-legend-map-tools-button el-icon-arrow-up'
+        : 'gv-inverted-color-scheme gv-legend-map-tools-button el-icon-arrow-down'
     },
     isDownloadable(map) {
       if (map && map.metaData) {
@@ -96,7 +117,7 @@ export default {
     hideLegend: function(event) {
       if (this.show) {
         document.getElementById('gv-legend-wrapper').style.display = 'none'
-        document.getElementById('gv-legend').style.width = '150px'
+        document.getElementById('gv-legend').style.width = '180px'
       } else {
         document.getElementById('gv-legend-wrapper').style.display = 'block'
         document.getElementById('gv-legend').style.width = '260px'
@@ -118,7 +139,27 @@ export default {
       GV.config.removeMap(map.id)
     },
     download(map) {
-      window.open(map.metaData.link_download)
+      // if (this.options.useDownloadPanel) {
+        this.openDownloadPanel(map.id)
+      // } else {
+      //   window.open(map.metaData.link_download)
+      // }
+    },
+    openDownloadPanel(idMap) {
+        if (document.getElementById('gv-map-download')) {
+          const element = document.getElementById('gv-map-download')
+          element.parentNode.removeChild(element);
+        }
+        const closeWindow = this.options.downloadPanelCloseMode === 'closeWindow'
+        mountComponent({
+          elId: 'gv-map-download',
+          containerId: GV.config.containerId,
+          toggleEl: false,
+          vm: new Vue({
+            template: `<gv-map-download idMap="${idMap}" closeWindow="${closeWindow}"></gv-map-download>`,
+          }),
+        })
+
     },
     addMap: function() {
       mountComponent({
@@ -213,18 +254,32 @@ export default {
   z-index: 800;
   max-height: 430px;
 }
-</style>
 
-<style scoped>
+.gv-legend-collapse {
+  cursor: pointer;
+  border: 0;
+  -webkit-appearance: none;
+  float: right;
+  font-size: 14px;
+  margin-top: 3px;
+  opacity: 1;
+}
+
+.gv-legend-title :focus {
+  outline: -webkit-focus-ring-color auto 0px; 
+}
+
 .gv-legend-title {
   position: relative;
   display: block;
-  padding: 0.3rem 0.5rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  padding-right: 0rem;
+  padding-left: 0.5rem;  
   margin-bottom: -1px;
   color: #ccc;
   cursor: default;
   font-weight: bold;
-
   font-family: 'Raleway', Arial, sans-serif !important;
   font-size: 14px;
 }
@@ -241,10 +296,9 @@ export default {
   -webkit-appearance: none;
   float: right;
   font-size: 14px;
-  color: #ffffff;
-  margin-right: -6px;
-  margin-top: 2px;
-  opacity: 0.7;
+  background-color: #24386c !important;
+  color: #ccc !important;
+  opacity: 1;
 }
 
 .gv-legend-buttons {
@@ -310,9 +364,9 @@ export default {
   right: 0;
   bottom: 0;
   font-size: 14px;
-  color: #24386C !important;
+  /* color: #24386C !important;
   background-color: #CCC !important;
-  border-color: #CCC !important;
+  border-color: #CCC !important; */
   padding: 2px 2px;
 }
 
@@ -374,8 +428,8 @@ export default {
 
 .el-input__suffix {
   right: 25px;
-  transition: all .3s;
+  transition: all 0.3s;
   pointer-events: none;
-  color: #24386c; 
+  color: #24386c;
 }
 </style>

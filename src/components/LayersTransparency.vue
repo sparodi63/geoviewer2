@@ -1,6 +1,6 @@
 <template>
     <div id="gv-layers-transparency" class="gv-inverted-color-scheme">
-        <gv-title title="TRASPARENZA LAYER" :hide="false" :divId="'gv-layers-transparency'"></gv-title>
+        <gv-title v-draggable title="TRASPARENZA LAYER" :hide="false" :divId="'gv-layers-transparency'"></gv-title>
         <div id="gv-layers-transparency-wrapper" class="gv-layers-transparency-wrapper">
             <div id="gv-layers-transparency-body">
                     <ul class="gv-layers-transparency-list-group">
@@ -31,7 +31,7 @@ export default {
   props: ['idMap'],
   data() {
     return {
-      // maps: GV.config.maps
+      width: 380,
       layers: GV.config.getMapConfig(this.idMap).layers
     };
   },
@@ -136,7 +136,7 @@ export default {
   left: 0;
   top: 0;
   margin-left: 10px;
-  margin-top: 50px;
+  margin-top: 90px;
   background-color: #fff;
   z-index: 800;
 }

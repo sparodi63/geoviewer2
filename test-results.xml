@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="12.613" tests="15" failures="0">
+  <testsuite name="Root Suite" timestamp="2017-12-30T10:55:51" tests="0" failures="0" time="0">
+  </testsuite>
+  <testsuite name="Geoportale Mappa" timestamp="2017-12-30T10:55:51" tests="9" failures="0" time="10.322">
+    <testcase name="Geoportale Mappa Effettua ricerca indirizzo" time="1.842" classname="Effettua ricerca indirizzo">
+    </testcase>
+    <testcase name="Geoportale Mappa Carica livelli in legenda" time="0.063" classname="Carica livelli in legenda">
+    </testcase>
+    <testcase name="Geoportale Mappa Carica mappa in configurazione" time="0.019" classname="Carica mappa in configurazione">
+    </testcase>
+    <testcase name="Geoportale Mappa Carica livelli in mappa" time="0.014" classname="Carica livelli in mappa">
+    </testcase>
+    <testcase name="Geoportale Mappa Effettua Info" time="2.838" classname="Effettua Info">
+    </testcase>
+    <testcase name="Geoportale Mappa Apre Pannello Scheda" time="0.993" classname="Apre Pannello Scheda">
+    </testcase>
+    <testcase name="Geoportale Mappa Apre Pannello Cataloghi e carica mappa" time="3.613" classname="Apre Pannello Cataloghi e carica mappa">
+    </testcase>
+    <testcase name="Geoportale Mappa Cancella mappa" time="0.289" classname="Cancella mappa">
+    </testcase>
+    <testcase name="Geoportale Mappa Cambia Scala" time="0.651" classname="Cambia Scala">
+    </testcase>
+  </testsuite>
+  <testsuite name="Geoportale Senza Mappa" timestamp="2017-12-30T10:56:08" tests="3" failures="0" time="0.9410000000000001">
+    <testcase name="Geoportale Senza Mappa Nessun livello in legenda" time="0.049" classname="Nessun livello in legenda">
+    </testcase>
+    <testcase name="Geoportale Senza Mappa Nessuna mappa in configurazione" time="0.01" classname="Nessuna mappa in configurazione">
+    </testcase>
+    <testcase name="Geoportale Senza Mappa Pannello Cataloghi è aperto" time="0.882" classname="Pannello Cataloghi è aperto">
+    </testcase>
+  </testsuite>
+  <testsuite name="Scuola Digitale" timestamp="2017-12-30T10:56:10" tests="3" failures="0" time="1.35">
+    <testcase name="Scuola Digitale Carica livelli in legenda" time="0.104" classname="Carica livelli in legenda">
+    </testcase>
+    <testcase name="Scuola Digitale Carica mappa in configurazione" time="0.021" classname="Carica mappa in configurazione">
+    </testcase>
+    <testcase name="Scuola Digitale Effettua ricerca scuola" time="1.225" classname="Effettua ricerca scuola">
+    </testcase>
+  </testsuite>
+</testsuites>

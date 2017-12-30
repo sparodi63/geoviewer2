@@ -125,6 +125,7 @@ Ext.application({
               show: true,
               showInfoMap: true,
               showBaseLayerSwitcher: true,
+              showLayersTransparency: true,
               showAddMap: true,
               addMapConfig: {
                 panels: {

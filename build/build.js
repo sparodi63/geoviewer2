@@ -15,7 +15,7 @@ console.log(
 )
 
 var spinner = ora('building for production...')
-spinner.start()
+spinner.start() 
 
 var assetsPath = path.join(config.build.assetsRoot, config.build.assetsSubDirectory)
 cp('-R', 'static/', assetsPath)

@@ -81,5 +81,6 @@ export default {
     height: 26px;
     width: 180px;
     z-index: 800;
+    display: inline-block;
 }
 </style>

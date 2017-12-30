@@ -1,18 +1,19 @@
 <template>
     <div id="gv-search" class="gv-search">
         <el-select
+            id="gv-seach-input"
             v-model="address"
             filterable
             clearable
             remote
             size="mini"
-            placeholder="Ricerca Scuola.."
+            placeholder="Ricerca..."
             :remote-method="search"
             @change="onChange"
             :loading="loading"
             loading-text="Caricamento... "
-            no-match-text="Nessuna scuola trovata"
-            no-data-text="Nessuna scuola trovata"
+            no-match-text="Nessun elemento trovato"
+            no-data-text="Nessun elemento trovato"
         >
             <el-option
                 v-for="item in results"
@@ -26,8 +27,6 @@
 
 
 <script>
-
-
 import Vue from 'vue'
 import { Select, Option } from 'element-ui'
 Vue.use(Select)
@@ -47,44 +46,16 @@ export default {
     }
   },
   mounted: function() {
-    this.layers = GV.config.getButtonOption('search', 'layers')
-    this.propertyName = GV.config.getButtonOption('search', 'propertyName')
-
-    // carico i layer già presenti in mappa all'avvio
-    GV.app.map.eachLayer(layer => {
-      this.layers.forEach(sLayer => {
-        this.cacheLayer(layer, sLayer)
-      })
-    })
-    // carico i layer caricati in seguito
-    GV.eventBus.$on('layer-loaded-json', layer => {
-      this.layers.forEach(sLayer => {
-        this.cacheLayer(layer, sLayer)
-      })
-    })
+    this.layers = GV.config.getToolOptions('gv-search').layers
+    this.propertyName = GV.config.getToolOptions('gv-search').propertyName
   },
   methods: {
-    cacheLayer(layer, sLayer) {
-      if (layer.name === sLayer && !this.isLayerCached(layer.name)) {
-        if (layer instanceof L.LayerGroup) {
-          layer.eachLayer(m => {
-            let loc = m.getLatLng()
-            loc.layer = m
-            this.recordsCache[m.feature.properties[this.propertyName]] = loc
-          })
-          this.cachedLayers.push(layer.name)
-        }
-      }
-    },
-    isLayerCached(layerName) {
-      return this.cachedLayers && this.cachedLayers.find(layer => layer === layerName)  
-    },
     search(query) {
       this.results = []
       if (query.length < 4) {
         return
       }
-      const results = this.filterData(query, this.recordsCache)
+      const results = this.filterData(query)
 
       if (Object.keys(results).length > 0) {
         Object.keys(results).forEach((key, index) => {
@@ -98,20 +69,28 @@ export default {
         this.results = []
       }
     },
-    filterData(text, records) {
-      text = text.replace(/[.*+?^${}()|[\]\\]/g, '')
+    filterData(text) {
+      let frecords = {}
+      text = text.replace(/[*+?^${}()|[\]\\]/g, '')
       if (text === '') {
         return []
       }
-
-      let frecords = {}
-
-      Object.keys(records)
-        .filter(key => new RegExp(text, 'i').test(key))
-        .forEach(key => {
-          frecords[key] = records[key]
+      this.layers.forEach(sLayer => {
+        GV.app.map.eachLayer(layer => {
+          if (layer.name === sLayer) {
+            if (layer instanceof L.LayerGroup) {
+              layer.eachLayer(m => {
+                let loc = m.getLatLng()
+                loc.layer = m
+                const key = m.feature.properties[this.propertyName]
+                if(new RegExp(text, 'i').test(key)) {
+                  frecords[key] = loc
+                }
+              })
+            }
+          }
         })
-
+      })
       return frecords
     },
     onChange(value) {
@@ -135,6 +114,8 @@ export default {
   height: 32px;
   width: 250px;
   z-index: 800;
+  margin-top: 5px;
+  display: inline-block;
 }
 .el-select {
   width: 250px;

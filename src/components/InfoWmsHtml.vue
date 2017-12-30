@@ -1,9 +1,7 @@
 <template>
         <div class="info-wms-html" id="gv-info-wms-html">
-        <vue-draggable-resizable :w="width" :resizable="false">
-            <gv-title :title="title" :divId="'gv-info-wms-html'"></gv-title>
+            <gv-title v-draggable :title="title" :divId="'gv-info-wms-html'"></gv-title>
             <gv-iframe-panel :html="html" :height="height" :width="width" ></gv-iframe-panel>
-        </vue-draggable-resizable>    
         </div>
 </template>
 
@@ -11,8 +9,6 @@
 <script>
 import Vue from 'vue'
 
-Vue.component('vue-draggable-resizable', () => import('vue-draggable-resizable'))
-Vue.component('gv-title', () => import('./Title.vue'))
 
 export default {
   name: 'gv-info-wms-html',

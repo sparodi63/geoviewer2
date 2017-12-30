@@ -1,18 +1,13 @@
-
 import axios from 'axios'
 import globals from '../globals'
-import parseXML from '../util/parseXML' 
+import parseXML from '../util/parseXML'
 
-export default function getFeatureXSLT (infoUrl, data) {
-  return axios
-    // .get(globals.RL_XSL_INFO_SERVICE, {
-    //   headers: { Accept: 'text/xml' },
-    //   params: { xslUrl: infoUrl, ambiente: null, idLayer: data.layerName.replace('L', ''), featureAttributes: data.properties },
-    // })
-    .post(globals.RL_XSL_INFO_SERVICE, {
-      headers: { Accept: 'text/xml' },
-      data: { xslUrl: infoUrl, ambiente: null, idLayer: data.layerName.replace('L', ''), featureAttributes: data.properties },
-    })
-    .then(response => response.data)
-    .then(data => parseXML(data))
+export default function getFeatureXSLT(infoUrl, data) {
+    return axios
+        .post(globals.RL_XSL_INFO_SERVICE, {
+            headers: { Accept: 'text/xml' },
+            data: { xslUrl: infoUrl, ambiente: null, idLayer: data.layerName.replace('L', ''), featureAttributes: data.properties },
+        })
+        .then(response => response.data)
+        .then(data => parseXML(data))
 }

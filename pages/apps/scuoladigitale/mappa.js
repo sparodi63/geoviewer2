@@ -17,22 +17,25 @@ GV.init({
           show: true,
         },
       },
-      toolbar: [
+      tools: [
         {
+          name: 'gv-inner-html',
           position: 'topleft',
-          items: [
-            {
-              name: 'search',
-              options: { layers: ['scuole_01', 'scuole_02', 'scuole_03', 'scuole_04', 'scuole_06', 'scuole_07'], propertyName: 'DENOMINAZIONE' },
-            },
-          ],
+          options: {
+            props: [{ html: '<div class="gv-color-scheme" id="logo"></div>' }],
+          },
         },
-        { position: 'bottomright', items: [{ name: 'zoom' }] },
         {
+          name: 'gv-search',
+          position: 'topleft',
+          options: { layers: ['scuole_01', 'scuole_02', 'scuole_03', 'scuole_04', 'scuole_06', 'scuole_07'], propertyName: 'DENOMINAZIONE' },
+        },
+        {
+          name: 'gv-inner-html',
           position: 'bottomleft',
-          items: [
-          { name: 'div', options:{html: '<div id="loghi-fesr"></div>'} }
-          ],
+          options: {
+            props: [{ html: '<div id="loghi-fesr"></div>' }],
+          },
         },
       ],
     },
