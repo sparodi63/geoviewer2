@@ -1,0 +1,55 @@
+/*
+ESEMPIO QUERY_STRING
+?COORD=1453873,4909770  
+?COORD=8.421021,44.339565&EPSG=4326
+*/
+
+var idMap = '1947'
+var coord = GV.utils.getUrlParam('COORD')
+var epsg = GV.utils.getUrlParam('EPSG') || '3003'
+
+GV.init({
+  debug: true,
+  idMap: idMap,
+  zoomTo: {
+    coord: coord,
+    epsg: epsg,
+  },
+  application: {
+    name: 'derivazioni-gv2',
+    mapOptions: {
+      click: 'info',
+    },
+    layout: {
+      legend: {
+        options: {
+          show: true,
+          showAddMap: true,
+          showBaseLayerSwitcher: true,
+          addMapConfig: {
+            panels: {
+              repertorio: {
+                type: 'tree',
+                name: 'repertorio',
+                label: 'Repertorio Cartografico',
+                options: {
+                  treeServiceUrl: '/geoservices/REST/config/catalog/',
+                },
+                tree: null,
+              },
+            },
+          },
+        },
+      },
+      tools: [{ name: 'gv-geocoder', position: 'topleft' }, { name: 'gv-scalebar', position: 'bottomleft' }],
+    },
+  },
+  baseLayers: [
+    { type: 'ESRI_IMAGERY', visible: true },
+    { type: 'MAPBOX_STREETS' },
+    { type: 'RL_ORTOFOTO_2016' },
+    { type: 'RL_CARTE_BASE' },
+    { type: 'BLANK' },
+  ],
+  maps: [],
+})

@@ -1,9 +1,7 @@
+import axios from 'axios';
 
-import axios from 'axios'
-import globals from '../globals'
+export default function getScheda(idMap) {
+  let url = `/geoservices/REST/geoportale/scheda/${idMap}`;
 
-export default function getScheda (idMap) {
-  let url = `${globals.RL_SCHEDA_SERVICE}/${idMap}`
-
-  return axios.get(url).then(response => response.data.data)
+  return axios.get(url).then(response => response.data.data);
 }

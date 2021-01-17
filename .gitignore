@@ -1,5 +1,5 @@
-.svn/**
-dist/**
-
+.svn/** 
 .svn/wc.db
-cypress/videos/4088i.mp4
+cypress/videos/**
+cypress/**/**
+cypress/**

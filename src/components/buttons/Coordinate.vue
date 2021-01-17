@@ -1,5 +1,5 @@
 <template>
-            <button title="Acquisizione Coordinate" @click="onClick" :class="setClass()" />
+  <button id="gv-button-coordinate" title="Acquisizione Coordinate" @click="onClick" :class="setClass()" />
 </template>
 
 <script>

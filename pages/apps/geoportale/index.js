@@ -1,11 +1,13 @@
-var id = GV.utils.getUrlParam('id')
+var id = GV.utils.getUrlParam('id');
+
+// GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/map/'
+// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 GV.init({
   debug: true,
   idMap: id,
-  // geoserverUrl: 'http://geoservizi.regione.liguria.it:8081/',
   application: {
-    name: 'geoportale',
+    name: 'geoportale-gv2',
     mapOptions: {
       click: 'info',
     },
@@ -24,7 +26,7 @@ GV.init({
                 name: 'repertorio',
                 label: 'Repertorio Cartografico',
                 options: {
-                  treeServiceUrl: 'http://srvcarto.regione.liguria.it/geoservices/REST/config/catalog/',
+                  treeServiceUrl: '/geoservices/REST/config/catalog/',
                 },
                 tree: null,
               },
@@ -38,32 +40,38 @@ GV.init({
           },
         },
       },
-      // tools: [
-      //   {
-      //     position: 'topleft',
-      //     items: [{ name: 'geocoder' }],
-      //   },
-      //   {
-      //     position: 'bottomright',
-      //     items: [{ name: 'zoom' }],
-      //   },
-      //   {
-      //     position: 'bottomleft',
-      //     items: [{ name: 'scalebar' }],
-      //   },
-      // ],
       tools: [
-        { name: 'gv-geocoder' , position: 'topleft'},
-        { name: 'gv-scalebar', position: 'bottomleft'}
+        {
+          name: 'gv-geocoder',
+          position: 'topleft',
+        },
+        {
+          name: 'gv-scalebar',
+          position: 'bottomleft',
+        },
       ],
     },
   },
   baseLayers: [
-    { type: 'ESRI_IMAGERY', visible: true },
-    { type: 'MAPBOX_STREETS' },
-    { type: 'RL_ORTOFOTO_2016' },
-    { type: 'RL_CARTE_BASE' },
-    { type: 'BLANK' },
+    {
+      type: 'ESRI_IMAGERY',
+      visible: true,
+    },
+    {
+      type: 'MAPBOX_STREETS',
+    },
+    {
+      type: 'OSM',
+    },
+    {
+      type: 'RL_ORTOFOTO_2016',
+    },
+    {
+      type: 'RL_CARTE_BASE',
+    },
+    {
+      type: 'BLANK',
+    },
   ],
   maps: [],
-})
+});

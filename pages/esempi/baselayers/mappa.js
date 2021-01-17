@@ -15,7 +15,7 @@ GV.init({
                         {name: "baselayers"}
                     ]
                 }
-            ],
+            ], 
             legend: null
         }
     },

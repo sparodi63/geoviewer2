@@ -11,7 +11,6 @@
 
 
 <script>
-
 import Vue from 'vue'
 import { Select, Option } from 'element-ui'
 Vue.use(Select)
@@ -22,7 +21,7 @@ export default {
   data() {
     return {
       baseLayers: GV.config.baseLayers,
-      activeBaseLayer: GV.config.getActiveBaseLayer().name,
+      activeBaseLayer: GV.config.activeBaseLayer,
     }
   },
   methods: {

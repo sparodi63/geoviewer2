@@ -1,51 +1,80 @@
 <template>
-    <div class="gv-panel-title gv-color-scheme">
-        <span :title="fullTitle" class="gv-color-scheme">
-            {{title}}
-        </span>
-        <el-button v-if="!noClose" class="gv-close gv-color-scheme" icon="el-icon-close"  type="button" @click="closePanel" title="Chiudi Panello"></el-button>
-        <button v-if="collapsible" :class="toggleCollapseClass()" size="mini" @click="collapse" title="Minimizza Panello"></button>
-    </div>
+  <div class="gv-panel-title gv-color-scheme">
+    <span :title="fullTitle" class="gv-color-scheme">{{title}}</span>
+    <el-button
+      v-if="!noClose"
+      class="gv-close gv-color-scheme"
+      icon="el-icon-close"
+      type="button"
+      @click="closePanel"
+      title="Chiudi Panello"
+    ></el-button>
+    <button
+      v-if="collapsible"
+      :class="toggleCollapseClass()"
+      size="mini"
+      @click="collapse"
+      title="Mostra/Nascondi Pannello"
+    ></button>
+  </div>
 </template>
 
 <script>
-import Vue from 'vue'
+import Vue from "vue";
 
 export default {
-  name: 'gv-title',
-  props: ['divId', 'title', 'fullTitle', 'hide', 'noClose', 'collapsible', 'width'],
+  name: "gv-title",
+  props: [
+    "divId",
+    "title",
+    "fullTitle",
+    "hide",
+    "noClose",
+    "collapsible",
+    "width",
+    "collapsedWidth"
+  ],
   data() {
     return {
-      collapsed: false,
-    }
+      collapsed: false
+    };
   },
   methods: {
     closePanel: function() {
-      let div = document.getElementById(this.divId)
+      let div = document.getElementById(this.divId);
       if (div) {
-        this.hide ? (div.style.display = 'none') : div.parentNode.removeChild(div)
+        this.hide
+          ? (div.style.display = "none")
+          : div.parentNode.removeChild(div);
       }
     },
     collapse: function() {
       if (this.collapsed) {
-        document.getElementById(this.collapsible).style.display = 'block'
+        document.getElementById(this.collapsible).style.display = "block";
+        if (this.width) {
+          this.$el.style.width = this.width;
+        }
       } else {
-        document.getElementById(this.collapsible).style.display = 'none'
+        document.getElementById(this.collapsible).style.display = "none";
+        if (this.collapsedWidth) {
+          this.$el.style.width = this.collapsedWidth;
+        }
       }
-      this.collapsed = !this.collapsed
+      this.collapsed = !this.collapsed;
     },
     toggleCollapseClass() {
-      return this.collapsed ? 'gv-title-collapse gv-color-scheme el-icon-arrow-down' : 'gv-title-collapse gv-color-scheme el-icon-arrow-up'
-    },
-  },
-  mounted: function() {
-    this.$el.id = this.divId + '-title'
-    if (this.width) {
-      this.$el.style.width = this.width
-      // console.log(this.$el.style)
+      return this.collapsed
+        ? "gv-title-collapse gv-color-scheme el-icon-arrow-down"
+        : "gv-title-collapse gv-color-scheme el-icon-arrow-up";
     }
   },
-}
+  mounted: function() {
+    this.$el.id = this.divId + "-title";
+    if (this.width) {
+      this.$el.style.width = this.width;
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -59,7 +88,7 @@ export default {
 }
 
 .gv-panel-title :focus {
-  outline: -webkit-focus-ring-color auto 0px; 
+  outline: -webkit-focus-ring-color auto 0px;
 }
 
 .gv-panel-title span {

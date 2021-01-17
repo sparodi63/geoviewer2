@@ -1,153 +1,159 @@
 export default {
-    DEFAULT_PROXY: '/geoservices/apps/proxy/proxy.jsp?url=',
+  DEFAULT_PROXY: '/geoservices/REST/proxy/proxy?url=',
 
-    USE_SUBDOMAINS: true,
+  USE_SUBDOMAINS: true,
 
-    RL_MAP_CONFIG_SERVICE: '/geoservices/REST/geoportale/map/',
-    RL_LAYER_CONFIG_SERVICE: '/geoservices/REST/config/layer/',
-    RL_QUERY_LAYER_VALUE_LIST_SERVICE: '/geoservices/REST/config/query_layer_valuelist/',
-    RL_QUERY_LAYER_SERVICE: '/geoservices/REST/config/query_layer/',
-    RL_DYN_MAP_CONFIG_SERVICE: '/geoservices/REST/config/map/',
-    RL_CREATE_SLD_SERVICE: '/geoservices/REST/config/create_sld/',
-    RL_XSL_INFO_SERVICE: '/geoservices/REST/config/xsl_info_service?',
-    RL_CATALOG_SERVICE: '/geoservices/REST/geoportale/catalogo/',
-    RL_CANALI_SERVICE: '/geoservices/REST/config/ag_app_canali_tree/',
-    RL_SCHEDA_SERVICE: '/geoservices/REST/geoportale/scheda/',
-    RL_DOWNLOAD_CONFIG_SERVICE: '/geoservices/REST/download/map/',
-    RL_DOWNLOAD_INSERT_SERVICE: '/geoservices/REST/download/insert_richiesta/',
-    RL_ENTI_SERVICE: '/geoservices/REST/geoportale/enti/',
-    RL_METADATA_URL: '/geoservices/REST/metadata/scheda_xml/',
-    RL_TRANSFORM_POINT_SERVICE: '/geoservices/REST/coordinate/transform_point/',
+  RL_MAP_CONFIG_SERVICE: '/geoservices/REST/geoportale/map/',
+  RL_LAYER_CONFIG_SERVICE: '/geoservices/REST/config/layer/',
+  RL_QUERY_LAYER_VALUE_LIST_SERVICE: '/geoservices/REST/config/query_layer_valuelist/',
+  RL_QUERY_LAYER_TOPO_VALUE_LIST_SERVICE: '/geoservices/REST/config/query_layer_topo_valuelist/',
+  RL_QUERY_LAYER_SERVICE: '/geoservices/REST/config/query_layer/',
+  RL_QUERY_LAYER_TOPO_SERVICE: '/geoservices/REST/config/query_layer_topo/',
+  RL_DYN_MAP_CONFIG_SERVICE: '/geoservices/REST/config/map/',
+  RL_CREATE_SLD_SERVICE: '/geoservices/REST/config/create_sld/',
+  RL_XSL_INFO_SERVICE: '/geoservices/REST/config/info_xsl?',
+  RL_CATALOG_SERVICE: '/geoservices/REST/geoportale/catalogo/',
+  RL_CANALI_SERVICE: '/geoservices/REST/config/ag_app_canali_tree/',
+  RL_CANALE_CARTE_SERVICE: '/geoservices/REST/config/ag_canale_tree/',
+  RL_DOWNLOAD_CONFIG_SERVICE: '/geoservices/REST/download/map/',
+  RL_DOWNLOAD_INSERT_SERVICE: '/geoservices/REST/download/insert_richiesta/',
+  RL_DOWNLOAD_ESEGUI_RICHIESTA: '/geoservices/REST/download/elabora_richiesta_sincrona/',
+  RL_ENTI_SERVICE: '/geoservices/REST/geoportale/enti/',
+  RL_METADATA_URL: '/geoservices/REST/metadata/scheda_xml/',
+  RL_TRANSFORM_POINT_SERVICE: '/geoservices/REST/coordinate/transform_point/',
+  RL_TRANSFORM_BBOX_SERVICE: '/geoservices/REST/coordinate/transform_bbox/',
+  RL_TRANSFORM_POLY_SERVICE: '/geoservices/REST/coordinate/transform_poly/',
+  RL_ELEVATION: '/geoservices/REST/coordinate/elevation/',
+  RL_AG_APP_LISTA_MAPPE: '/geoservices/REST/config/ag_app_lista_mappe/',
 
-    HERE_GEOCODE_PROXY: '/geoservices/REST/proxy/here_geocode',
+  RL_CATALOG: 'pub',
 
-    MAX_BOUNDS: {
-        X_MIN: 43.4,
-        Y_MIN: 7.3,
-        X_MAX: 44.8,
-        Y_MAX: 10.5
+  // HERE_GEOCODE_PROXY: '/geoservices/REST/proxy/here_geocode.v2',
+  HERE_GEOCODE_PROXY:
+    '/geoservices/apps/proxy/proxy.jsp?url=http://10.20.4.120/geoservices/REST/proxy/here_geocode.v3?',
+
+  //
+  MAPBOX_USERNAME: 'stefanoparodi',
+  MAPBOX_ACCESS_TOKEN:
+    'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g',
+
+  MAX_BOUNDS: {
+    X_MIN: 43.4,
+    Y_MIN: 7.3,
+    X_MAX: 44.8,
+    Y_MAX: 10.5,
+  },
+
+  INFO_WMS_MAX_FEATURES: 10,
+
+  BASE_SCALES: [
+    591657550.5,
+    295828775.3,
+    147914387.6,
+    73957193.82,
+    36978596.91,
+    18489298.45,
+    9244649.227,
+    4622324.614,
+    2311162.307,
+    1155581.153,
+    577790.5767,
+    288895.2884,
+    144447.6442,
+    72223.82209,
+    36111.91104,
+    18055.95552,
+    9027.977761,
+    4513.98888,
+    2256.99444,
+    1128.49722,
+    564.24861,
+    282.124305,
+  ],
+
+  BASE_LAYERS: {
+    BLANK: {
+      label: 'Sfondo Bianco',
+      icon: '/geoservices/apps/viewer/static/img/legend/bianco.gif',
+      printType: 'no_base',
     },
-
-    INFO_WMS_MAX_FEATURES: 10,
-
-    BASE_SCALES: [
-        591657550.500000,
-        295828775.300000,
-        147914387.600000,
-        73957193.820000,
-        36978596.910000,
-        18489298.450000,
-        9244649.227000,
-        4622324.614000,
-        2311162.307000,
-        1155581.153000,
-        577790.576700,
-        288895.288400,
-        144447.644200,
-        72223.822090,
-        36111.911040,
-        18055.955520,
-        9027.977761,
-        4513.988880,
-        2256.994440,
-        1128.497220,
-        564.24861,
-        282.124305
-    ],
-
-    BASE_SCALE_LABELS: {
-        8: '1:1.600.000',
-        9: '1:800.000',
-        10: '1:400.000',
-        11: '1:200.000',
-        12: '1:100.000',
-        13: '1:50.000',
-        14: '1:25.000',
-        15: '1:12.500',
-        16: '1:6.250',
-        17: '1:3.125',
-        18: '1:1.560',
-        19: '1:800',
-        20: '1:400'
+    RL_ORTOFOTO_2013: {
+      label: 'AGEA: Ortofoto 2013',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_ortofoto_2013',
     },
-
-    BASE_LAYERS: {
-        'BLANK': {
-            label: 'Sfondo Bianco',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/bianco.gif'
-        },
-        'RL_ORTOFOTO_2013': {
-            label: 'AGEA: Ortofoto 2013',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/sfondi_rl.jpg'
-        },
-        'RL_ORTOFOTO_2016': {
-            label: 'AGEA: Ortofoto 2016',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/sfondi_rl.jpg'
-        },
-        'RL_CARTE_BASE': {
-            label: 'Carte di base regionali',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/sfondi_rl.jpg'
-        },
-        'OSM': {
-            label: 'OpenStreetMap',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/openstreetmap.png'
-        },
-        'ESRI_IMAGERY': {
-            label: 'ESRI Imagery',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/esri.gif'
-        },
-        'ESRI_TOPOGRAPHIC': {
-            label: 'ESRI Topographic',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/esri.gif'
-        },
-        'ESRI_GRAY': {
-            label: 'ESRI Gray',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/esri.gif'
-        },
-        'ESRI_DARKGRAY': {
-            label: 'ESRI Dark Gray',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/esri.gif'
-        },
-        'MAPBOX_STREETS': {
-            label: 'Mapbox Streets',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
-        },
-        'MAPBOX_SATELLITE': {
-            label: 'Mapbox Satellite',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
-        },
-        'MAPBOX_OUTDOOR': {
-            label: 'Mapbox Outdoor',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
-        },
-        'MAPBOX_LIGHT': {
-            label: 'Mapbox Light',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
-        },
-        'STAMEN_TERRAIN': {
-            label: 'Stamen Terrain',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
-        },
-        'STAMEN_TONER_LIGHT': {
-            label: 'Stamen Toner Light',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/mapbox.png'
-        },
-        'GOOGLE_ROADMAP': {
-            label: 'Google Stradario',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/google.png'
-        },
-        'GOOGLE_HYBRID': {
-            label: 'Google Ibrido',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/google.png'
-        },
-        'GOOGLE_TERRAIN': {
-            label: 'Google Terreno',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/google.png'
-        },
-        'GOOGLE_SATELLITE': {
-            label: 'Google Satellite',
-            icon: 'http://srvcarto.regione.liguria.it/geoviewer/img/legend/google.png'
-        }
-    }
-
-}
+    RL_ORTOFOTO_2010: {
+      label: 'AGEA: Ortofoto 2010',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_ortofoto_2010',
+    },
+    RL_ORTOFOTO_2007: {
+      label: 'AGEA: Ortofoto 2007',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_ortofoto_2007',
+    },
+    RL_ORTOFOTO_2000: {
+      label: 'Ortofoto IT 2000',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_ortofoto_2000',
+    },
+    RL_ORTOFOTO_2016: {
+      label: 'AGEA: Ortofoto 2016',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_ortofoto_2016',
+    },
+    RL_CARTE_BASE: {
+      label: 'Carte Regionali 2007 -2013',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_carte_base',
+    },
+    RL_CARTE_BASE_NC25: {
+      label: 'Carta Regionale 1:25000 - DBT NC25',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_carte_base',
+    },
+    RL_CARTE_BASE_GS: {
+      label: 'Carte Regionali 2007 -2013',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_carte_base',
+    },
+    OSM: {
+      label: 'OpenStreetMap',
+      icon: '/geoservices/apps/viewer/static/img/legend/openstreetmap.png',
+      printType: 'OSM',
+    },
+    ESRI_IMAGERY: {
+      label: 'ESRI Imagery',
+      icon: '/geoservices/apps/viewer/static/img/legend/esri.gif',
+      printType: 'ESRI_IMAGERY',
+    },
+    ESRI_STREETS: {
+      label: 'ESRI Streets',
+      icon: '/geoservices/apps/viewer/static/img/legend/esri.gif',
+      printType: 'ESRI_STREETS',
+    },
+    MAPBOX_STREETS: {
+      label: 'Mapbox Streets',
+      icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
+      printType: 'MAPBOX_STREETS',
+    },
+    MAPBOX_VIABILITA: {
+      label: 'Carta della Viabilità',
+      icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
+      printType: 'MAPBOX_STREETS',
+    },
+    MAPBOX_VIABILITA_SATELLITARE: {
+      label: 'Carta satellitare della Viabilità',
+      icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
+      printType: 'MAPBOX_STREETS',
+    },
+    MAPBOX_OUTDOOR: {
+      label: 'Mapbox Outdoor',
+      icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
+    },
+    MAPBOX_LIGHT: {
+      label: 'Mapbox Light',
+      icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
+    },
+  },
+};

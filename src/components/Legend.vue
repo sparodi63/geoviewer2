@@ -1,165 +1,110 @@
 <template>
-    <div id="gv-legend" class="gv-inverted-color-scheme">
-        <div class="gv-legend-title gv-color-scheme">
-            <b>LEGENDA</b> 
-            <!-- <el-button class="gv-legend-close" type="button" icon="el-icon-close" size="mini" @click="hideLegend"></el-button> -->
-        <button :class="toggleCollapseClass()" size="mini" @click="hideLegend" title="Minimizza Panello"></button>
-
-            <el-button id="gv-legend-add-map" title="Aggiungi Mappe" v-show="options.showAddMap" @click="addMap" class="gv-color-scheme gv-legend-buttons ms ms-layers-add" size="mini" />
-        </div>
-        <div id="gv-legend-wrapper" class="gv-legend-wrapper">
-            <div id="gv-legend-body">
-                <!-- MAPPE -->
-                <ul v-for="map in maps" class="gv-list-group" :key="map.id">
-                    <div class="gv-list-legend-map-item gv-inverted-color-scheme">
-                        <li>
-                            {{map.name}}
-                        </li>
-                        <div class="gv-legend-map-tools gv-inverted-color-scheme">
-                            <el-button title="Nascondi/Mostra Livelli in Legenda" @click="toggleLayers(map)" :class="getToggleLayersClass(map)" size="mini"></el-button>
-                            <el-button :id="'gv-legend-scheda-'+map.id" title="Visualizza Scheda" v-if="checkAddMap(map)" @click="showMapInfoPanel(map)" class="gv-inverted-color-scheme gv-legend-map-tools-button" icon="el-icon-document" size="mini"></el-button>
-                            <el-button :id="'gv-legend-delete-'+map.id" title="Elimina Mappa" v-if="!options.noDeleteButton" @click="remove(map)" class="gv-inverted-color-scheme gv-legend-map-tools-button" icon="el-icon-delete" size="mini"></el-button>
-                            <el-button :id="'gv-legend-transparency-'+map.id" title="Trasparenza Livelli" v-if="options.showLayersTransparency" @click="layerTransparency(map)" class="gv-inverted-color-scheme gv-legend-map-tools-button fa fa-sliders" size="mini"></el-button>
-                            <el-button :id="'gv-legend-download-'+map.id" title="Download Mappa" v-if="isDownloadable(map)" @click="download(map)" class="gv-inverted-color-scheme gv-legend-map-tools-button" icon="el-icon-download" size="mini"></el-button>
-                        </div>
-                    </div>
-                    <!-- LIVELLI -->
-                    <ul class="gv-list-group" v-show="showMapLayers(map)" >
-                        <li :id="'gv-legend-layer-'+layer.id" v-for="layer in map.layers" :layer="layer" :class="getClass(layer)" :key="layer.id">
-                            <img class="gv-legend-layer-icon" :src="iconUrl(layer)" @click="showLegendPanel(layer)">
-                            <span class="gv-layer-visibility-span"><input type="checkbox" class="gv-layer-visibility-cb" v-model="layer.visible" @click="setLayerVisible(layer, $event)"></span>
-                            <span class="gv-layer-title-span">{{layer.legend.label}}</span>
-                        </li>
-                    </ul>
-                </ul>
-            </div>
-            <div class="gv-legend-footer gv-inverted-color-scheme">
-                <gv-base-layer-switcher ref="gv-base-layer-switcher" v-if="options.showBaseLayerSwitcher"></gv-base-layer-switcher>
-            </div>
-        </div>
+  <div id="gv-legend" class="gv-inverted-color-scheme">
+    <div id="gv-legend-title" class="gv-legend-title gv-color-scheme">
+      <b>LEGENDA</b>
+      <button
+        :class="toggleCollapseClass()"
+        size="mini"
+        @click="hideLegend"
+        title="Nascondi Legenda"
+      ></button>
+      <el-button
+        id="gv-legend-add-map"
+        title="Aggiungi Mappe"
+        v-show="options.showAddMap"
+        @click="addMap"
+        class="gv-color-scheme gv-legend-buttons ms ms-layers-add"
+        size="mini"
+      />
+      <el-button
+        id="gv-legend-add-map"
+        title="Download Mappe"
+        v-show="options.showDownloadTotale"
+        @click="downloadMaps"
+        class="gv-color-scheme gv-legend-buttons el-icon-download"
+        size="mini"
+      />
     </div>
+    <div id="gv-legend-title-collapsed" class="gv-legend-title-collapsed gv-color-scheme">
+      <button
+        :class="toggleCollapseClass()"
+        size="mini"
+        @click="hideLegend"
+        title="Mostra Legenda"
+      ></button>
+    </div>
+    <div id="gv-legend-wrapper" class="gv-legend-wrapper">
+      <gv-legend-maps :options="options"></gv-legend-maps>
+      <div class="gv-legend-footer gv-inverted-color-scheme">
+        <gv-base-layer-switcher
+          ref="gv-base-layer-switcher"
+          v-if="options.showBaseLayerSwitcher"
+        ></gv-base-layer-switcher>
+      </div>
+    </div>
+  </div>
 </template>
 
-
 <script>
-'use strict'
-import Vue from 'vue'
-import mountComponent from '../util/mountComponent'
+'use strict';
+import Vue from 'vue';
+import mountComponent from '../util/mountComponent';
 
-import BaseLayerSwitcher from './BaseLayerSwitcher.vue'
-Vue.component('gv-base-layer-switcher', BaseLayerSwitcher)
+import BaseLayerSwitcher from './BaseLayerSwitcher.vue';
+Vue.component('gv-base-layer-switcher', BaseLayerSwitcher);
 
-Vue.component('gv-map-info-panel', () => import('./MapInfoPanel.vue'))
-Vue.component('gv-multi-legend-panel', () => import('./MultiLegendPanel.vue'))
-Vue.component('gv-map-catalog-panel', () => import('./MapCatalogPanel.vue'))
-Vue.component('gv-layers-transparency', () => import('./LayersTransparency.vue'))
-Vue.component('gv-map-download', () => import('./Download.vue'))
+import LegendMaps from './LegendMaps.vue';
+Vue.component('gv-legend-maps', LegendMaps);
 
-import { Select, Option, Button } from 'element-ui'
-Vue.use(Select)
-Vue.use(Option)
-Vue.use(Button)
+Vue.component('gv-map-catalog-panel', () => import('./MapCatalogPanel.vue'));
+
+import { Button } from 'element-ui';
+Vue.use(Button);
 
 export default {
   name: 'gv-legend',
   data() {
     return {
-      baseLayers: GV.config.baseLayers,
-      maps: GV.config.maps,
       options: GV.config.application.layout.legend.options,
       show: true,
-    }
+    };
   },
   mounted() {
-    GV.log('gv-legend: mounted')
-    GV.legend = this
+    GV.log('gv-legend: mounted');
+    GV.legend = this;
     if (this.options.showAddMap) {
-      const showMapCatalogPanel = GV.config.idMap ? false : true
-      GV.config.loadCatalog({ showMapCatalogPanel: showMapCatalogPanel })
+      let showMapCatalogPanel = GV.config.idMap || GV.config.agAppMap ? false : true;
+      if (this.options.showMapCatalogPanelOnStart) showMapCatalogPanel = true;
+      if (this.options.dontShowMapCatalogPanelOnStart) showMapCatalogPanel = false;
+      GV.config.loadCatalog({
+        showMapCatalogPanel: showMapCatalogPanel,
+        filterDownloadCatalog: this.options.filterDownloadCatalog,
+      });
     }
-    if (this.options.showDownloadPanelOnLoad) {
-      GV.eventBus.$on('config-add-download', config => {
-        if (config.id == GV.config.idMap) {
-            this.openDownloadPanel(config.id)
-        } 
-      })      
+    if (this.options.collapsed || window.matchMedia('(max-width: 500px)').matches) {
+      this.show = false;
     }
-    if (this.options.collapsed) {
-      this.hideLegend()
-    }
-    
+    this.hideLegend();
   },
   methods: {
-    showMapLayers(map) {
-      return map.showLayersInLegend
-    },
-    toggleLayers(map) {
-      map.showLayersInLegend = !map.showLayersInLegend
-    },
-    toggleCollapseClass() {
-      return this.show ? 'gv-legend-collapse gv-color-scheme el-icon-arrow-down' : 'gv-legend-collapse gv-color-scheme el-icon-arrow-up'
-    },
-    getToggleLayersClass(map) {
-      return map.showLayersInLegend
-        ? 'gv-inverted-color-scheme gv-legend-map-tools-button el-icon-arrow-up'
-        : 'gv-inverted-color-scheme gv-legend-map-tools-button el-icon-arrow-down'
-    },
-    isDownloadable(map) {
-      if (map && map.metaData) {
-        return map.metaData.flag_download
-      } else {
-        return false
-      }
-    },
-    checkAddMap(map) {
-      return this.options.showAddMap && GV.config.getMapConfig(map.id).metaData
-    },
     hideLegend: function(event) {
       if (this.show) {
-        document.getElementById('gv-legend-wrapper').style.display = 'none'
-        document.getElementById('gv-legend').style.width = '180px'
+        document.getElementById('gv-legend-title').style.display = 'block';
+        document.getElementById('gv-legend-title-collapsed').style.display = 'none';
+        document.getElementById('gv-legend-wrapper').style.display = 'block';
+        document.getElementById('gv-legend').style.width = '260px';
       } else {
-        document.getElementById('gv-legend-wrapper').style.display = 'block'
-        document.getElementById('gv-legend').style.width = '260px'
+        document.getElementById('gv-legend-title').style.display = 'none';
+        document.getElementById('gv-legend-title-collapsed').style.display = 'block';
+        document.getElementById('gv-legend-wrapper').style.display = 'none';
+        document.getElementById('gv-legend').style.width = '26px';
       }
-      this.show = !this.show
+      this.show = !this.show;
     },
-    showMapInfoPanel: function(map) {
-      GV.config.schedaInfoCartografia = GV.config.getMapConfig(map.id).metaData
-      mountComponent({
-        elId: 'gv-map-info-panel',
-        containerId: GV.config.containerId,
-        clear: true,
-        vm: new Vue({
-          template: `<gv-map-info-panel visible="true" idMap="${map.id}"></gv-map-info-panel>`,
-        }),
-      })
-    },
-    remove: function(map) {
-      GV.config.removeMap(map.id)
-    },
-    download(map) {
-      // if (this.options.useDownloadPanel) {
-        this.openDownloadPanel(map.id)
-      // } else {
-      //   window.open(map.metaData.link_download)
-      // }
-    },
-    openDownloadPanel(idMap) {
-        if (document.getElementById('gv-map-download')) {
-          const element = document.getElementById('gv-map-download')
-          element.parentNode.removeChild(element);
-        }
-        const closeWindow = this.options.downloadPanelCloseMode === 'closeWindow'
-        mountComponent({
-          elId: 'gv-map-download',
-          containerId: GV.config.containerId,
-          toggleEl: false,
-          vm: new Vue({
-            template: `<gv-map-download idMap="${idMap}" closeWindow="${closeWindow}"></gv-map-download>`,
-          }),
-        })
-
+    toggleCollapseClass() {
+      return this.show
+        ? 'gv-legend-collapse gv-color-scheme el-icon-arrow-down'
+        : 'gv-legend-collapse gv-color-scheme el-icon-arrow-up';
     },
     addMap: function() {
       mountComponent({
@@ -169,82 +114,25 @@ export default {
         vm: new Vue({
           template: `<gv-map-catalog-panel></gv-map-catalog-panel>`,
         }),
-      })
+      });
     },
-    layerTransparency: function(map) {
+    downloadMaps: function() {
       mountComponent({
-        elId: 'gv-layers-transparency',
+        elId: 'gv-download-totale-panel',
         containerId: GV.config.containerId,
-        toggleEl: false,
+        toggleEl: true,
         vm: new Vue({
-          template: `<gv-layers-transparency idMap="${map.id}"></gv-layers-transparency>`,
+          template: `<gv-download-totale-panel></gv-download-totale-panel>`,
         }),
-      })
-    },
-    iconUrl: function(layer) {
-      return layer.legend.icon
-    },
-    getClass: function(layer) {
-      return layer.inRange ? 'gv-list-legend-layer-item' : 'gv-list-legend-layer-item gv-list-legend-layer-disabled-item'
-    },
-    setLayerVisible: function(layer, event) {
-      GV.eventBus.$emit('set-layer-visible', {
-        layer: layer,
-        checked: event.currentTarget.checked,
-      })
-    },
-    showLegendPanel: function(layer) {
-      if (layer.inRange && (layer.multiClasse || layer.legend.popUpFlag)) {
-        var url = null,
-          html = null,
-          width,
-          height
-        if (layer.legend.popUpUrl && layer.legend.popUpFlag) {
-          // se impostato attributo legendPopupUrl apro una finestra con il documento
-          url = layer.legend.popUpUrl
-          width = window.matchMedia('(max-width: 620px)').matches ? 400 : 600
-          height = window.matchMedia('(max-height: 620px)').matches ? 400 : 600
-        } else if (layer.multiClasse) {
-          // se livello multiclasse apro una finestra con la legenda dei livelli multiclasse
-          if (layer.flagGeoserver) {
-            url = `${layer.wmsParams.url}LAYER=${layer.name}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&`
-            width = window.matchMedia('(max-width: 450px)').matches ? 300 : 400
-            height = 350
-          } else {
-            var classes = layer.classes
-            html = '<table width=100% border=0>'
-            classes.forEach(function(cls) {
-              html += '<tr>'
-              html += '<td width=30><img src="' + cls.legendIcon + '"></td>'
-              html += '<td >' + cls.legendLabel + '</td>'
-              html += '</tr>'
-            })
-            html += '</table>'
-          }
-        }
-        mountComponent({
-          elId: 'gv-multi-legend-panel',
-          containerId: GV.config.containerId,
-          vm: new Vue({
-            template: `<gv-multi-legend-panel visible="true" :src="src" :html="html" :height="height" :width="width" :title="title"></gv-multi-legend-panel>`,
-            data: {
-              title: `LEGENDA - ${layer.legend.label}`,
-              src: url,
-              html: html,
-              width: width,
-              height: height,
-            },
-          }),
-        })
-      }
+      });
     },
   },
-}
+};
 </script>
 
 <<style>
 #gv-legend {
-  position: relative;
+  position: absolute;
   float: right;
   right: 0;
   top: 0;
@@ -266,7 +154,7 @@ export default {
 }
 
 .gv-legend-title :focus {
-  outline: -webkit-focus-ring-color auto 0px; 
+  outline: -webkit-focus-ring-color auto 0px;
 }
 
 .gv-legend-title {
@@ -275,7 +163,21 @@ export default {
   padding-top: 0.3rem;
   padding-bottom: 0.3rem;
   padding-right: 0rem;
-  padding-left: 0.5rem;  
+  padding-left: 0.5rem;
+  margin-bottom: -1px;
+  color: #ccc;
+  cursor: default;
+  font-weight: bold;
+  font-family: 'Raleway', Arial, sans-serif !important;
+  font-size: 14px;
+}
+
+.gv-legend-title-collapsed {
+  height: 18px;
+  padding-top: 0.1rem;
+  padding-bottom: 0.3rem;
+  padding-right: 0rem;
+  padding-left: 0.5rem;
   margin-bottom: -1px;
   color: #ccc;
   cursor: default;
@@ -310,98 +212,11 @@ export default {
   font-size: 14px !important;
 }
 
-.gv-list-group {
-  padding-left: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  background-color: #fff;
-  width: 260px;
-}
-
-.gv-list-legend-layer-item {
-  position: relative;
-  display: block;
-  padding-left: 0.3rem;
-  margin-bottom: -2px;
-  margin-top: -2px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-}
-
-.gv-list-legend-layer-disabled-item {
-  opacity: 0.3;
-  filter: alpha(opacity=30);
-}
-
-.gv-legend-layer-icon {
-  padding-top: 3px;
-}
-
-.gv-legend-layer-icon img {
-  width: 24px;
-  height: 24px;
-}
-
-.gv-legend-map-tools {
-  position: relative;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  width: 260px;
-}
-
-.gv-list-legend-map-item {
-  position: relative;
-  display: block;
-  padding: 0.1rem 0.5rem;
-  margin-bottom: -1px;
-  border: 1px solid #ddd;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.gv-legend-map-tools-button {
-  position: relative;
-  right: 0;
-  bottom: 0;
-  font-size: 14px;
-  /* color: #24386C !important;
-  background-color: #CCC !important;
-  border-color: #CCC !important; */
-  padding: 2px 2px;
-}
-
-.gv-legend-map-tools span {
-  font-family: 'Raleway', Arial, sans-serif !important;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.gv-layer-visibility-span {
-  position: absolute;
-  top: 16%;
-  left: 29px;
-}
-
-.gv-layer-title-span {
-  position: absolute;
-  top: 50%;
-  left: 55px;
-  margin-top: -7px;
-  font-size: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 180px;
-}
-
 .gv-legend-footer {
   display: block;
   padding: 0.3rem 0.5rem;
   margin-bottom: -1px;
   cursor: default;
-}
-
-#gv-legend-title {
-  height: 30px;
 }
 
 #gv-legend-body {
@@ -431,5 +246,9 @@ export default {
   transition: all 0.3s;
   pointer-events: none;
   color: #24386c;
+}
+.el-table .cell {
+  word-break: normal !important;
+  line-height: 15px !important;
 }
 </style>

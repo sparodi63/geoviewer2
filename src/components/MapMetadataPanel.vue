@@ -28,8 +28,8 @@ export default {
   props: ['title', 'type', 'linkWms', 'linkWfs', 'xmlUrl'],
   data() {
     return {
-        width: 690,
-        height: 500
+      width: 690,
+      height: 500,
     }
   },
   computed: {
@@ -58,11 +58,11 @@ export default {
   margin-top: 100px;
   background-color: #fff;
   z-index: 800;
-  width: 860px;
+  width: 690px;
 }
 
 .gv-iframe-panel {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .gv-metadata-row span {

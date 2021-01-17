@@ -1,44 +1,16 @@
-module.exports = {
-  root: true,
-  parser: 'babel-eslint',
-  parserOptions: {
-    sourceType: 'module'
+{
+  "emmet.showAbbreviationSuggestions": true,
+  "emmet.showExpandedAbbreviation": "always", // required to work with "emmet.includeLanguages"
+  "emmet.includeLanguages": {
+    "vue-html": "html"
   },
-  // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
-  extends: 'standard',
-  // required to lint *.vue files
-  plugins: [
-    'html'
-  ],
-  // add your custom rules here
-  'rules': {
-    // allow paren-less arrow functions
-    'arrow-parens': 0,
-    // allow async-await
-    'generator-star-spacing': 0,
-    // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'indent': ['error', 2],
-    'no-new':
-  }
-}
-"**/.DS_Store": true
-},
-// Controlla lo stile del cursore. I valori accettati sono 'block', 'line' e 'underline'
-"editor.cursorStyle": "line",
-// Inserisce spazi quando viene premuto TAB. Quando `editor.detectIndentation` è attivo, questa impostazione viene sostituita in base al contenuto del file.
-"editor.insertSpaces": true,
-// Controlla il numero di caratteri dopo i quali l'editor attiverà l'a capo automatico alla riga successiva. Se è impostato su 0, verrà attivato l'a capo automatico in base alla larghezza del viewport (ritorno a capo automatico). Se è impostato su -1, forzerà l'editor a non eseguire mai il wrapping.
-"editor.wrappingColumn": 300,
-// Consente di configurare le associazioni tra file e linguaggi, ad esempio "*.extension": "html". Queste hanno la precedenza sulle associazioni predefinite dei linguaggi installate.
-"files.associations": {}
-}, {
   // Controlla la famiglia di caratteri.
-  "editor.fontFamily": "Consolas, 'Courier New', monospace",
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
   // Controlla lo spessore del carattere.
   "editor.fontWeight": "normal",
   // Controlla le dimensioni del carattere in pixel.
-  "editor.fontSize": 14,
+  "editor.fontSize": 12,
   // Controlla l'altezza della riga. Usare 0 per calcolare l'altezza della riga dalle dimensioni del carattere.
   "editor.lineHeight": 0,
   // Consente di controllare la visualizzazione dei numeri di riga. I valori possibili sono 'on', 'off' e 'relative'. Con 'relative' viene visualizzato il conteggio delle righe a partire dalla posizione corrente del cursore.
@@ -58,9 +30,8 @@ module.exports = {
   // Controlla se l'editor scorrerà oltre l'ultima riga
   "editor.scrollBeyondLastLine": true,
   // Controlla il numero di caratteri dopo i quali l'editor attiverà l'a capo automatico alla riga successiva. Se è impostato su 0, verrà attivato l'a capo automatico in base alla larghezza del viewport (ritorno a capo automatico). Se è impostato su -1, forzerà l'editor a non eseguire mai il wrapping.
-  "editor.wrappingColumn": 300,
   // Controlla se le righe devono andare a capo. Le righe andranno a capo alla posizione definita da min(editor.wrappingColumn, viewportWidthInColumns).
-  "editor.wordWrap": false,
+  "editor.wordWrap": "off",
   // Controlla il rientro delle righe con ritorno a capo. Può essere uno dei valori seguenti: 'none', 'same' o 'indent'.
   "editor.wrappingIndent": "same",
   // Moltiplicatore da usare sui valori `deltaX` e `deltaY` degli eventi di scorrimento della rotellina del mouse
@@ -72,13 +43,14 @@ module.exports = {
   // Abilita i suggerimenti per i parametri
   "editor.parameterHints": true,
   // Controlla se l'editor deve chiudere automaticamente le parentesi quadre dopo che sono state aperte
-  "editor.autoClosingBrackets": true,
+  "editor.autoClosingBrackets": "always",
   // Controlla se l'editor deve formattare automaticamente la riga dopo la digitazione
-  "editor.formatOnType": false,
+  "editor.formatOnType": true,
+  "editor.formatOnPaste": true,
   // Controlla se i suggerimenti devono essere visualizzati automaticamente durante la digitazione dei caratteri trigger
   "editor.suggestOnTriggerCharacters": true,
   // Controlla se i suggerimenti devono essere accettati con 'INVIO' in aggiunta a 'TAB'. Consente di evitare ambiguità tra l'inserimento di nuove righe e l'accettazione di suggerimenti.
-  "editor.acceptSuggestionOnEnter": true,
+  "editor.acceptSuggestionOnEnter": "on",
   // Controlla se i frammenti di codice sono visualizzati con altri suggerimenti e il modo in cui sono ordinati.
   "editor.snippetSuggestions": "bottom",
   // Consente di controllare se, quando si copia senza aver effettuato una selezione, viene copiata la riga corrente.
@@ -90,7 +62,7 @@ module.exports = {
   // Altezza della riga per il widget dei suggerimenti
   "editor.suggestLineHeight": 0,
   // Inserisce frammenti di codice quando il prefisso corrisponde. Funziona in modo ottimale quando non sono abilitati i suggerimenti rapidi.
-  "editor.tabCompletion": false,
+  "editor.tabCompletion": "off",
   // Controlla se l'editor deve evidenziare gli elementi corrispondenti simili alla selezione
   "editor.selectionHighlight": true,
   // Controlla il numero di effetti che possono essere visualizzati nella stessa posizione nel righello delle annotazioni
@@ -101,8 +73,6 @@ module.exports = {
   "editor.mouseWheelZoom": false,
   // Controlla lo stile del cursore. I valori accettati sono 'block', 'line' e 'underline'
   "editor.cursorStyle": "line",
-  // Abilita i caratteri legatura
-  "editor.fontLigatures": false,
   // Controlla se il cursore deve essere nascosto nel righello delle annotazioni.
   "editor.hideCursorInOverviewRuler": false,
   // Consente di controllare in che modo l'editor deve eseguire il rendering dei caratteri di spazio vuoto. Le opzioni possibili sono: 'none', 'boundary' e 'all'. Con l'opzione 'boundary' non viene eseguito il rendering di singoli spazi tra le parole.
@@ -132,7 +102,7 @@ module.exports = {
   // Consente di controllare se l'editor diff mostra gli indicatori +/- per le modifiche aggiunte/rimosse
   "diffEditor.renderIndicators": true,
   // Formatta un file durante il salvataggio. Deve essere disponibile un formattatore, il file non deve essere salvato automaticamente e l'editor non deve essere in fase di chiusura.
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   // Se abilitate, le abbreviazioni Emmet vengono espanse quando si preme TAB.
   "emmet.triggerExpansionOnTab": true,
   // Preferenze usate per modificare il comportamento di alcune azioni e i resolver di Emmet.
@@ -144,7 +114,6 @@ module.exports = {
   // Controlla se visualizzare o meno gli editor aperti in schede.
   "workbench.editor.showTabs": true,
   // Controlla se nelle schede dell'editor deve essere presente o meno un pulsante Chiudi visibile.
-  "workbench.editor.showTabCloseButton": true,
   // Controlla se visualizzare o meno un'icona per gli editor aperti. Richiede l'abilitazione anche di un tema dell'icona.
   "workbench.editor.showIcons": true,
   // Controlla se gli editor aperti vengono visualizzati come anteprima. Le anteprime editor vengono riutilizzate finché vengono mantenute, ad esempio tramite doppio clic o modifica.
@@ -164,25 +133,14 @@ module.exports = {
   // Controlla la visibilità della barra attività nel workbench.
   "workbench.activityBar.visible": true,
   // Se abilitata, apre i file in una nuova finestra invece di riutilizzare un'istanza esistente.
-  "window.openFilesInNewWindow": true,
+  "window.openFilesInNewWindow": "on",
   // Controlla la modalità di riapertura delle cartelle dopo un riavvio. Selezionare 'none' per non riaprire mai una cartella, 'one' per riaprire l'ultima cartella usata oppure 'all' per riaprire tutte le cartelle dell'ultima sessione.
-  "window.reopenFolders": "one",
   // Controlla se una finestra deve essere ripristinata a schermo intero se è stata chiusa in questa modalità.
   "window.restoreFullscreen": false,
   // Consente di controllare se attivando la modalità Zen anche l'area di lavoro passa alla modalità schermo intero.
-  "window.fullScreenZenMode": true,
   // Consente di modificare il livello di zoom della finestra. Il valore originale è 0 e ogni incremento superiore (ad esempio 1) o inferiore (ad esempio -1) rappresenta un aumento o una diminuzione del 20% della percentuale di zoom. È anche possibile immettere valori decimali per modificare il livello di zoom con maggiore granularità.
-  "window.zoomLevel": 0,
+  "window.zoomLevel": -1,
   // Se è abilitato, visualizzerà il percorso completo dei file aperti nel titolo della finestra.
-  "window.showFullPath": false,
-  // Consente di configurare i criteri di ricerca GLOB per escludere file e cartelle.
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/.DS_Store": true
-  },
-  "files.insertFinalNewline": true,
   // Consente di configurare le associazioni tra file e linguaggi, ad esempio "*.extension": "html". Queste hanno la precedenza sulle associazioni predefinite dei linguaggi installate.
   "files.associations": {},
   // Codifica del set di caratteri predefinita da usare durante la lettura e la scrittura di file.
@@ -202,7 +160,7 @@ module.exports = {
     "**/.git/objects/**": true
   },
   // Consente di controllare se i file non salvati verranno ripristinati dopo il riavvio. Se questa opzione è abilitata, non verrà visualizzata alcuna richiesta di conferma alla chiusura dell'editor.
-  "files.hotExit": true,
+  "files.hotExit": "onExit",
   // Numero di editor visualizzati nel riquadro degli editor aperti. Impostarlo su 0 per nascondere il riquadro.
   "explorer.openEditors.visible": 9,
   // Controlla se l'altezza della sezione degli editor aperti deve essere adattata o meno dinamicamente al numero di elementi.
@@ -222,16 +180,10 @@ module.exports = {
   "update.channel": "default",
   // GIT abilitato
   "git.enabled": true,
-  // Percorso dell'eseguibile di GIT
-  "git.path": null,
   // Indica se l'aggiornamento automatico è abilitato
   "git.autorefresh": true,
   // Indica se il recupero automatico è abilitato.
   "git.autofetch": true,
-  // Indica se visualizzare un avviso in caso di messaggi di commit lunghi.
-  "git.enableLongCommitWarning": true,
-  // Consente a Code di gestire sempre i repository di grandi dimensioni.
-  "git.allowLargeRepositories": false,
   // Confermare prima di sincronizzare i repository GIT.
   "git.confirmSync": true,
   // Controlla il contatore dei log GIT.
@@ -417,10 +369,6 @@ module.exports = {
   "typescript.tsdk": null,
   // Disabilita l'acquisizione automatica del tipo. Richiede TypeScript >= 2.0.6 e un riavvio dopo la modifica.
   "typescript.disableAutomaticTypeAcquisition": false,
-  // Verifica se nell'area di lavoro è disponibile una versione di TypeScript.
-  "typescript.check.workspaceVersion": true,
-  // Verifica se un compilatore TypeScript di installazione globale, ad esempio tsc, è diverso dal servizio di linguaggio TypeScript usato.
-  "typescript.check.tscVersion": true,
   // Consente la traccia dell'invio dei messaggi al server di Servizi terminal.
   "typescript.tsserver.trace": "off",
   // Completare le funzioni con la relativa firma del parametro.
@@ -479,12 +427,6 @@ module.exports = {
   "javascript.format.placeOpenBraceOnNewLineForControlBlocks": false,
   // Aggiorna automaticamente le estensioni
   "extensions.autoUpdate": false,
-  // Personalizza il terminale da eseguire in Windows.
-  "terminal.external.windowsExec": "%COMSPEC%",
-  // Personalizza l'applicazione di terminale da eseguire in OS X.
-  "terminal.external.osxExec": "Terminal.app",
-  // Personalizza il terminale da eseguire in Linux.
-  "terminal.external.linuxExec": "xterm",
   // Percorso della shell usata dal terminale in Linux.
   "terminal.integrated.shell.linux": "sh",
   // Argomenti della riga di comando da usare nel terminale Linux.
@@ -500,8 +442,6 @@ module.exports = {
   // Controlla la famiglia di caratteri del terminale. L'impostazione predefinita è il valore di editor.fontFamily.
   "terminal.integrated.fontFamily": "",
   // Controlla se i caratteri legatura sono abilitati nel terminale.
-  "terminal.integrated.fontLigatures": false,
-  // Consente di controllare le dimensioni del carattere in pixel del terminale.
   "terminal.integrated.fontSize": 14,
   // Controlla l'altezza della riga del terminale. Questo numero è moltiplicato dalle dimensioni del carattere del terminale per ottenere l'altezza di riga effettiva in pixel.
   "terminal.integrated.lineHeight": 1.2,
@@ -560,19 +500,14 @@ module.exports = {
   // Run the linter on save (onSave) or on type (onType)
   "eslint.run": "onSave",
   // Turns auto fix on save on or off.
-  "eslint.autoFixOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": false
+  },
   // An array of language ids which should be validated by ESLint
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact"
-  ],
-  // Allow bookmarks to be saved and restored, even if you close or change the Project
-  "bookmarks.saveBookmarksBetweenSessions": false,
+  "eslint.validate": ["javascript", "javascriptreact"],
   // Path to another image to be presented as Bookmark
   "bookmarks.gutterIconPath": "",
   // Allow navigation look for bookmarks in all files in the project, instead of only the current
-  "bookmarks.navigateThroughAllFiles": false,
+  "bookmarks.navigateThroughAllFiles": false
   // The bookmarks will be glued to the line of code instead of the line of the file
-  "bookmarks.useStickyBookmarks": false
 }
-]

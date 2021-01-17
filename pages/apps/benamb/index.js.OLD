@@ -1,0 +1,65 @@
+/*
+
+ESEMPIO QUERY_STRING
+?ID_MAP=1709&ID_LAYER=4618&FIELD=COD_TPRAT,NUM_PRAT,PROG_PRAT,PROG_LOC&CODICE=BAN,24987,0,1&FIND=SI&ID_SESSION=12345
+*/
+
+GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/'
+
+var idMap = GV.utils.getUrlParam('ID_MAP')
+var idLayer = 'L' + GV.utils.getUrlParam('ID_LAYER')
+var fields = GV.utils.getUrlParam('FIELD')
+var values = GV.utils.getUrlParam('CODICE')
+var findFlag = GV.utils.getUrlParam('FIND')
+var idSession = GV.utils.getUrlParam('ID_SESSION')
+
+var findOptions = {
+  layers: ['L4618'], //idLayer
+  cqlFilter: "COD_TPRAT='BAN' AND NUM_PRAT='24987' AND PROG_PRAT='0' AND PROG_LOC='1'",
+}
+
+idMap = 1709
+// findOptions=null
+
+GV.init({ 
+  debug: true,
+  idMap: idMap,
+  findOptions: findOptions,
+  application: {
+    name: 'cave-gv2',
+    mapOptions: {
+      click: 'info',
+    },
+    layout: {
+      legend: {
+        options: {
+          show: true,
+          showAddMap: true,
+          showBaseLayerSwitcher: true,
+          addMapConfig: {
+            panels: {
+              repertorio: {
+                type: 'tree',
+                name: 'repertorio',
+                label: 'Repertorio Cartografico',
+                options: {
+                  treeServiceUrl: '/geoservices/REST/config/catalog/',
+                },
+                tree: null,
+              },
+            },
+          },
+        },
+      },
+      tools: [{ name: 'gv-geocoder', position: 'topleft' }, { name: 'gv-scalebar', position: 'bottomleft' }],
+    },
+  },
+  baseLayers: [
+    { type: 'ESRI_IMAGERY', visible: true },
+    { type: 'MAPBOX_STREETS' },
+    { type: 'RL_ORTOFOTO_2016' },
+    { type: 'RL_CARTE_BASE' },
+    { type: 'BLANK' },
+  ],
+  maps: [],
+})

@@ -1,105 +1,169 @@
 <template>
-    <div v-show="visible" class="gv-map-info-panel gv-inverted-color-scheme" id="gv-map-info-panel">
-        <gv-title v-draggable :title="title" :fullTitle="fullTitle" :divId="'gv-map-info-panel'"></gv-title>
-        <div class="gv-map-info-panel-body">
-            <table>
-                <tbody>
-                    <tr v-for="item in items" :key="item.label" >
-                        <th class="gv-map-info-panel-th gv-secondary-color-scheme">{{item.label}}</th>
-                        <td>{{item.value}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <el-row type="flex" class="row-bg" justify="left">
-            <el-col v-if="addToMapButton" :span="16">
-                <el-button id="gv-map-info-panel-add-map" type="primary" @click="addToMap" class="gv-button-download fa fa-eye" size="mini">
-                    <span> Visualizza</span>
-                </el-button>
-            </el-col>
-            <el-col>
-                <el-button-group v-if="showMetadata" class="gv-button-group">
-                    <el-button type="primary" disabled size="mini">
-                        <span>Scheda Metadati:</span>
-                    </el-button>
-                    <el-button type="primary" @click="openMetadataPanel('DATA')" size="mini">
-                        <span>Dataset</span>
-                    </el-button>
-                    <el-button type="primary" @click="openMetadataPanel('VS')" size="mini">
-                        <span>WMS</span>
-                    </el-button>
-                    <el-button v-show="flagDownload" type="primary" @click="openMetadataPanel('DS')" size="mini">
-                        <span>WFS</span>
-                    </el-button>
-                </el-button-group>
-            </el-col>
-        </el-row>
+  <div v-show="visible" class="gv-map-info-panel gv-inverted-color-scheme" id="gv-map-info-panel">
+    <gv-title
+      v-draggable
+      :title="title"
+      :fullTitle="fullTitle"
+      :divId="'gv-map-info-panel'"
+    ></gv-title>
+    <div class="gv-map-info-panel-body">
+      <table>
+        <tbody>
+          <tr v-for="item in items" :key="item.label">
+            <th class="gv-map-info-panel-th gv-secondary-color-scheme">{{ item.label }}</th>
+            <td>{{ item.value }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <el-row type="flex" class="row-bg" justify="left">
+      <el-col v-if="addToMapButton" :span="8">
+        <el-button
+          id="gv-map-info-panel-add-map"
+          type="primary"
+          @click="addToMap"
+          class="gv-map-info-button"
+          size="mini"
+        >
+          <span>Carica</span>
+        </el-button>
+      </el-col>
+      <el-col v-if="showDownloadButton()" :span="8">
+        <el-button
+          v-show="showDownloadButton()"
+          id="gv-map-info-panel-download"
+          type="primary"
+          @click="download"
+          class="gv-map-info-button el-icon-download"
+          size="mini"
+        >
+          <span>Download</span>
+        </el-button>
+      </el-col>
+      <el-col>
+        <el-button-group v-if="showMetadata" class="gv-button-group">
+          <el-button type="primary" disabled size="mini">
+            <span>Scheda Metadati:</span>
+          </el-button>
+          <el-button type="primary" @click="openMetadataPanel('DATA')" size="mini">
+            <span>Dataset</span>
+          </el-button>
+          <el-button type="primary" @click="openMetadataPanel('VS')" size="mini">
+            <span>WMS</span>
+          </el-button>
+          <el-button
+            v-show="showWFSButton()"
+            type="primary"
+            @click="openMetadataPanel('DS')"
+            size="mini"
+          >
+            <span>WFS</span>
+          </el-button>
+        </el-button-group>
+      </el-col>
+    </el-row>
+  </div>
 </template>
- 
 
 <script>
-import Vue from 'vue'
-import mountComponent from '../util/mountComponent'
-import getConfig from '../services/getConfig'
-import getDownloadConfig from '../services/getDownloadConfig'
+import Vue from 'vue';
+import mountComponent from '../util/mountComponent';
+import getDownloadConfig from '../services/getDownloadConfig';
 
-import globals from '../globals'
+import globals from '../globals';
 
-Vue.component('gv-map-metadata-panel', () => import('./MapMetadataPanel.vue'))
+Vue.component('gv-map-metadata-panel', () => import('./MapMetadataPanel.vue'));
 
-import { Button, ButtonGroup, Row, Col } from 'element-ui'
-Vue.use(Button)
-Vue.use(ButtonGroup)
-Vue.use(Row)
-Vue.use(Col)
+import { Button, ButtonGroup, Row, Col } from 'element-ui';
+Vue.use(Button);
+Vue.use(ButtonGroup);
+Vue.use(Row);
+Vue.use(Col);
 
 export default {
   name: 'gv-map-info-panel',
-  props: ['idMap', 'visible', 'addToMapButton'],
+  props: ['metaData', 'visible', 'addToMapButton', 'downloadable'],
   data() {
-    let items = []
-    var metaData = GV.config.schedaInfoCartografia
+    let items = [];
+    var metaData = this.metaData;
     if (metaData) {
-      items.push({ label: 'Origine del dato', value: metaData.origine })
-      items.push({ label: 'Anno', value: metaData.anno })
-      items.push({ label: 'Scala', value: metaData.scala })
+      items.push({ label: 'Origine del dato', value: metaData.origine });
+      items.push({ label: 'Anno', value: metaData.anno });
+      items.push({ label: 'Scala', value: metaData.scala });
     }
     if (metaData && window.matchMedia('(min-height: 500px)').matches) {
-      items.push({ label: 'Rappresentazione', value: metaData.rappresentazione })
-      items.push({ label: 'Ellissoide e Datum', value: metaData.elissoide_datum })
-      items.push({ label: 'Copertura', value: metaData.copertura })
-      items.push({ label: 'Note', value: metaData.note })
+      items.push({
+        label: 'Rappresentazione',
+        value: metaData.rappresentazione,
+      });
+      items.push({
+        label: 'Ellissoide e Datum',
+        value: metaData.elissoide_datum,
+      });
+      items.push({ label: 'Copertura', value: metaData.copertura });
+      items.push({ label: 'Note', value: metaData.note });
     }
     return {
       items: items,
+      idMap: metaData.id.toString(),
       name: metaData.descrizione,
-      flagDownload: metaData.flag_download,
-      title: window.matchMedia('(max-width: 600px)').matches ? metaData.descrizione.substr(0, 52) : metaData.descrizione.substr(0, 68),
+      title: window.matchMedia('(max-width: 600px)').matches
+        ? metaData.descrizione.substr(0, 52)
+        : metaData.descrizione.substr(0, 68),
       showMetadata: !window.matchMedia('(max-width: 600px)').matches,
       width: window.matchMedia('(max-width: 600px)').matches ? 350 : 500,
       fullTitle: metaData.descrizione,
       linkWms: metaData.link_wms,
       linkWfs: metaData.link_wfs,
       linkDownload: metaData.link_download,
-    }
+    };
   },
   methods: {
+    showDownloadButton() {
+      return this.downloadable === 'true' && GV.config.getMapConfig(this.idMap);
+    },
+    showWFSButton() {
+      return this.downloadable === 'true';
+    },
     closePanel() {
-      this.$el.parentNode.removeChild(this.$el)
+      this.$el.parentNode.removeChild(this.$el);
     },
     download() {
-      window.open(this.linkDownload)
+      this.openDownloadPanel(this.idMap);
+    },
+    openDownloadPanel(idMap) {
+      if (document.getElementById('gv-map-download')) {
+        const element = document.getElementById('gv-map-download');
+        element.parentNode.removeChild(element);
+      }
+      const closeWindow = false;
+      mountComponent({
+        elId: 'gv-map-download',
+        containerId: GV.config.containerId,
+        toggleEl: false,
+        vm: new Vue({
+          template: `<gv-map-download idMap="${idMap}" closeWindow="${closeWindow}"></gv-map-download>`,
+        }),
+      });
+      this.closePanel();
+      this.closeCatalog();
     },
     addToMap() {
-        GV.config.addRlMap(this.idMap)
-        this.closePanel()
+      GV.config.addRlMap(this.idMap, false, false);
+      this.closePanel();
+      this.closeCatalog();
+    },
+    closeCatalog() {
+      let catalog = document.getElementById('gv-map-catalog-panel');
+      if (catalog) {
+        catalog.style.display = 'none';
+      }
     },
     openMetadataPanel(type) {
-      const xmlUrl = `${globals.RL_METADATA_URL}${this.idMap}?type=${type}&`
-      const linkWms = this.linkWms
-      const linkWfs = this.linkWfs
-      const prefix = 'Metadati - '
+      const xmlUrl = `${globals.RL_METADATA_URL}${this.idMap}?type=${type}&`;
+      const linkWms = this.linkWms;
+      const linkWfs = this.linkWfs;
+      const prefix = 'Metadati - ';
 
       mountComponent({
         elId: 'gv-map-metadata-panel',
@@ -114,10 +178,10 @@ export default {
             linkWfs: linkWfs,
           },
         }),
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -165,11 +229,11 @@ export default {
   border: 1px solid #e5e5e5;
 }
 
-.gv-button-download {
+.gv-map-info-button {
   font-size: 12px;
 }
 
-.gv-button-download span {
+.gv-map-info-button span {
   font-family: 'Raleway', Arial, sans-serif;
   font-weight: bold;
 }

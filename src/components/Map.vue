@@ -1,13 +1,12 @@
 <template>
-    <div id="gv-map" :style="style">
-    </div>
+  <div id="gv-map" :style="style"></div>
 </template>
 
 <script>
-import Vue from 'vue'
-import Map from '../leaflet/Map.js'
-import InfoWmsManager from '../controls/InfoWmsManager'
-import Coordinate from '../controls/Coordinate'
+import Vue from 'vue';
+import Map from '../leaflet/Map.js';
+import InfoWmsManager from '../controls/InfoWmsManager';
+import Coordinate from '../controls/Coordinate';
 
 const events = [
   'click',
@@ -45,82 +44,101 @@ const events = [
   'locationerror',
   'popupopen',
   'popupclose',
-]
+];
 
 export default {
   name: 'gv-map',
   data() {
-    const height = document.documentElement.clientHeight
+    const height = document.documentElement.clientHeight;
     return {
       style: `height:${height}px`,
-      map: null
-    }
+      map: null,
+    };
   },
   mounted() {
     // if (GV.config.application.mapOptions.type === 'leaflet') {}
-    GV.app.map = new Map() 
-    this.map = GV.app.map
-    
-    this.registerMapEvents()
+    GV.app.map = new Map();
+    this.map = GV.app.map;
 
-    this.subscribeConfigEvents()
+    this.registerMapEvents();
 
-    window.addEventListener('resize', this.handleResize)
-    this.handleResize()
+    this.subscribeConfigEvents();
+
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
 
     if (GV.config.application.mapOptions && GV.config.application.mapOptions.click) {
       switch (GV.config.application.mapOptions.click) {
         case 'info':
-          InfoWmsManager.activate()
-          break
+          InfoWmsManager.activate();
+          break;
         case 'coordinate':
-          Coordinate.activate()
-          break
+          Coordinate.activate();
+          break;
       }
     }
 
-    GV.log('gv-map: mounted')
-    GV.eventBus.$emit('gv-map-mounted', GV.app.map)
+    GV.log('gv-map: mounted');
+    GV.eventBus.$emit('gv-map-mounted', GV.app.map);
   },
   methods: {
     handleResize(event) {
-      const height = document.documentElement.clientHeight - document.getElementById('gv-map').getBoundingClientRect().top
-      this.style = `height:${height}px`
+      const height =
+        document.documentElement.clientHeight -
+        document.getElementById('gv-map').getBoundingClientRect().top;
+      this.style = `height:${height}px`;
     },
     registerMapEvents() {
       events.forEach(eventName => {
-        const exposedName = 'map-' + eventName
+        const exposedName = 'map-' + eventName;
         GV.app.map.on(eventName, ev => {
-          GV.eventBus.$emit(exposedName, ev)
-        })
-      })
+          ev.mapType = 'leaflet';
+          GV.eventBus.$emit(exposedName, ev);
+        });
+      });
     },
     subscribeConfigEvents() {
       // Ascolto evento config-add-map e aggiungo layer alla mappa
       GV.eventBus.$on('config-add-map', ev => {
-        const mapConfig = ev.config
+        const mapConfig = ev.config;
         // Aggiungo livelli alla mappa
-        GV.app.map.loadLayers(mapConfig.layers)
-        GV.app.map.loadLayers(mapConfig.layers)
+        GV.app.map.loadLayers(mapConfig.layers);
         //gestione extent
         if (mapConfig.extent_3857) {
-          GV.app.map.setExtent(mapConfig.extent_3857)
+          GV.app.map.setExtent(mapConfig.extent_3857);
         }
-      })
+      });
+      // Ascolto evento config-add-layer e aggiungo layer alla mappa
+      GV.eventBus.$on('config-add-layer', ev => {
+        const layerConfig = ev.config;
+        // Aggiungo livello alla mappa
+        GV.app.map.loadLayers([layerConfig]);
+        //gestione extent
+        if (layerConfig.extent_3857) {
+          GV.app.map.setExtent(layerConfig.extent_3857);
+        }
+      });
+      // Ascolto evento config-add-layer e aggiungo layer alla mappa
+      GV.eventBus.$on('config-remove-layer', ev => {
+        const idLayer = ev.config;
+        const layer = GV.app.map.getLayerByName(idLayer);
+        if (layer) GV.app.map.removeLayer(layer);
+      });
+
       // Ascolto evento config-remove-map e levo layer alla mappa
       GV.eventBus.$on('config-remove-map', ev => {
-        const mapConfig = ev.config
+        const mapConfig = ev.config;
         // Levo i livelli dalla mappa
         mapConfig.layers.forEach(layerConfig => {
-          const layer = GV.app.map.getLayerByName(layerConfig.name)
+          const layer = GV.app.map.getLayerByName(layerConfig.name);
           if (layer) {
-            GV.app.map.removeLayer(layer)
+            GV.app.map.removeLayer(layer);
           }
-        })
-      })
+        });
+      });
     },
   },
-}
+};
 </script>
 
 <style scoped>

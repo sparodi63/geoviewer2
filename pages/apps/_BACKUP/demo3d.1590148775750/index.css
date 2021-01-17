@@ -1,0 +1,52 @@
+body {
+    font-family: "Raleway", Arial, sans-serif !important;
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    overflow: hidden;
+    height: 100%;
+    position: static;
+    background: #24386c;
+}
+
+#layer-switcher {
+    background: #fff;
+    position: absolute;
+    z-index: 1;
+    bottom: 10px;
+    left: 10px;
+    border-radius: 3px;
+    width: 120px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    font-family: 'Open Sans', sans-serif;
+}
+
+#layer-switcher a {
+    font-size: 13px;
+    color: #404040;
+    display: block;
+    margin: 0;
+    padding: 0;
+    padding: 10px;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+#layer-switcher a:last-child {
+    border: none;
+}
+
+#layer-switcher a:hover {
+    background-color: #f8f8f8;
+    color: #404040;
+}
+
+#layer-switcher a.active {
+    background-color: #3887be;
+    color: #ffffff;
+}
+
+#layer-switcher a.active:hover {
+    background: #3074a4;
+}

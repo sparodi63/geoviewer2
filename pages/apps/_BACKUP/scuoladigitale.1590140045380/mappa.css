@@ -1,0 +1,242 @@
+/* ----------------------------------------------- */
+
+/* Gestione colori customizzabili */
+
+/* ----------------------------------------------- */
+#popup {
+  color: black;
+}
+
+.gv-color-scheme {
+  background-color: #31708f;
+  color: #ccc;
+}
+
+.gv-inverted-color-scheme {
+  color: #31708f;
+  background-color: #ccc;
+}
+
+/* ----------------------------------------------- */
+
+/* Cluster */
+
+/* ----------------------------------------------- */
+
+.cluster_01 {
+  background-image: url(../../../static/img/scuoladigitale/legend/cfa-nq.png);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.cluster_02 {
+  background-image: url(../../../static/img/scuoladigitale/legend/school02-nq.png);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.cluster_03 {
+  background-image: url(../../../static/img/scuoladigitale/legend/school01-nq.png);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.cluster_04 {
+  background-image: url(../../../static/img/scuoladigitale/legend/school03-nq.png);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.cluster_06 {
+  background-image: url(../../../static/img/scuoladigitale/legend/school06-nq.jpg);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.cluster_07 {
+  background-image: url(../../../static/img/scuoladigitale/legend/school07-nq.png);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.cluster_temi_01 {
+  background-image: url(../../../static/img/scuoladigitale/legend/temi01-nq.png);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.cluster_temi_02 {
+  background-image: url(../../../static/img/scuoladigitale/legend/temi02-nq.png);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.cluster_temi_03 {
+  background-image: url(../../../static/img/scuoladigitale/legend/temi03-nq.png);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.cluster_temi_04 {
+  background-image: url(../../../static/img/scuoladigitale/legend/temi04-nq.png);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+/* ----------------------------------------------- */
+
+/* GV */
+
+/* ----------------------------------------------- */
+
+#loghi-fesr {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  height: 40px;
+  width: 220px;
+  background: rgba(255, 255, 255, 0.7) url(../../../static/img/scuoladigitale/loghi-fesr-mini.png)
+    no-repeat center;
+  opacity: 1;
+}
+
+@media only screen and (min-width: 540px) {
+  /* For desktop only: */
+  #logo {
+    position: relative;
+    left: 0px;
+    height: 94px;
+    width: 232px;
+    padding-left: 18px;
+    z-index: 799;
+    background: #fff url(../../../static/img/scuoladigitale/logo-scuola-aperta.png) no-repeat 10%
+      50%;
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  #logo {
+    position: absolute;
+    display: none;
+    left: 0px;
+    width: 160px;
+    height: 94px;
+    padding-left: 18px;
+    z-index: 799;
+    background: #fff url(../../../static/img/scuoladigitale/logo-scuola-aperta.png) no-repeat 10%
+      50%;
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+
+  .leaflet-container .leaflet-control-search {
+    width: 178px;
+  }
+
+  .gv-search {
+    width: 170px;
+  }
+
+  .el-select {
+    width: 170px !important;
+  }
+}
+
+.gv-search {
+  height: 32px;
+  width: 250px;
+  z-index: 800;
+  margin-top: -4px !important;
+  background-color: #fff;
+}
+
+.el-select {
+  width: 240px !important;
+  margin-left: 5px;
+  margin-top: 4px;
+}
+
+.gv-legend-layer-icon {
+  width: 24px;
+  height: 27px;
+}
+
+.gv-legend-close {
+  background-color: #31708f !important;
+  border: none;
+}
+
+.gv-list-legend-map-item {
+  height: 0;
+  padding: 0;
+}
+
+.gv-layer-visibility-span {
+  position: absolute;
+  top: 25%;
+  left: 32px;
+}
+
+/* Popup */
+
+.leaflet-popup-content-wrapper {
+  color: black;
+}
+
+.leaflet-popup-content-wrapper a {
+  color: black;
+  text-decoration: none;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: #31708f;
+}
+
+#popup-header {
+  border-radius: 25px;
+  background-color: #e94e1b;
+  width: 243px;
+  color: white;
+  font-size: 14px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 6px;
+  line-height: 20px;
+}
+
+#popup-header a {
+  color: white;
+}
+
+#popup-header span {
+  /* padding: 1px; */
+  font-size: 16px;
+}
+
+.popup {
+  display: inline-block;
+  position: relative;
+  line-height: 25px;
+}
+
+.popup span {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 6px;
+}
+
+.popup img {
+  vertical-align: middle;
+}

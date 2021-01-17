@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+
+    <title>Terre Scavo TEST</title>
+
+    <script>
+      if (window.addEventListener) {
+        window.addEventListener('message', onMessage, false);
+      } else if (window.attachEvent) {
+        window.attachEvent('onmessage', onMessage, false);
+      }
+
+      function onMessage(event) {
+        if (event.data.messaggio !== 'selezione-coordinate') {
+          return;
+        }
+        if (event.data.esito && event.data.esito === 'OK') {
+          if (event.data.lon) {
+            document.getElementById('lon').value = event.data.lon;
+          }
+          if (event.data.lat) {
+            document.getElementById('lat').value = event.data.lat;
+          }
+        } else {
+          console.log('Operazione annullata');
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="test">
+      <iframe
+        width="800"
+        height="600"
+        src="/geoservices/apps/viewer/pages/apps/terrescavo-selezione-coordinate/?codice=010001"
+      >
+      </iframe>
+      <br />LON <input type="text" name="lon" id="lon" /> <br />
+      LAT <input type="text" name="lat" id="lat" />
+    </div>
+  </body>
+</html>

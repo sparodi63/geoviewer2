@@ -1,19 +1,17 @@
 <template>
-        <div class="info-wms-html" id="gv-info-wms-html">
-            <gv-title v-draggable :title="title" :divId="'gv-info-wms-html'"></gv-title>
-            <gv-iframe-panel :html="html" :height="height" :width="width" ></gv-iframe-panel>
-        </div>
+  <div class="info-wms-html" id="gv-info-wms-html">
+    <gv-title v-draggable :title="title" :divId="'gv-info-wms-html'"></gv-title>
+    <gv-iframe-panel :html="html" :src="src" :height="height" :width="width"></gv-iframe-panel>
+  </div>
 </template>
 
-
 <script>
-import Vue from 'vue'
-
+import Vue from 'vue';
 
 export default {
   name: 'gv-info-wms-html',
-  props: ['title', 'html', 'width', 'height'],
-}
+  props: ['title', 'src', 'html', 'width', 'height'],
+};
 </script>
 
 <style scoped>

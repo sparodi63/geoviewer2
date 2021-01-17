@@ -1,82 +1,129 @@
 <template>
-  <div  class="gv-layer-search gv-inverted-color-scheme" id="gv-layer-search">
+  <div class="gv-layer-search gv-inverted-color-scheme" id="gv-layer-search">
     <gv-title v-draggable :title="title" :divId="'gv-layer-search'" :hide="true" :width="'360px'"></gv-title>
     <div class="gv-layer-search-body" id="gv-layer-search-body">
       <el-form :model="form" ref="form">
         <el-form-item>
-          <el-select v-model="layer" size="mini" placeholder="Livello" @change="changeLayer" filterable>
-              <el-option v-for="item in layers" :key="item.codice" :label="item.label" :value="item.codice" >
-              </el-option>
+          <el-select
+            id="gv-layer-search-layer-select"
+            v-model="layer"
+            size="mini"
+            placeholder="Livello"
+            @change="changeLayer"
+            filterable
+          >
+            <el-option
+              v-for="item in layers"
+              :key="item.codice"
+              :label="item.label"
+              :value="item.codice"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-select v-model="column" size="mini" placeholder="Campo" no-data-text="Seleziona un livello" filterable>
-              <el-option v-for="item in columns" :key="item.codice" :label="item.label" :value="item.codice">
-              </el-option>
+          <el-select
+            id="gv-layer-search-column-select"
+            v-model="column"
+            size="mini"
+            placeholder="Campo"
+            no-data-text="Seleziona un livello"
+            filterable
+          >
+            <el-option
+              v-for="item in columns"
+              :key="item.codice"
+              :label="item.label"
+              :value="item.codice"
+            ></el-option>
           </el-select>
-          <el-select v-model="operatore" size="mini" placeholder="Operatore" class="gv-layer-search-operator-combo">
-              <el-option v-for="item in operatori" :key="item.codice"  :value="item.label" :label="item.codice" >
-              </el-option>
+          <el-select
+            v-model="operatore"
+            size="mini"
+            placeholder="Operatore"
+            class="gv-layer-search-operator-combo"
+          >
+            <el-option
+              v-for="item in operatori"
+              :key="item.codice"
+              :value="item.label"
+              :label="item.codice"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input placeholder="Valore" v-model="valore" size="mini" class="gv-layer-search-value"></el-input>
-          <el-button v-show="showValueListButton" class="gv-layer-search-value-list-button" size="mini" @click="populateValueList">Lista Valori</el-button>
+          <el-input placeholder="Valore" v-model="valore" size="mini" id="gv-layer-search-value"></el-input>
         </el-form-item>
         <el-form-item class="gv-layer-search-buttons">
-          <el-button v-show="showSubmitButton" type="primary" size="mini" @click="submit">Ricerca</el-button>
+          <el-button
+            id="gv-layer-search-value-list-button"
+            v-show="showValueListButton"
+            size="mini"
+            type="primary"
+            @click="populateValueList"
+          >Lista Valori</el-button>
+          <el-button
+            id="gv-layer-search-submit-button"
+            v-show="showSubmitButton"
+            type="primary"
+            size="mini"
+            @click="submit"
+          >Ricerca</el-button>
         </el-form-item>
-        <div v-show="showValueList">
-          <el-table 
+        <div id="gv-layer-search-value-list-panel" v-show="showValueList">
+          <el-table
+            id="gv-layer-search-value-list-table"
             :data="valueList"
             highlight-current-row
             @current-change="onChangeValueList"
             size="mini"
             border
-            style="width: 100%">
+            style="width: 100%"
+          >
             <el-table-column
               label="LISTA VALORI"
               style="word-wrap: break-word"
-              property="value">
-            </el-table-column>    
+              property="value"
+              width="345"
+            ></el-table-column>
           </el-table>
           <el-pagination
-          v-show="showPagination"
-          small
-          layout="total, prev, pager, next"
-          :total="total"
-          @current-change="handlePageChange"
-          >
-          </el-pagination>
+            v-show="showPagination"
+            small
+            layout="total, prev, pager, next"
+            :total="total"
+            @current-change="handlePageChange"
+          ></el-pagination>
         </div>
-        <div v-show="showResults">
-          <el-table 
+        <div id="gv-layer-search-results-panel" v-show="showResults">
+          <el-table
+            id="gv-layer-search-results-table"
             :data="results"
             highlight-current-row
             @current-change="onChangeResults"
             size="mini"
             border
-            style="width: 100%">
+            style="width: 100%"
+          >
             <el-table-column
               label="RISULTATI RICERCA"
               style="word-wrap: break-word"
-              property="label">
-            </el-table-column>    
+              property="label"
+              width="335"
+            ></el-table-column>
           </el-table>
           <el-pagination
-          v-show="showPagination"
-          small
-          layout="total, prev, pager, next"
-          :total="total"
-          @current-change="handlePageChangeResults"
-          >
-          </el-pagination>
+            v-show="showPagination"
+            small
+            layout="total, prev, pager, next"
+            :total="total"
+            @current-change="handlePageChangeResults"
+          ></el-pagination>
         </div>
       </el-form>
     </div>
   </div>
 </template>
-
+ 
 <script>
 import Vue from "vue";
 
@@ -119,7 +166,9 @@ Vue.use(VueCookie);
 
 export default {
   name: "gv-layer-search",
+  props: { layerId: String },
   data() {
+    const layer = this.layerId ? parseInt(this.layerId) : null;
     return {
       title: "RICERCA LIVELLI",
       maps: GV.config.maps,
@@ -129,10 +178,11 @@ export default {
         { codice: "<", label: "<" },
         { codice: ">", label: ">" },
         { codice: "<=", label: "<=" },
-        { codice: ">=", label: ">=" }
+        { codice: ">=", label: ">=" },
+        { codice: "LIKE", label: "LIKE" }
       ],
       operatore: "=",
-      layer: null,
+      layer: layer,
       columns: [],
       column: null,
       valore: null,
@@ -177,9 +227,13 @@ export default {
     }
   },
   watch: {},
-  mounted() {},
+  mounted() {
+    // this.layer = this.layerId;
+    if (this.layer) this.changeLayer(this.layer);
+  },
   methods: {
     handlePageChange(page) {
+      if (this.showResults) return;
       const offset = this.limit * (page - 1);
       this.queryValueList(offset);
     },
@@ -194,22 +248,26 @@ export default {
       }
     },
     onChangeResults(item) {
-      if (!item) return
+      if (!item) return;
       //TODO zoom + hilite
       InfoWmsManager.addHiliteLayer(GV.app.map);
-      const layerName = `L${this.layer}`;
-      const idAttr = (GV.config.getLayerConfig(layerName).cachePostGIS)? item.idField.toLowerCase() : item.idField;
-      const cqlFilter = `${idAttr}=${item.id}`;
 
-      getWFSFeature([layerName], cqlFilter)
+      const layerName = `L${this.layer}`;
+      const layerConfig = GV.config.getLayerConfig(layerName);
+      const idAttr = layerConfig.cachePostGIS
+        ? item.idField.toLowerCase()
+        : item.idField;
+      const cqlFilter = `${idAttr}='${item.id}'`;
+
+      getWFSFeature(layerConfig.wfsParams, cqlFilter)
         .then(features => {
           const layer = GV.app.map.getLayerByName("InfoWmsHilite");
           if (features && features[0] && features[0].geometry) {
             layer.clearLayers();
             layer.addData(features[0].geometry);
-            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
+            GV.app.map.flyToBounds(layer.getBounds(), { maxZoom: 15 });
             GV.app.map._container.style.cursor = "default";
-                GV.config.hilitedLayer.push(layerName)
+            GV.config.hilitedLayer.push(layerName);
           }
         })
         .catch(error => {
@@ -269,12 +327,12 @@ export default {
       const value = this.valore;
       getQueryLayer(
         this.layer,
+        offset,
+        this.limit,
         column,
         dataType,
         value,
-        operator,
-        offset,
-        this.limit
+        operator
       ).then(res => {
         this.results = res.data.data;
         this.total = res.data.count;
@@ -306,18 +364,6 @@ export default {
         document.getElementById("gv-layer-search-body").style.display = "block";
       }
       this.show = !this.show;
-    },
-    notification(message, type) {
-      const title = type === "info" ? "" : "Attenzione";
-      Notification({
-        title: title,
-        type: type || "error",
-        duration: 5000,
-        offset: 70,
-        dangerouslyUseHTMLString: true,
-        position: "bottom-left",
-        message: message
-      });
     }
   }
 };
@@ -343,32 +389,21 @@ export default {
   width: 150px;
 }
 
-.gv-layer-search-value-list-button {
+/* #gv-layer-search-value-list-button {
   float: right;
-  margin-top: 10px;
-}
+} */
+
 .gv-layer-search-buttons {
-  float: right;
-}
-.gv-layer-search-operator-combo {
-  width: 100px;
+  margin-top: -5px;
 }
 
-.gv-layer-search-value {
-  width: 250px;
+.gv-layer-search-operator-combo {
+  width: 100px;
 }
 </style>
 
 <style>
-.el-tree-node__label {
-  font-size: 12px !important;
-}
-
-.el-tabs__item.is-active {
-  color: #24386c !important;
-}
-
-.el-tabs__header {
-  margin: 0 0 5px !important;
+#gv-layer-search-value {
+  width: 250px;
 }
 </style>

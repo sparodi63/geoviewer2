@@ -1,72 +1,131 @@
 <html>
+  <head>
+    <title>Applicazioni ed esempi GeoViewer</title>
 
-<head>
-    <title>Applicazioni ed esempi Geoviewer</title>
-</head>
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
 
-<body>
-    <br>
-    <a href='http://dts-parodi_s.datasiel.net:8081/?id=56' target="_blank">AMBIENTE NODE-DEV</a>
-    <br>
-    <br>
-    <br>
-    <b>SVILUPPO</b>
-    <br>
-    <br>
-    <a href='apps/scuoladigitale/mappa.html' target="_blank">Scuola Digitale</a>
-    <br>
-    <a href='apps/geoportale/index.html?id=' target="_blank">Geoportale</a>
-    <br>
-    <a href='apps/download/index.html?id=56' target="_blank">Download</a>
-    <br>
-    <a href='apps/mt/index.html?id=' target="_blank">Marketing Territoriale</a>
-    <br>
-    <a href='apps/atlante_geochimico/index.html' target="_blank">Atlante Geochimico</a>
-    <br>
-    <a href='apps/cwn2/index.html?id=' target="_blank">Integrazione CWN2</a>
-    <br>
-    <a href='/geoviewer/pages/apps/geoportale/index.html?id=56' target="_blank">Visualizzatore Tecnico Geoportale (Integrazione CWN2)</a>
-    <br>
-    <a href='apps/test/index.html?id=' target="_blank">TEST</a>
-    <br>
-    <br>
-    <br>
-    <b>STAGING</b>
-    <br>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2_staging/pages/apps/scuoladigitale/mappa.html' target="_blank">Scuola Digitale</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2_staging/pages/apps/geoportale/index.html?id=' target="_blank">Geoportale</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2_staging/pages/apps/download/index.html?id=' target="_blank">Download</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2_staging/pages/apps/mt/index.html?id=' target="_blank">Marketing Territoriale</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2_staging/pages/apps/atlante_geochimico/index.html' target="_blank">Atlante Geochimico</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer_staging/pages/apps/geoportale/index.html?id=56' target="_blank">Visualizzatore Tecnico Geoportale (Integrazione CWN2)</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2_staging/pages/apps/test/index.html?id=' target="_blank">TEST</a>
-    <br>
-    <br>
-    <br>
-    <b>PRODUZIONE</b>
-    <br>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2/pages/apps/scuoladigitale/mappa.html' target="_blank">Scuola Digitale</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2/pages/apps/geoportale/index.html?id=56' target="_blank">Geoportale</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2/pages/apps/download/index.html?id=56' target="_blank">Download</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2/pages/apps/mt/index.html?id=56' target="_blank">Marketing Territoriale</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer/pages/apps/geoportale/index.html?id=56' target="_blank">Visualizzatore Tecnico Geoportale (Integrazione CWN2)</a>
-    <br>
-    <a href='http://srvcarto.regione.liguria.it/geoviewer2/pages/apps/test/index.html?id=' target="_blank">TEST</a>
-    <br>
+      th {
+        height: 50px;
+      }
 
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
 
-</body>
+      body {
+        background: lightsteelblue;
+      }
+      span {
+        margin: 10px;
+      }
+    </style>
 
+    <script>
+      function invia(page, params) {
+        var ambiente = document.getElementById('ambiente').options[document.getElementById('ambiente').selectedIndex].value
+        if (ambiente === 'http://localhost:8081/') page = ''
+        var url = ambiente + page
+        if (params) url += params
+        window.open(url)
+      }
+    </script>
+  </head>
+
+  <body>
+    <br />
+    <span>
+      <b>AMBIENTE:</b>
+      <select id="ambiente">
+        <option value="http://localhost:8080/geoservices/apps/viewer/pages/apps/">LOCALHOST</option>
+        <option value="https://srvcarto.liguriadigitale.it/geoservices/apps/viewer/pages/apps/">TEST (DTS-PARODI_S)</option>
+        <option value="http://srvcarto2.regione.liguria.it:8080/geoservices/apps/viewer/pages/apps/">SRVCARTO2</option>
+        <option value="http://srvcarto.regione.liguria.it/geoservices/apps/viewer_staging/pages/apps/">STAGING</option>
+        <option value="http://srvcarto-prot.regione.liguria.it/geoservices/apps/viewer_staging/pages/apps/">STAGING PROT</option>
+        <option value="http://srvcarto.regione.liguria.it/geoservices/apps/viewer/pages/apps/">PRODUZIONE</option>
+        <option value="http://srvcarto-prot.regione.liguria.it/geoservices/apps/viewer/pages/apps/">PRODUZIONE PROT</option>
+        <option value="http://localhost:8081/">SVILUPPO</option>
+      </select>
+    </span>
+
+    <br /><br />
+    <table width="800">
+      <tr>
+        <!-- COLONNA 1 -->
+        <td valign="top">
+          <a href="javascript:invia('scuoladigitale/mappa.html')">Scuola Digitale</a>
+          <br />
+          <a href="javascript:invia('centri-impiego')">Centri Impiego</a>
+          <br />
+          <br />
+          <a href="javascript:invia('geoportale','?id=')">Geoportale: Visualizzatore Base</a>
+          <br />
+          <a href="javascript:invia('geoportale-tecnico','?id=')">Geoportale: Visualizzatore Tecnico</a>
+          <br />
+          <a href="javascript:invia('download?id=56')">Download</a> <br />
+          <a href="javascript:invia('selezione_fogli?id=2033')">Geoportale:Selezione Fogli</a>
+          <br />
+          <br />
+          <a href="javascript:invia('atlante-geochimico')">Atlante Geochimico</a>
+          <br />
+          <a href="javascript:invia('ambiente-pressioni')">Ambiente: Pressioni</a>
+          <br />
+          <a href="javascript:invia('ambiente-rapporti-ambientali')">Ambiente: Rapporti Ambientali</a>
+          <br />
+          <a href="javascript:invia('ambiente-ecopiano')">Ambiente: Ecopiano</a>
+          <br />
+          <a href="javascript:invia('ambiente-tematiche','?canale=4')">Ambiente: Tematiche</a><br />
+          <a href="javascript:invia('ambiente-risknat')">Ambiente: Risknat</a><br />
+          <a href="javascript:invia('ambiente-microzonazione-sismica')">Ambiente: Microzonazione Sismica</a><br />
+          <a href="javascript:invia('ambiente-biodiversita-specie')">Ambiente: Consultazione specie da cartografia</a><br />
+          <br />
+          <a href="javascript:invia('mt','?id=D38')">Marketing Territoriale</a>
+          <br />
+          <a href="javascript:invia('protezione-civile')">Protezione Civile</a>
+          <br />
+          <a href="javascript:invia('cave/','?FIND_MAP=1212&FIND_CQL_FILTER=sigla=\'9 TER GE\'')">CAVE</a>
+          <br />
+          <a href="javascript:invia('gas')">GAS</a> <br /><br />
+        </td>
+        <!-- COLONNA 2 -->
+        <td valign="top">
+          <a href="javascript:invia('vincoli')">Vincoli</a> / <a href="javascript:invia('vincoli','?DOWNLOAD=TRUE')">Vincoli (Download)</a><br />
+          <a href="javascript:invia('sicoast','')">SICoast</a><br />
+          <a href="javascript:invia('carta-regionale-aib','')">Carta regionale A.I.B.</a><br />
+          <br />
+          <a
+            href="javascript:invia('benamb','?ID_MAP=1709&ID_LAYER=4618&FIELD=COD_TPRAT,NUM_PRAT,PROG_PRAT,PROG_LOC&CODICE=BAN,24987,0,1&FIND=SI&ID_SESSION=12345')"
+            >BENAMB</a
+          ><br />
+          <a href="javascript:invia('scaridri-find','?ID_MAP=1640&ID_LAYER=4355&FIELD=CODICE&CODICE_CONDOTTA=C008027A')">SCARIDRI: Find</a>
+          /
+          <a href="javascript:invia('scaridri-selezione-coordinate','/?ID_MAP=1640&ID_LAYER=4355&FIELD=CODICE&CODICE=C008027A&FIND=SI')"
+            >Selezione Coordinate</a
+          >
+          <br />
+          <a href="javascript:invia('terrescavo-selezione-coordinate','?codice=010001&lon=1472373&lat=4918755')">Terrescavo: Selezione Coordinate</a
+          ><br />
+          <a href="javascript:invia('sirgil','?chiave=0000279649')">Progetti SIRGIL</a><br />
+          <br />
+          <a href="javascript:invia('genio-derivazioni','?COORD=1453873,4909770')">GenioWeb Derivazioni</a>
+          <br />
+          <a href="javascript:invia('genioweb-regione','')">GenioWeb Regione</a><br />
+          <a href="javascript:invia('genioweb-intra','?PROV=GE&ACTION=INSERT&CODICE_PRATICA=GVI06559')">GenioWeb INTRA: EDITING PRATICHE</a><br />
+          <a href="javascript:invia('genioweb-intra','?PROV=GE&ACTION=INSERT&CODICE_PRATICA=GDE6075')">GenioWeb INTRA: EDITING PUNTI</a><br />
+          <a href="javascript:invia('sigmater','')">Sigmater</a><br />
+          <br />
+          <a href="javascript:invia('fototeca','')">Fototeca</a><br />
+        </td>
+      </tr>
+    </table>
+
+    <br />
+  </body>
 </html>

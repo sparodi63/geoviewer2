@@ -9,9 +9,10 @@
             @current-change="onChange"
             size="mini"
             style="width: 100%">
-            <el-table-column
-              style="word-wrap: break-word"
-              property="label">
+            <el-table-column>
+            <template slot-scope="scope">
+              <b>{{ scope.row.label }}</b> ({{ scope.row.layer.legend.label }})
+            </template>  
             </el-table-column>    
           </el-table>
         </div>
@@ -30,13 +31,10 @@ export default {
   name: 'gv-info-wms-list',
   props: ['items', 'visible'],
   data() {
-    this.items.forEach(item => {
-      item.label = `${item.label} (${item.layer.legend.label})` 
-    });
     return {
       showHeader: false,
       width: 310,
-      value: ''
+      value: '',
     }
   },
   methods: {
@@ -78,5 +76,4 @@ export default {
   overflow: hidden;
   max-width: 245px;
 }
-
 </style>

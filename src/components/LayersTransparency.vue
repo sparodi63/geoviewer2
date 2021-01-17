@@ -18,42 +18,39 @@
 
 
 <script>
-"use strict";
-import Vue from "vue";
-import mountComponent from "../util/mountComponent";
-Vue.component("gv-title", () => import("./Title.vue"));
+'use strict'
+import Vue from 'vue'
+import mountComponent from '../util/mountComponent'
+Vue.component('gv-title', () => import('./Title.vue'))
 
-import { Slider } from "element-ui";
-Vue.use(Slider);
+import { Slider } from 'element-ui'
+Vue.use(Slider)
 
 export default {
-  name: "gv-layers-transparency",
+  name: 'gv-layers-transparency',
   props: ['idMap'],
   data() {
     return {
       width: 380,
-      layers: GV.config.getMapConfig(this.idMap).layers
-    };
+      layers: GV.config.getMapConfig(this.idMap).layers,
+    }
   },
   mounted() {
-    GV.log("gv-layers-transparency: mounted");
+    GV.log('gv-layers-transparency: mounted')
   },
   methods: {
     getClass: function(layer) {
-      return layer.inRange
-        ? "gv-list-transparency-layer-item"
-        : "gv-list-transparency-layer-item gv-list-transparency-layer-disabled-item";
+      return layer.inRange ? 'gv-list-transparency-layer-item' : 'gv-list-transparency-layer-item gv-list-transparency-layer-disabled-item'
     },
     onChange(layer) {
-      const opacity = layer['opacityBase100']/100  
+      const opacity = layer['opacityBase100'] / 100
       GV.eventBus.$emit('set-layer-transparency', {
         layerName: layer.name,
         opacity: opacity,
       })
     },
-
-  }
-};
+  },
+}
 </script>
 
 <style>
@@ -88,7 +85,6 @@ export default {
   margin-top: -2px;
   background-color: #fff;
 }
-
 
 .gv-list-legend-map-item {
   position: relative;

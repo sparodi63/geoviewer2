@@ -1,0 +1,214 @@
+/* ----------------------------------------------- */
+
+/* Gestione colori customizzabili */
+
+/* ----------------------------------------------- */
+
+.gv-color-scheme {
+  background-color: #31708f;
+  color: #ccc;
+}
+
+.gv-inverted-color-scheme {
+  color: #31708f;
+  background-color: #ccc;
+}
+
+/* ----------------------------------------------- */
+
+/* Cluster */
+
+/* ----------------------------------------------- */
+
+.cluster {
+  text-align: center;
+  font-size: 16px;
+  color: white;
+  background-repeat: no-repeat;
+  background-size: 23px 31px;
+  background-position: top center;
+}
+
+.cluster_cpi {
+  background-image: url(../../../static/img/centri-impiego/legend/cluster/cpi_nq.png);
+}
+
+.cluster_com {
+  background-image: url(../../../static/img/centri-impiego/legend/cluster/com_nq.png);
+}
+
+.cluster_ef {
+  background-image: url(../../../static/img/centri-impiego/legend/cluster/ef_nq.png);
+}
+
+.cluster_al {
+  background-image: url(../../../static/img/centri-impiego/legend/cluster/al_nq.png);
+}
+
+.cluster_coop {
+  background-image: url(../../../static/img/centri-impiego/legend/cluster/coop_nq.png);
+}
+
+.cluster_a {
+  background-image: url(../../../static/img/centri-impiego/legend/cluster/a_nq.png);
+}
+
+/* ----------------------------------------------- */
+
+/* GV */
+
+/* ----------------------------------------------- */
+
+#loghi {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  height: 40px;
+  width: 330px;
+  background: rgba(255, 255, 255, 1) url(../../../static/img/centri-impiego/loghi.png) no-repeat
+    center;
+  opacity: 1;
+}
+
+/* For desktop only: */
+#logo {
+  position: relative;
+  left: 0px;
+  height: 94px;
+  width: 232px;
+  padding-left: 18px;
+  z-index: 799;
+  background: #c5d361 url(../../../static/img/centri-impiego/logo-giovani-liguria-col.png) no-repeat
+    10% 50%;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.gv-color-scheme {
+  background-color: #c5d361;
+  color: rgb(61, 60, 60);
+}
+
+.gv-legend-footer {
+  padding: 0rem 0rem;
+}
+
+.gv-search {
+  height: 32px;
+  width: 250px;
+  z-index: 800;
+  margin-top: -4px !important;
+  background-color: #c5d361;
+}
+
+.el-select {
+  width: 240px !important;
+  margin-left: 5px;
+  margin-top: 4px;
+}
+
+.gv-legend-layer-icon {
+  width: 24px;
+  height: 27px;
+}
+
+.gv-legend-close {
+  background-color: #31708f !important;
+  border: none;
+}
+
+.gv-list-legend-map-item {
+  height: 0;
+  padding: 0;
+}
+
+.gv-layer-visibility-span {
+  position: absolute;
+  top: 25%;
+  left: 32px;
+}
+
+/* Popup */
+
+.leaflet-popup-content-wrapper {
+  color: black;
+}
+
+.leaflet-popup-content-wrapper a {
+  color: black;
+  text-decoration: none;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: #31708f;
+}
+
+#popup-header {
+  border-radius: 25px;
+  background-color: #e94e1b;
+  width: 243px;
+  color: white;
+  font-size: 14px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 6px;
+  line-height: 20px;
+}
+
+#popup-header a {
+  color: white;
+}
+
+#popup-header span {
+  /* padding: 1px; */
+  font-size: 16px;
+}
+
+.leaflet-popup-content {
+  margin: 13px 19px;
+  line-height: 30px;
+}
+
+.v-align {
+  vertical-align: middle;
+}
+
+.popup {
+  display: inline-block;
+  position: relative;
+  color: black;
+}
+
+.svg-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.div-cpi svg {
+  fill: #56b71d;
+}
+
+.div-com svg {
+  fill: #236fc1;
+}
+
+.div-ef svg {
+  fill: #ea431c;
+}
+
+.div-al svg {
+  fill: #e0bc27;
+}
+
+.div-coop svg {
+  fill: #bf358b;
+}
+
+.div-a svg {
+  fill: #f27a03;
+}
+
+.div-popup span {
+  font-weight: 600;
+}

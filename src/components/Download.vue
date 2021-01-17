@@ -1,78 +1,181 @@
 <template>
-  <div  class="gv-map-download gv-inverted-color-scheme" id="gv-map-download">
-    <gv-title v-draggable :title="title" :divId="'gv-map-download'" :noClose="true" :collapsible="'gv-map-download-body'" :width="'410px'"></gv-title>
+  <div class="gv-map-download gv-inverted-color-scheme" id="gv-map-download">
+    <gv-title
+      v-draggable
+      :title="title"
+      :divId="'gv-map-download'"
+      :noClose="true"
+      :collapsible="'gv-map-download-body'"
+      :width="'410px'"
+    ></gv-title>
     <div class="gv-map-download-body" id="gv-map-download-body">
       <el-form :model="form" ref="form">
-        <span class="gv-map-download-title">{{config.name}}</span>
+        <span class="gv-map-download-title">{{ config.name }}</span>
         <el-form-item>
           <span class="gv-map-download-label">Email</span>
-          <el-input style="width: 250px;" size="mini" placeholder="Email" type="email" v-model="codCliente">
-          </el-input>
+          <el-input
+            id="gv-map-download-email"
+            style="width: 250px;"
+            size="mini"
+            placeholder="Email"
+            type="email"
+            v-model="codCliente"
+          ></el-input>
         </el-form-item>
         <el-form-item>
           <span v-if="showSelectLivelli" class="gv-map-download-label">Livello</span>
-          <el-select v-if="showSelectLivelli" v-model="livello" size="mini" placeholder="Scegli un livello">
-              <el-option v-for="item in livelli" :key="item.codice" :label="item.nome" :value="item.codice">
-              </el-option>
+          <el-select
+            id="gv-map-download-livello"
+            v-if="showSelectLivelli"
+            v-model="livello"
+            size="mini"
+            placeholder="Scegli un livello"
+          >
+            <el-option
+              v-for="item in livelli"
+              :key="item.codice"
+              :label="item.nome"
+              :value="item.codice"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <span v-if="config.flagDownloadPerTemi" class="gv-map-download-label">Tematismo</span>
-          <el-select v-if="config.flagDownloadPerTemi" v-model="codTema" size="mini" placeholder="Tutti i tematismi">
-              <el-option v-for="item in config.temi" :key="item.codice" :label="item.tematismo" :value="item.codice">
-              </el-option>
+          <el-select
+            id="gv-map-download-temi"
+            v-if="config.flagDownloadPerTemi"
+            v-model="codTema"
+            size="mini"
+            placeholder="Tutti i tematismi"
+          >
+            <el-option
+              v-for="item in config.temi"
+              :key="item.codice"
+              :label="item.tematismo"
+              :value="item.codice"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <span class="gv-map-download-label">Sistema di Coordinate</span>
-          <el-select v-model="sistemaCoordinate" size="mini" >
-              <el-option v-for="item in config.sistemiCoordinate" :key="item.epsg_code"  :value="item.epsg_code" :label="item.proj_descr" >
-              </el-option>
+          <el-select id="gv-map-download-crs" v-model="sistemaCoordinate" size="mini">
+            <el-option
+              v-for="item in config.sistemiCoordinate"
+              :key="item.epsg_code"
+              :value="item.epsg_code"
+              :label="item.proj_descr"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <span class="gv-map-download-label">Formato</span>
-          <el-select v-model="formato" size="mini" @change="changeFormat">
-              <el-option v-for="item in config.formati" :key="item.cod_formato"  :value="item.cod_formato" :label="item.formato" >
-              </el-option>
+          <el-select
+            id="gv-map-download-formato"
+            v-model="formato"
+            size="mini"
+            @change="changeFormat"
+          >
+            <el-option
+              v-for="item in config.formati"
+              :key="item.cod_formato"
+              :value="item.cod_formato"
+              :label="item.formato"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <span class="gv-map-download-label">Selezione Territoriale</span>
-          <el-select v-model="selezioneTerritoriale" size="mini" @change="changeSelezioneTerritoriale">
-              <el-option v-for="item in config.selezioneTerritoriale" :key="item.codice"  :value="item.codice" :label="item.descrizione" >
-              </el-option>
+          <el-select
+            id="gv-map-download-selterr"
+            v-model="selezioneTerritoriale"
+            size="mini"
+            @change="changeSelezioneTerritoriale"
+          >
+            <el-option
+              v-for="item in config.selezioneTerritoriale"
+              :key="item.codice"
+              :value="item.codice"
+              :label="item.descrizione"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <span v-show="showSelectComuni" class="gv-map-download-label">Selezione Comune</span>
-          <el-select v-show="showSelectComuni" v-model="comune" size="mini" filterable>
-              <el-option v-for="item in comuni" :key="item.codice"  :value="item.codice" :label="item.nome" >
-              </el-option>
+          <el-select
+            id="gv-map-download-comuni"
+            v-show="showSelectComuni"
+            v-model="comune"
+            size="mini"
+            filterable
+          >
+            <el-option
+              v-for="item in comuni"
+              :key="item.codice"
+              :value="item.codice"
+              :label="item.nome"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <span v-show="showSelectFogli" class="gv-map-download-label">Selezione Fogli</span>
-          <el-select v-show="showSelectFogli" v-model="fogli" size="mini" multiple collapse-tags >
-              <el-option v-for="item in config.fogli" :key="item.codice"  :value="item.codice" :label="item.nome" >
-              </el-option>
+          <el-select
+            id="gv-map-download-fogli"
+            v-show="showSelectFogli"
+            v-model="fogli"
+            size="mini"
+            multiple
+            collapse-tags
+          >
+            <el-option
+              v-for="item in config.fogli"
+              :key="item.codice"
+              :value="item.codice"
+              :label="item.nome"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <span v-show="showSelectMacrobacini" class="gv-map-download-label">Selezione Macrobacino</span>
-          <el-select v-show="showSelectMacrobacini" v-model="macrobacino" size="mini" filterable >
-              <el-option v-for="item in macrobacini" :key="item.codice"  :value="item.codice" :label="item.nome" >
-              </el-option>
+          <span v-show="showSelectMacrobacini" class="gv-map-download-label"
+            >Selezione Macrobacino</span
+          >
+          <el-select
+            id="gv-map-download-macrobacini"
+            v-show="showSelectMacrobacini"
+            v-model="macrobacino"
+            size="mini"
+            filterable
+          >
+            <el-option
+              v-for="item in macrobacini"
+              :key="item.codice"
+              :value="item.codice"
+              :label="item.nome"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button v-show="showRectReset" type="primary" size="mini" @click="rectReset">Reimposta Rettangolo</el-button>
+          <el-button
+            id="gv-map-download-rect-reset"
+            v-show="showRectReset"
+            type="primary"
+            size="mini"
+            @click="rectReset"
+            >Reimposta Rettangolo</el-button
+          >
         </el-form-item>
 
         <el-form-item class="gv-map-download-buttons">
-          <img src="https://srvcarto.regione.liguria.it/geoviewer2/static/img/cc-by.png" align="bottom" onclick="javascript:window.open('http://creativecommons.org/licenses/by/3.0/deed.it')">
-          <el-button id="gv-map-download-submit" type="primary" size="mini" @click="submit">Conferma</el-button>
-          <el-button id="gv-map-download-cancel" type="primary" size="mini" @click="cancel">Annulla</el-button>
+          <img
+            src="../../static/img/cc-by.png"
+            align="bottom"
+            onclick="javascript:window.open('https://creativecommons.org/licenses/by/3.0/deed.it')"
+          />
+          <el-button id="gv-map-download-submit" type="primary" size="mini" @click="submit"
+            >Conferma</el-button
+          >
+          <el-button id="gv-map-download-cancel" type="primary" size="mini" @click="cancel"
+            >Annulla</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -80,30 +183,33 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import Vue from 'vue';
 
-require('leaflet-draw')
-require('style!../../node_modules/leaflet-draw/dist/leaflet.draw.css')
+require('leaflet-draw');
+require('style!../../node_modules/leaflet-draw/dist/leaflet.draw.css');
 
-import mountComponent from '../util/mountComponent'
-import globals from '../globals'
-import getGeoJSON from '../services/getGeoJSON'
-import insertRichiestaDownload from '../services/insertRichiestaDownload'
+import mountComponent from '../util/mountComponent';
+import notification from '../util/notification';
+import globals from '../globals';
+import getGeoJSON from '../services/getGeoJSON';
+import insertRichiestaDownload from '../services/insertRichiestaDownload';
+import getDownloadRichiesteCache from '../services/getDownloadRichiesteCache';
 
-import { Button, Input, Form, FormItem, Select, Option, Notification } from 'element-ui'
-Vue.use(Button)
-Vue.use(Input)
-Vue.use(Form)
-Vue.use(FormItem)
-Vue.use(Select)
-Vue.use(Option)
-import lang from 'element-ui/lib/locale/lang/it'
-import locale from 'element-ui/lib/locale'
-locale.use(lang)
+Vue.component('gv-download-sincrono-panel', () => import('./DownloadSincrono.vue'));
 
+import { Button, Input, Form, FormItem, Select, Option } from 'element-ui';
+Vue.use(Button);
+Vue.use(Input);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Select);
+Vue.use(Option);
+import lang from 'element-ui/lib/locale/lang/it';
+import locale from 'element-ui/lib/locale';
+locale.use(lang);
 
-var VueCookie = require('vue-cookie')
-Vue.use(VueCookie)
+var VueCookie = require('vue-cookie');
+Vue.use(VueCookie);
 
 export default {
   name: 'gv-map-download',
@@ -150,333 +256,318 @@ export default {
       config: {},
       showRectReset: false,
       storageKey: 'download',
-    }
+    };
   },
   computed: {
     showSelectComuni() {
-      return this.selezioneTerritoriale === 2
+      return this.selezioneTerritoriale === 2;
     },
     showSelectFogli() {
-      return this.selezioneTerritoriale === 3
+      return this.selezioneTerritoriale === 3;
     },
     showSelectMacrobacini() {
-      return this.selezioneTerritoriale === 5
+      return this.selezioneTerritoriale === 5;
     },
     showSelectLivelli() {
-      return this.livelli.length > 0
+      return this.livelli.length > 0;
     },
   },
   watch: {
     fogli(fogliSel) {
-      this.syncFogli(fogliSel)
+      this.syncFogli(fogliSel);
     },
     macrobacino(macrobacino) {
-      this.syncMacrobacino(macrobacino)
+      this.syncMacrobacino(macrobacino);
     },
     comune(comune) {
-      this.syncComune(comune)
+      this.syncComune(comune);
     },
   },
   mounted() {
+    // Gestione sospensione per menutenzione
+    if (GV.globals.SYS_MANUTENZIONE_DOWNLOAD) {
+      notification('SISTEMA IN MANUTENZIONE: SERVIZIO TEMPORANEAMENTE SOSPESO');
+      this.$el.hidden = true;
+      return;
+    }
+    // Leggo le richieste in cache
+    getDownloadRichiesteCache().then(response => {
+      this.cachedRequests = response;
+    });
     // imposto la configurazione
-    this.setConfig()
+    this.setConfig();
     // Leggo cookies
-    this.codCliente = this.$cookie.get('codCliente') != 'null' ? this.$cookie.get('codCliente') : ''
-    this.codTema = this.$cookie.get('codTema') && this.config.flagDownloadPerTemi ? parseInt(this.$cookie.get('codTema')) : 0
-
+    this.codCliente =
+      this.$cookie.get('codCliente') != 'null' ? this.$cookie.get('codCliente') : '';
     // Creo layer per disegno rettangolo
-    this.addLayerRettangolo()
+    this.addLayerRettangolo();
     // Imposto layer per selezione fogli
-    this.addLayerSquadri()
+    this.addLayerSquadri();
     // Imposto layer per selezione macrobacini
-    this.addLayerMacrobacini()
+    this.addLayerMacrobacini();
     // Imposto layer per selezione comuni
-    this.addLayerComuni()
-
+    this.addLayerComuni();
     // Imposto combo livelli
     if (this.config.flagDownloadLivello) {
       this.livelli = GV.config.getMapConfig(this.idMap).layers.map(layer => {
         return {
           codice: layer.id,
           nome: layer.legend.label,
-        }
-      })
+        };
+      });
+      if (this.livelli.length === 1) {
+        this.livello = this.livelli[0].codice;
+      }
     }
     // Imposto formato di default
-    this.setDefaultFormat(this.config.formati)
+    if (this.config.formati.length > 0) {
+      this.setDefaultFormat(this.config.formati);
+    } else {
+      notification('Formati non impostati', 'error');
+      this.removePanel();
+      return;
+    }
 
-    this.show = true
+    this.show = true;
   },
   methods: {
     syncFogli(fogliSel) {
-      const layerFogli = GV.app.map.getLayerByName('SelezioneSquadri')
+      const layerFogli = GV.app.map.getLayerByName('SelezioneSquadri');
       if (!layerFogli) {
-        return
+        return;
       }
       layerFogli.eachLayer(layer => {
-        layer.setStyle({ fillOpacity: 0, weight: 1 })
-      })
+        layer.setStyle({ fillOpacity: 0, weight: 1 });
+      });
       layerFogli.eachLayer(layer => {
         fogliSel.forEach(foglio => {
-          const codice = layer.feature.properties.COD_SQUADRO || layer.feature.properties.cod_squadro
+          const codice =
+            layer.feature.properties.COD_SQUADRO || layer.feature.properties.cod_squadro;
           if (codice === foglio) {
-            layer.setStyle({ fillOpacity: 0.6, weight: 2 })
+            layer.setStyle({ fillOpacity: 0.6, weight: 2 });
           }
-        })
-      })
+        });
+      });
     },
     syncMacrobacino(macrobacino) {
-      const layerMacrobacini = GV.app.map.getLayerByName('SelezioneMacrobacino')
+      const layerMacrobacini = GV.app.map.getLayerByName('SelezioneMacrobacino');
       if (!layerMacrobacini) {
-        return
+        return;
       }
       layerMacrobacini.eachLayer(layer => {
-        layer.setStyle({ fillOpacity: 0, weight: 1 })
-      })
+        layer.setStyle({ fillOpacity: 0, weight: 1 });
+      });
       layerMacrobacini.eachLayer(layer => {
-        const codice = layer.feature.properties.NUM_AMB || layer.feature.properties.num_amb
+        const codice = layer.feature.properties.COD_MB || layer.feature.properties.cod_mb;
         if (codice === macrobacino) {
-          layer.setStyle({ fillOpacity: 0.6, weight: 2 })
+          layer.setStyle({ fillOpacity: 0.6, weight: 2 });
         }
-      })
+      });
     },
     syncComune(comune) {
-      const layerComuni = GV.app.map.getLayerByName('SelezioneComune')
+      const layerComuni = GV.app.map.getLayerByName('SelezioneComune');
       if (!layerComuni) {
-        return
+        return;
       }
       layerComuni.eachLayer(layer => {
-        layer.setStyle({ fillOpacity: 0, weight: 1 })
-      })
+        layer.setStyle({ fillOpacity: 0, weight: 1 });
+      });
       layerComuni.eachLayer(layer => {
-        const codice = layer.feature.properties.CODICE_COMUNE || layer.feature.properties.codice_comune
+        const codice =
+          layer.feature.properties.CODICE_COMUNE || layer.feature.properties.codice_comune;
         if (codice === comune) {
-          layer.setStyle({ fillOpacity: 0.6, weight: 2 })
+          layer.setStyle({ fillOpacity: 0.6, weight: 2 });
         }
-      })
-
+      });
       if (layerComuni) {
         layerComuni.eachLayer(layer => {
-          if (layer.feature.properties.CODICE_COMUNE === comune) {
-            this.setComuniBbox(layer)
+          if (
+            layer.feature.properties.CODICE_COMUNE === comune ||
+            layer.feature.properties.codice_comune === comune
+          ) {
+            this.setComuniBbox(layer);
           }
-        })
+        });
       }
     },
     setComuniBbox(comune) {
       const bboxArray = comune
         .getBounds()
         .toBBoxString()
-        .split(',')
+        .split(',');
+
       const xMin = bboxArray[0],
         yMin = bboxArray[1],
         xMax = bboxArray[2],
-        yMax = bboxArray[3]
-      this.bbox = `${xMin},${yMin},${xMax},${yMin},${xMax},${yMax},${xMin},${yMax},${xMin},${yMin}`
-      this.bboxSRS = '4326'
+        yMax = bboxArray[3];
+      this.bbox = `${xMin},${yMin},${xMax},${yMin},${xMax},${yMax},${xMin},${yMax},${xMin},${yMin}`;
+      this.bboxSRS = '4326';
+    },
+    removePanel() {
+      const dlPanel = document.getElementById('gv-map-download');
+      if (dlPanel) {
+        dlPanel.parentNode.removeChild(dlPanel);
+      }
     },
     setConfig() {
-      this.config = GV.config.getMapConfig(this.idMap).downloadConfig
-      this.sistemiCoordinate = this.config.sistemiCoordinate
-      if (this.config.temi && this.config.temi[0] && this.config.temi[0].codice !== 0) {
-        this.config.temi.unshift({
-          codice: 0,
-          tematismo: 'Tutti i tematismi',
-        })
+      // if (GV.config.getMapConfig(this.idMap) && !GV.config.getMapConfig(this.idMap).flagDownload) {
+      //   notification('Mappa non scaricabile')
+      //   this.removePanel()
+      // }
+      if (GV.config.getMapConfig(this.idMap) && GV.config.getMapConfig(this.idMap).downloadConfig) {
+        this.config = GV.config.getMapConfig(this.idMap).downloadConfig;
+        this.sistemiCoordinate = this.config.sistemiCoordinate;
+        if (this.config.temi && this.config.temi[0] && this.config.temi[0].codice !== 0) {
+          this.config.temi.unshift({
+            codice: 0,
+            tematismo: 'Tutti i tematismi',
+          });
+        }
       }
     },
     setDefaultFormat(formati) {
       const cachedFormat =
         formati.filter(formato => {
-          return formato.cod_formato === this.$cookie.get('formato')
+          return formato.cod_formato === this.$cookie.get('formato');
         }).length > 0
           ? this.$cookie.get('formato')
-          : null
+          : null;
 
       const defaultFormat =
         formati.filter(formato => {
-          return formato.cod_formato === 'SHP'
+          return formato.cod_formato === 'SHP';
         }).length > 0
           ? 'SHP'
-          : formati[0].cod_formato
+          : formati[0].cod_formato;
 
-      const formato = cachedFormat || defaultFormat
-      this.changeFormat(formato)
-      this.formato = formato
+      const formato = cachedFormat || defaultFormat;
+      this.changeFormat(formato);
+      this.formato = formato;
     },
     addLayerRettangolo() {
-      this.drawnRectangle = new L.FeatureGroup()
-      L.drawLocal.draw.handlers.rectangle.tooltip.start = 'Clicca e trascina per disegnare un rettangolo'
-      L.drawLocal.draw.handlers.simpleshape.tooltip.end = 'Rilascia il mouse per terminare il disegno'
-      GV.app.map.addLayer(this.drawnRectangle)
+      this.drawnRectangle = new L.FeatureGroup();
+      L.drawLocal.draw.handlers.rectangle.tooltip.start =
+        'Clicca e trascina per disegnare un rettangolo';
+      L.drawLocal.draw.handlers.simpleshape.tooltip.end =
+        'Rilascia il mouse per terminare il disegno';
+      GV.app.map.addLayer(this.drawnRectangle);
     },
     addLayerSquadri() {
-      let selFogli = false
+      let selFogli = false;
+      if (!this.config.formati) return;
       this.config.formati.forEach(formato => {
         formato.selezioneTerritoriale.forEach(selTerr => {
           if (selTerr.codice === 3) {
-            selFogli = true
+            selFogli = true;
           }
-        })
-      })
+        });
+      });
       if (selFogli) {
-        const baseUrl = `${globals.DEFAULT_PROXY}http://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`
-        //const url = `${baseUrl}M${this.config.codiceMappaSfondo}:L${this.config.codiceLivelloSfondo}`
-        const url = `${baseUrl}${this.config.livelloSquadri}`
+        const baseUrl = `${globals.DEFAULT_PROXY}https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`;
+        const url = `${baseUrl}${this.config.livelloSquadri}`;
         getGeoJSON(url).then(response => {
-          this.loadLayerSquadri(response.data)
-        })
+          this.loadDataSquadri(response.data);
+        });
       }
     },
-    loadLayerSquadri(data) {
+    loadDataSquadri(data) {
       if (GV.app.map.getLayerByName('SelezioneSquadri')) {
-        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneSquadri'))
+        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneSquadri'));
       }
 
       const filteredFeatures = data.features.filter(feature => {
         const filter = this.config.fogli.filter(foglio => {
-          const codice = feature.properties.COD_SQUADRO || feature.properties.cod_squadro
-          return foglio.codice === codice
-        })
-        return filter.length > 0
-      })
-      data.features = filteredFeatures
+          const codice = feature.properties.COD_SQUADRO || feature.properties.cod_squadro;
+          return foglio.codice === codice;
+        });
+        return filter.length > 0;
+      });
+      data.features = filteredFeatures;
 
-      GV.app.map.loadLayers([
-        {
-          name: 'SelezioneSquadri',
-          type: 'JSON',
-          style: {
-            color: '#ffcc00',
-            fillOpacity: 0,
-            weight: 1,
-            opacity: 0,
-          },
-          visible: true,
-          data: data,
-          onEachFeature: (feature, layer) => {
-            layer.on('click', ev => {
-              if (this.selezioneTerritoriale !== 3) {
-                return
-              }
-              const codice = feature.properties.COD_SQUADRO || feature.properties.cod_squadro
-              if (this.fogli.indexOf(codice) > -1) {
-                this.fogli = this.fogli.filter(item => item !== codice)
-              } else {
-                this.fogli.push(codice)
-              }
-            })
-          },
-        },
-      ])
-      this.changeSelezioneTerritoriale(this.selezioneTerritoriale, true)
-    },
-    addLayerMacrobacini() {
-      let selMacrobacini = false
-      this.config.formati.forEach(formato => {
-        formato.selezioneTerritoriale.forEach(selTerr => {
-          if (selTerr.codice === 5) {
-            selMacrobacini = true
-          }
-        })
-      })
-      if (selMacrobacini) {
-        const baseUrl = `${globals.DEFAULT_PROXY}http://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`
-        const url = `${baseUrl}${this.config.livelloMacrobacini}`
-        getGeoJSON(url).then(response => {
-          this.loadLayerMacrobacini(response.data)
-        })
-      }
-    },
-    loadLayerMacrobacini(data) {
-      if (GV.app.map.getLayerByName('SelezioneMacrobacino')) {
-        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneMacrobacino'))
-      }
+      this.layerFogli = data;
 
-      this.macrobacini = data.features.map(feature => {
-        return {
-          codice: feature.properties.NUM_AMB || feature.properties.num_amb,
-          nome: feature.properties.NOME_AMB || feature.properties.nome_amb,
-        }
-      })
-      GV.app.map.loadLayers([
-        {
-          name: 'SelezioneMacrobacino',
-          type: 'JSON',
-          style: {
-            color: '#ffcc00',
-            fillOpacity: 0,
-            weight: 1,
-            opacity: 0,
-          },
-          visible: true,
-          data: data,
-          onEachFeature: (feature, layer) => {
-            layer.on('click', ev => {
-              if (this.selezioneTerritoriale !== 5) {
-                return
-              }
-              const codice = feature.properties.NUM_AMB || feature.properties.num_amb
-              this.macrobacino = codice
-            })
-          },
-        },
-      ])
-      this.changeSelezioneTerritoriale(this.selezioneTerritoriale, true)
+      this.changeSelezioneTerritoriale(this.selezioneTerritoriale, true);
     },
 
     addLayerComuni() {
-      let selComune = false
+      let selComune = false;
+      if (!this.config.formati) return;
       this.config.formati.forEach(formato => {
         formato.selezioneTerritoriale.forEach(selTerr => {
           if (selTerr.codice === 2) {
-            selComune = true
+            selComune = true;
           }
-        })
-      })
+        });
+      });
       if (selComune) {
-        const baseUrl = `${globals.DEFAULT_PROXY}http://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`
-        const url = `${baseUrl}${this.config.livelloComuni}`
+        const baseUrl = `${globals.DEFAULT_PROXY}https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`;
+        const url = `${baseUrl}${this.config.livelloComuni}`;
         getGeoJSON(url).then(response => {
-          this.loadLayerComuni(response.data)
-        })
+          this.loadDataComuni(response.data);
+        });
       }
     },
-    loadLayerComuni(data) {
+    loadDataComuni(data) {
       if (GV.app.map.getLayerByName('SelezioneComune')) {
-        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneComune'))
+        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneComune'));
       }
 
-      this.comuni = data.features.map(feature => {
+      if (!data.features) {
+        console.error('Layer Comuni con caricato');
+        return;
+      }
+      this.comuni = data.features
+        .map(feature => {
+          return {
+            codice: feature.properties.CODICE_COMUNE || feature.properties.codice_comune,
+            nome: feature.properties.NOME_COMUNE || feature.properties.nome_comune,
+          };
+        })
+        .sort(function(a, b) {
+          if (a.nome < b.nome) {
+            return -1;
+          }
+          if (a.nome > b.nome) {
+            return 1;
+          }
+          return 0;
+        });
+
+      this.layerComuni = data;
+
+      this.changeSelezioneTerritoriale(this.selezioneTerritoriale, true);
+    },
+
+    addLayerMacrobacini() {
+      let selMacrobacini = false;
+      if (!this.config.formati) return;
+      this.config.formati.forEach(formato => {
+        formato.selezioneTerritoriale.forEach(selTerr => {
+          if (selTerr.codice === 5) {
+            selMacrobacini = true;
+          }
+        });
+      });
+      if (selMacrobacini) {
+        const baseUrl = `${globals.DEFAULT_PROXY}https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`;
+        const url = `${baseUrl}${this.config.livelloMacrobacini}`;
+        getGeoJSON(url).then(response => {
+          this.loadDataMacrobacini(response.data);
+        });
+      }
+    },
+    loadDataMacrobacini(data) {
+      if (GV.app.map.getLayerByName('SelezioneMacrobacino')) {
+        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneMacrobacino'));
+      }
+      this.macrobacini = data.features.map(feature => {
         return {
-          codice: feature.properties.CODICE_COMUNE || feature.properties.codice_comune,
-          nome: feature.properties.NOME_COMUNE || feature.properties.nome_comune,
-        }
-      })
-      GV.app.map.loadLayers([
-        {
-          name: 'SelezioneComune',
-          type: 'JSON',
-          style: {
-            color: '#ffcc00',
-            fillOpacity: 0,
-            weight: 1,
-            opacity: 0,
-          },
-          visible: true,
-          data: data,
-          onEachFeature: (feature, layer) => {
-            layer.on('click', ev => {
-              if (this.selezioneTerritoriale !== 2) {
-                return
-              }
-              const codice = feature.properties.CODICE_COMUNE || feature.properties.codice_comune
-              this.comune = codice
-            })
-          },
-        },
-      ])
-      this.changeSelezioneTerritoriale(this.selezioneTerritoriale, true)
+          codice: feature.properties.COD_MB || feature.properties.cod_mb,
+          nome: feature.properties.NOM_MB || feature.properties.nom_mb,
+        };
+      });
+      this.layerMacrobacini = data;
+      this.changeSelezioneTerritoriale(this.selezioneTerritoriale, true);
     },
 
     downloadURI(url) {
@@ -484,52 +575,52 @@ export default {
       // link.download = 'download-link'
       // link.href = url
       // link.click()
-
-      var link = document.createElement('a')
-      link.setAttribute('target', '_blank')
-      document.body.appendChild(link)
-      link.href = url
-      link.click()
+      var link = document.createElement('a');
+      link.setAttribute('target', '_blank');
+      document.body.appendChild(link);
+      link.href = url;
+      link.click();
     },
     validateEmail(email) {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      return re.test(email)
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
     },
     submit() {
       // CONTROLLI
       if (!this.codCliente) {
-        this.notification('Indicare Indirizzo Email')
-        return
+        notification('Indicare Indirizzo Email');
+        return;
       }
       if (!this.validateEmail(this.codCliente)) {
-        this.notification('Indirizzo Email non valido')
-        return
+        notification('Indirizzo Email non valido');
+        return;
       }
+
       if (this.config.flagDownloadLivello && !this.livello) {
-        this.notification('Selezionare un livello dalla lista')
-        return
+        notification('Selezionare un livello dalla lista');
+        return;
       }
       if (this.selezioneTerritoriale === 1 && !this.bbox) {
-        this.notification('Disegnare un rettangolo sulla mappa')
-        return
+        notification('Disegnare un rettangolo sulla mappa');
+        return;
       }
       if (this.selezioneTerritoriale === 2 && !this.bbox) {
-        this.notification('Selezionare un comune dalla lista')
-        return
+        notification('Selezionare un comune dalla lista');
+        return;
       }
       if (this.selezioneTerritoriale === 3 && this.fogli.length === 0) {
-        this.notification('Selezionare i fogli di interesse dalla lista o sulla mappa')
-        return
+        notification('Selezionare i fogli di interesse dalla lista o sulla mappa');
+        return;
       }
       if (this.selezioneTerritoriale === 5 && !this.macrobacino) {
-        this.notification('Selezionare un macrobacino dalla lista o sulla mappa')
-        return
+        notification('Selezionare un macrobacino dalla lista o sulla mappa');
+        return;
       }
 
       //TODO gestione download statico
       if (this.config.flagDownloadStatico) {
-        this.downloadStatico()
-        return
+        this.downloadStatico();
+        return;
       }
 
       const data = {
@@ -542,228 +633,320 @@ export default {
         fogli: this.fogli.join(','),
         codTema: this.codTema || '',
         utente_registrato: 'N',
+        flagDownloadSincrono: this.config.flagDownloadSincrono,
         test: false,
-      }
-      // console.log(data); return;
+      };
       insertRichiestaDownload(data).then(resp => {
-        if (resp.success) {
-          this.notification(
-            `<p>Inserita richiesta numero: ${resp.data.idRichiesta}.</p> <p>Al termine della elaborazione l'esito verrà comunicato via mail</p>`,
-            'info'
-          )
-        }
-        this.cleanUp()
-      })
+        this.isSyncDownload() ? this.showSyncPanel(resp) : this.sendNotification(resp);
+        // this.showSyncPanel(resp);
+      });
+    },
+    isSyncDownload() {
+      if (this.config.flagDownloadSincrono) return true;
+
+      if (!this.bbox && !this.codTema) {
+        const cached = this.cachedRequests.filter(cache => {
+          return (
+            cache.codiceCatalogo.toString() === this.idMap &&
+            cache.crsOut.toString() === this.sistemaCoordinate &&
+            cache.formato === this.formato
+          );
+        });
+        if (cached && cached.length > 0) return true;
+      }
+
+      return false;
+    },
+    showSyncPanel(resp) {
+      mountComponent({
+        elId: 'gv-download-sincrono-panel',
+        containerId: GV.config.containerId,
+        vm: new Vue({
+          template: `<gv-download-sincrono-panel v-draggable :idRichiesta="idRichiesta"></gv-download-sincrono-panel>`,
+          data: {
+            idRichiesta: resp.data.idRichiesta,
+          },
+        }),
+      });
+    },
+    sendNotification(resp) {
+      if (resp.success) {
+        notification(
+          `<p>Inserita richiesta numero: ${resp.data.idRichiesta}.</p> <p>Al termine della elaborazione l'esito verrà comunicato via mail</p>`,
+          'info'
+        );
+        const me = this;
+        setTimeout(function() {
+          me.cleanUp();
+        }, 5000);
+      } else {
+        notification(`<p>Errore inserimento richiesta: ${resp.message}.</p>`, 'error');
+      }
     },
     downloadStatico() {
-      // <ROOT>/<MAPPA>/<LIVELLO>/<FORMATO>/<CRS>/<TIPO_SEL_TERR>/<NOME_FILE>.zip
-      const baseUrl = 'http://cartodownloadpubb.regione.liguria.it/webpubb/geoservices/download/repository_statico/mappe_statiche'
-      let url = `${baseUrl}/${this.idMap}/${this.formato}/${this.sistemaCoordinate}/${this.selezioneTerritoriale}/`
+      const baseUrl = 'https://geoservizi.regione.liguria.it/dtuff/download_statico/';
+      let url = `${baseUrl}/${this.idMap}/${this.formato}/${this.sistemaCoordinate}/${this.selezioneTerritoriale}/`;
+      console.log(url);
       if (this.config.flagDownloadLivello) {
-        url += `${this.livello}/`
+        // url += `${this.livello}/`;
+        // TODO CASE 3 (FOGLI) - DOWNLOAD MULTIPLI
+        switch (this.selezioneTerritoriale) {
+          case 0:
+            url += `${this.livello}.zip`;
+            break;
+          case 2:
+            url += `${this.livello}_${this.comune}.zip`;
+            break;
+          case 5:
+            url += `${this.livello}_${this.macrobacino}.zip`;
+            break;
+        }
       }
-      let elementoTerritoriale
-      if (this.selezioneTerritoriale === 5) {
-        elementoTerritoriale = this.macrobacino
-        url += `${elementoTerritoriale}.zip`
-        this.downloadURI(url)
-      }
-      if (this.selezioneTerritoriale === 3) {
-        this.fogli.forEach(foglio => {
-          elementoTerritoriale = foglio
-          url += `${elementoTerritoriale}.zip`
-          this.downloadURI(url)
-        })
-      }
+
+      this.downloadURI(url);
     },
     cancel() {
-      this.cleanUp()
+      this.cleanUp();
     },
     cleanUp() {
       // imposto cookies
-      this.$cookie.set('codCliente', this.codCliente, '1Y')
-      this.$cookie.set('formato', this.formato, '1Y')
-      this.$cookie.set('selezioneTerritoriale', this.selezioneTerritoriale, '1Y')
-      this.$cookie.set('sistemaCoordinate', this.sistemaCoordinate, '1Y')
-      this.$cookie.set('codTema', this.codTema, '1Y')
+      this.$cookie.set('codCliente', this.codCliente, '1Y');
+      this.$cookie.set('formato', this.formato, '1Y');
+      this.$cookie.set('selezioneTerritoriale', this.selezioneTerritoriale, '1Y');
+      this.$cookie.set('sistemaCoordinate', this.sistemaCoordinate, '1Y');
+      //this.$cookie.set('codTema', this.codTema, '1Y')
 
-      // rimuovo livello squadri
+      // rimuovo livelli selezione
       if (GV.app.map.getLayerByName('SelezioneSquadri')) {
-        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneSquadri'))
+        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneSquadri'));
+      }
+      if (GV.app.map.getLayerByName('SelezioneComune')) {
+        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneComune'));
       }
       if (GV.app.map.getLayerByName('SelezioneMacrobacino')) {
-        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneMacrobacino'))
+        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneMacrobacino'));
       }
 
       // rimuovo livello selezione libera
       if (GV.app.map.drawRectangle) {
-        GV.app.map.drawRectangle.disable()
+        GV.app.map.drawRectangle.disable();
       }
       if (this.drawnRectangle) {
-        this.drawnRectangle.clearLayers()
+        this.drawnRectangle.clearLayers();
       }
+
+      // Riattivo controllo
+      GV.config.activeControl.activate();
 
       // rimuovo pannello download
       // console.log(this.closeWindow)
       if (this.closeWindow === 'true') {
-        window.close()
+        window.close();
       } else {
-        document.getElementById('gv-map-download').parentNode.removeChild(document.getElementById('gv-map-download'))
+        const dlPanel = document.getElementById('gv-map-download');
+        if (dlPanel) {
+          dlPanel.parentNode.removeChild(dlPanel);
+        }
       }
     },
     changeFormat(codFormato) {
       const selTerr = this.config.formati
         .filter(formato => {
-          return formato.cod_formato === codFormato
+          return formato.cod_formato === codFormato;
         })[0]
         .selezioneTerritoriale.filter(sel => {
-          return sel.codice !== 4
-        })
+          return sel.codice !== 4;
+        });
 
-      this.config.selezioneTerritoriale = selTerr
+      this.config.selezioneTerritoriale = selTerr;
 
       const selTerrCached = selTerr.filter(sel => {
-        return sel.codice == this.$cookie.get('selezioneTerritoriale')
-      })
+        return sel.codice == this.$cookie.get('selezioneTerritoriale');
+      });
 
-      this.selezioneTerritoriale = selTerrCached.length > 0 ? selTerrCached[0].codice : selTerr[0].codice
-
-      this.changeSelezioneTerritoriale(this.selezioneTerritoriale)
+      this.selezioneTerritoriale =
+        selTerrCached.length > 0 ? selTerrCached[0].codice : selTerr[0].codice;
+      this.changeSelezioneTerritoriale(this.selezioneTerritoriale);
 
       if (codFormato === 'KML') {
-        this.sistemaCoordinate = '4326'
+        this.sistemaCoordinate = '4326';
         this.config.sistemiCoordinate = [
           {
             epsg_code: '4326',
             proj_descr: 'WGS84 - Coordinate Geografiche',
           },
-        ]
+        ];
       } else {
-        this.config.sistemiCoordinate = this.sistemiCoordinate
+        this.config.sistemiCoordinate = this.sistemiCoordinate;
         const isCached =
           this.sistemiCoordinate.filter(sis => {
-            return sis.epsg_code == this.$cookie.get('sistemaCoordinate')
-          }).length > 0
-        this.sistemaCoordinate = isCached ? this.$cookie.get('sistemaCoordinate') : '3003'
+            return sis.epsg_code == this.$cookie.get('sistemaCoordinate');
+          }).length > 0;
+        this.sistemaCoordinate = isCached ? this.$cookie.get('sistemaCoordinate') : '3003';
       }
     },
     rectReset() {
       if (this.drawnRectangle) {
-        this.drawnRectangle.clearLayers()
+        this.drawnRectangle.clearLayers();
       }
       if (GV.app.map.drawRectangle) {
-        GV.app.map.drawRectangle.disable()
-        GV.app.map.drawRectangle.enable()
+        GV.app.map.drawRectangle.disable();
+        GV.app.map.drawRectangle.enable();
       }
     },
     changeSelezioneTerritoriale(codice, silent) {
-      this.comune = null
-      this.bbox = null
-      this.fogli = []
+      this.comune = null;
+      this.bbox = null;
+      this.fogli = [];
 
       if (codice === 1 || codice === 2 || codice === 3 || codice === 5) {
-        GV.config.activeControl.deactivate()
+        GV.config.activeControl.deactivate();
       } else {
-        GV.config.activeControl.activate()
+        GV.config.activeControl.activate();
       }
 
       if (codice === 1) {
-        this.notification('Selezionare un rettangolo sulla mappa', 'info')
+        notification('Selezionare un rettangolo sulla mappa');
         // console.log(this.drawnRectangle)
         if (!GV.app.map.drawRectangle) {
-          GV.app.map.addHandler('drawRectangle', L.Draw.Rectangle)
+          GV.app.map.addHandler('drawRectangle', L.Draw.Rectangle);
         }
-        GV.app.map.drawRectangle.enable()
+        GV.app.map.drawRectangle.enable();
         GV.app.map.on(L.Draw.Event.CREATED, event => {
-          this.drawnRectangle.addLayer(event.layer)
-          const xMin = event.layer.getBounds()._southWest.lng
-          const yMin = event.layer.getBounds()._southWest.lat
-          const xMax = event.layer.getBounds()._northEast.lng
-          const yMax = event.layer.getBounds()._northEast.lat
-          this.bbox = `${xMin},${yMin},${xMax},${yMin},${xMax},${yMax},${xMin},${yMax},${xMin},${yMin}`
-          this.bboxSRS = '4326'
-          this.showRectReset = true
-        })
+          this.drawnRectangle.addLayer(event.layer);
+          const xMin = event.layer.getBounds()._southWest.lng;
+          const yMin = event.layer.getBounds()._southWest.lat;
+          const xMax = event.layer.getBounds()._northEast.lng;
+          const yMax = event.layer.getBounds()._northEast.lat;
+          this.bbox = `${xMin},${yMin},${xMax},${yMin},${xMax},${yMax},${xMin},${yMax},${xMin},${yMin}`;
+          this.bboxSRS = '4326';
+          this.showRectReset = true;
+        });
       } else {
         if (GV.app.map.drawRectangle) {
-          GV.app.map.drawRectangle.disable()
+          GV.app.map.drawRectangle.disable();
         }
         if (this.drawnRectangle) {
-          this.drawnRectangle.clearLayers()
+          this.drawnRectangle.clearLayers();
         }
-        this.showRectReset = false
+        this.showRectReset = false;
       }
 
-      const layerSquadri = GV.app.map.getLayerByName('SelezioneSquadri')
+      // Selezione per fogli
       if (codice === 3) {
-        if (!silent) this.notification('Selezionare un foglio sulla mappa o dalla lista', 'info')
-        if (layerSquadri) {
-          layerSquadri.eachLayer(layer => {
-            layer.setStyle({ opacity: 1 })
-          })
-        }
+        GV.app.map.loadLayers([
+          {
+            name: 'SelezioneSquadri',
+            type: 'JSON',
+            style: {
+              color: '#ffcc00',
+              fillOpacity: 0,
+              weight: 1,
+              opacity: 1,
+            },
+            visible: true,
+            data: this.layerFogli,
+            onEachFeature: (feature, layer) => {
+              console.log('SelezioneSquadri');
+              layer.on('click', ev => {
+                if (this.selezioneTerritoriale !== 3) {
+                  return;
+                }
+                const codice = feature.properties.COD_SQUADRO || feature.properties.cod_squadro;
+                if (this.fogli.indexOf(codice) > -1) {
+                  this.fogli = this.fogli.filter(item => item !== codice);
+                } else {
+                  this.fogli.push(codice);
+                }
+              });
+            },
+          },
+        ]);
+        if (!silent) notification('Selezionare un foglio sulla mappa o dalla lista');
       } else {
+        const layerSquadri = GV.app.map.getLayerByName('SelezioneSquadri');
         if (layerSquadri) {
-          layerSquadri.eachLayer(layer => {
-            layer.setStyle({ opacity: 0, fillOpacity: 0 })
-          })
+          GV.app.map.removeLayer(layerSquadri);
         }
       }
 
-      const layerMacrobacini = GV.app.map.getLayerByName('SelezioneMacrobacino')
+      // Selezione per macrobacino
       if (codice === 5) {
-        if (!silent) this.notification('Selezionare un macrobacino sulla mappa o dalla lista', 'info')
-        if (layerMacrobacini) {
-          layerMacrobacini.eachLayer(layer => {
-            layer.setStyle({ opacity: 1 })
-          })
-        }
+        GV.app.map.loadLayers([
+          {
+            name: 'SelezioneMacrobacino',
+            type: 'JSON',
+            style: {
+              color: '#ffcc00',
+              fillOpacity: 0,
+              weight: 1,
+              opacity: 1,
+            },
+            visible: true,
+            data: this.layerMacrobacini,
+            onEachFeature: (feature, layer) => {
+              layer.on('click', ev => {
+                if (this.selezioneTerritoriale !== 5) {
+                  return;
+                }
+                const codice = feature.properties.COD_MB || feature.properties.cod_mb;
+                this.macrobacino = codice;
+              });
+            },
+          },
+        ]);
+        if (!silent) notification('Selezionare un macrobacino sulla mappa o dalla lista');
       } else {
+        const layerMacrobacini = GV.app.map.getLayerByName('SelezioneMacrobacino');
+
         if (layerMacrobacini) {
-          layerMacrobacini.eachLayer(layer => {
-            layer.setStyle({ opacity: 0, fillOpacity: 0 })
-          })
+          GV.app.map.removeLayer(layerMacrobacini);
         }
       }
 
-      const layerComuni = GV.app.map.getLayerByName('SelezioneComune')
+      // Selezione per comune
       if (codice === 2) {
-        if (!silent) this.notification('Selezionare un comune sulla mappa o dalla lista', 'info')
-        if (layerComuni) {
-          layerComuni.eachLayer(layer => {
-            layer.setStyle({ opacity: 1 })
-          })
-        }
+        GV.app.map.loadLayers([
+          {
+            name: 'SelezioneComune',
+            type: 'JSON',
+            style: {
+              color: '#ffcc00',
+              fillOpacity: 0,
+              weight: 1,
+              opacity: 1,
+            },
+            visible: true,
+            data: this.layerComuni,
+            onEachFeature: (feature, layer) => {
+              layer.on('click', ev => {
+                if (this.selezioneTerritoriale !== 2) {
+                  return;
+                }
+                const codice = feature.properties.CODICE_COMUNE || feature.properties.codice_comune;
+                this.comune = codice;
+              });
+            },
+          },
+        ]);
+        if (!silent) notification('Selezionare un comune sulla mappa o dalla lista');
       } else {
+        const layerComuni = GV.app.map.getLayerByName('SelezioneComune');
         if (layerComuni) {
-          layerComuni.eachLayer(layer => {
-            layer.setStyle({ opacity: 0, fillOpacity: 0 })
-          })
+          GV.app.map.removeLayer(layerComuni);
         }
       }
     },
     collapse: function(event) {
       if (this.show) {
-        document.getElementById('gv-map-download-body').style.display = 'none'
+        document.getElementById('gv-map-download-body').style.display = 'none';
       } else {
-        document.getElementById('gv-map-download-body').style.display = 'block'
+        document.getElementById('gv-map-download-body').style.display = 'block';
       }
-      this.show = !this.show
-    },
-    notification(message, type) {
-      const title = type === 'info' ? '' : 'Attenzione'
-      Notification({
-        title: title,
-        type: type || 'error',
-        duration: 5000,
-        offset: 70,
-        dangerouslyUseHTMLString: true,
-        position: 'bottom-left',
-        message: message,
-      })
+      this.show = !this.show;
     },
   },
-}
+};
 </script>
 
 <style scoped>

@@ -1,22 +1,32 @@
 <template>
   <div class="multi-legend" id="gv-multi-legend-panel">
-    <gv-title v-if="title" v-draggable :title="title" :noClose="noClose" :divId="'gv-multi-legend-panel'"></gv-title>
-    <gv-iframe-panel class="gv-iframe-panel" visible="true" :src="src" :html="html" :height="height" :width="width" ></gv-iframe-panel>
+    <gv-title
+      v-if="title"
+      v-draggable
+      :title="title"
+      :noClose="noClose"
+      :divId="'gv-multi-legend-panel'"
+    ></gv-title>
+    <gv-iframe-panel
+      class="gv-iframe-panel"
+      visible="true"
+      :src="src"
+      :height="height"
+      :width="width"
+    ></gv-iframe-panel>
   </div>
 </template>
 
-
 <script>
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default {
   name: 'gv-multi-legend-panel',
-  props: ['title', 'html', 'src', 'visible', 'title', 'width', 'height', 'noClose'],
-}
+  props: ['title', 'src', 'visible', 'title', 'width', 'height', 'noClose'],
+};
 </script>
 
 <style scoped>
-
 .multi-legend {
   position: absolute;
   margin-top: 54px;

@@ -1,0 +1,21 @@
+body {
+  font-family: 'Raleway', Arial, sans-serif !important;
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+  overflow: hidden;
+  height: 100%;
+  position: static;
+  background: #24386c;
+}
+
+.cluster {
+  background-image: url(../../../static/img/gas/strutture-clstr.png);
+  text-align: center;
+  font-size: 16px;
+  color: white;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+}
