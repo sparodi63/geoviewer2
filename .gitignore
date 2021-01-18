@@ -1,5 +1,3 @@
 .svn/** 
 .svn/wc.db
 cypress/videos/**
-cypress/**/**
-cypress/**

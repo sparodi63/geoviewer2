@@ -1,3 +1,3 @@
 git stage .
-git commit -m "Automatic Commit"
+git commit -m "%1"
 git push origin master
