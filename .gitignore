@@ -1,3 +1,5 @@
 .svn/** 
 .svn/wc.db
 cypress/videos/**
+dist/static/**
+dist/stats-report.txt
