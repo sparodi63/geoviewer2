@@ -32,7 +32,7 @@ export default {
   maps: [],
   hilitedLayer: [],
 
-  init(options) {
+  async init(options) {
     if (!options) {
       throw new Error('Opzioni di inizializzazione non impostate!');
     }
@@ -43,7 +43,6 @@ export default {
     this.zoomTo = options.zoomTo;
     this.disableTMS = options.disableTMS;
     this.disableCache = options.disableCache;
-    this.geoserverUrl = options.geoserverUrl;
     this.flagGeoserver = options.flagGeoserver;
     this.agAppMap = options.agAppMapList;
 
@@ -71,13 +70,12 @@ export default {
     this.initLoadingMaps = 1;
 
     if (options.agAppMapList) {
-      getAgAppListaMappe(options.agAppMapList).then(data => {
-        this.agAppMapList = data;
-        const idMaps = data.map(map => {
-          return map.id;
-        });
-        this.loadMaps(idMaps);
+      const appMappList = await getAgAppListaMappe(options.agAppMapList);
+      this.agAppMapList = appMappList;
+      const idMaps = appMappList.map(map => {
+        return map.id;
       });
+      this.loadMaps(idMaps);
     }
 
     if (options.idMap) {
@@ -304,51 +302,48 @@ export default {
     }
   },
 
-  addRlMap(idMap, setBaseLayer, skipConferma) {
+  async addRlMap(idMap, setBaseLayer, skipConferma) {
     if (this.getMapConfig(idMap)) {
       return this.getMapConfig(idMap);
     }
-    getConfig(idMap)
-      .then(response => {
-        if (!response.data.success) {
-          throw new Error('Errore Caricamento Mappa: ' + response.data.message);
-        }
-        if (!response.data.data) {
-          throw new Error('Errore Caricamento Mappa: configurazione non trovata');
-        }
 
-        globals.SYS_MANUTENZIONE_DOWNLOAD =
-          response.data.sistema && response.data.sistema.manutenzioneDownload;
+    try {
+      const response = await getConfig(idMap);
+      if (!response.data.success) {
+        throw new Error('Errore Caricamento Mappa: ' + response.data.message);
+      }
+      if (!response.data.data) {
+        throw new Error('Errore Caricamento Mappa: configurazione non trovata');
+      }
 
-        const mapConfig = response.data.data;
+      globals.SYS_MANUTENZIONE_DOWNLOAD =
+        response.data.sistema && response.data.sistema.manutenzioneDownload;
 
-        if (mapConfig.fileDettaglio && !skipConferma) {
-          const label = 'Condizioni di utilizzo';
-          mountComponent({
-            elId: 'gv-conferma-dettaglio',
-            containerId: this.containerId,
-            vm: new Vue({
-              template: `<gv-conferma-dettaglio idMap="${idMap}" label="${label}" link="${mapConfig.fileDettaglio}"></gv-conferma-dettaglio>`,
-            }),
-          });
-        } else {
-          this.loadConfig(mapConfig, setBaseLayer);
-        }
-        // this.loadConfig(mapConfig, setBaseLayer)
-
-        return mapConfig;
-      })
-      .catch(error => {
-        console.error(error);
-        Notification.error({
-          title: 'Attenzione',
-          type: 'error',
-          duration: 5000,
-          offset: 70,
-          position: 'bottom-left',
-          message: error.message,
+      const mapConfig = response.data.data;
+      if (mapConfig.fileDettaglio && !skipConferma) {
+        const label = 'Condizioni di utilizzo';
+        mountComponent({
+          elId: 'gv-conferma-dettaglio',
+          containerId: this.containerId,
+          vm: new Vue({
+            template: `<gv-conferma-dettaglio idMap="${idMap}" label="${label}" link="${mapConfig.fileDettaglio}"></gv-conferma-dettaglio>`,
+          }),
         });
+      } else {
+        this.loadConfig(mapConfig, setBaseLayer);
+      }
+      return mapConfig;
+    } catch (error) {
+      console.error(error);
+      Notification.error({
+        title: 'Attenzione',
+        type: 'error',
+        duration: 5000,
+        offset: 70,
+        position: 'bottom-left',
+        message: error.message,
       });
+    }
   },
 
   loadConfig(mapConfig, setBaseLayer) {
@@ -396,7 +391,7 @@ export default {
       GV.eventBus.$emit('gv-config-init', GV.app);
     }
   },
-  zoomToCoord(zoomConfig) {
+  async zoomToCoord(zoomConfig) {
     if (!zoomConfig.coord) {
       console.error('Parametro COORD non impostato');
       return;
@@ -415,18 +410,16 @@ export default {
         text: 'Ricerca...',
         background: 'rgba(0, 0, 0, 0.8)',
       });
-
-      getCoordTransform(zoomConfig.epsg, '4326', x, y).then(response => {
-        loading.close();
-        if (response.data.points) {
-          const lon = response.data.points[0].split(',')[0];
-          const lat = response.data.points[0].split(',')[1];
-          GV.app.map.addMarker({
-            location: [lat, lon],
-            zoomLevel: zoomConfig.zoom,
-          });
-        }
-      });
+      let response = await getCoordTransform(zoomConfig.epsg, '4326', x, y);
+      if (response.data.points) {
+        const lon = response.data.points[0].split(',')[0];
+        const lat = response.data.points[0].split(',')[1];
+        GV.app.map.addMarker({
+          location: [lat, lon],
+          zoomLevel: zoomConfig.zoom,
+        });
+      }
+      loading.close();
     } else {
       GV.app.map.addMarker({
         location: [y, x],
@@ -434,23 +427,23 @@ export default {
       });
     }
   },
-  loadCatalog(params) {
-    getCatalog(params).then(data => {
-      this.catalog = this.catalogFull = data.children;
-      getEnti().then(data => {
-        this.enti = data;
-        if (params.showMapCatalogPanel) {
-          // Mount Pannello
-          mountComponent({
-            elId: 'gv-map-catalog-panel',
-            toggleEl: false,
-            vm: new Vue({
-              template: `<gv-map-catalog-panel></gv-map-catalog-panel>`,
-            }),
-          });
-        }
+  async loadCatalog(params) {
+    const catalog = await getCatalog(params);
+    this.catalog = this.catalogFull = catalog.children;
+
+    const enti = await getEnti();
+    this.enti = enti;
+
+    if (params.showMapCatalogPanel) {
+      // Mount Pannello
+      mountComponent({
+        elId: 'gv-map-catalog-panel',
+        toggleEl: false,
+        vm: new Vue({
+          template: `<gv-map-catalog-panel></gv-map-catalog-panel>`,
+        }),
       });
-    });
+    }
   },
 
   getLayersConfig(filter) {

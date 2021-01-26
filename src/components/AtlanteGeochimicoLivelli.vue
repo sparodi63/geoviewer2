@@ -1,9 +1,8 @@
 <template>
   <div class="atlante-geochimico gv-color-scheme">
-    <!-- TODO METTERE TITOLO -->
-    <!-- <div id="gv-legend-title" class="gv-legend-title gv-color-scheme">
+    <div id="gv-legend-title" class="gv-legend-title gv-color-scheme">
       TITOLO
-    </div> -->
+    </div>
     <el-select placeholder="Seleziona Livello" v-model="livello" size="mini" @change="onChange">
       <el-option v-for="item in livelli" :key="item.id" :value="item.id" :label="item.title">
         <span style="font-size: 16px">{{ item.title }}</span>
@@ -22,8 +21,6 @@ import getConfig from '../services/getAtlanteGeochimicoConfig';
 import InfoWmsManager from '../controls/InfoWmsManager';
 import getFeatureInfo from '../services/getFeatureInfo';
 Vue.component('gv-atlante-geochimico-scheda-panel', () => import('./AtlanteGeochimicoScheda.vue'));
-
-// Vue.component("gv-multi-legend-panel", () => import("./MultiLegendPanel.vue"));
 
 export default {
   data() {

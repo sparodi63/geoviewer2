@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export default function() {
   const url = GV.globals.ATLANTE_GEOCHIMICO_CONFIG_URL;

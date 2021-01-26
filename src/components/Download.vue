@@ -410,10 +410,6 @@ export default {
       }
     },
     setConfig() {
-      // if (GV.config.getMapConfig(this.idMap) && !GV.config.getMapConfig(this.idMap).flagDownload) {
-      //   notification('Mappa non scaricabile')
-      //   this.removePanel()
-      // }
       if (GV.config.getMapConfig(this.idMap) && GV.config.getMapConfig(this.idMap).downloadConfig) {
         this.config = GV.config.getMapConfig(this.idMap).downloadConfig;
         this.sistemiCoordinate = this.config.sistemiCoordinate;
@@ -617,12 +613,10 @@ export default {
         return;
       }
 
-      //TODO gestione download statico
       if (this.config.flagDownloadStatico) {
         this.downloadStatico();
         return;
       }
-
       const data = {
         codCliente: this.codCliente,
         codCatalogo: this.idMap,
@@ -633,7 +627,7 @@ export default {
         fogli: this.fogli.join(','),
         codTema: this.codTema || '',
         utente_registrato: 'N',
-        flagDownloadSincrono: this.config.flagDownloadSincrono,
+        flagDownloadSincrono: this.isSyncDownload() ? 'S' : 'N',
         test: false,
       };
       insertRichiestaDownload(data).then(resp => {

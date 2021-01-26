@@ -160,7 +160,7 @@ export default {
         utente_registrato: 'N',
         test: false,
         tipologia: 'CWN2',
-        flagDownloadSincrono: false,
+        flagDownloadSincrono: 'N',
       };
       // console.log(data)
       // return

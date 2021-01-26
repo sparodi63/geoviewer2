@@ -49,7 +49,11 @@
           </div>
         </div>
         <!-- LIVELLI -->
-        <gv-legend-layers :map="map" :options="options"></gv-legend-layers>
+        <gv-legend-layers
+          v-show="showMapLayers(map)"
+          :map="map"
+          :options="options"
+        ></gv-legend-layers>
       </ul>
     </div>
   </div>
@@ -91,6 +95,9 @@ export default {
     }
   },
   methods: {
+    showMapLayers(map) {
+      return map.showLayersInLegend;
+    },
     toggleLayers(map) {
       map.showLayersInLegend = !map.showLayersInLegend;
     },

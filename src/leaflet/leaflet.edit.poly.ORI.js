@@ -6,21 +6,20 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
   options: {
     icon: new L.DivIcon({
       iconSize: new L.Point(8, 8),
-      className: "leaflet-div-icon leaflet-editing-icon"
+      className: 'leaflet-div-icon leaflet-editing-icon',
     }),
     touchIcon: new L.DivIcon({
       iconSize: new L.Point(20, 20),
-      className: "leaflet-div-icon leaflet-editing-icon leaflet-touch-icon"
+      className: 'leaflet-div-icon leaflet-editing-icon leaflet-touch-icon',
     }),
     drawError: {
-      color: "#b00b00",
-      timeout: 1000
-    }
+      color: '#b00b00',
+      timeout: 1000,
+    },
   },
 
   // @method intialize(): void
   initialize: function(poly, latlngs, options) {
-    debugger;
     // if touch, switch to touch icon
     if (L.Browser.touch) {
       this.options.icon = this.options.touchIcon;
@@ -28,11 +27,7 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
     this._poly = poly;
 
     if (options && options.drawError) {
-      options.drawError = L.Util.extend(
-        {},
-        this.options.drawError,
-        options.drawError
-      );
+      options.drawError = L.Util.extend({}, this.options.drawError, options.drawError);
     }
 
     this._latlngs = latlngs;
@@ -62,13 +57,11 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
     if (path) {
       if (poly.options.editing.className) {
         if (poly.options.original.className) {
-          poly.options.original.className
-            .split(" ")
-            .forEach(function(className) {
-              L.DomUtil.removeClass(path, className);
-            });
+          poly.options.original.className.split(' ').forEach(function(className) {
+            L.DomUtil.removeClass(path, className);
+          });
         }
-        poly.options.editing.className.split(" ").forEach(function(className) {
+        poly.options.editing.className.split(' ').forEach(function(className) {
           L.DomUtil.addClass(path, className);
         });
       }
@@ -94,15 +87,13 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
 
     if (path) {
       if (poly.options.editing.className) {
-        poly.options.editing.className.split(" ").forEach(function(className) {
+        poly.options.editing.className.split(' ').forEach(function(className) {
           L.DomUtil.removeClass(path, className);
         });
         if (poly.options.original.className) {
-          poly.options.original.className
-            .split(" ")
-            .forEach(function(className) {
-              L.DomUtil.addClass(path, className);
-            });
+          poly.options.original.className.split(' ').forEach(function(className) {
+            L.DomUtil.addClass(path, className);
+          });
         }
       }
     }
@@ -139,8 +130,8 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
 
     for (i = 0, len = latlngs.length; i < len; i++) {
       marker = this._createMarker(latlngs[i], i);
-      marker.on("click", this._onMarkerClick, this);
-      marker.on("contextmenu", this._onContextMenu, this);
+      marker.on('click', this._onMarkerClick, this);
+      marker.on('contextmenu', this._onContextMenu, this);
       this._markers.push(marker);
     }
 
@@ -163,20 +154,20 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
     // Extending L.Marker in TouchEvents.js to include touch.
     var marker = new L.Marker.Touch(latlng, {
       draggable: true,
-      icon: this.options.icon
+      icon: this.options.icon,
     });
 
     marker._origLatLng = latlng;
     marker._index = index;
 
     marker
-      .on("dragstart", this._onMarkerDragStart, this)
-      .on("drag", this._onMarkerDrag, this)
-      .on("dragend", this._fireEdit, this)
-      .on("touchmove", this._onTouchMove, this)
-      .on("touchend", this._fireEdit, this)
-      .on("MSPointerMove", this._onTouchMove, this)
-      .on("MSPointerUp", this._fireEdit, this);
+      .on('dragstart', this._onMarkerDragStart, this)
+      .on('drag', this._onMarkerDrag, this)
+      .on('dragend', this._fireEdit, this)
+      .on('touchmove', this._onTouchMove, this)
+      .on('touchend', this._fireEdit, this)
+      .on('MSPointerMove', this._onTouchMove, this)
+      .on('MSPointerUp', this._fireEdit, this);
 
     this._markerGroup.addLayer(marker);
 
@@ -184,7 +175,7 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
   },
 
   _onMarkerDragStart: function() {
-    this._poly.fire("editstart");
+    this._poly.fire('editstart');
   },
 
   _spliceLatLngs: function() {
@@ -204,22 +195,22 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
     this._updateIndexes(i, -1);
 
     marker
-      .off("dragstart", this._onMarkerDragStart, this)
-      .off("drag", this._onMarkerDrag, this)
-      .off("dragend", this._fireEdit, this)
-      .off("touchmove", this._onMarkerDrag, this)
-      .off("touchend", this._fireEdit, this)
-      .off("click", this._onMarkerClick, this)
-      .off("MSPointerMove", this._onTouchMove, this)
-      .off("MSPointerUp", this._fireEdit, this);
+      .off('dragstart', this._onMarkerDragStart, this)
+      .off('drag', this._onMarkerDrag, this)
+      .off('dragend', this._fireEdit, this)
+      .off('touchmove', this._onMarkerDrag, this)
+      .off('touchend', this._fireEdit, this)
+      .off('click', this._onMarkerClick, this)
+      .off('MSPointerMove', this._onTouchMove, this)
+      .off('MSPointerUp', this._fireEdit, this);
   },
 
   _fireEdit: function() {
     this._poly.edited = true;
-    this._poly.fire("edit");
+    this._poly.fire('edit');
     this._poly._map.fire(L.Draw.Event.EDITVERTEX, {
       layers: this._markerGroup,
-      poly: this._poly
+      poly: this._poly,
     });
   },
 
@@ -233,9 +224,7 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
       marker._middleLeft.setLatLng(this._getMiddleLatLng(marker._prev, marker));
     }
     if (marker._middleRight) {
-      marker._middleRight.setLatLng(
-        this._getMiddleLatLng(marker, marker._next)
-      );
+      marker._middleRight.setLatLng(this._getMiddleLatLng(marker, marker._next));
     }
 
     if (poly.options.poly) {
@@ -245,12 +234,12 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
       if (!poly.options.poly.allowIntersection && poly.intersects()) {
         var originalColor = poly.options.color;
         poly.setStyle({
-          color: this.options.drawError.color
+          color: this.options.drawError.color,
         });
 
         // Manually trigger 'dragend' behavior on marker we are about to remove
         // WORKAROUND: introduced in 1.0.0-rc2, may be related to #4484
-        if (L.version.indexOf("0.7") !== 0) {
+        if (L.version.indexOf('0.7') !== 0) {
           marker.dragging._draggable._onUp(e);
         }
         this._onMarkerClick(e); // Remove violating marker
@@ -258,19 +247,19 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
 
         if (tooltip) {
           tooltip.updateContent({
-            text: L.drawLocal.draw.handlers.polyline.error
+            text: L.drawLocal.draw.handlers.polyline.error,
           });
         }
 
         // Reset everything back to normal after a second
         setTimeout(function() {
           poly.setStyle({
-            color: originalColor
+            color: originalColor,
           });
           if (tooltip) {
             tooltip.updateContent({
               text: L.drawLocal.edit.handlers.edit.tooltip.text,
-              subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext
+              subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext,
             });
           }
         }, 1000);
@@ -282,7 +271,7 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
     var latlngs = this._poly.getLatLngs();
     this._poly._convertLatLngs(latlngs, true);
     this._poly.redraw();
-    this._poly.fire("editdrag");
+    this._poly.fire('editdrag');
   },
 
   _onMarkerClick: function(e) {
@@ -326,15 +315,13 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
     this._poly._map.fire(L.Draw.Event.MARKERCONTEXT, {
       marker: marker,
       layers: this._markerGroup,
-      poly: this._poly
+      poly: this._poly,
     });
     L.DomEvent.stopPropagation;
   },
 
   _onTouchMove: function(e) {
-    var layerPoint = this._map.mouseEventToLayerPoint(
-        e.originalEvent.touches[0]
-      ),
+    var layerPoint = this._map.mouseEventToLayerPoint(e.originalEvent.touches[0]),
       latlng = this._map.layerPointToLatLng(layerPoint),
       marker = e.target;
 
@@ -344,9 +331,7 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
       marker._middleLeft.setLatLng(this._getMiddleLatLng(marker._prev, marker));
     }
     if (marker._middleRight) {
-      marker._middleRight.setLatLng(
-        this._getMiddleLatLng(marker, marker._next)
-      );
+      marker._middleRight.setLatLng(this._getMiddleLatLng(marker, marker._next));
     }
 
     this._poly.redraw();
@@ -373,12 +358,12 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
     marker1._middleRight = marker2._middleLeft = marker;
 
     onDragStart = function() {
-      marker.off("touchmove", onDragStart, this);
+      marker.off('touchmove', onDragStart, this);
       var i = marker2._index;
 
       marker._index = i;
 
-      marker.off("click", onClick, this).on("click", this._onMarkerClick, this);
+      marker.off('click', onClick, this).on('click', this._onMarkerClick, this);
 
       latlng.lat = marker.getLatLng().lat;
       latlng.lng = marker.getLatLng().lng;
@@ -393,13 +378,13 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
       this._updatePrevNext(marker1, marker);
       this._updatePrevNext(marker, marker2);
 
-      this._poly.fire("editstart");
+      this._poly.fire('editstart');
     };
 
     onDragEnd = function() {
-      marker.off("dragstart", onDragStart, this);
-      marker.off("dragend", onDragEnd, this);
-      marker.off("touchmove", onDragStart, this);
+      marker.off('dragstart', onDragStart, this);
+      marker.off('dragend', onDragEnd, this);
+      marker.off('touchmove', onDragStart, this);
 
       this._createMiddleMarker(marker1, marker);
       this._createMiddleMarker(marker, marker2);
@@ -412,10 +397,10 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
     };
 
     marker
-      .on("click", onClick, this)
-      .on("dragstart", onDragStart, this)
-      .on("dragend", onDragEnd, this)
-      .on("touchmove", onDragStart, this);
+      .on('click', onClick, this)
+      .on('dragstart', onDragStart, this)
+      .on('dragend', onDragEnd, this)
+      .on('touchmove', onDragStart, this);
 
     this._markerGroup.addLayer(marker);
   },
@@ -435,5 +420,5 @@ L.Edit.PolyVerticesEdit = L.Handler.extend({
       p2 = map.project(marker2.getLatLng());
 
     return map.unproject(p1._add(p2)._divideBy(2));
-  }
+  },
 });

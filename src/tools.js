@@ -172,6 +172,13 @@ tools.push({
 import GeocoderPelias from './components/GeocoderPelias.vue';
 Vue.component('gv-geocoder-pelias', GeocoderPelias);
 
+// Form RQA
+tools.push({
+  name: 'rqa-livelli',
+});
+import RqaLivelli from './components/RqaLivelli.vue';
+Vue.component('rqa-livelli', RqaLivelli);
+
 // -------------------------------------------------------------------------------- //
 
 export default tools;

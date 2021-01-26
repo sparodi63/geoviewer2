@@ -27,6 +27,15 @@ function getTokenBbox(app) {
   }
 }
 
+var auth = {
+  type: 'S3',
+  options: {
+    s3Token: token,
+    s3TokenType: 'genio',
+    s3TokenProv: null,
+  },
+};
+
 GV.init({
   debug: true,
   idMap: idMap,
@@ -34,12 +43,7 @@ GV.init({
   agAppMapList: null,
   application: {
     name: 'sigmater-gv2',
-    auth: {
-      type: 'NAM',
-      options: {
-        ruolo: 'SIGMATER',
-      },
-    },
+    auth: auth,
     mapOptions: {
       click: 'info',
     },

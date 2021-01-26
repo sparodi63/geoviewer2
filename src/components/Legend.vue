@@ -33,8 +33,9 @@
         title="Mostra Legenda"
       ></button>
     </div>
+    <!-- MAPS -->
     <div id="gv-legend-wrapper" class="gv-legend-wrapper">
-      <gv-legend-maps :options="options"></gv-legend-maps>
+      <gv-legend-maps :maps="maps" :options="options"></gv-legend-maps>
       <div class="gv-legend-footer gv-inverted-color-scheme">
         <gv-base-layer-switcher
           ref="gv-base-layer-switcher"
@@ -66,6 +67,7 @@ export default {
   data() {
     return {
       options: GV.config.application.layout.legend.options,
+      maps: GV.config.maps,
       show: true,
     };
   },

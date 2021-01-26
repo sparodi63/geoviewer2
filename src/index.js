@@ -30,6 +30,7 @@ import getS3TokenBbox from './services/getS3TokenBbox';
 import getS3Token from './services/getS3Token';
 import getAuth from './services/getAuth';
 import getGeneric from './services/getGeneric';
+import getEnv from './services/getEnv';
 
 //
 import config from './config';
@@ -37,6 +38,7 @@ import Vue from 'vue';
 import App from './components/App.vue';
 //
 import tools from './tools';
+import { get } from 'jquery';
 
 // -------------------------------------------------------------------------------- //
 
@@ -82,27 +84,26 @@ sessionstack('getSessionId', function(s) {
 
 // -- DEFINIZIONE GV
 window.GV = {
-  init(options) {
+  async init(options) {
+    const env = await getEnv();
+    GV.globals.ENV = env;
+
     if (options.application.auth) {
-      const opts = options.application.auth.options;
+      const authOptions = options.application.auth.options;
       switch (options.application.auth.type) {
         case 'NAM':
-          getAuth(opts.ruolo).then(resp => {
-            if (resp.success) {
-              this.initConfig(options);
-            } else {
-              notification('ACCESSO ALLA APPLICAZIONE NON AUTORIZZATO');
-            }
-          });
+          const auth = await getAuth(authOptions.ruolo);
+          if (auth.success) this.initConfig(options);
+          else notification('ACCESSO ALLA APPLICAZIONE NON AUTORIZZATO');
           break;
         case 'S3':
-          getS3Token(opts.s3Token, opts.s3TokenType, opts.s3TokenProv).then(resp => {
-            if (resp.success && resp.found) {
-              this.initConfig(options);
-            } else {
-              notification('ACCESSO ALLA APPLICAZIONE NON AUTORIZZATO');
-            }
-          });
+          const s3Token = await getS3Token(
+            authOptions.s3Token,
+            authOptions.s3TokenType,
+            authOptions.s3TokenProv
+          );
+          if (s3Token.success && s3Token.found) this.initConfig(options);
+          else notification('ACCESSO ALLA APPLICAZIONE NON AUTORIZZATO');
           break;
       }
     } else {

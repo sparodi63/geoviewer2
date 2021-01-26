@@ -1,5 +1,5 @@
 <template>
-  <div v-show="showMapLayers(map)">
+  <div>
     <el-table
       :data="map.layers"
       :show-header="false"
@@ -134,9 +134,6 @@ export default {
     GV.log('gv-legend-layers: mounted');
   },
   methods: {
-    showMapLayers(map) {
-      return map.showLayersInLegend;
-    },
     iconUrl: function(layer) {
       return layer.legend.icon;
     },
