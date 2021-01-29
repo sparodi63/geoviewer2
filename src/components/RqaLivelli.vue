@@ -1,6 +1,6 @@
 <template>
   <div class="rqa gv-color-scheme">
-    <div class="rqa-title gv-legend-title gv-color-scheme">
+    <div class="rqa-title gv-color-scheme">
       RQA: Indicatori
       <button
         :class="toggleCollapseClass()"
@@ -42,9 +42,10 @@
 
       <div v-show="showIndicatoriGiorno" class="combo">
         <el-date-picker
+          size="mini"
           v-model="giorno"
           type="date"
-          placeholder="Seleziona il giorno"
+          placeholder="Giorno"
           value-format="yyyy-MM-dd"
         >
         </el-date-picker>
@@ -81,7 +82,7 @@
         v-show="showSubmit"
         title="Carica Livello"
         @click="loadLayer"
-        class="gv-color-scheme rqa-button"
+        class="gv-inverted-color-scheme rqa-button"
         size="mini"
         >Carica</el-button
       >
@@ -172,11 +173,13 @@ export default {
       let layer;
       if (this.tipo === 'G') {
         layer = this.baseLayerGG;
+        layer.wmsParams.styles = `RQA_${this.indicatoreGiorno}`;
         layer.wmsParams.cql_filter = `cod_indicatore='${this.indicatoreGiorno}' AND giorno='${this.giorno}'`;
         const indicatore = this.indicatoriGiorno.find(ind => ind.id === this.indicatoreGiorno).nome;
         layer.legend.label = `${indicatore} (${this.giorno})`;
       } else {
         layer = this.baseLayerAA;
+        layer.wmsParams.styles = `RQA_${this.indicatoreAnno}`;
         layer.wmsParams.cql_filter = `cod_indicatore='${this.indicatoreAnno}' AND anno=${this.anno}`;
         const indicatore = this.indicatoriAnno.find(ind => ind.id === this.indicatoreAnno).nome;
         layer.legend.label = `${indicatore} (${this.anno})`;
@@ -223,13 +226,7 @@ export default {
       return this.tipo == 'A';
     },
     showSubmit() {
-      console.log(this.indicatoreGiorno);
-      console.log(this.giorno);
-      console.log(this.indicatoreAnno);
-      console.log(this.anno);
-      console.log((this.indicatoreGiorno && this.giorno) || (this.indicatoreAnno && this.anno));
       return (this.indicatoreGiorno && this.giorno) || (this.indicatoreAnno && this.anno);
-      // return true;
     },
   },
   mounted: function() {
@@ -237,7 +234,6 @@ export default {
       .get('/geoservices/REST/rqa/app-config/')
       .then(response => response.data.data)
       .then(data => {
-        console.log(data);
         this.tipi = data.tipi;
         this.indicatoriGiorno = data.indicatoriGiorno;
         this.indicatoriAnno = data.indicatoriAnno;
@@ -269,10 +265,13 @@ export default {
 }
 .rqa-title {
   padding-left: 10px;
+  font-weight: bold;
 }
 
 .rqa-button {
   margin-left: 10px;
+  margin-bottom: 10px;
+  /* float: left; */
 }
 
 .label {
@@ -304,5 +303,12 @@ export default {
 }
 .el-date-table td.today span {
   color: #409eff !important;
+}
+.el-select-dropdown__list {
+  max-width: 800px !important;
+}
+.el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: 250px !important;
 }
 </style>

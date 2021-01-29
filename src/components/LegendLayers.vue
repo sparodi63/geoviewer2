@@ -194,11 +194,17 @@ export default {
           // se livello multiclasse apro una finestra con la legenda dei livelli multiclasse
           if (layer.flagGeoserver || layer.flagRemote) {
             url = `${GV.globals.DEFAULT_PROXY}${layer.wmsParams.url}LAYER=${layer.name}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&`;
+            if (layer.wmsParams.styles) {
+              url += `STYLES=${layer.wmsParams.styles}&`;
+            }
             width = window.matchMedia('(max-width: 450px)').matches ? 300 : 400;
             height = 350;
           }
         } else if (layer.flagRemote) {
           url = `${GV.globals.DEFAULT_PROXY}${layer.wmsParams.url}&LAYER=${layer.name}&SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/jpeg`;
+          if (layer.wmsParams.styles) {
+            url += `STYLES=${layer.wmsParams.styles}&`;
+          }
           width = window.matchMedia('(max-width: 450px)').matches ? 300 : 500;
           height = 350;
         }

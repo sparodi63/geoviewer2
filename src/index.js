@@ -88,6 +88,8 @@ window.GV = {
     const env = await getEnv();
     GV.globals.ENV = env;
 
+    this.messageEventListener();
+
     if (options.application.auth) {
       const authOptions = options.application.auth.options;
       switch (options.application.auth.type) {
@@ -109,6 +111,40 @@ window.GV = {
     } else {
       this.initConfig(options);
     }
+  },
+  messageEventListener() {
+    window.addEventListener(
+      'message',
+      event => {
+        const data = event.data;
+        if (!data.type) return;
+        switch (data.type) {
+          // EVENTI GV_INFO
+          case 'gv_info':
+            switch (data.msg) {
+              case 'get_feature':
+                const featureId = data.options.id;
+                console.log(`MSG GV_INFO: GET_FEATURE - FEATURE ${featureId}`);
+                const feature = {
+                  id: GV.gvInfoFeatures[featureId].id,
+                  geometry: GV.gvInfoFeatures[featureId].geometry,
+                  properties: GV.gvInfoFeatures[featureId].properties,
+                };
+                var msg = {
+                  type: 'gv_info',
+                  msg: 'feature',
+                  options: {
+                    feature: feature,
+                  },
+                };
+                event.source.postMessage(msg, '*');
+                break;
+            }
+            break;
+        }
+      },
+      false
+    );
   },
   initConfig(options) {
     GV.config = config;
@@ -145,4 +181,5 @@ window.GV = {
     getGeneric: getGeneric,
   },
   tools: tools,
+  gvInfoFeatures: [],
 };

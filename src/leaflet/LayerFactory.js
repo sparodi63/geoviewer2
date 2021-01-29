@@ -421,6 +421,7 @@ var layerFactory = {
       // FORMAT_OPTIONS: 'antialias:text', // levo antialias perchè determina cambiamento stile in Geoserver 2.14
       layers: wmsParams.name,
       format: format,
+      styles: wmsParams.styles || '',
       opacity: opacity,
       minZoom: layerConfig.minZoom,
       maxZoom: layerConfig.maxZoom,
@@ -432,6 +433,9 @@ var layerFactory = {
     };
     if (wmsParams.cql_filter) {
       options.cql_filter = wmsParams.cql_filter;
+    }
+    if (wmsParams.sld) {
+      options.sld = wmsParams.sld;
     }
 
     let url = wmsParams.url;

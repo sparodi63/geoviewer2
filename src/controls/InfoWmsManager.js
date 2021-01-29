@@ -31,12 +31,19 @@ function _request(event) {
     let url =
       layerConfig.infoOptions.infoQueryUrl || globals.DEFAULT_PROXY + layerConfig.wmsParams.url;
     const layers = layerConfig.infoOptions.infoQueryLayers || layerConfig.wmsParams.name;
-
+    const cqlFilter = layerConfig.wmsParams.cql_filter;
     if (layerConfig.wmsParams.infoFormat) {
       infoFormat = layerConfig.wmsParams.infoFormat;
     }
 
-    var wmsUrl = buildWMSOptions(url, layers, event.latlng, infoFormat, layerConfig.infoBuffer);
+    var wmsUrl = buildWMSOptions(
+      url,
+      layers,
+      event.latlng,
+      infoFormat,
+      layerConfig.infoBuffer,
+      cqlFilter
+    );
     _numRequests++;
     GV.app.map._container.style.cursor = 'progress';
     if (infoFormat === 'application/json') {
@@ -76,7 +83,7 @@ function _request(event) {
   });
 }
 
-function buildWMSOptions(url, layers, latlng, infoFormat, infoBuffer) {
+function buildWMSOptions(url, layers, latlng, infoFormat, infoBuffer, cqlFilter) {
   if (event.mapType === 'cesium') {
     console.log('cesium getFeatureInfo');
   }
@@ -100,11 +107,14 @@ function buildWMSOptions(url, layers, latlng, infoFormat, infoBuffer) {
     query_layers: layers,
     FEATURE_COUNT: 100,
     buffer: buffer,
-    //      format: infoFormat,
     info_format: infoFormat,
     i: parseInt(point.x),
     j: parseInt(point.y),
   };
+  if (cqlFilter) {
+    params.cql_filter = cqlFilter;
+  }
+
   return url + getParamString(params, url, true);
 }
 
@@ -236,12 +246,27 @@ function _showFeatureInfo(feature) {
     case 'xsl':
       showXml(feature);
       break;
+    case 'gv_info':
+      showGvInfo(feature);
+      break;
     default:
       showHtml(feature);
       break;
   }
 
   hiliteFeature(feature);
+}
+
+function showGvInfo(feature) {
+  const featureId = feature.id;
+  const layerId = feature.layer.config.id;
+  GV.gvInfoFeatures[featureId] = feature;
+  const url = `/geoservices/apps/gv_info/${layerId}/?feature_id=${featureId}`;
+  if (!feature.infoOptions.infoTarget || feature.infoOptions.infoTarget === 'panel') {
+    showPanel(url, feature.infoOptions);
+  } else {
+    openPopup(url, feature.infoOptions);
+  }
 }
 
 function showHtml(feature) {
@@ -254,13 +279,6 @@ function showHtml(feature) {
 }
 
 function showGenerico(feature) {
-  // console.log('Sono qui'); // TEST mappa 49
-  // console.log(feature);
-
-  // if (feature.infoOptions.infoTarget === 'info') {
-  //   showXml(feature);
-  //   return;
-  // }
   const title = feature.layer.legend.label;
   mountComponent({
     elId: 'gv-info-generico',
@@ -366,6 +384,7 @@ function showXml(data) {
 function getType(feature) {
   const infoUrl = feature.infoOptions.infoUrl;
   if (feature.text) return 'text';
+  if (infoUrl === 'gv_info') return 'gv_info';
   if (infoUrl.substr(infoUrl.length - 12) === 'generico.xsl') return 'generico';
   if (infoUrl.substr(infoUrl.length - 4) === '.xsl') return 'xsl';
 }
@@ -378,8 +397,10 @@ function hiliteFeature(feature) {
     if (idAttr && layerConfig.cachePostGIS) {
       idAttr = idAttr.toLowerCase();
     }
-    const cqlFilter = `${idAttr}='${feature.properties[layerConfig.infoOptions.infoIdAttr]}'`;
-
+    let cqlFilter = `${idAttr}='${feature.properties[layerConfig.infoOptions.infoIdAttr]}'`;
+    if (feature.layer.config.wmsParams.cql_filter) {
+      cqlFilter += ` AND ${feature.layer.config.wmsParams.cql_filter}`;
+    }
     getWFSFeature(layerConfig.wfsParams, cqlFilter, null)
       .then(features => {
         const layer = GV.app.map.getLayerByName('InfoWmsHilite');
@@ -470,6 +491,7 @@ function openPopup(url, options) {
     );
     return;
   }
+  return popup;
 }
 
 function addHiliteLayer(map) {
@@ -525,6 +547,7 @@ export default {
   firstActivation: true,
   addHiliteLayer: addHiliteLayer,
   buildWMSOptions: buildWMSOptions,
+  features: _features,
   activate: function() {
     GV.log('GV.app.infoWmsManager.activate');
 
@@ -549,6 +572,7 @@ export default {
       }
     });
 
+    GV.app.infoWmsManager = this;
     GV.config.activeControl = this;
   },
 
