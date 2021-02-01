@@ -184,6 +184,28 @@ var layerFactory = {
     );
   },
 
+  MAPBOX_MONOCHROME(layerConfig) {
+    const USERNAME = 'liguriadigitale';
+    const ACCESS_TOKEN =
+      'pk.eyJ1IjoibGlndXJpYWRpZ2l0YWxlIiwiYSI6ImNqbzQzajk0bDEwa3EzcWt1ZThqazFqcGIifQ.dUhSMka7mXTD2inJGmlBMw';
+    const STYLE = 'ckgj8eqz80t8q19theln5gwrk';
+
+    const LEGEND_LABEL = 'Mapbox Monochrome';
+
+    layerConfig.legend = {
+      label: LEGEND_LABEL,
+    };
+    return L.tileLayer(
+      `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
+      {
+        attribution:
+          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: 'abcd',
+        maxZoom: 20,
+      }
+    );
+  },
+
   MAPBOX_STREETS(layerConfig) {
     // const USERNAME = 'stefanoparodi';
     // const ACCESS_TOKEN =
@@ -195,7 +217,7 @@ var layerFactory = {
     const STYLE = 'ckgj8f25p0o6y19jxk0ykap41'; // STREEET
     // const STYLE = 'ckgj8dp1l131l19mp3na5jsjn'; // BASIC
 
-    mapbox: const LEGEND_LABEL = 'Mapbox Streets';
+    const LEGEND_LABEL = 'Mapbox Streets';
 
     layerConfig.legend = {
       label: LEGEND_LABEL,

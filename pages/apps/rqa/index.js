@@ -40,27 +40,17 @@ GV.init({
         {
           name: 'rqa-livelli',
         },
-        { name: 'gv-geocoder', position: 'bottomleft' },
-        // {
-        //   name: 'gv-scalebar',
-        //   position: 'bottomleft',
-        // },
+        // { name: 'gv-geocoder', position: 'bottomleft' },
       ],
     },
   },
   baseLayers: [
     {
-      type: 'ESRI_IMAGERY',
+      type: 'MAPBOX_MONOCHROME',
       visible: true,
     },
     {
-      type: 'MAPBOX_STREETS',
-    },
-    {
-      type: 'RL_ORTOFOTO_2016',
-    },
-    {
-      type: 'RL_CARTE_BASE',
+      type: 'ESRI_IMAGERY',
     },
     {
       type: 'BLANK',

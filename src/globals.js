@@ -137,6 +137,11 @@ export default {
       icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
       printType: 'MAPBOX_STREETS',
     },
+    MAPBOX_MONOCHROME: {
+      label: 'Mapbox Monochrome',
+      icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
+      printType: 'MAPBOX_MONOCHROME',
+    },
     MAPBOX_VIABILITA: {
       label: 'Carta della Viabilità',
       icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
