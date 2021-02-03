@@ -261,9 +261,10 @@ function showGvInfo(feature) {
   const featureId = feature.id;
   const layerId = feature.layer.config.id;
   GV.gvInfoFeatures[featureId] = feature;
+  const panelId = `gvi-info-${featureId}`;
   const url = `/geoservices/apps/gv_info/layers/${layerId}/?feature_id=${featureId}`;
   if (!feature.infoOptions.infoTarget || feature.infoOptions.infoTarget === 'panel') {
-    showPanel(url, feature.infoOptions);
+    showPanel(url, feature.infoOptions, panelId);
   } else {
     openPopup(url, feature.infoOptions);
   }
@@ -460,9 +461,9 @@ function hiliteFeature(feature) {
   }
 }
 // apre una panel div con un documento html
-function showPanel(url, configOptions) {
+function showPanel(url, configOptions, panelId) {
   mountComponent({
-    elId: 'gv-info-wms-html',
+    elId: panelId || 'gv-info-wms-html',
     vm: new Vue({
       template:
         '<gv-info-wms-html :src="src" :height="height" :width="width" :title="title"></gv-info-wms-html>',
@@ -479,9 +480,11 @@ function showPanel(url, configOptions) {
 function openPopup(url, options) {
   var width = options.infoWidth || 400;
   var height = options.infoHeight || 500;
+  var target = options.infoTarget;
+  // var target = '';
   var popup = window.open(
     url,
-    '',
+    target,
     `status=yes, toolbar=yes, menubar=no, width=${width}, height=${height}, resizable=yes, scrollbars=yes`
   );
   if (!popup) {
