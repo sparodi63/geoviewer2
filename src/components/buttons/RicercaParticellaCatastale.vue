@@ -8,16 +8,14 @@
 </template>
 
 <script>
-import mountComponent from "../../util/mountComponent";
-import Vue from "vue";
-import { Button } from "element-ui";
+import mountComponent from '../../util/mountComponent';
+import Vue from 'vue';
+import { Button } from 'element-ui';
 Vue.use(Button);
 
-Vue.component("gv-ricerca-particella", () =>
-  import("../RicercaParticellaCatastale.vue")
-);
+Vue.component('gv-ricerca-particella', () => import('../RicercaParticellaCatastale.vue'));
 
-const name = "gv-ricerca-particella-button";
+const name = 'gv-ricerca-particella-button';
 
 export default {
   name: name,
@@ -27,29 +25,27 @@ export default {
     return {
       active: false,
       options: options,
-      cssClass: "gv-ricerca-particella-button gv-button fa fa-building-o",
-      cssActiveClass: "gv-button-selected"
+      cssClass: 'gv-ricerca-particella-button gv-button fa fa-building',
+      cssActiveClass: 'gv-button-selected',
     };
   },
 
   methods: {
     onClick() {
       mountComponent({
-        elId: "gv-ricerca-particella",
+        elId: 'gv-ricerca-particella',
         containerId: GV.config.containerId,
         toggleEl: true,
         vm: new Vue({
-          template: `<gv-ricerca-particella></gv-ricerca-particella>`
-        })
+          template: `<gv-ricerca-particella></gv-ricerca-particella>`,
+        }),
       });
     },
     setClass() {
-      return this.active
-        ? this.cssClass + " " + this.cssActiveClass
-        : this.cssClass;
-    }
+      return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
+    },
   },
-  mounted: function() {}
+  mounted: function() {},
 };
 </script>
 

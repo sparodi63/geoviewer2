@@ -1,6 +1,8 @@
 import Vue, { VNode } from 'vue'
 import { MessageType } from './message'
 
+export type NotificationPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+
 /** Notification Component */
 export declare class ElNotificationComponent extends Vue {
   /** Close the Notification instance */
@@ -15,31 +17,34 @@ export interface ElNotificationOptions {
   message: string | VNode
 
   /** Notification type */
-  type: MessageType
+  type?: MessageType
 
   /** Custom icon's class. It will be overridden by type */
-  iconClass: string
+  iconClass?: string
 
   /** Custom class name for Notification */
-  customClass: string
+  customClass?: string
 
   /** Duration before close. It will not automatically close if set 0 */
-  duration: number
+  duration?: number
 
   /** Whether to show a close button */
-  showClose: boolean
+  showClose?: boolean
 
   /** Whether message is treated as HTML string */
   dangerouslyUseHTMLString?: boolean
 
   /** Callback function when closed */
-  onClose: () => void
+  onClose?: () => void
 
   /** Callback function when notification clicked */
-  onClick: () => void
+  onClick?: () => void
 
   /** Offset from the top edge of the screen. Every Notification instance of the same moment should have the same offset */
-  offset: number
+  offset?: number
+
+  /** custom position */
+  position?: NotificationPosition
 }
 
 export interface ElNotification {

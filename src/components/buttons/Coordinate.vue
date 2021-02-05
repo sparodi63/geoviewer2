@@ -1,41 +1,43 @@
 <template>
-  <button id="gv-button-coordinate" title="Acquisizione Coordinate" @click="onClick" :class="setClass()" />
+  <button
+    id="gv-button-coordinate"
+    title="Acquisizione Coordinate"
+    @click="onClick"
+    :class="setClass()"
+  />
 </template>
 
 <script>
-import SwitchActiveButton from '../../mixins/SwitchActiveButton'
-import Control from '../../controls/Coordinate'
+import SwitchActiveButton from '../../mixins/SwitchActiveButton';
+import Control from '../../controls/Coordinate';
 
-const name = 'gv-coordinate-button'
+const name = 'gv-coordinate-button';
 
 export default {
   name: name,
   data() {
-    const options = GV.config.getToolOptions(name)
+    const options = GV.config.getToolOptions(name);
     return {
       name: name,
       active: false,
       control: Control,
       options: options,
-      cssClass: 'gv-button fa fa-hand-o-down',
+      cssClass: 'gv-button fa fa-hand-point-down',
       cssActiveClass: 'gv-button-selected',
-    }
+    };
   },
   mixins: [SwitchActiveButton],
   methods: {
     onClick() {
-      this.switchActiveButton()
+      this.switchActiveButton();
       // console.log(this.options)
     },
     setClass() {
-      return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass
+      return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
     },
   },
-  mounted: function() {
-  },
-}
+  mounted: function() {},
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

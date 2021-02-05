@@ -5,7 +5,7 @@
   display: flex;
   width: $--notification-width;
   padding: $--notification-padding;
-  border-radius: $--notification-raduis;
+  border-radius: $--notification-radius;
   box-sizing: border-box;
   border: 1px solid $--notification-border-color;
   position: fixed;
@@ -23,7 +23,8 @@
   }
 
   @include e(group) {
-    margin-left: $--notification-group-margin;
+    margin-left: $--notification-group-margin-left;
+    margin-right: $--notification-group-margin-right;
   }
 
   @include e(title) {
@@ -34,10 +35,10 @@
   }
 
   @include e(content) {
-    font-size: $--notification-font-size;
+    font-size: $--notification-content-font-size;
     line-height: 21px;
     margin: 6px 0 0 0;
-    color: $--notification-color;
+    color: $--notification-content-color;
     text-align: justify;
 
     p {
@@ -49,12 +50,11 @@
     height: $--notification-icon-size;
     width: $--notification-icon-size;
     font-size: $--notification-icon-size;
-    transform: translateY(4px);
   }
 
   @include e(closeBtn) {
     position: absolute;
-    top: 15px;
+    top: 18px;
     right: 15px;
     cursor: pointer;
     color: $--notification-close-color;
@@ -66,19 +66,19 @@
   }
 
   .el-icon-success {
-    color: $--notification-success-color;
+    color: $--notification-success-icon-color;
   }
 
   .el-icon-error {
-    color: $--notification-danger-color;
+    color: $--notification-danger-icon-color;
   }
 
   .el-icon-info {
-    color: $--notification-info-color;
+    color: $--notification-info-icon-color;
   }
 
   .el-icon-warning {
-    color: $--notification-warning-color;
+    color: $--notification-warning-icon-color;
   }
 }
 

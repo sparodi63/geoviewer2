@@ -1,4 +1,5 @@
 @import "mixins/mixins";
+@import "mixins/utils";
 @import "common/var";
 @import "select-dropdown";
 @import "input";
@@ -11,6 +12,11 @@
   display: inline-block;
   position: relative;
 
+  .el-select__tags
+    >span {
+      display: contents;
+    }
+
   &:hover {
     .el-input__inner {
       border-color: $--select-border-color-hover;
@@ -22,7 +28,7 @@
     padding-right: 35px;
 
     &:focus {
-      border-color: $--select-input-focus-background;
+      border-color: $--select-input-focus-border-color;
     }
   }
 
@@ -32,7 +38,6 @@
       font-size: $--select-input-font-size;
       transition: transform .3s;
       transform: rotateZ(180deg);
-      line-height: 16px;
       cursor: pointer;
 
       @include when(reverse) {
@@ -62,6 +67,10 @@
         }
       }
     }
+
+    &.is-focus .el-input__inner {
+      border-color: $--select-input-focus-border-color;
+    }
   }
 
   > .el-input {
@@ -75,7 +84,6 @@
     margin-left: 15px;
     color: $--select-multiple-input-color;
     font-size: $--select-font-size;
-    vertical-align: baseline;
     appearance: none;
     height: 28px;
     background-color: transparent;
@@ -106,6 +114,9 @@
     z-index: $--index-normal;
     top: 50%;
     transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
   }
 
   .el-tag__close {
@@ -115,12 +126,13 @@
   .el-tag {
     box-sizing: border-box;
     border-color: transparent;
-    margin: 3px 0 3px 6px;
+    margin: 2px 0 2px 6px;
     background-color: #f0f2f5;
 
     &__close.el-icon-close {
       background-color: $--color-text-placeholder;
       right: -7px;
+      top: 0;
       color: $--color-white;
 
       &:hover {
@@ -131,20 +143,6 @@
         display: block;
         transform: translate(0, .5px);
       }
-    }
-  }
-
-  @include e(tag) {
-    display: inline-block;
-    height: $--select-tag-height;
-    line-height: $--select-tag-height;
-    font-size: $--select-font-size;
-    border-radius: $--border-radius-base;
-    color: $--select-tag-color;
-    background-color: $--select-tag-background;
-
-    & .el-icon-close {
-      font-size: $--select-input-font-size;
     }
   }
 }

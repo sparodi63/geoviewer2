@@ -1,11 +1,12 @@
 <template>
-  <div
+  <component
+    :is="_elTag"
     class="el-radio-group"
     role="radiogroup"
     @keydown="handleKeydown"
   >
     <slot></slot>
-  </div>
+  </component>
 </template>
 <script>
   import Emitter from 'element-ui/src/mixins/emitter';
@@ -41,6 +42,9 @@
       _elFormItemSize() {
         return (this.elFormItem || {}).elFormItemSize;
       },
+      _elTag() {
+        return (this.$vnode.data || {}).tag || 'div';
+      },
       radioGroupSize() {
         return this.size || this._elFormItemSize || (this.$ELEMENT || {}).size;
       }
@@ -53,9 +57,10 @@
     },
     mounted() {
       // 当radioGroup没有默认选项时，第一个可以选中Tab导航
-      let radios = this.$el.querySelectorAll('[type=radio]');
-      if (![].some.call(radios, radio => radio.checked)) {
-        this.$el.querySelectorAll('[role=radio]')[0].tabIndex = 0;
+      const radios = this.$el.querySelectorAll('[type=radio]');
+      const firstLabel = this.$el.querySelectorAll('[role=radio]')[0];
+      if (![].some.call(radios, radio => radio.checked) && firstLabel) {
+        firstLabel.tabIndex = 0;
       }
     },
     methods: {
@@ -73,8 +78,10 @@
             e.preventDefault();
             if (index === 0) {
               roleRadios[length - 1].click();
+              roleRadios[length - 1].focus();
             } else {
               roleRadios[index - 1].click();
+              roleRadios[index - 1].focus();
             }
             break;
           case keyCode.RIGHT:
@@ -83,8 +90,10 @@
               e.stopPropagation();
               e.preventDefault();
               roleRadios[0].click();
+              roleRadios[0].focus();
             } else {
               roleRadios[index + 1].click();
+              roleRadios[index + 1].focus();
             }
             break;
           default:

@@ -22,7 +22,7 @@ export default {
       active: false,
       control: Control,
       options: options,
-      cssClass: 'gv-button fa fa-pencil-square-o',
+      cssClass: 'gv-button fa fa-edit',
       cssActiveClass: 'gv-button-selected',
     };
   },

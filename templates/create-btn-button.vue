@@ -5,17 +5,15 @@
     @click="onClick"
     :class="setClass()"
   />
-</template> 
+</template>
 
 <script>
-import mountComponent from "../../util/mountComponent";
-import Vue from "vue";
+import mountComponent from '../../util/mountComponent';
+import Vue from 'vue';
 
-Vue.component("gv-__nome-componente__-panel", () =>
-  import("../__nome-file__.vue")
-);
+Vue.component('gv-__nome-componente__-panel', () => import('../__nome-file__.vue'));
 
-const name = "gv-__nome-componente__-button";
+const name = 'gv-__nome-componente__-button';
 
 export default {
   name: name,
@@ -25,31 +23,27 @@ export default {
       name: name,
       active: false,
       options: options,
-      cssClass: "gv-button fa fa-file-o",
-      cssActiveClass: "gv-button-selected"
+      cssClass: 'gv-button fa fa-file',
+      cssActiveClass: 'gv-button-selected',
     };
   },
   methods: {
     onClick() {
       mountComponent({
-        elId: "gv-__nome-componente__-panel",
+        elId: 'gv-__nome-componente__-panel',
         containerId: GV.config.containerId,
         toggleEl: true,
         vm: new Vue({
-          template: `<gv-__nome-componente__-panel></gv-__nome-componente__-panel>`
-        })
+          template: `<gv-__nome-componente__-panel></gv-__nome-componente__-panel>`,
+        }),
       });
     },
     setClass() {
-      return this.active
-        ? this.cssClass + " " + this.cssActiveClass
-        : this.cssClass;
-    }
+      return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
+    },
   },
-  mounted: function() {}
+  mounted: function() {},
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

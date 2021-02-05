@@ -352,11 +352,11 @@ export default {
         }
         if (this.options.tools.edit.edit) {
           const el = document.getElementsByClassName('leaflet-draw-edit-edit')[0];
-          el.className = 'gv-draw-buttons fa fa-pencil-square-o';
+          el.className = 'gv-draw-buttons fa fa-edit';
         }
         if (this.options.tools.edit.remove) {
           const el = document.getElementsByClassName('leaflet-draw-edit-remove')[0];
-          el.className = 'gv-draw-buttons fa fa-trash-o';
+          el.className = 'gv-draw-buttons fa fa-trash';
         }
       }
     },

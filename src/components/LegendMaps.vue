@@ -34,7 +34,8 @@
               title="Trasparenza Livelli"
               v-if="options.showLayersTransparency"
               @click="layerTransparency(map)"
-              class="gv-inverted-color-scheme gv-legend-map-tools-button fa fa-sliders"
+              class="gv-inverted-color-scheme gv-legend-map-tools-button"
+              icon="el-icon-setting"
               size="mini"
             ></el-button>
             <el-button

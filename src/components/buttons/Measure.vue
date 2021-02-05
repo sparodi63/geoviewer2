@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import SwitchActiveButton from "../../mixins/SwitchActiveButton";
-import Control from "../../controls/Measure";
+import SwitchActiveButton from '../../mixins/SwitchActiveButton';
+import Control from '../../controls/Measure';
 
-const name = "gv-measure-button";
+const name = 'gv-measure-button';
 
 export default {
   name: name,
@@ -17,9 +17,9 @@ export default {
       active: false,
       control: Control,
       options: options,
-      title: "Misurazioni",
-      cssClass: "gv-button fa fa-pencil-square-o",
-      cssActiveClass: "gv-button-selected"
+      title: 'Misurazioni',
+      cssClass: 'gv-button fa fa-edit',
+      cssActiveClass: 'gv-button-selected',
     };
   },
   mixins: [SwitchActiveButton],
@@ -29,15 +29,11 @@ export default {
       // console.log(this.options)
     },
     setClass() {
-      return this.active
-        ? this.cssClass + " " + this.cssActiveClass
-        : this.cssClass;
-    }
+      return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
+    },
   },
-  mounted: function() {}
+  mounted: function() {},
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

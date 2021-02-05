@@ -5,6 +5,7 @@
 @import "common/var";
 
 @include b(slider) {
+
   @include utils-clearfix;
 
   @include e(runway) {
@@ -66,6 +67,19 @@
   @include e(input) {
     float: right;
     margin-top: 3px;
+    width: 130px;
+
+    &.el-input-number--mini {
+      margin-top: 5px;
+    }
+
+    &.el-input-number--medium {
+      margin-top: 0;
+    }
+
+    &.el-input-number--large {
+      margin-top: -2px;
+    }
   }
 
   @include e(bar) {
@@ -86,6 +100,7 @@
     background-color: transparent;
     text-align: center;
     user-select: none;
+    line-height: normal;
     @include utils-vertical-center;
 
     .el-tooltip {
@@ -137,15 +152,30 @@
     transform: translateX(-50%);
   }
 
+  @include e(marks) {
+    top: 0;
+    left: 12px;
+    width: 18px;
+    height: 100%;
+
+    @include e(marks-text) {
+      position: absolute;
+      transform: translateX(-50%);
+      font-size: 14px;
+      color: $--color-info;
+      margin-top: 15px;
+    }
+  }
+
   @include when(vertical) {
     position: relative;
     .el-slider__runway {
-      width: 4px;
+      width: $--slider-height;
       height: 100%;
       margin: 0 16px;
     }
     .el-slider__bar {
-      width: 4px;
+      width: $--slider-height;
       height: auto;
       border-radius: 0 0 3px 3px;
     }
@@ -209,6 +239,12 @@
           }
         }
       }
+    }
+
+    @include e(marks-text) {
+      margin-top: 0;
+      left: 15px;
+      transform: translateY(50%);
     }
   }
 }

@@ -14,14 +14,7 @@
     "stats": "webpack --config build/webpack.prod.conf.js --env production --profile --json > stats.json",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
     "format:js": "prettier --write",
-    "webpack-defaults": "webpack-defaults",
-    "cypress:open:dev": "cypress open",
-    "cypress:open:localhost": "cypress open --env BASE_URL=http://localhost:8080/geoviewer2/pages/apps",
-    "cypress:open:staging": "cypress open --env BASE_URL=http://srvcarto.regione.liguria.it:8080/geoviewer2_staging/pages/apps",
-    "cypress:open:prod": "cypress open --env BASE_URL=http://srvcarto.regione.liguria.it:8080/geoviewer2/pages/apps",
-    "cypress:run:localhost": "cypress run --env BASE_URL=http://localhost:8080/geoviewer2/pages/apps",
-    "cypress:run:staging": "cypress run --env BASE_URL=http://srvcarto.regione.liguria.it:8080/geoviewer2_staging/pages/apps",
-    "cypress:run:prod": "cypress run --env BASE_URL=http://srvcarto.regione.liguria.it:8080/geoviewer2/pages/apps"
+    "webpack-defaults": "webpack-defaults"
   },
   "dependencies": {
     "@mapbox/leaflet-omnivore": "^0.3.4",
@@ -69,7 +62,6 @@
     "connect-history-api-fallback": "^1.1.0",
     "cross-spawn": "^4.0.2",
     "css-loader": "^0.25.0",
-    "cypress": "^1.4.1",
     "eslint": "^3.6.1",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-standard": "^6.1.0",

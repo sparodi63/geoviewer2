@@ -1,7 +1,7 @@
 <template>
   <div
     class="el-step"
-    :style="[style,  isLast ? { maxWidth: 100 / stepsCount + '%' } : { marginRight: - $parent.stepOffset + 'px' }]"
+    :style="style"
     :class="[
       !isSimple && `is-${$parent.direction}`,
       isSimple && 'is-simple',
@@ -113,6 +113,7 @@ export default {
       return isSimple ? '' : space ;
     },
     style: function() {
+      const style = {};
       const parent = this.$parent;
       const len = parent.steps.length;
 
@@ -120,9 +121,16 @@ export default {
         ? this.space + 'px'
         : this.space
           ? this.space
-          : 100 / (len - 1) + '%');
+          : 100 / (len - (this.isCenter ? 0 : 1)) + '%');
+      style.flexBasis = space;
+      if (this.isVertical) return style;
+      if (this.isLast) {
+        style.maxWidth = 100 / this.stepsCount + '%';
+      } else {
+        style.marginRight = -this.$parent.stepOffset + 'px';
+      }
 
-      return { flexBasis: space };
+      return style;
     }
   },
 
@@ -153,7 +161,7 @@ export default {
         style.transitionDelay = (-150 * this.index) + 'ms';
       }
 
-      style.borderWidth = step ? '1px' : 0;
+      style.borderWidth = step && !this.isSimple ? '1px' : 0;
       this.$parent.direction === 'vertical'
         ? style.height = step + '%'
         : style.width = step + '%';
@@ -165,6 +173,10 @@ export default {
   mounted() {
     const unwatch = this.$watch('index', val => {
       this.$watch('$parent.active', this.updateStatus, { immediate: true });
+      this.$watch('$parent.processStatus', () => {
+        const activeIndex = this.$parent.active;
+        this.updateStatus(activeIndex);
+      }, { immediate: true });
       unwatch();
     });
   }

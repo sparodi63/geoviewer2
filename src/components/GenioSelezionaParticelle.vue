@@ -69,7 +69,7 @@
                 size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)"
-                class="fa fa-trash"
+                icon="el-icon-delete"
               ></el-button>
             </template>
           </el-table-column>

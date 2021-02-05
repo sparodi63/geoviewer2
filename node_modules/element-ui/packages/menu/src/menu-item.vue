@@ -1,20 +1,20 @@
 <template>
   <li class="el-menu-item"
+    role="menuitem"
+    tabindex="-1"
     :style="[paddingStyle, itemStyle, { backgroundColor }]"
+    :class="{
+      'is-active': active,
+      'is-disabled': disabled
+    }"
     @click="handleClick"
     @mouseenter="onMouseEnter"
     @focus="onMouseEnter"
     @blur="onMouseLeave"
     @mouseleave="onMouseLeave"
-    :class="{
-      'is-active': active,
-      'is-disabled': disabled
-    }"
-    role="menuitem"
-    tabindex="-1"
   >
     <el-tooltip
-      v-if="$parent === rootMenu && rootMenu.collapse"
+      v-if="parentMenu.$options.componentName === 'ElMenu' && rootMenu.collapse && $slots.title"
       effect="dark"
       placement="right">
       <div slot="content"><slot name="title"></slot></div>
@@ -30,6 +30,7 @@
 </template>
 <script>
   import Menu from './menu-mixin';
+  import ElTooltip from 'element-ui/packages/tooltip';
   import Emitter from 'element-ui/src/mixins/emitter';
 
   export default {
@@ -39,19 +40,15 @@
 
     mixins: [Menu, Emitter],
 
+    components: { ElTooltip },
+
     props: {
       index: {
-        type: String,
-        required: true
+        default: null,
+        validator: val => typeof val === 'string' || val === null
       },
-      route: {
-        type: Object,
-        required: false
-      },
-      disabled: {
-        type: Boolean,
-        required: false
-      }
+      route: [String, Object],
+      disabled: Boolean
     },
     computed: {
       active() {
@@ -97,11 +94,13 @@
         this.$el.style.backgroundColor = this.backgroundColor;
       },
       handleClick() {
-        this.dispatch('ElMenu', 'item-click', this);
-        this.$emit('click', this);
+        if (!this.disabled) {
+          this.dispatch('ElMenu', 'item-click', this);
+          this.$emit('click', this);
+        }
       }
     },
-    created() {
+    mounted() {
       this.parentMenu.addItem(this);
       this.rootMenu.addItem(this);
     },

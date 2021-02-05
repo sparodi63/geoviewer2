@@ -1,3 +1,4 @@
+import * as Util from './Util';
 import {svgCreate} from '../layer/vector/SVG.Util';
 
 /*
@@ -37,11 +38,16 @@ export var android = userAgentContains('android');
 // @property android23: Boolean; `true` for browsers running on Android 2 or Android 3.
 export var android23 = userAgentContains('android 2') || userAgentContains('android 3');
 
+/* See https://stackoverflow.com/a/17961266 for details on detecting stock Android */
+var webkitVer = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10); // also matches AppleWebKit
+// @property androidStock: Boolean; `true` for the Android stock browser (i.e. not Chrome)
+export var androidStock = android && userAgentContains('Google') && webkitVer < 537 && !('AudioNode' in window);
+
 // @property opera: Boolean; `true` for the Opera browser
 export var opera = !!window.opera;
 
 // @property chrome: Boolean; `true` for the Chrome browser.
-export var chrome = userAgentContains('chrome');
+export var chrome = !edge && userAgentContains('chrome');
 
 // @property gecko: Boolean; `true` for gecko-based browsers like Firefox.
 export var gecko = userAgentContains('gecko') && !webkit && !opera && !ie;
@@ -105,9 +111,26 @@ export var mobileOpera = mobile && opera;
 export var mobileGecko = mobile && gecko;
 
 // @property retina: Boolean
-// `true` for browsers on a high-resolution "retina" screen.
+// `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
 export var retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
 
+// @property passiveEvents: Boolean
+// `true` for browsers that support passive events.
+export var passiveEvents = (function () {
+	var supportsPassiveOption = false;
+	try {
+		var opts = Object.defineProperty({}, 'passive', {
+			get: function () { // eslint-disable-line getter-return
+				supportsPassiveOption = true;
+			}
+		});
+		window.addEventListener('testPassiveEventSupport', Util.falseFn, opts);
+		window.removeEventListener('testPassiveEventSupport', Util.falseFn, opts);
+	} catch (e) {
+		// Errors can safely be ignored since this is only a browser support test.
+	}
+	return supportsPassiveOption;
+}());
 
 // @property canvas: Boolean
 // `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).

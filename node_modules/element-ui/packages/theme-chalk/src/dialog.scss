@@ -3,11 +3,10 @@
 @import "common/var";
 @import "common/popup";
 
-
 @include b(dialog) {
   position: relative;
   margin: 0 auto 50px;
-  background: $--color-white;
+  background: $--dialog-background-color;
   border-radius: $--border-radius-small;
   box-shadow: $--dialog-box-shadow;
   box-sizing: border-box;
@@ -59,16 +58,16 @@
   }
 
   @include e(title) {
-    line-height: $--dialog-line-height;
+    line-height: $--dialog-font-line-height;
     font-size: $--dialog-title-font-size;
     color: $--color-text-primary;
   }
 
   @include e(body) {
-    padding: 30px 20px;
+    padding: ($--dialog-padding-primary + 10px) $--dialog-padding-primary;
     color: $--color-text-regular;
-    line-height: $--dialog-line-height;
-    font-size: $--dialog-font-size;
+    font-size: $--dialog-content-font-size;
+    word-break: break-all;
   }
 
   @include e(footer) {
@@ -82,18 +81,13 @@
   @include m(center) {
     text-align: center;
 
-    @include e(header) {
-      padding-top: 30px;
-    }
-
     @include e(body) {
       text-align: initial;
-      padding: 25px ($--dialog-padding-primary + 12px) 30px;
+      padding: 25px ($--dialog-padding-primary + 5px) 30px;
     }
 
     @include e(footer) {
       text-align: inherit;
-      padding-bottom: 30px;
     }
   }
 }

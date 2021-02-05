@@ -10,6 +10,7 @@
           @change="handleChange"
           :arrow-control="useArrow"
           :show-seconds="showSeconds"
+          :am-pm-mode="amPmMode"
           @select-range="setSelectionRange"
           :date="date">
         </time-spinner>
@@ -30,7 +31,7 @@
 </template>
 
 <script type="text/babel">
-  import { limitTimeRange, isDate, clearMilliseconds, timeWithinRange } from '../util';
+  import { limitTimeRange, isDate, clearMilliseconds, timeWithinRange } from 'element-ui/src/utils/date-util';
   import Locale from 'element-ui/src/mixins/locale';
   import TimeSpinner from '../basic/time-spinner';
 
@@ -104,6 +105,11 @@
       },
       useArrow() {
         return this.arrowControl || this.timeArrowControl || false;
+      },
+      amPmMode() {
+        if ((this.format || '').indexOf('A') !== -1) return 'A';
+        if ((this.format || '').indexOf('a') !== -1) return 'a';
+        return '';
       }
     },
 

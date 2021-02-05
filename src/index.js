@@ -3,7 +3,8 @@
 require('style!../node_modules/leaflet/dist/leaflet.css');
 require('style!./assets/css/base.css');
 require('style!./assets/css/mapskin/css/mapskin.css');
-require('style!font-awesome/css/font-awesome.css');
+// require('style!font-awesome/css/font-awesome.css');
+import '@fortawesome/fontawesome-free/css/all.css';
 require('style!./assets/css/leaflet.draw.css');
 require('style!./assets/css/cesium-navigation.css');
 
@@ -39,48 +40,6 @@ import App from './components/App.vue';
 //
 import tools from './tools';
 import { get } from 'jquery';
-
-// -------------------------------------------------------------------------------- //
-
-// -- CONFIGURAZIONE SENTRY
-// import Raven from 'raven-js'
-// import RavenVue from 'raven-js/plugins/vue'
-// Raven.config('https://9851ab4f0d814bf38ca41fd968c5264d@sentry.io/305915')
-//   .addPlugin(RavenVue, Vue)
-//   .install()
-
-/* // SESSION-STACK 
-function handleRouteError(err) {
-  Raven.captureException(err)
-  Raven.showReportDialog()
-}
-!(function(a, b) {
-  var c = window
-  ;(c.SessionStack = a),
-    (c[a] =
-      c[a] ||
-      function() {
-        ;(c[a].q = c[a].q || []), c[a].q.push(arguments)
-      }),
-    (c[a].t = b)
-  var d = document.createElement('script')
-  ;(d.async = 1), (d.src = 'https://cdn.sessionstack.com/sessionstack.js')
-  var e = document.getElementsByTagName('script')[0]
-  e.parentNode.insertBefore(d, e)
-})('sessionstack', '8e98440cc80c44af95b66c1cc984a8cf')
-sessionstack('getSessionId', function(s) {
-  s &&
-    Raven.setDataCallback(function(t) {
-      return (
-        (t.contexts = t.contexts || {}),
-        (t.contexts.sessionstack = {
-          session_id: s,
-          timestamp: new Date().getTime(),
-        }),
-        t
-      )
-    })
-}) */
 
 // -- DEFINIZIONE GV
 window.GV = {

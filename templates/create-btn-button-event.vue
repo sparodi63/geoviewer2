@@ -5,13 +5,13 @@
     @click="onClick"
     :class="setClass()"
   />
-</template> 
+</template>
 
 <script>
-import SwitchActiveButton from "../../mixins/SwitchActiveButton";
-import Control from "../../controls/__nome-file__";
+import SwitchActiveButton from '../../mixins/SwitchActiveButton';
+import Control from '../../controls/__nome-file__';
 
-const name = "gv-__nome-componente__-button";
+const name = 'gv-__nome-componente__-button';
 
 export default {
   name: name,
@@ -22,8 +22,8 @@ export default {
       active: false,
       control: Control,
       options: options,
-      cssClass: "gv-button fa fa-file-o",
-      cssActiveClass: "gv-button-selected"
+      cssClass: 'gv-button fa fa-file',
+      cssActiveClass: 'gv-button-selected',
     };
   },
   mixins: [SwitchActiveButton],
@@ -33,15 +33,11 @@ export default {
       // console.log(this.options)
     },
     setClass() {
-      return this.active
-        ? this.cssClass + " " + this.cssActiveClass
-        : this.cssClass;
-    }
+      return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
+    },
   },
-  mounted: function() {}
+  mounted: function() {},
 };
 </script>
 
-<style>
-
-</style>
+<style></style>
