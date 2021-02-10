@@ -3,6 +3,12 @@
 /* Gestione colori customizzabili */
 
 /* ----------------------------------------------- */
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  background-color: #fff;
+}
+
 #popup {
   color: black;
 }

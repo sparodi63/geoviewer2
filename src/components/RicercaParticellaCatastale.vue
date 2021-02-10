@@ -5,7 +5,7 @@
       :title="title"
       :divId="'gv-ricerca-particella'"
       :hide="true"
-      :width="'285px'"
+      :width="'286px'"
     ></gv-title>
     <div class="gv-ricerca-particella-body" id="gv-ricerca-particella-body">
       <el-form :model="form" ref="form">

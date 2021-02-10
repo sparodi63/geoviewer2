@@ -3,10 +3,9 @@
 require('style!../node_modules/leaflet/dist/leaflet.css');
 require('style!./assets/css/base.css');
 require('style!./assets/css/mapskin/css/mapskin.css');
-// require('style!font-awesome/css/font-awesome.css');
-import '@fortawesome/fontawesome-free/css/all.css';
 require('style!./assets/css/leaflet.draw.css');
 require('style!./assets/css/cesium-navigation.css');
+import '@fortawesome/fontawesome-free/css/all.css';
 
 // -------------------------------------------------------------------------------- //
 // Shims/Polyfill

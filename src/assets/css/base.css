@@ -4,17 +4,18 @@
 
 /* ----------------------------------------------- */
 
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
 html,
 body {
   height: 100%;
   padding: 0;
   margin: 0;
-}
-
-body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
   font-size: 14px;
+  font-weight: 800;
   line-height: 1.42857143;
+  background-color: #eee;
 }
 
 /* ----------------------------------------------- */
@@ -50,12 +51,12 @@ body {
 }
 
 .gv-button {
-  background-color: #24386c;
   color: #ccc;
-  border-color: #ccc;
+  background-color: #24386c;
+  border-color: #24386c;
   cursor: pointer;
   height: 24px;
-  border-width: 1px;
+  border-width: 0px;
   border-radius: 2px;
   border-style: solid;
   width: 36px;
@@ -64,9 +65,10 @@ body {
 }
 
 .gv-button-selected {
-  background: rgb(70, 99, 170);
-  border-color: rgb(68, 129, 221);
-  color: #fff;
+  color: #ccc;
+  background-color: #24386c;
+  border-color: #24386c;
+  border-width: 0px;
 }
 
 .gv-button:hover {

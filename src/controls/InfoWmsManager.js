@@ -262,7 +262,7 @@ function showGvInfo(feature) {
   const layerId = feature.layer.config.id;
   GV.gvInfoFeatures[featureId] = feature;
   const panelId = `gvi-info-${featureId}`;
-  const url = `/geoservices/apps/gv_info/layers/${layerId}/?feature_id=${featureId}`;
+  const url = `/geoservices/apps/gvi/info/${layerId}/?feature_id=${featureId}`;
   if (!feature.infoOptions.infoTarget || feature.infoOptions.infoTarget === 'panel') {
     showPanel(url, feature.infoOptions, panelId);
   } else {

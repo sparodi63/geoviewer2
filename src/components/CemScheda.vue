@@ -5,68 +5,59 @@
       <table>
         <tbody>
           <tr v-for="item in items" :key="item.label">
-            <th class="gv-cem-scheda-panel-th gv-secondary-color-scheme">{{item.label}}</th>
-            <td>{{item.value}}</td>
+            <th class="gv-cem-scheda-panel-th gv-color-scheme">{{ item.label }}</th>
+            <td>{{ item.value }}</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </template>
- 
 
 <script>
-import Vue from "vue";
-import globals from "../globals";
+import Vue from 'vue';
+import globals from '../globals';
 
 export default {
-  props: [
-    "titolo",
-    "note",
-    "tipo",
-    "numValues",
-    "siteFileName",
-    "elevation",
-    "side"
-  ],
+  props: ['titolo', 'note', 'tipo', 'numValues', 'siteFileName', 'elevation', 'side'],
   data() {
     return {
-      items: []
+      items: [],
     };
   },
   methods: {},
   mounted() {
     this.items = [
       {
-        label: "Titolo",
-        value: this.titolo
+        label: 'Titolo',
+        value: this.titolo,
       },
       {
-        label: "Tipo di Esportazione",
-        value: this.tipo
+        label: 'Tipo di Esportazione',
+        value: this.tipo,
       },
       {
-        label: "Griglia di Calcolo",
-        value: this.numValues
+        label: 'Griglia di Calcolo',
+        value: this.numValues,
       },
       {
-        label: "Nome Postazione",
-        value: this.siteFileName
+        label: 'Nome Postazione',
+        value: this.siteFileName,
       },
       {
-        label: "Quota (m)",
-        value: this.elevation
+        label: 'Quota (m)',
+        value: this.elevation,
       },
       {
-        label: "Lato Area Valutazione (m)",
-        value: this.side
+        label: 'Lato Area Valutazione (m)',
+        value: this.side,
       },
       {
-        label: "Note",
-        value: this.note
-      }
+        label: 'Note',
+        value: this.note,
+      },
     ];
-  }
+  },
 };
 </script>
 

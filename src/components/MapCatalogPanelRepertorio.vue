@@ -217,7 +217,7 @@ export default {
 
 .gv-map-catalog-panel-form {
   padding: 0px 10px 5px;
-  width: 580px;
+  width: 600px;
 }
 
 .gv-map-catalog-label {

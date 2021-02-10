@@ -10,7 +10,7 @@
       <table>
         <tbody>
           <tr v-for="item in items" :key="item.label">
-            <th class="gv-map-info-panel-th gv-secondary-color-scheme">{{ item.label }}</th>
+            <th class="gv-map-info-panel-th gv-color-scheme">{{ item.label }}</th>
             <td>{{ item.value }}</td>
           </tr>
         </tbody>
@@ -245,7 +245,7 @@ export default {
 }
 
 .gv-map-info-panel-body {
-  background-color: #fff;
+  background-color: #eee;
 }
 
 /* @media (pointer: coarse) {

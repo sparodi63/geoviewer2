@@ -9,7 +9,7 @@
       <table>
         <tbody>
           <tr v-for="item in items" :key="item.label">
-            <th class="gv-atlante-geochimico-scheda-panel-th gv-secondary-color-scheme">
+            <th class="gv-atlante-geochimico-scheda-panel-th gv-color-scheme">
               {{ item.label }}
             </th>
             <td>{{ item.value }}</td>

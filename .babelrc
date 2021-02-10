@@ -3,15 +3,15 @@
   "plugins": [
     ["transform-runtime"],
     ["transform-vue-jsx"],
+    ["dynamic-import-webpack"],
     [
-      "dynamic-import-webpack"
-    ],
-    ["component", 
-        {
-          "libraryName": "element-ui",
-          "styleLibraryName": "~src/assets/css/element-gv-base-theme"
-        }
-    ]],
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "~src/assets/css/element-gv-theme"
+      }
+    ]
+  ],
   "comments": false,
   "compact": "auto"
 }
