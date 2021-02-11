@@ -73,6 +73,6 @@ export default {
 <style scoped>
 #image-map {
   border: 1px solid #ccc;
-  background-color: #ffffff;
+  background-color: #ccc;
 }
 </style>

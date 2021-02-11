@@ -10,7 +10,7 @@ body {
 }
 
 .cluster {
-  background-image: url(../../../static/img/gas/strutture-clstr.png);
+  background-image: url(/geoservices/apps/viewer/static/img/gas/strutture-clstr.png);
   text-align: center;
   font-size: 16px;
   color: white;

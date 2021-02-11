@@ -16,17 +16,22 @@
       <el-table-column align="center" width="25">
         <template slot-scope="scope">
           <span>
-            <input
-              type="checkbox"
+            <el-checkbox
               class="gv-layer-visibility-cb"
               v-model="scope.row.visible"
-              @click="setLayerVisible(scope.row)"
-            />
+              @change="setLayerVisible(scope.row)"
+              :disabled="!scope.row.inRange"
+            ></el-checkbox>
           </span>
         </template>
       </el-table-column>
-      <!-- <el-table-column style="word-break: normal;" property="legend.label"> -->
-      <el-table-column style="word-break: normal;">
+      <!-- <el-table-column
+        class-name="gv-inverted-color-scheme-light"
+        style="word-break: normal;"
+        property="legend.label"
+      >
+      </el-table-column> -->
+      <el-table-column class-name="gv-inverted-color-scheme-light" style="word-break: normal;">
         <template slot-scope="scope">
           <el-popover
             trigger="hover"
@@ -76,13 +81,11 @@
                 ></el-button>
               </div>
               <div class="gv-legend-popover-button">
-                <input
-                  type="checkbox"
+                <el-checkbox
                   class="gv-layer-visibility-cb"
                   v-model="scope.row.visible"
-                  @click="setLayerVisible(scope.row)"
-                  v-show="options.layerPopover && options.layerPopover.visibility"
-                />
+                  @change="setLayerVisible(scope.row)"
+                ></el-checkbox>
               </div>
             </el-row>
             <div slot="reference" class="name-wrapper">
@@ -150,7 +153,7 @@ export default {
     setLayerVisible: function(layer) {
       GV.eventBus.$emit('set-layer-visible', {
         layer: layer,
-        checked: !layer.visible,
+        checked: layer.visible,
       });
       const opacity = layer['opacityBase100'] / 100;
       GV.eventBus.$emit('set-layer-transparency', {

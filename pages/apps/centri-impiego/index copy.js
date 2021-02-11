@@ -29,7 +29,7 @@ var svg_mail = `<svg class="svg-icon v-align" viewBox="0 0 44.76 46.74">
 var baseURL =
   'https://geoservizi.regione.liguria.it/geoserver/M2136/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=M2136%3AL7350&maxFeatures=50&outputFormat=application%2Fjson&srsName=EPSG%3A4326';
 
-var baseLegendUrl = '../../../static/img/centri-impiego/legend/';
+var baseLegendUrl = '/geoservices/apps/viewer/static/img/centri-impiego/legend/';
 
 var config = [
   { id: 'CPI', legendLabel: "CPI - Centro per l'impiego" },

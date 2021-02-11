@@ -416,3 +416,9 @@ export default {
   width: 120px;
 }
 </style>
+
+<style>
+.multi-legend {
+  margin-top: 80px !important;
+}
+</style>

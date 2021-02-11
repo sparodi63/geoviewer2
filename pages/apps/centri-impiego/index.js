@@ -26,7 +26,7 @@ var svg_mail = `<svg class="svg-icon v-align" viewBox="0 0 44.76 46.74">
   </g>
 </svg>`;
 
-var baseLegendUrl = '../../../static/img/centri-impiego/legend/';
+var baseLegendUrl = '/geoservices/apps/viewer/static/img/centri-impiego/legend/';
 
 var config = [
   { id: 'cpi', legendLabel: "CPI - Centro per l'impiego" },

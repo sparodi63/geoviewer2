@@ -89,12 +89,11 @@ export default {
 <style scoped>
 .gv-genio-localizza {
   position: absolute;
-  width: 200px;
+  width: 220px;
   left: 0;
   top: 0;
   margin-left: 10px;
   margin-top: 50px;
-  background-color: #fff;
   z-index: 800;
   display: block;
 }
@@ -122,7 +121,6 @@ export default {
 }
 
 .gv-genio-localizza-body {
-  background-color: #fff;
   padding: 10px;
 }
 

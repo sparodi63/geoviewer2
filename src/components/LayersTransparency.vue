@@ -1,30 +1,34 @@
 <template>
-    <div id="gv-layers-transparency" class="gv-inverted-color-scheme">
-        <gv-title v-draggable title="TRASPARENZA LAYER" :hide="false" :divId="'gv-layers-transparency'"></gv-title>
-        <div id="gv-layers-transparency-wrapper" class="gv-layers-transparency-wrapper">
-            <div id="gv-layers-transparency-body">
-                    <ul class="gv-layers-transparency-list-group">
-                        <li v-for="layer in layers" :layer="layer" :class="getClass(layer)" :key="layer.id">
-                            <span class="gv-transparency-layer-title-span">{{layer.legend.label}}</span>
-                            <div class="gv-transparency-layer-slider">
-                              <el-slider @change="onChange(layer)" v-model="layer.opacityBase100"></el-slider>
-                            </div>
-                        </li>
-                    </ul>
+  <div id="gv-layers-transparency" class="gv-inverted-color-scheme">
+    <gv-title
+      v-draggable
+      title="TRASPARENZA LAYER"
+      :hide="false"
+      :divId="'gv-layers-transparency'"
+    ></gv-title>
+    <div id="gv-layers-transparency-wrapper" class="gv-layers-transparency-wrapper">
+      <div id="gv-layers-transparency-body">
+        <ul class="gv-layers-transparency-list-group">
+          <li v-for="layer in layers" :layer="layer" :class="getClass(layer)" :key="layer.id">
+            <span class="gv-transparency-layer-title-span">{{ layer.legend.label }}</span>
+            <div class="gv-transparency-layer-slider">
+              <el-slider @change="onChange(layer)" v-model="layer.opacityBase100"></el-slider>
             </div>
-        </div>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
 </template>
 
-
 <script>
-'use strict'
-import Vue from 'vue'
-import mountComponent from '../util/mountComponent'
-Vue.component('gv-title', () => import('./Title.vue'))
+'use strict';
+import Vue from 'vue';
+import mountComponent from '../util/mountComponent';
+Vue.component('gv-title', () => import('./Title.vue'));
 
-import { Slider } from 'element-ui'
-Vue.use(Slider)
+import { Slider } from 'element-ui';
+Vue.use(Slider);
 
 export default {
   name: 'gv-layers-transparency',
@@ -33,24 +37,26 @@ export default {
     return {
       width: 380,
       layers: GV.config.getMapConfig(this.idMap).layers,
-    }
+    };
   },
   mounted() {
-    GV.log('gv-layers-transparency: mounted')
+    GV.log('gv-layers-transparency: mounted');
   },
   methods: {
     getClass: function(layer) {
-      return layer.inRange ? 'gv-list-transparency-layer-item' : 'gv-list-transparency-layer-item gv-list-transparency-layer-disabled-item'
+      return layer.inRange
+        ? 'gv-list-transparency-layer-item'
+        : 'gv-list-transparency-layer-item gv-list-transparency-layer-disabled-item';
     },
     onChange(layer) {
-      const opacity = layer['opacityBase100'] / 100
+      const opacity = layer['opacityBase100'] / 100;
       GV.eventBus.$emit('set-layer-transparency', {
         layerName: layer.name,
         opacity: opacity,
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style>
@@ -58,7 +64,6 @@ export default {
   padding-left: 0;
   margin-top: 0;
   margin-bottom: 0;
-  background-color: #fff;
   width: 440px;
 }
 
@@ -68,7 +73,6 @@ export default {
   /* padding: 0.1rem 0.5rem; */
   padding-left: 0.3rem;
   height: 38px;
-  background-color: #fff;
   border: 1px solid #ddd;
 }
 
@@ -83,7 +87,6 @@ export default {
   padding-left: 0.3rem;
   margin-bottom: -2px;
   margin-top: -2px;
-  background-color: #fff;
 }
 
 .gv-list-legend-map-item {
@@ -133,7 +136,6 @@ export default {
   top: 0;
   margin-left: 10px;
   margin-top: 90px;
-  background-color: #fff;
   z-index: 800;
 }
 

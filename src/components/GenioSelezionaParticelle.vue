@@ -55,14 +55,7 @@
               </span>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="Catalogo" align="center" width="70">
-            <template slot-scope="scope">
-              <span>
-                <el-checkbox v-model="scope.row.properties.catalogo" />
-              </span>
-            </template>
-          </el-table-column>-->
-          <el-table-column width="40">
+          <el-table-column width="46">
             <template slot-scope="scope">
               <el-button
                 v-show="editableRow(scope.row.properties.STATO)"
@@ -455,5 +448,9 @@ export default {
 
 .el-table__body-wrapper {
   max-height: 300px !important;
+}
+
+.el-table {
+  font-size: 10px !important;
 }
 </style>

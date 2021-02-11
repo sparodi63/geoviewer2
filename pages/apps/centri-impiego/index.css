@@ -30,27 +30,27 @@
 }
 
 .cluster_cpi {
-  background-image: url(../../../static/img/centri-impiego/legend/cluster/cpi_nq.png);
+  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/cpi_nq.png);
 }
 
 .cluster_com {
-  background-image: url(../../../static/img/centri-impiego/legend/cluster/com_nq.png);
+  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/com_nq.png);
 }
 
 .cluster_ef {
-  background-image: url(../../../static/img/centri-impiego/legend/cluster/ef_nq.png);
+  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/ef_nq.png);
 }
 
 .cluster_al {
-  background-image: url(../../../static/img/centri-impiego/legend/cluster/al_nq.png);
+  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/al_nq.png);
 }
 
 .cluster_coop {
-  background-image: url(../../../static/img/centri-impiego/legend/cluster/coop_nq.png);
+  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/coop_nq.png);
 }
 
 .cluster_a {
-  background-image: url(../../../static/img/centri-impiego/legend/cluster/a_nq.png);
+  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/a_nq.png);
 }
 
 /* ----------------------------------------------- */
@@ -65,8 +65,8 @@
   bottom: 0px;
   height: 40px;
   width: 330px;
-  background: rgba(255, 255, 255, 1) url(../../../static/img/centri-impiego/loghi.png) no-repeat
-    center;
+  background: rgba(255, 255, 255, 1)
+    url(/geoservices/apps/viewer/static/img/centri-impiego/loghi.png) no-repeat center;
   opacity: 1;
 }
 
@@ -78,7 +78,8 @@
   width: 232px;
   padding-left: 18px;
   z-index: 799;
-  background: #c5d361 url(../../../static/img/centri-impiego/logo-giovani-liguria-col.png) no-repeat
+  background: #c5d361
+    url(/geoservices/apps/viewer/static/img/centri-impiego/logo-giovani-liguria-col.png) no-repeat
     10% 50%;
   opacity: 1;
   filter: alpha(opacity=100);

@@ -5,7 +5,7 @@
       :title="title"
       :divId="'gv-ricerca-catastale'"
       :hide="true"
-      :width="'285px'"
+      :width="'286px'"
     ></gv-title>
     <div class="gv-ricerca-catastale-body" id="gv-ricerca-catastale-body">
       <el-form :model="form" ref="form">

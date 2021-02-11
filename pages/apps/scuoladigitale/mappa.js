@@ -43,7 +43,7 @@ var maps = [
         url: '/geoservices/data/scuoladigitale/scuole01.json',
         legend: {
           label: 'Centro Formazione Adulti',
-          icon: '../../../static/img/scuoladigitale/legend/cfa.png',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
         },
         tooltip: '{DENOMINAZIONE}',
         popup: popupTemplate,
@@ -55,7 +55,7 @@ var maps = [
               value: '01',
             },
             style: {
-              iconUrl: '../../../static/img/scuoladigitale/legend/cfa.png',
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
               iconSize: [32, 37],
               iconAnchor: [16, 37],
               popupAnchor: [0, -37],
@@ -84,7 +84,7 @@ var maps = [
         geomSubType: 'POINT',
         url: '/geoservices/data/scuoladigitale/scuole02.json',
         legend: {
-          icon: '../../../static/img/scuoladigitale/legend/school02.png',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school02.png',
           label: 'Istruzione Superiore',
         },
         tooltip: '{DENOMINAZIONE}',
@@ -97,7 +97,7 @@ var maps = [
               value: '02',
             },
             style: {
-              iconUrl: '../../../static/img/scuoladigitale/legend/school02.png',
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school02.png',
               iconSize: [32, 37],
               iconAnchor: [16, 37],
               popupAnchor: [0, -37],
@@ -126,7 +126,7 @@ var maps = [
         geomSubType: 'POINT',
         url: '/geoservices/data/scuoladigitale/scuole03.json',
         legend: {
-          icon: '../../../static/img/scuoladigitale/legend/school01.png',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school01.png',
           label: 'IC :  infanzia, primaria, media',
         },
         tooltip: '{DENOMINAZIONE}',
@@ -139,7 +139,7 @@ var maps = [
               value: '03',
             },
             style: {
-              iconUrl: '../../../static/img/scuoladigitale/legend/school01.png',
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school01.png',
               iconSize: [32, 37],
               iconAnchor: [16, 37],
               popupAnchor: [0, -37],
@@ -168,7 +168,7 @@ var maps = [
         geomSubType: 'POINT',
         url: '/geoservices/data/scuoladigitale/scuole04.json',
         legend: {
-          icon: '../../../static/img/scuoladigitale/legend/school03.png',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school03.png',
           label: 'Istituti Omnicomprensivi',
         },
         tooltip: '{DENOMINAZIONE}',
@@ -181,7 +181,7 @@ var maps = [
               value: '04',
             },
             style: {
-              iconUrl: '../../../static/img/scuoladigitale/legend/school03.png',
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school03.png',
               iconSize: [32, 37],
               iconAnchor: [16, 37],
               popupAnchor: [0, -37],
@@ -210,7 +210,7 @@ var maps = [
         geomSubType: 'POINT',
         url: '/geoservices/data/scuoladigitale/scuole06.json',
         legend: {
-          icon: '../../../static/img/scuoladigitale/legend/school06.jpg',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school06.jpg',
           label: 'Istituti Paritari',
         },
         tooltip: '{DENOMINAZIONE}',
@@ -223,7 +223,7 @@ var maps = [
               value: '06',
             },
             style: {
-              iconUrl: '../../../static/img/scuoladigitale/legend/school06.jpg',
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school06.jpg',
               iconSize: [32, 37],
               iconAnchor: [16, 37],
               popupAnchor: [0, -37],
@@ -252,7 +252,7 @@ var maps = [
         geomSubType: 'POINT',
         url: '/geoservices/data/scuoladigitale/scuole07.json',
         legend: {
-          icon: '../../../static/img/scuoladigitale/legend/school07.png',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school07.png',
           label: 'Istruzione e Formazione Professionale',
         },
         tooltip: '{DENOMINAZIONE}',
@@ -265,7 +265,7 @@ var maps = [
               value: '07',
             },
             style: {
-              iconUrl: '../../../static/img/scuoladigitale/legend/school07.png',
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school07.png',
               iconSize: [32, 37],
               iconAnchor: [16, 37],
               popupAnchor: [0, -37],
@@ -301,7 +301,7 @@ var maps = [
         url: '/geoservices/data/scuoladigitale/temi01.json',
         legend: {
           label: 'Coding e Robotica educativa',
-          icon: '../../../static/img/scuoladigitale/legend/temi01.png',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi01.png',
         },
         tooltip: '{DENOMINAZIONE}',
         popup: popupTemplate,
@@ -309,7 +309,7 @@ var maps = [
           {
             name: 'TIPO 01',
             style: {
-              iconUrl: '../../../static/img/scuoladigitale/legend/temi01.png',
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi01.png',
               iconSize: [32, 37],
               iconAnchor: [16, 37],
               popupAnchor: [0, -37],
@@ -339,7 +339,7 @@ var maps = [
         url: '/geoservices/data/scuoladigitale/temi02.json',
         legend: {
           label: 'Comunicazione digitale (Blog Siti web - Giornalismo digitale)',
-          icon: '../../../static/img/scuoladigitale/legend/temi02.png',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi02.png',
         },
         tooltip: '{DENOMINAZIONE}',
         popup: popupTemplate,
@@ -347,7 +347,7 @@ var maps = [
           {
             name: 'TIPO 02',
             style: {
-              iconUrl: '../../../static/img/scuoladigitale/legend/temi02.png',
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi02.png',
               iconSize: [32, 37],
               iconAnchor: [16, 37],
               popupAnchor: [0, -37],
@@ -377,7 +377,7 @@ var maps = [
         url: '/geoservices/data/scuoladigitale/temi03.json',
         legend: {
           label: 'Contenuti digitali (Ebook, Multimedia, Video e Realtà aumentata)',
-          icon: '../../../static/img/scuoladigitale/legend/temi03.png',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi03.png',
         },
         tooltip: '{DENOMINAZIONE}',
         popup: popupTemplate,
@@ -385,7 +385,7 @@ var maps = [
           {
             name: 'TIPO 03',
             style: {
-              iconUrl: '../../../static/img/scuoladigitale/legend/temi03.png',
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi03.png',
               iconSize: [32, 37],
               iconAnchor: [16, 37],
               popupAnchor: [0, -37],
@@ -416,7 +416,7 @@ var maps = [
         legend: {
           label:
             'Smart users (Inclusione, Byod e E-learning, Sicurezza, ambiente progetti internazionali)',
-          icon: '../../../static/img/scuoladigitale/legend/temi04.png',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi04.png',
         },
         tooltip: '{DENOMINAZIONE}',
         popup: popupTemplate,
@@ -424,7 +424,7 @@ var maps = [
           {
             name: 'TIPO 04',
             style: {
-              iconUrl: '../../../static/img/scuoladigitale/legend/temi04.png',
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi04.png',
               iconSize: [32, 37],
               iconAnchor: [16, 37],
               popupAnchor: [0, -37],

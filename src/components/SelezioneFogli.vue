@@ -2,7 +2,7 @@
   <div  class="gv-map-selezione-fogli gv-inverted-color-scheme" id="gv-map-selezione-fogli">
     <gv-title v-draggable :title="title" :divId="'gv-map-selezione-fogli'" :noClose="true" :collapsible="'gv-map-selezione-fogli-body'" :width="'270px'"></gv-title>
     <div class="gv-map-selezione-fogli-body" id="gv-map-selezione-fogli-body">
-          <el-select v-model="fogli" size="large" multiple collapse-tags placeholder="Seleziona">
+          <el-select v-model="fogli" size="mini" multiple collapse-tags placeholder="Seleziona">
               <el-option v-for="item in config.fogli" :key="item.codice"  :value="item.codice" :label="item.nome" >
               </el-option>
           </el-select>
@@ -18,10 +18,8 @@
 <script>
 import Vue from 'vue'
 
-import mountComponent from '../util/mountComponent'
 import globals from '../globals'
 import getGeoJSON from '../services/getGeoJSON'
-import interpolateString from '../util/interpolateString'
 import notification from '../util/notification'
 
 import { Button, Form, FormItem, Select, Option, Notification } from 'element-ui'
@@ -178,7 +176,6 @@ export default {
   top: 0;
   margin-left: 10px;
   margin-top: 10px;
-  background-color: #fff;
   z-index: 800;
 }
 

@@ -94,7 +94,6 @@ export default {
   top: 0;
   margin-left: 10px;
   margin-top: 50px;
-  background-color: #fff;
   z-index: 800;
   display: block;
 }

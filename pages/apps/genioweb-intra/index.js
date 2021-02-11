@@ -218,6 +218,10 @@ var auth = {
   },
 };
 
+if (env === 'TEST') {
+  auth = null;
+}
+
 GV.init({
   debug: true,
   idMap: idMap,

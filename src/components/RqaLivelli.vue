@@ -151,12 +151,12 @@ export default {
       let layer = this.tipo === 'G' ? this.baseLayerGG : this.baseLayerAA;
       if (this.tipo === 'G') {
         layer.wmsParams.styles = `RQA_${this.indicatore}`;
-        layer.wmsParams.cql_filter = `COD_INDICATORE='${this.indicatore}' AND GIORNO='${this.data}'`;
+        layer.wmsParams.cql_filter = `cod_indicatore='${this.indicatore}' AND giorno='${this.data}'`;
         const indicatore = this.indicatoriGiorno.find(ind => ind.id === this.indicatore).nome;
         layer.legend.label = `${indicatore} (${this.data})`;
       } else {
         layer.wmsParams.styles = `RQA_${this.indicatore}`;
-        layer.wmsParams.cql_filter = `COD_INDICATORE='${this.indicatore}' AND ANNO=${this.data}`;
+        layer.wmsParams.cql_filter = `cod_indicatore='${this.indicatore}' AND anno=${this.data}`;
         const indicatore = this.indicatoriAnno.find(ind => ind.id === this.indicatore).nome;
         layer.legend.label = `${indicatore} (${this.data})`;
       }
@@ -184,12 +184,12 @@ export default {
       this.idMap = data.mapConfig.id;
       const baseLayerGG = data.mapConfig.layers.filter(layer => {
         return (
-          layer.idMap === data.mapConfig.id && layer.dbSchema.tableName === 'V_RQA_INDICATORI_GG'
+          layer.idMap === data.mapConfig.id && layer.dbSchema.tableName === 'v_rqa_indicatori_gg'
         );
       })[0];
       const baseLayerAA = data.mapConfig.layers.filter(layer => {
         return (
-          layer.idMap === data.mapConfig.id && layer.dbSchema.tableName === 'V_RQA_INDICATORI_AA'
+          layer.idMap === data.mapConfig.id && layer.dbSchema.tableName === 'v_rqa_indicatori_aa'
         );
       })[0];
       this.baseLayerGG = baseLayerGG;

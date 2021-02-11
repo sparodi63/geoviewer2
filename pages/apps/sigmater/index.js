@@ -3,7 +3,9 @@
 // http://localhost:8081/?urlRitorno=http://sigmater.regione.liguria.it/sigmater/index.jsp&LAYER=COMUNE&codice=B838
 // http://localhost:8081/?urlRitorno=http://sigmater.regione.liguria.it/sigmater/index.jsp&LAYER=FOGLIO&codice=344481
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+
+var env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
 var idMap = '1047';
 
@@ -35,6 +37,10 @@ var auth = {
     s3TokenProv: null,
   },
 };
+
+if (env === 'TEST') {
+  auth = null;
+}
 
 GV.init({
   debug: true,

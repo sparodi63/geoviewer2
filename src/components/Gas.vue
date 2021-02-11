@@ -221,7 +221,7 @@ export default {
             {
               name: 'CLASSE_BASE',
               style: {
-                iconUrl: '../../../static/img/gas/strutture.png',
+                iconUrl: '/geoservices/apps/viewer/static/img/gas/strutture.png',
                 iconSize: [22, 27],
                 iconAnchor: [11, 27],
                 popupAnchor: [0, -27],
@@ -305,7 +305,7 @@ export default {
   left: 0;
   top: 0;
   margin-top: 45px;
-  background-color: #fff;
+  /* background-color: #fff; */
   z-index: 800;
   width: 270px;
 }

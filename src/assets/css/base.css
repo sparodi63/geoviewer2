@@ -39,6 +39,11 @@ body {
   background-color: #ccc;
 }
 
+.gv-inverted-color-scheme-light {
+  color: #24386c;
+  background-color: #eee;
+}
+
 .gv-secondary-color-scheme {
   background-color: #527c41;
   color: #ccc;

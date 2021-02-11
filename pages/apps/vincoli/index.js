@@ -39,7 +39,7 @@ var tools = [
       props: [
         {
           html:
-            '<div id="titolo"> <div id="loghi_sx"><a href="http://www.liguriavincoli.it/home.asp"><img src="../../../static/img/vincoli/vincoli_logo_sx_1.jpg"></a></div> <div id="loghi_dx"><a href="http://www.beniculturali.it" onclick="window.open(this.href);return false;"><img src="../../../static/img/vincoli/vincoli_logo_dx_1.jpg"></a><a href="http://www.regione.liguria.it" onclick="window.open(this.href);return false;"><img src="../../../static/img/vincoli//vincoli_logo_dx_2.jpg"></a></div> </div>',
+            '<div id="titolo"> <div id="loghi_sx"><a href="http://www.liguriavincoli.it/home.asp"><img src="/geoservices/apps/viewer/static/img/vincoli/vincoli_logo_sx_1.jpg"></a></div> <div id="loghi_dx"><a href="http://www.beniculturali.it" onclick="window.open(this.href);return false;"><img src="/geoservices/apps/viewer/static/img/vincoli/vincoli_logo_dx_1.jpg"></a><a href="http://www.regione.liguria.it" onclick="window.open(this.href);return false;"><img src="/geoservices/apps/viewer/static/img/vincoli//vincoli_logo_dx_2.jpg"></a></div> </div>',
         },
       ],
     },
@@ -64,7 +64,7 @@ if (download === 'TRUE') {
         props: [
           {
             html:
-              '<div id="titolo"> <div id="loghi_sx"><a href="http://www.liguriavincoli.it/home.asp"><img src="../../../static/img/vincoli/vincoli_logo_sx_1.jpg"></a></div> <div id="loghi_dx"><a href="http://www.beniculturali.it" onclick="window.open(this.href);return false;"><img src="../../../dist/static/img/vincoli/vincoli_logo_dx_1.jpg"></a><a href="http://www.regione.liguria.it" onclick="window.open(this.href);return false;"><img src="../../../dist/static/img/vincoli//vincoli_logo_dx_2.jpg"></a></div> </div>',
+              '<div id="titolo"> <div id="loghi_sx"><a href="http://www.liguriavincoli.it/home.asp"><img src="/geoservices/apps/viewer/static/img/vincoli/vincoli_logo_sx_1.jpg"></a></div> <div id="loghi_dx"><a href="http://www.beniculturali.it" onclick="window.open(this.href);return false;"><img src="../../../dist/static/img/vincoli/vincoli_logo_dx_1.jpg"></a><a href="http://www.regione.liguria.it" onclick="window.open(this.href);return false;"><img src="../../../dist/static/img/vincoli//vincoli_logo_dx_2.jpg"></a></div> </div>',
           },
         ],
       },
