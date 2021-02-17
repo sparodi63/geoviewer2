@@ -1,3 +1,0 @@
-GV.Buttons.zoom = function (btnOptions, map) {
-  return L.control.zoom(btnOptions)
-}

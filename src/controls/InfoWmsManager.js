@@ -466,12 +466,13 @@ function showPanel(url, configOptions, panelId) {
     elId: panelId || 'gv-info-wms-html',
     vm: new Vue({
       template:
-        '<gv-info-wms-html :src="src" :height="height" :width="width" :title="title"></gv-info-wms-html>',
+        '<gv-info-wms-html :src="src" :height="height" :width="width" :title="title" :id="id"></gv-info-wms-html>',
       data: {
         title: 'Risultato Info',
         src: url,
         width: configOptions.infoWidth || 400,
         height: configOptions.infoHeight || 400,
+        id: panelId,
       },
     }),
   });

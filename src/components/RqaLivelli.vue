@@ -182,18 +182,12 @@ export default {
       this.anni = data.anni;
       this.mapConfig = data.mapConfig;
       this.idMap = data.mapConfig.id;
-      const baseLayerGG = data.mapConfig.layers.filter(layer => {
-        return (
-          layer.idMap === data.mapConfig.id && layer.dbSchema.tableName === 'v_rqa_indicatori_gg'
-        );
+      this.baseLayerGG = data.mapConfig.layers.filter(layer => {
+        return layer.id === data.idLayerGG;
       })[0];
-      const baseLayerAA = data.mapConfig.layers.filter(layer => {
-        return (
-          layer.idMap === data.mapConfig.id && layer.dbSchema.tableName === 'v_rqa_indicatori_aa'
-        );
+      this.baseLayerAA = data.mapConfig.layers.filter(layer => {
+        return layer.id === data.idLayerAA;
       })[0];
-      this.baseLayerGG = baseLayerGG;
-      this.baseLayerAA = baseLayerAA;
     },
   },
   computed: {

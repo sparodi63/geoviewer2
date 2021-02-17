@@ -1,4 +1,0 @@
-
-GV.Models.RlLayers = Backbone.Collection.extend({
-    model: GV.Models.RlLayer
-});

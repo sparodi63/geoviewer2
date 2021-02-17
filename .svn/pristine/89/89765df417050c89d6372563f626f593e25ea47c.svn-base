@@ -1,7 +1,0 @@
-import axios from 'axios'
-import globals from '../globals'
-
-export default function getCanali(params = { applicazione: 'ECO3', tematici: 'SI' }) {
-  let url = `${globals.RL_CANALI_SERVICE}${params.applicazione}/${params.tematici}`
-  return axios.get(url).then(response => response.data.data)
-}

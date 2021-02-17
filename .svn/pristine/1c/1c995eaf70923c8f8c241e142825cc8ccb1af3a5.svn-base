@@ -1,4 +1,0 @@
-// -------------------------------------------------------------------------------- //
-// Definizione globale oggetto GV
-import GV from './GV4CWN2'
-window.GV = GV

@@ -1,7 +1,0 @@
-/**
- * Created by parodi on 08/08/2016.
- */
-/*global GV:false, window:false, jQuery:false, $:false , console:false  , Marionette:false  , Backbone:false  */
-GV.Models.RlLayers = Backbone.Collection.extend({
-    model: GV.Models.RlLayer
-});

@@ -1,8 +1,0 @@
-import GV from '../GV'
-import L from 'leaflet'
-require('../controls/FullScreen')
-
-GV.Buttons.fullscreen = function (btnOptions, map) {
-  'use strict'
-  return L.control.fullscreen(btnOptions)
-}

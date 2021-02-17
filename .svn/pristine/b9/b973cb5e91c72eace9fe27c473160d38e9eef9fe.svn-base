@@ -1,3 +1,0 @@
-REM   dev <APP>
-
-npm run dev %1

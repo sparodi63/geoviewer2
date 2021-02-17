@@ -1,5 +1,0 @@
-
-GV.init = function (options) {
-    "use strict";
-    return new GV.App(options);
-};

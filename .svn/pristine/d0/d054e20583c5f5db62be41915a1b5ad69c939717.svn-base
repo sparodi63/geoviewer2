@@ -1,3 +1,0 @@
-GV.Buttons.fullscreen = function (btnOptions, map) {
-  return L.control.fullscreen(btnOptions)
-}
