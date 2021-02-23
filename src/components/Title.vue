@@ -1,6 +1,6 @@
 <template>
   <div class="gv-panel-title gv-color-scheme">
-    <span :title="fullTitle" class="gv-color-scheme">{{title}}</span>
+    <span :title="fullTitle" class="gv-color-scheme">{{ title }}</span>
     <el-button
       v-if="!noClose"
       class="gv-close gv-color-scheme"
@@ -20,42 +20,42 @@
 </template>
 
 <script>
-import Vue from "vue";
+import Vue from 'vue';
 
 export default {
-  name: "gv-title",
+  name: 'gv-title',
   props: [
-    "divId",
-    "title",
-    "fullTitle",
-    "hide",
-    "noClose",
-    "collapsible",
-    "width",
-    "collapsedWidth"
+    'divId',
+    'title',
+    'fullTitle',
+    'hide',
+    'noClose',
+    'collapsible',
+    'width',
+    'collapsedWidth',
   ],
   data() {
     return {
-      collapsed: false
+      collapsed: false,
     };
   },
   methods: {
     closePanel: function() {
       let div = document.getElementById(this.divId);
-      if (div) {
-        this.hide
-          ? (div.style.display = "none")
-          : div.parentNode.removeChild(div);
-      }
+      if (!div) return;
+      this.hide ? (div.style.display = 'none') : div.parentNode.removeChild(div);
+      GV.eventBus.$emit('title-close-panel', {
+        divId: this.divId,
+      });
     },
     collapse: function() {
       if (this.collapsed) {
-        document.getElementById(this.collapsible).style.display = "block";
+        document.getElementById(this.collapsible).style.display = 'block';
         if (this.width) {
           this.$el.style.width = this.width;
         }
       } else {
-        document.getElementById(this.collapsible).style.display = "none";
+        document.getElementById(this.collapsible).style.display = 'none';
         if (this.collapsedWidth) {
           this.$el.style.width = this.collapsedWidth;
         }
@@ -64,16 +64,16 @@ export default {
     },
     toggleCollapseClass() {
       return this.collapsed
-        ? "gv-title-collapse gv-color-scheme el-icon-arrow-down"
-        : "gv-title-collapse gv-color-scheme el-icon-arrow-up";
-    }
+        ? 'gv-title-collapse gv-color-scheme el-icon-arrow-down'
+        : 'gv-title-collapse gv-color-scheme el-icon-arrow-up';
+    },
   },
   mounted: function() {
-    this.$el.id = this.divId + "-title";
+    this.$el.id = this.divId + '-title';
     if (this.width) {
       this.$el.style.width = this.width;
     }
-  }
+  },
 };
 </script>
 

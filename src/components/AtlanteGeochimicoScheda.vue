@@ -3,7 +3,11 @@
     class="gv-atlante-geochimico-scheda-panel gv-inverted-color-scheme"
     id="gv-atlante-geochimico-scheda-panel"
   >
-    <gv-title :title="titolo" :divId="'gv-atlante-geochimico-scheda-panel'"></gv-title>
+    <gv-title
+      :title="titolo"
+      :divId="'gv-atlante-geochimico-scheda-panel'"
+      class="ag-scheda-title"
+    ></gv-title>
     <div class="gv-atlante-geochimico-scheda-panel-body">
       <div class="gv-atlante-geochimico-unita">Unità di Misura: {{ this.unitaMisura }}</div>
       <table>
@@ -25,7 +29,19 @@ import Vue from 'vue';
 import globals from '../globals';
 
 export default {
-  props: ['pcdf', 'pest', 'plower', 'pupper', 'Q1', 'Q2', 'Q3', 'QCD', 'cifre', 'unitaMisura'],
+  props: [
+    'pcdf',
+    'pest',
+    'plower',
+    'pupper',
+    'Q1',
+    'Q2',
+    'Q3',
+    'QCD',
+    'cifre',
+    'unitaMisura',
+    'titolo',
+  ],
   data() {
     const labels = [
       '95° percentile',
@@ -73,7 +89,7 @@ export default {
     ];
     return {
       items: items,
-      titolo: 'INFO',
+      // titolo: 'INFO',
     };
   },
   methods: {},
@@ -88,7 +104,7 @@ export default {
   bottom: 0;
   margin-right: 10px;
   margin-bottom: 10px;
-  background-color: #fff;
+  background-color: #ccc;
   z-index: 700;
   max-width: 600px;
   height: 350px;
@@ -98,6 +114,8 @@ export default {
   border: 1px solid #ddd;
   width: 100%;
   padding: 10px;
+  color: #24386c;
+  background-color: #ccc;
 }
 
 .gv-atlante-geochimico-scheda-panel-th {
@@ -117,13 +135,16 @@ export default {
 }
 
 .gv-atlante-geochimico-scheda-panel-body {
-  background-color: #fff;
+  background-color: #ccc;
 }
 
 .gv-atlante-geochimico-unita {
   margin: 15px;
   padding: 5px;
-  background-color: #527c41;
-  color: #ccc;
+  color: #24386c;
+  background-color: #ccc;
+}
+.ag-scheda-title {
+  padding-left: 20px;
 }
 </style>

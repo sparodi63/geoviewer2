@@ -229,12 +229,6 @@ function _handleResponse(features, layerName) {
 }
 
 function _showFeatureInfo(feature) {
-  // TEST HTML CON ATLANTE_GEOCHIMICO
-  // if (feature.layer.name == 'L6718') {
-  //   feature.infoOptions.infoUrl =
-  //     '/geoservices/apps/info/atlante_geochimico/info_dominio/?ID=${nom_mb}';
-  // }
-  // invece di http://srvcarto.regione.liguria.it/info/repertoriocartografico/siraAtlanteGeochimico2020_MacroBacini.xsl
   var type = getType(feature);
   switch (type) {
     case 'text':
@@ -462,8 +456,9 @@ function hiliteFeature(feature) {
 }
 // apre una panel div con un documento html
 function showPanel(url, configOptions, panelId) {
+  const id = panelId || 'gv-info-wms-html';
   mountComponent({
-    elId: panelId || 'gv-info-wms-html',
+    elId: id,
     vm: new Vue({
       template:
         '<gv-info-wms-html :src="src" :height="height" :width="width" :title="title" :id="id"></gv-info-wms-html>',
@@ -472,7 +467,7 @@ function showPanel(url, configOptions, panelId) {
         src: url,
         width: configOptions.infoWidth || 400,
         height: configOptions.infoHeight || 400,
-        id: panelId,
+        id: id,
       },
     }),
   });

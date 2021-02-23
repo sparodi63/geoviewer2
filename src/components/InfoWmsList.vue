@@ -1,31 +1,33 @@
 <template>
-    <div class="gv-info-wms gv-inverted-color-scheme" id="gv-info-wms-list">
-        <gv-title v-draggable title="Risultato Info - Lista":divId="'gv-info-wms-list'"></gv-title>
-        <div class="gv-info-wms-body gv-inverted-color-scheme">
-          <el-table
-            :data="items"
-            :show-header="showHeader"
-            highlight-current-row
-            @current-change="onChange"
-            size="mini"
-            style="width: 100%">
-            <el-table-column>
-            <template slot-scope="scope">
-              <b>{{ scope.row.label }}</b> ({{ scope.row.layer.legend.label }})
-            </template>  
-            </el-table-column>    
-          </el-table>
-        </div>
+  <div class="gv-info-wms gv-inverted-color-scheme" id="gv-info-wms-list">
+    <gv-title v-draggable title="Risultato Info - Lista" :divId="'gv-info-wms-list'"></gv-title>
+    <div class="gv-info-wms-body gv-inverted-color-scheme">
+      <el-table
+        :data="items"
+        ref="infoListTable"
+        :show-header="showHeader"
+        highlight-current-row
+        @row-click="onRowClick"
+        size="mini"
+        style="width: 100%"
+      >
+        <el-table-column>
+          <template slot-scope="scope">
+            <b>{{ scope.row.label }}</b> ({{ scope.row.layer.legend.label }})
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
+  </div>
 </template>
 
 <script>
-import InfoWmsManager from '../controls/InfoWmsManager'
+import InfoWmsManager from '../controls/InfoWmsManager';
 
-import Vue from 'vue'
-import { Table, TableColumn } from 'element-ui'
-Vue.use(Table)
-Vue.use(TableColumn)
+import Vue from 'vue';
+import { Table, TableColumn } from 'element-ui';
+Vue.use(Table);
+Vue.use(TableColumn);
 
 export default {
   name: 'gv-info-wms-list',
@@ -35,18 +37,25 @@ export default {
       showHeader: false,
       width: 310,
       value: '',
-    }
+    };
   },
   methods: {
     closePanel: function() {
-      this.$el.parentNode.removeChild(this.$el)
-      GV.app.map.getLayerByName('InfoWmsHilite').clearLayers()
+      this.$el.parentNode.removeChild(this.$el);
+      GV.app.map.getLayerByName('InfoWmsHilite').clearLayers();
     },
-    onChange: function(item) {
-      InfoWmsManager.showFeatureInfo(item)
+    onRowClick: function(item) {
+      InfoWmsManager.showFeatureInfo(item);
     },
   },
-}
+  mounted() {
+    GV.eventBus.$on('title-close-panel', event => {
+      if (event.divId === 'gv-info-wms-html' || event.divId.startsWith('gvi-info')) {
+        this.$refs.infoListTable.setCurrentRow();
+      }
+    });
+  },
+};
 </script>
 
 <style scoped>

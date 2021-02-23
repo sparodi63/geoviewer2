@@ -3,6 +3,15 @@ var id = GV.utils.getUrlParam('id');
 // GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/map/'
 // GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
+var customPageUrlList = {
+  1881: '/geoservices/apps/viewer/pages/apps/atlante-geochimico/',
+};
+
+if (id && customPageUrlList[id]) {
+  // console.log(customPageUrlList[id]);
+  window.location = customPageUrlList[id];
+}
+
 GV.init({
   debug: true,
   idMap: id,

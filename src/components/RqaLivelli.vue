@@ -81,7 +81,7 @@
           class="gv-iframe-panel"
           :src="legendUrl"
           height="141"
-          width="220"
+          width="230"
         ></gv-iframe-panel>
       </div>
     </div>
@@ -213,7 +213,7 @@ export default {
 .rqa {
   width: 270px;
   z-index: 800;
-  padding: 5px;
+  padding: 1px;
 }
 .rqa-title {
   padding-left: 10px;
@@ -247,7 +247,7 @@ export default {
 .gv-iframe-panel {
   overflow: hidden;
   margin: 10px;
-  background-color: #fff;
+  background-color: #eee;
 }
 </style>
 

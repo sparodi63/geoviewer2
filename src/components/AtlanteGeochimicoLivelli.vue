@@ -1,13 +1,29 @@
 <template>
   <div class="atlante-geochimico gv-color-scheme">
-    <div id="gv-legend-title" class="gv-legend-title gv-color-scheme">
-      TITOLO
+    <div id="ag-title" class="ag-title gv-color-scheme">
+      Atlante Geochimico
+      <button
+        :class="toggleCollapseClass()"
+        size="mini"
+        @click="hidePanel"
+        title="Nascondi Pannello"
+      ></button>
     </div>
-    <el-select placeholder="Seleziona Livello" v-model="livello" size="mini" @change="onChange">
-      <el-option v-for="item in livelli" :key="item.id" :value="item.id" :label="item.title">
-        <span style="font-size: 16px">{{ item.title }}</span>
-      </el-option>
-    </el-select>
+    <div id="ag-wrapper" class="ag-wrapper gv-color-scheme">
+      <el-select placeholder="Seleziona Elemento" v-model="livello" size="mini" @change="onChange">
+        <el-option v-for="item in livelli" :key="item.id" :value="item.id" :label="item.title">
+          <span style="font-size: 16px">{{ item.title }}</span>
+        </el-option>
+      </el-select>
+      <div class="ag-legend" v-show="showLegend">
+        <gv-iframe-panel
+          class="gv-iframe-panel"
+          :src="legendUrl"
+          height="237"
+          width="249"
+        ></gv-iframe-panel>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -30,264 +46,34 @@ export default {
       downloadConfig: null,
       metaData: null,
       layerConfig: null,
-      baseMapConfig: {
-        id: 2037,
-        name: 'Atlante Geochimico (Livelli Vettoriali)',
-        extent: null,
-        extent_3857: null,
-        type: 'V',
-        projection: 'EPSG:3003',
-        flagGeoserver: true,
-        downloadSuInteroTerritorio: false,
-        flagDownload: false,
-        flagDownloadExtranet: false,
-        ancillaryMaps: [],
-        layers: [
-          {
-            id: 6718,
-            idMap: 2037,
-            type: 'WMS',
-            name: 'L7705',
-            title: 'Punti Campionamento',
-            visible: true,
-            attribution: null,
-            minScale: 300000,
-            maxScale: 500,
-            opacity: 1,
-            geomType: 'VECTOR',
-            geomSubType: 'POINT',
-            queryable: true,
-            order: 101,
-            multiClasse: false,
-            wmsParams: {
-              url: 'https://geoservizi.regione.liguria.it/geoserver/M2037/wms?',
-              name: 'L7705',
-              transparent: true,
-              format: 'image/png8',
-              infoFormat: null,
-              format_options: 'antialias:text',
-            },
-            tmsParams: null,
-            flagBaseVectorLayer: false,
-            flagDownload: false,
-            downloadSuInteroTerritorio: false,
-            wfsParams: {
-              url: 'https://geoservizi.regione.liguria.it/geoserver/M2037/wfs?',
-              typeName: 'L7705',
-            },
-            legend: {
-              label: 'Punti Campionamento',
-              icon:
-                'https://geoservizi.regione.liguria.it/geoserver/M2037/wms?LAYER=L7705&RULE=R0&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=forceLabels:off',
-              popUpFlag: 0,
-              popUpUrl: null,
-              popUpWidth: 0,
-              popUpHeight: 0,
-            },
-            infoOptions: {
-              infoUrl:
-                'http://srvcarto.regione.liguria.it/info/repertoriocartografico/siraAtlanteGeochimico2020_Punti.xsl',
-              infoTarget: null,
-              infoWidth: 0,
-              infoHeight: 0,
-              infoIdAttr: 'id',
-              infoLabelAttr: null,
-            },
-            classes: [
-              {
-                filter: null,
-                legendLabel: 'Classe Base',
-                legendIcon: null,
-              },
-            ],
-            rasterFilePath: null,
-            flagGeoserver: true,
-            cacheMinZoomLevel: null,
-            cacheMaxZoomLevel: null,
-            footprint: null,
-            cachePostGIS: false,
-            cacheVersion: 0,
-            cacheVersionTest: 0,
-            mapTitle: 'Atlante Geochimico Appoggio Vettoriale',
-          },
-          {
-            id: 6718,
-            idMap: 2037,
-            type: 'WMS',
-            name: 'L6718',
-            title: 'Dominio di Calcolo',
-            visible: true,
-            attribution: null,
-            minScale: 0,
-            maxScale: 0,
-            opacity: 1,
-            geomType: 'VECTOR',
-            geomSubType: 'POLYGON',
-            queryable: true,
-            order: 101,
-            multiClasse: false,
-            wmsParams: {
-              url: 'https://geoservizi.regione.liguria.it/geoserver/M2037/wms?',
-              name: 'L6718',
-              transparent: true,
-              format: 'image/png8',
-              infoFormat: null,
-              format_options: 'antialias:text',
-            },
-            tmsParams: null,
-            flagBaseVectorLayer: false,
-            flagDownload: false,
-            downloadSuInteroTerritorio: false,
-            wfsParams: {
-              url: 'https://geoservizi.regione.liguria.it/geoserver/M2037/wfs?',
-              typeName: 'L6718',
-            },
-            legend: {
-              label: 'Dominio di Calcolo',
-              icon:
-                'https://geoservizi.regione.liguria.it/geoserver/M2037/wms?LAYER=L6718&RULE=R0&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=forceLabels:off',
-              popUpFlag: 0,
-              popUpUrl: null,
-              popUpWidth: 0,
-              popUpHeight: 0,
-            },
-            infoOptions: {
-              // 'http://srvcarto.regione.liguria.it/info/repertoriocartografico/siraAtlanteGeochimico2020_MacroBacini.xsl'
-              infoUrl: '/geoservices/apps/info/atlante_geochimico/info_dominio/?ID=${nom_mb}',
-              infoTarget: null,
-              infoWidth: 580,
-              infoHeight: 585,
-              infoIdAttr: 'cod_mb',
-              infoLabelAttr: null,
-            },
-            classes: [
-              {
-                filter: null,
-                legendLabel: 'Classe Base',
-                legendIcon: null,
-              },
-            ],
-            dbSchema: {
-              schema: null,
-              tableName: 'mng_bac',
-              columns: [
-                {
-                  name: 'ogc_fid',
-                  type: 'integer',
-                },
-                {
-                  name: 'cod_mb',
-                  type: 'numeric',
-                },
-                {
-                  name: 'nom_mb',
-                  type: 'character varying',
-                },
-              ],
-            },
-            rasterFilePath: null,
-            flagGeoserver: true,
-            cacheMinZoomLevel: null,
-            cacheMaxZoomLevel: null,
-            footprint: null,
-            cachePostGIS: false,
-            cacheVersion: 0,
-            cacheVersionTest: 0,
-            mapTitle: 'Atlante Geochimico Appoggio Vettoriale',
-          },
-          {
-            id: 7650,
-            idMap: 2037,
-            type: 'WMS',
-            name: 'L7650',
-            title: 'Griglia',
-            visible: true,
-            attribution: null,
-            minScale: 0,
-            maxScale: 0,
-            opacity: 1,
-            geomType: 'VECTOR',
-            geomSubType: 'POLYGON',
-            queryable: false,
-            order: 101,
-            multiClasse: false,
-            wmsParams: {
-              url: 'https://geoservizi.regione.liguria.it/geoserver/M2037/wms?',
-              name: 'L7650',
-              transparent: true,
-              format: 'image/png8',
-              infoFormat: null,
-              format_options: 'antialias:text',
-            },
-            tmsParams: null,
-            flagBaseVectorLayer: false,
-            flagDownload: false,
-            downloadSuInteroTerritorio: false,
-            wfsParams: {
-              url: 'https://geoservizi.regione.liguria.it/geoserver/M2037/wfs?',
-              typeName: 'L7650',
-            },
-            legend: {
-              label: 'Griglia',
-              icon:
-                'https://geoservizi.regione.liguria.it/geoserver/M2037/wms?LAYER=L7650&RULE=R0&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=forceLabels:off',
-              popUpFlag: 0,
-              popUpUrl: null,
-              popUpWidth: 0,
-              popUpHeight: 0,
-            },
-            infoOptions: {
-              infoUrl: null,
-              infoTarget: null,
-              infoWidth: 0,
-              infoHeight: 0,
-              infoIdAttr: 'id_cella',
-              infoLabelAttr: null,
-            },
-            classes: [
-              {
-                filter: null,
-                legendLabel: 'Classe Base',
-                legendIcon: null,
-              },
-            ],
-            dbSchema: {
-              schema: null,
-              tableName: 'mng_celle',
-              columns: [
-                {
-                  name: 'ogc_fid',
-                  type: 'integer',
-                },
-                {
-                  name: 'id_cella',
-                  type: 'numeric',
-                },
-              ],
-            },
-            rasterFilePath: null,
-            flagGeoserver: true,
-            cacheMinZoomLevel: null,
-            cacheMaxZoomLevel: null,
-            footprint: null,
-            cachePostGIS: false,
-            cacheVersion: 0,
-            cacheVersionTest: 0,
-            mapTitle: 'Atlante Geochimico Appoggio Vettoriale',
-          },
-        ],
-        ruoli: 'PUBBLICO',
-      },
+      show: true,
+      showLegend: false,
+      legendUrl: null,
+      baseMapConfigId: 2037,
     };
   },
   methods: {
+    toggleCollapseClass() {
+      return this.show
+        ? 'gv-panel-collapse gv-color-scheme el-icon-arrow-up'
+        : 'gv-panel-collapse gv-color-scheme el-icon-arrow-down';
+    },
+    hidePanel: function() {
+      if (this.show) {
+        document.getElementById('ag-wrapper').style.display = 'none';
+      } else {
+        document.getElementById('ag-wrapper').style.display = 'block';
+      }
+      this.show = !this.show;
+    },
     onChange(value) {
       const layerConfig = this.livelli.filter(livello => {
         return livello.id == value;
       });
       this.layerConfig = layerConfig[0];
       this.loadLayer(layerConfig[0]);
-      this.showLegend(layerConfig[0]);
+      this.legendUrl = `/geoservices/REST/atlante_geochimico/legenda/?id=${this.layerConfig.id}`;
+      this.showLegend = true;
       this.cleanUpDownload();
     },
     cleanUpDownload() {
@@ -308,7 +94,7 @@ export default {
       layerConfig.multiClasse = false;
       const idMap = layerConfig.idMap;
       GV.config.removeMap(idMap);
-      GV.config.removeMap(this.baseMapConfig.id);
+      GV.config.removeMap(this.baseMapConfigId);
       GV.config.addMapConfig({
         id: idMap,
         name: 'Atlante Geochimico',
@@ -318,31 +104,16 @@ export default {
         metaData: this.metaData,
         layers: [layerConfig],
       });
-      GV.config.addMapConfig(this.baseMapConfig);
-    },
-    showLegend(layerConfig) {
-      mountComponent({
-        elId: 'gv-multi-legend-panel',
-        containerId: GV.config.containerId,
-        clear: true,
-        vm: new Vue({
-          template: `<gv-multi-legend-panel
-            visible="true"
-            src="http://srvcarto.regione.liguria.it/geoservices/REST/atlante_geochimico/legenda/?id=${layerConfig.id}"
-            height="290"
-            width="250"
-            :title="false"
-            noClose="true">
-            </gv-multi-legend-panel>`,
-        }),
-      });
+      GV.config.addRlMap(this.baseMapConfigId.toString(), true, false);
     },
     subscribeMapEvent(event) {
       GV.app.map.on('click', event => {
         const wmsUrl = this.getWmsUrl(event);
-        getFeatureInfo(wmsUrl).then(features => {
-          this.showInfo(features);
-        });
+        if (this.layerConfig.visible) {
+          getFeatureInfo(wmsUrl).then(features => {
+            this.showInfo(features);
+          });
+        }
       });
     },
     showInfo(features) {
@@ -357,12 +128,14 @@ export default {
         QCD: features[7].properties.GRAY_INDEX,
         cifre: this.layerConfig.infoOptions.cifreSignificative,
         unitaMisura: this.layerConfig.infoOptions.unitaMisura,
+        titolo: this.layerConfig.title,
       };
+
       mountComponent({
         elId: 'gv-atlante-geochimico-scheda-panel',
         clear: true,
         vm: new Vue({
-          template: `<gv-atlante-geochimico-scheda-panel :pcdf="pcdf" :pest="pest" :plower="plower" :pupper="pupper" :Q1="Q1" :Q2="Q2" :Q3="Q3" :QCD="QCD" :cifre="cifre" :unitaMisura="unitaMisura" ></gv-atlante-geochimico-scheda-panel>`,
+          template: `<gv-atlante-geochimico-scheda-panel :pcdf="pcdf" :pest="pest" :plower="plower" :pupper="pupper" :Q1="Q1" :Q2="Q2" :Q3="Q3" :QCD="QCD" :cifre="cifre" :unitaMisura="unitaMisura" :titolo="titolo"></gv-atlante-geochimico-scheda-panel>`,
           data: data,
         }),
       });
@@ -386,9 +159,6 @@ export default {
     },
   },
   mounted: function() {
-    GV.config.addMapConfig(this.baseMapConfig);
-    //  TODO - NON RIMUOVERE MAPPA BASE ALL'AVVIO
-    GV.config.removeMap(this.baseMapConfig.id);
     getConfig().then(data => {
       this.livelli = data.layers.sort((a, b) => a.title.localeCompare(b.title));
       this.livelli.forEach(livello => {
@@ -400,6 +170,7 @@ export default {
       this.downloadConfig = data.downloadConfig;
       this.metaData = data.metaData;
     });
+    GV.config.addRlMap(this.baseMapConfigId.toString(), true, false);
     this.subscribeMapEvent(event);
   },
 };
@@ -415,10 +186,26 @@ export default {
   display: inline-block;
   width: 120px;
 }
+.ag-title {
+  margin-top: -4px;
+  padding-bottom: 3px;
+  font-weight: bold;
+}
+.ag-legend {
+  margin-top: 10px;
+}
 </style>
 
 <style>
 .multi-legend {
   margin-top: 80px !important;
+}
+.gv-panel-collapse {
+  cursor: pointer;
+  border: 0;
+  -webkit-appearance: none;
+  float: right;
+  font-size: 14px;
+  opacity: 1;
 }
 </style>
