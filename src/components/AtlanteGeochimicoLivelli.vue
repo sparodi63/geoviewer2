@@ -109,7 +109,7 @@ export default {
     subscribeMapEvent(event) {
       GV.app.map.on('click', event => {
         const wmsUrl = this.getWmsUrl(event);
-        if (this.layerConfig.visible) {
+        if (this.layerConfig && this.layerConfig.visible) {
           getFeatureInfo(wmsUrl).then(features => {
             this.showInfo(features);
           });
@@ -142,7 +142,7 @@ export default {
     },
     getWmsUrl(event) {
       if (!this.layerConfig) {
-        console.error('Configurazione Layer non trovata');
+        // console.error('Configurazione Layer non trovata');
         return;
       }
       let url = GV.globals.DEFAULT_PROXY + this.layerConfig.infoOptions.infoQueryUrl;
