@@ -6,7 +6,7 @@
       size="mini"
       empty-text=" "
       :row-class-name="layerClassName"
-      style="width: 100%;line-height: 23px;"
+      style="width: 100%;line-height: 23px; font-weight: 400;"
     >
       <el-table-column align="center" width="30">
         <template slot-scope="scope">

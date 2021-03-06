@@ -1,9 +1,6 @@
 var infoUrl =
   'http://www.cartografiarl.regione.liguria.it/ScuolaDigitale_Info/Info_progetti.asp?codice_scuola={COD_MECC}';
 var popupTemplate = '';
-// popupTemplate += '<p><b>{DENOMINAZIONE}</b></p><p>{INDIRIZZO}  - {CAP} {COMUNE}</p>'
-// popupTemplate += '<p> <a href=' + infoUrl + ' target="_blank">Elenco progetti innovazione</a> - '
-// popupTemplate += '<a href="{SITOWEB}" target="_blank">Sito Scuola</a>  </p>'
 popupTemplate += '<div class="popup">';
 popupTemplate +=
   '<img src="http://srvcarto.regione.liguria.it/geoservices/apps/viewer/static/img/scuoladigitale/ico-scuola.png" width="27" height="24" > <span><b>{DENOMINAZIONE}</b></span>';
@@ -12,270 +9,271 @@ popupTemplate +=
   '<br><img src="http://srvcarto.regione.liguria.it/geoservices/apps/viewer/static/img/scuoladigitale/ico-web.png" width="18" height="18" ><span><a href="{SITOWEB}" target="_blank">sito scuola</a> </span>';
 popupTemplate += '</div>';
 popupTemplate += '<br><br><div id="popup-header" ><b><a href=' + infoUrl;
-// popupTemplate += ' target="_blank">VAI AI PROGETTI DELLA SCUOLA > </a></b></div>'
 popupTemplate +=
   ' target="_blank">VAI AI PROGETTI DELLA SCUOLA <span class="fa fa-angle-right"></span></a></b></div>';
+
+GV.globals.SCUOLA_DIGITALE_LAYERS = [
+  {
+    type: 'JSON',
+    dataType: 'json',
+    cluster: {
+      options: {
+        iconCreateFunction: function(cluster) {
+          return L.divIcon({
+            html: cluster.getChildCount(),
+            className: 'cluster_01',
+            iconSize: L.point(28, 28),
+          });
+        },
+        showCoverageOnHover: false,
+        maxClusterRadius: 80,
+      },
+    },
+    name: 'scuole_01',
+    visible: true,
+    geomSubType: 'POINT',
+    url: '/geoservices/data/scuoladigitale/scuole01.json',
+    legend: {
+      label: 'Centro Formazione Adulti',
+      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
+    },
+    tooltip: '{DENOMINAZIONE}',
+    popup: popupTemplate,
+    classes: [
+      {
+        name: 'TIPO 01',
+        filter: {
+          key: 'TIPO',
+          value: '01',
+        },
+        style: {
+          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
+          iconSize: [32, 37],
+          iconAnchor: [16, 37],
+          popupAnchor: [0, -37],
+        },
+      },
+    ],
+  },
+  // {
+  //   type: 'JSON',
+  //   dataType: 'json',
+  //   cluster: {
+  //     options: {
+  //       iconCreateFunction: function(cluster) {
+  //         return L.divIcon({
+  //           html: cluster.getChildCount(),
+  //           className: 'cluster_02',
+  //           iconSize: L.point(28, 28),
+  //         });
+  //       },
+  //       showCoverageOnHover: false,
+  //       maxClusterRadius: 80,
+  //     },
+  //   },
+  //   name: 'scuole_02',
+  //   visible: true,
+  //   geomSubType: 'POINT',
+  //   url: '/geoservices/data/scuoladigitale/scuole02.json',
+  //   legend: {
+  //     icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school02.png',
+  //     label: 'Istruzione Superiore',
+  //   },
+  //   tooltip: '{DENOMINAZIONE}',
+  //   popup: popupTemplate,
+  //   classes: [
+  //     {
+  //       name: 'TIPO 02',
+  //       filter: {
+  //         key: 'TIPO',
+  //         value: '02',
+  //       },
+  //       style: {
+  //         iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school02.png',
+  //         iconSize: [32, 37],
+  //         iconAnchor: [16, 37],
+  //         popupAnchor: [0, -37],
+  //       },
+  //     },
+  //   ],
+  // },
+  // {
+  //   type: 'JSON',
+  //   dataType: 'json',
+  //   cluster: {
+  //     options: {
+  //       iconCreateFunction: function(cluster) {
+  //         return L.divIcon({
+  //           html: cluster.getChildCount(),
+  //           className: 'cluster_03',
+  //           iconSize: L.point(28, 28),
+  //         });
+  //       },
+  //       showCoverageOnHover: false,
+  //       maxClusterRadius: 80,
+  //     },
+  //   },
+  //   name: 'scuole_03',
+  //   visible: true,
+  //   geomSubType: 'POINT',
+  //   url: '/geoservices/data/scuoladigitale/scuole03.json',
+  //   legend: {
+  //     icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school01.png',
+  //     label: 'IC :  infanzia, primaria, media',
+  //   },
+  //   tooltip: '{DENOMINAZIONE}',
+  //   popup: popupTemplate,
+  //   classes: [
+  //     {
+  //       name: 'TIPO 03',
+  //       filter: {
+  //         key: 'TIPO',
+  //         value: '03',
+  //       },
+  //       style: {
+  //         iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school01.png',
+  //         iconSize: [32, 37],
+  //         iconAnchor: [16, 37],
+  //         popupAnchor: [0, -37],
+  //       },
+  //     },
+  //   ],
+  // },
+  // {
+  //   type: 'JSON',
+  //   dataType: 'json',
+  //   cluster: {
+  //     options: {
+  //       iconCreateFunction: function(cluster) {
+  //         return L.divIcon({
+  //           html: cluster.getChildCount(),
+  //           className: 'cluster_04',
+  //           iconSize: L.point(28, 28),
+  //         });
+  //       },
+  //       showCoverageOnHover: false,
+  //       maxClusterRadius: 80,
+  //     },
+  //   },
+  //   name: 'scuole_04',
+  //   visible: true,
+  //   geomSubType: 'POINT',
+  //   url: '/geoservices/data/scuoladigitale/scuole04.json',
+  //   legend: {
+  //     icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school03.png',
+  //     label: 'Istituti Omnicomprensivi',
+  //   },
+  //   tooltip: '{DENOMINAZIONE}',
+  //   popup: popupTemplate,
+  //   classes: [
+  //     {
+  //       name: 'TIPO 04',
+  //       filter: {
+  //         key: 'TIPO',
+  //         value: '04',
+  //       },
+  //       style: {
+  //         iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school03.png',
+  //         iconSize: [32, 37],
+  //         iconAnchor: [16, 37],
+  //         popupAnchor: [0, -37],
+  //       },
+  //     },
+  //   ],
+  // },
+  // {
+  //   type: 'JSON',
+  //   dataType: 'json',
+  //   cluster: {
+  //     options: {
+  //       iconCreateFunction: function(cluster) {
+  //         return L.divIcon({
+  //           html: cluster.getChildCount(),
+  //           className: 'cluster_06',
+  //           iconSize: L.point(28, 28),
+  //         });
+  //       },
+  //       showCoverageOnHover: false,
+  //       maxClusterRadius: 80,
+  //     },
+  //   },
+  //   name: 'scuole_06',
+  //   visible: true,
+  //   geomSubType: 'POINT',
+  //   url: '/geoservices/data/scuoladigitale/scuole06.json',
+  //   legend: {
+  //     icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school06.jpg',
+  //     label: 'Istituti Paritari',
+  //   },
+  //   tooltip: '{DENOMINAZIONE}',
+  //   popup: popupTemplate,
+  //   classes: [
+  //     {
+  //       name: 'TIPO 06',
+  //       filter: {
+  //         key: 'TIPO',
+  //         value: '06',
+  //       },
+  //       style: {
+  //         iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school06.jpg',
+  //         iconSize: [32, 37],
+  //         iconAnchor: [16, 37],
+  //         popupAnchor: [0, -37],
+  //       },
+  //     },
+  //   ],
+  // },
+  // {
+  //   type: 'JSON',
+  //   dataType: 'json',
+  //   cluster: {
+  //     options: {
+  //       iconCreateFunction: function(cluster) {
+  //         return L.divIcon({
+  //           html: cluster.getChildCount(),
+  //           className: 'cluster_07',
+  //           iconSize: L.point(28, 28),
+  //         });
+  //       },
+  //       showCoverageOnHover: false,
+  //       maxClusterRadius: 80,
+  //     },
+  //   },
+  //   name: 'scuole_07',
+  //   visible: true,
+  //   geomSubType: 'POINT',
+  //   url: '/geoservices/data/scuoladigitale/scuole07.json',
+  //   legend: {
+  //     icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school07.png',
+  //     label: 'Istruzione e Formazione Professionale',
+  //   },
+  //   tooltip: '{DENOMINAZIONE}',
+  //   popup: popupTemplate,
+  //   classes: [
+  //     {
+  //       name: 'TIPO 07',
+  //       filter: {
+  //         key: 'TIPO',
+  //         value: '07',
+  //       },
+  //       style: {
+  //         iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school07.png',
+  //         iconSize: [32, 37],
+  //         iconAnchor: [16, 37],
+  //         popupAnchor: [0, -37],
+  //       },
+  //     },
+  //   ],
+  // },
+];
 
 var maps = [
   {
     id: 0,
     name: 'Scuole',
-    layers: [
-      {
-        type: 'JSON',
-        dataType: 'json',
-        cluster: {
-          options: {
-            iconCreateFunction: function(cluster) {
-              return L.divIcon({
-                html: cluster.getChildCount(),
-                className: 'cluster_01',
-                iconSize: L.point(28, 28),
-              });
-            },
-            showCoverageOnHover: false,
-            maxClusterRadius: 80,
-          },
-        },
-        name: 'scuole_01',
-        visible: true,
-        geomSubType: 'POINT',
-        url: '/geoservices/data/scuoladigitale/scuole01.json',
-        legend: {
-          label: 'Centro Formazione Adulti',
-          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
-        },
-        tooltip: '{DENOMINAZIONE}',
-        popup: popupTemplate,
-        classes: [
-          {
-            name: 'TIPO 01',
-            filter: {
-              key: 'TIPO',
-              value: '01',
-            },
-            style: {
-              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
-              iconSize: [32, 37],
-              iconAnchor: [16, 37],
-              popupAnchor: [0, -37],
-            },
-          },
-        ],
-      },
-      {
-        type: 'JSON',
-        dataType: 'json',
-        cluster: {
-          options: {
-            iconCreateFunction: function(cluster) {
-              return L.divIcon({
-                html: cluster.getChildCount(),
-                className: 'cluster_02',
-                iconSize: L.point(28, 28),
-              });
-            },
-            showCoverageOnHover: false,
-            maxClusterRadius: 80,
-          },
-        },
-        name: 'scuole_02',
-        visible: true,
-        geomSubType: 'POINT',
-        url: '/geoservices/data/scuoladigitale/scuole02.json',
-        legend: {
-          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school02.png',
-          label: 'Istruzione Superiore',
-        },
-        tooltip: '{DENOMINAZIONE}',
-        popup: popupTemplate,
-        classes: [
-          {
-            name: 'TIPO 02',
-            filter: {
-              key: 'TIPO',
-              value: '02',
-            },
-            style: {
-              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school02.png',
-              iconSize: [32, 37],
-              iconAnchor: [16, 37],
-              popupAnchor: [0, -37],
-            },
-          },
-        ],
-      },
-      {
-        type: 'JSON',
-        dataType: 'json',
-        cluster: {
-          options: {
-            iconCreateFunction: function(cluster) {
-              return L.divIcon({
-                html: cluster.getChildCount(),
-                className: 'cluster_03',
-                iconSize: L.point(28, 28),
-              });
-            },
-            showCoverageOnHover: false,
-            maxClusterRadius: 80,
-          },
-        },
-        name: 'scuole_03',
-        visible: true,
-        geomSubType: 'POINT',
-        url: '/geoservices/data/scuoladigitale/scuole03.json',
-        legend: {
-          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school01.png',
-          label: 'IC :  infanzia, primaria, media',
-        },
-        tooltip: '{DENOMINAZIONE}',
-        popup: popupTemplate,
-        classes: [
-          {
-            name: 'TIPO 03',
-            filter: {
-              key: 'TIPO',
-              value: '03',
-            },
-            style: {
-              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school01.png',
-              iconSize: [32, 37],
-              iconAnchor: [16, 37],
-              popupAnchor: [0, -37],
-            },
-          },
-        ],
-      },
-      {
-        type: 'JSON',
-        dataType: 'json',
-        cluster: {
-          options: {
-            iconCreateFunction: function(cluster) {
-              return L.divIcon({
-                html: cluster.getChildCount(),
-                className: 'cluster_04',
-                iconSize: L.point(28, 28),
-              });
-            },
-            showCoverageOnHover: false,
-            maxClusterRadius: 80,
-          },
-        },
-        name: 'scuole_04',
-        visible: true,
-        geomSubType: 'POINT',
-        url: '/geoservices/data/scuoladigitale/scuole04.json',
-        legend: {
-          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school03.png',
-          label: 'Istituti Omnicomprensivi',
-        },
-        tooltip: '{DENOMINAZIONE}',
-        popup: popupTemplate,
-        classes: [
-          {
-            name: 'TIPO 04',
-            filter: {
-              key: 'TIPO',
-              value: '04',
-            },
-            style: {
-              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school03.png',
-              iconSize: [32, 37],
-              iconAnchor: [16, 37],
-              popupAnchor: [0, -37],
-            },
-          },
-        ],
-      },
-      {
-        type: 'JSON',
-        dataType: 'json',
-        cluster: {
-          options: {
-            iconCreateFunction: function(cluster) {
-              return L.divIcon({
-                html: cluster.getChildCount(),
-                className: 'cluster_06',
-                iconSize: L.point(28, 28),
-              });
-            },
-            showCoverageOnHover: false,
-            maxClusterRadius: 80,
-          },
-        },
-        name: 'scuole_06',
-        visible: true,
-        geomSubType: 'POINT',
-        url: '/geoservices/data/scuoladigitale/scuole06.json',
-        legend: {
-          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school06.jpg',
-          label: 'Istituti Paritari',
-        },
-        tooltip: '{DENOMINAZIONE}',
-        popup: popupTemplate,
-        classes: [
-          {
-            name: 'TIPO 06',
-            filter: {
-              key: 'TIPO',
-              value: '06',
-            },
-            style: {
-              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school06.jpg',
-              iconSize: [32, 37],
-              iconAnchor: [16, 37],
-              popupAnchor: [0, -37],
-            },
-          },
-        ],
-      },
-      {
-        type: 'JSON',
-        dataType: 'json',
-        cluster: {
-          options: {
-            iconCreateFunction: function(cluster) {
-              return L.divIcon({
-                html: cluster.getChildCount(),
-                className: 'cluster_07',
-                iconSize: L.point(28, 28),
-              });
-            },
-            showCoverageOnHover: false,
-            maxClusterRadius: 80,
-          },
-        },
-        name: 'scuole_07',
-        visible: true,
-        geomSubType: 'POINT',
-        url: '/geoservices/data/scuoladigitale/scuole07.json',
-        legend: {
-          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school07.png',
-          label: 'Istruzione e Formazione Professionale',
-        },
-        tooltip: '{DENOMINAZIONE}',
-        popup: popupTemplate,
-        classes: [
-          {
-            name: 'TIPO 07',
-            filter: {
-              key: 'TIPO',
-              value: '07',
-            },
-            style: {
-              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school07.png',
-              iconSize: [32, 37],
-              iconAnchor: [16, 37],
-              popupAnchor: [0, -37],
-            },
-          },
-        ],
-      },
-    ],
+    layers: GV.globals.SCUOLA_DIGITALE_LAYERS,
   },
-  {
+  /*   {
     id: 1,
     name: 'Didattica',
     layers: [
@@ -433,7 +431,7 @@ var maps = [
         ],
       },
     ],
-  },
+  }, */
 ];
 
 GV.init({

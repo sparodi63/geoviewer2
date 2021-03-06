@@ -241,7 +241,26 @@ const Map = L.Map.extend({
       }
     }, this);
   },
-
+  filterLayer(layerName, filters) {
+    const layer = this.getLayerByName(layerName);
+    if (!layer) return;
+    if (filters) {
+      layer.eachLayer(function(marker) {
+        var opacity = 0;
+        filters.forEach(function(filter) {
+          if (marker.feature.properties[filter.key] === filter.value) {
+            opacity = layer.config.opacity || 1;
+          }
+        });
+        marker.setOpacity(opacity);
+      });
+    } else {
+      layer.eachLayer(function(marker) {
+        var opacity = layer.config.opacity || 1;
+        marker.setOpacity(opacity);
+      });
+    }
+  },
   getLayerByName(layerName) {
     var foundLayer = null;
     this.eachLayer(function(layer) {

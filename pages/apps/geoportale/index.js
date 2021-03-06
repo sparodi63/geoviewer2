@@ -8,7 +8,6 @@ var customPageUrlList = {
 };
 
 if (id && customPageUrlList[id]) {
-  // console.log(customPageUrlList[id]);
   window.location = customPageUrlList[id];
 }
 

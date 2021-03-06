@@ -8,6 +8,13 @@
         @click="hideLegend"
         title="Nascondi Legenda"
       ></button>
+      <el-button
+        id="gv-legend-add-map"
+        title="Ricerca per parola chiave"
+        @click="showSearch"
+        class="gv-color-scheme gv-legend-buttons el-icon-search"
+        size="mini"
+      />
     </div>
     <div
       id="gv-scuoladigitale-legend-title-collapsed"
@@ -23,7 +30,7 @@
     <div id="gv-scuoladigitale-legend-wrapper" class="gv-scuoladigitale-legend-wrapper">
       <div>
         <div id="gv-scuoladigitale-legend-body">
-          <div id="gv-scuoladigitale-legend-combo" class="gv-color-scheme">
+          <!-- <div id="gv-scuoladigitale-legend-combo" class="gv-color-scheme">
             <el-select
               placeholder="Scegli Visualizzazione"
               v-model="tema"
@@ -37,7 +44,7 @@
                 :label="item.label"
               ></el-option>
             </el-select>
-          </div>
+          </div> -->
           <!-- MAPPE -->
           <gv-legend-maps :options="options"></gv-legend-maps>
         </div>
@@ -60,6 +67,10 @@ Vue.use(Button);
 Vue.use(Table);
 Vue.use(TableColumn);
 
+import mountComponent from '../util/mountComponent';
+
+Vue.component('gv-scuoladigitale-ricerca', () => import('./ScuolaDigitaleRicerca.vue'));
+
 export default {
   name: 'gv-scuoladigitale-legend',
   data() {
@@ -68,16 +79,16 @@ export default {
       maps: GV.config.maps,
       show: true,
       tema: 0,
-      temi: [
-        {
-          id: 0,
-          label: 'Scuole per Tipologia',
-        },
-        {
-          id: 1,
-          label: 'Scuole per Didattica Innovativa',
-        },
-      ],
+      // temi: [
+      //   {
+      //     id: 0,
+      //     label: 'Scuole per Tipologia',
+      //   },
+      //   {
+      //     id: 1,
+      //     label: 'Scuole per Didattica Innovativa',
+      //   },
+      // ],
     };
   },
   mounted() {
@@ -95,6 +106,16 @@ export default {
         GV.config.removeMap(GV.config.maps[0].id);
       }
       GV.config.addMapConfig(this.options.maps[value]);
+    },
+    showSearch() {
+      mountComponent({
+        elId: 'gv-scuoladigitale-ricerca',
+        containerId: GV.config.containerId,
+        toggleEl: true,
+        vm: new Vue({
+          template: `<gv-scuoladigitale-ricerca></gv-scuoladigitale-ricerca>`,
+        }),
+      });
     },
     hideLegend: function(event) {
       if (this.show) {
@@ -156,7 +177,7 @@ export default {
   margin-bottom: -1px;
   color: #ccc;
   cursor: default;
-  font-weight: bold;
+  font-weight: 800;
   font-family: 'Raleway', Arial, sans-serif !important;
   font-size: 14px;
 }

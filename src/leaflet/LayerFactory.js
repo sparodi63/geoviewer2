@@ -525,6 +525,7 @@ var layerFactory = {
       subType,
       legend,
       onEachFeature,
+      filter,
     } = layerConfig;
     let clusterLayer = null;
     let options = {};
@@ -614,6 +615,9 @@ var layerFactory = {
     if (pointToLayer) {
       options.pointToLayer = pointToLayer;
     }
+    if (filter) {
+      options.filter = filter;
+    }
 
     function simplePopup(layer) {
       let props = [];
@@ -667,26 +671,27 @@ var layerFactory = {
 
     var layer = L.geoJson(data, options);
     layer.name = name;
+    layer.geoJson = null;
 
-    layer.setFilter = function(filters) {
-      layer.filter = filters;
-      if (filters) {
-        layer.eachLayer(function(marker) {
-          var opacity = 0;
-          filters.forEach(function(filter) {
-            if (marker.feature.properties[filter.key] === filter.value) {
-              opacity = layer.config.opacity || 1;
-            }
-          });
-          marker.setOpacity(opacity);
-        });
-      } else {
-        layer.eachLayer(function(marker) {
-          var opacity = layer.config.opacity || 1;
-          marker.setOpacity(opacity);
-        });
-      }
-    };
+    // layer.setFilter = function(filters) {
+    //   layer.filter = filters;
+    //   if (filters) {
+    //     layer.eachLayer(function(marker) {
+    //       var opacity = 0;
+    //       filters.forEach(function(filter) {
+    //         if (marker.feature.properties[filter.key] === filter.value) {
+    //           opacity = layer.config.opacity || 1;
+    //         }
+    //       });
+    //       marker.setOpacity(opacity);
+    //     });
+    //   } else {
+    //     layer.eachLayer(function(marker) {
+    //       var opacity = layer.config.opacity || 1;
+    //       marker.setOpacity(opacity);
+    //     });
+    //   }
+    // };
 
     var parameters;
 
@@ -749,9 +754,10 @@ var layerFactory = {
           } else {
             geoJson = buildGeoJson(response.data, esParams);
           }
-
+          layer.geoJson = geoJson;
           layer.addData(geoJson);
           if (cluster) {
+            clusterLayer.geoJson = layer.geoJson;
             clusterLayer.addLayer(layer);
           }
           layer.fire('ready');
@@ -761,8 +767,10 @@ var layerFactory = {
     }
 
     if (data) {
+      layer.geoJson = data;
       if (cluster) {
         clusterLayer.addLayer(layer);
+        clusterLayer.geoJson = layer.geoJson;
         if (tooltip) {
           clusterLayer.options.title = interpolateString(tooltip, feature.properties);
         }
@@ -777,7 +785,7 @@ var layerFactory = {
         }
       }
     }
-
+    // console.log(clusterLayer);
     return cluster ? clusterLayer : layer;
   },
 
@@ -806,6 +814,7 @@ var layerFactory = {
 function create(layerConfig, map) {
   if (layerFactory[layerConfig.type]) {
     let layer = layerFactory[layerConfig.type](layerConfig, map);
+    // console.log(layer);
     layer.legend = layerConfig.legend;
     layer.config = layerConfig;
     return layer;

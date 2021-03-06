@@ -1,4 +1,4 @@
-// GV.globals.RL_MAP_CONFIG_SERVICE = "/geoservices/REST/config/map/";
+GV.globals.RL_CATALOG = 'int';
 
 var auth = {
   type: 'NAM',
@@ -32,8 +32,21 @@ GV.init({
                 type: 'tree',
                 name: 'repertorio',
                 label: 'Repertorio Cartografico',
+                cat: GV.globals.RL_CATALOG,
                 options: {
                   treeServiceUrl: '/geoservices/REST/config/catalog/',
+                },
+                tree: null,
+              },
+              canali: {
+                type: 'tree',
+                name: 'canali',
+                label: 'Canali Tematici',
+                options: {
+                  canale: 166,
+                  applicazione: null,
+                  tematici: 'SI',
+                  pub: false,
                 },
                 tree: null,
               },

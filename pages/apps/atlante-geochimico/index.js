@@ -1,8 +1,5 @@
-// var idMap = '2037';
 var idMap = null;
-GV.globals.ATLANTE_GEOCHIMICO_CONFIG_URL = '/geoservices/data/atlante_geochimico/config.json';
 GV.globals.ATLANTE_GEOCHIMICO_CONFIG_URL = '/geoservices/REST/atlante_geochimico/config/';
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 GV.init({
   debug: true,
@@ -56,11 +53,11 @@ GV.init({
   },
   baseLayers: [
     {
-      type: 'ESRI_IMAGERY',
+      type: 'MAPBOX_MONOCHROME',
       visible: true,
     },
     {
-      type: 'MAPBOX_STREETS',
+      type: 'ESRI_IMAGERY',
     },
     {
       type: 'RL_ORTOFOTO_2016',
