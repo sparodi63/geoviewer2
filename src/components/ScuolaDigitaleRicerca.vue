@@ -31,7 +31,7 @@
           >Annulla Selezione</el-button
         >
       </div>
-      <div class="gv-scuoladigitale-ricerca-result">
+      <div class="gv-scuoladigitale-ricerca-result" v-show="showResult">
         <el-table
           :data="listaProgetti"
           empty-text="Nessuna risultato trovato"
@@ -107,7 +107,7 @@ export default {
       listaParole: [],
       listaProgetti: [],
       listaScuole: [],
-      layers: [],
+      showResult: false,
     };
   },
   computed: {},
@@ -117,10 +117,6 @@ export default {
     this.listaOrdini = await ordini.data.data;
     let parole = await axios.get('/geoservices/REST/scuola/parole');
     this.listaParole = await parole.data.data;
-    this.layers.push({
-      scuole_01: GV.app.map.getLayerByName('scuole_01').geoJson,
-    });
-    console.log('MOUNTED', this.layers);
   },
   methods: {
     async submit() {
@@ -133,26 +129,35 @@ export default {
       this.listaProgetti = data.progetti;
       this.listaScuole = data.scuole;
       this.filtraMappa();
+      this.showResult = true;
     },
     reset() {
-      GV.config.removeLayer('scuole_01');
-      const layerConfig = GV.globals.SCUOLA_DIGITALE_LAYERS.filter(layer => {
-        return (layer.name = 'scuole_01');
-      })[0];
-      layerConfig.filter = () => {
-        return true;
-      };
-      GV.config.addLayerToMap(layerConfig, 0);
+      GV.globals.SCUOLA_DIGITALE_LAYERS.forEach(layer => {
+        GV.config.removeLayer(layer.name);
+        layer.filter = () => {
+          return true;
+        };
+        GV.config.addLayerToMap(layer, 0);
+      });
+      this.listaProgetti = [];
+      this.listaScuole = [];
+      this.showResult = false;
     },
     filtraMappa() {
-      GV.config.removeLayer('scuole_01');
-      const layerConfig = GV.globals.SCUOLA_DIGITALE_LAYERS.filter(layer => {
-        return (layer.name = 'scuole_01');
-      })[0];
-      layerConfig.filter = feature => {
-        if (feature.properties.COD_MECC === 'GEMM18400Q') return true;
-      };
-      GV.config.addLayerToMap(layerConfig, 0);
+      GV.globals.SCUOLA_DIGITALE_LAYERS.forEach(layer => {
+        GV.config.removeLayer(layer.name);
+        layer.filter = feature => {
+          if (this.scuolaInListaScuole(feature)) return true;
+        };
+        GV.config.addLayerToMap(layer, 0);
+      });
+    },
+    scuolaInListaScuole(feature) {
+      let found = false;
+      this.listaScuole.forEach(scuola => {
+        if (feature.properties.COD_MECC === scuola) found = true;
+      });
+      return found;
     },
   },
 };
