@@ -1,12 +1,6 @@
 <template>
   <div class="gv-ricerca-catastale gv-inverted-color-scheme" id="gv-ricerca-catastale">
-    <gv-title
-      v-draggable
-      :title="title"
-      :divId="'gv-ricerca-catastale'"
-      :hide="true"
-      :width="'286px'"
-    ></gv-title>
+    <gv-title v-draggable :title="title" :divId="'gv-ricerca-catastale'" :hide="true"></gv-title>
     <div class="gv-ricerca-catastale-body" id="gv-ricerca-catastale-body">
       <el-form :model="form" ref="form">
         <el-form-item>

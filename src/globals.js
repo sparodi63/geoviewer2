@@ -117,6 +117,31 @@ export default {
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
       printType: 'rl_carte_base',
     },
+    TS_STREETS: {
+      label: 'Stradario',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_carte_base',
+    },
+    TS_DARK_MATTER: {
+      label: 'Dark',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_carte_base',
+    },
+    TS_POSITRON: {
+      label: 'Positron',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_carte_base',
+    },
+    TS_MONOCHROME: {
+      label: 'Monochrome',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_carte_base',
+    },
+    TS_TONER: {
+      label: 'Toner',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+      printType: 'rl_carte_base',
+    },
     OSM: {
       label: 'OpenStreetMap',
       icon: '/geoservices/apps/viewer/static/img/legend/openstreetmap.png',

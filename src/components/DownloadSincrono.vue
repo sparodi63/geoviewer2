@@ -1,10 +1,5 @@
 <template>
   <div class="download-sincrono" :id="divId">
-    <!-- <gv-title
-      v-draggable
-      title="DOWNLOAD SINCRONO"
-      :divId="'gv-download-sincrono-panel'"
-    ></gv-title> -->
     <div class="gv-panel-title gv-color-scheme">
       <span title="DOWNLOAD SINCRONO" class="gv-color-scheme">{{ title }}</span>
       <el-button

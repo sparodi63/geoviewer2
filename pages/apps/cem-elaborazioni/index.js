@@ -57,7 +57,7 @@ GV.init({
       visible: true,
     },
     {
-      type: 'MAPBOX_STREETS',
+      type: 'OSM',
     },
     {
       type: 'RL_ORTOFOTO_2016',

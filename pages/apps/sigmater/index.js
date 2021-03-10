@@ -6,6 +6,7 @@
 // GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 var env = GV.globals.GENIO_WEB_ENV || 'TEST';
+GV.globals.RL_CATALOG = 'int';
 
 var idMap = '1047';
 
@@ -72,6 +73,7 @@ GV.init({
                 label: 'Repertorio Cartografico',
                 options: {
                   treeServiceUrl: '/geoservices/REST/config/catalog/',
+                  cat: GV.globals.RL_CATALOG,
                 },
                 tree: null,
               },
@@ -100,9 +102,6 @@ GV.init({
     {
       type: 'ESRI_IMAGERY',
       visible: true,
-    },
-    {
-      type: 'MAPBOX_STREETS',
     },
     {
       type: 'OSM',

@@ -448,6 +448,7 @@ export default {
 
 .el-table__body-wrapper {
   max-height: 300px !important;
+  overflow-y: auto;
 }
 
 .el-table {

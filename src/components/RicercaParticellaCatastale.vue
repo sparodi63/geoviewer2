@@ -1,12 +1,6 @@
 <template>
   <div class="gv-ricerca-particella gv-inverted-color-scheme" id="gv-ricerca-particella">
-    <gv-title
-      v-draggable
-      :title="title"
-      :divId="'gv-ricerca-particella'"
-      :hide="true"
-      :width="'286px'"
-    ></gv-title>
+    <gv-title v-draggable :title="title" :divId="'gv-ricerca-particella'" :hide="true"></gv-title>
     <div class="gv-ricerca-particella-body" id="gv-ricerca-particella-body">
       <el-form :model="form" ref="form">
         <el-form-item>

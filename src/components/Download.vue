@@ -6,12 +6,11 @@
       :divId="'gv-map-download'"
       :noClose="true"
       :collapsible="'gv-map-download-body'"
-      :width="'410px'"
     ></gv-title>
     <div class="gv-map-download-body" id="gv-map-download-body">
       <el-form :model="form" ref="form">
         <span class="gv-map-download-title">{{ config.name }}</span>
-        <el-form-item>
+        <el-form-item v-show="!config.flagDownloadStatico">
           <span class="gv-map-download-label">Email</span>
           <el-input
             id="gv-map-download-email"
@@ -583,7 +582,7 @@ export default {
     },
     submit() {
       // CONTROLLI
-      if (!this.codCliente) {
+      if (!this.config.flagDownloadStatico && !this.codCliente) {
         notification('Indicare Indirizzo Email');
         return;
       }

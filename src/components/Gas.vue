@@ -6,7 +6,6 @@
       :divId="'gv-gas'"
       :noClose="true"
       :collapsible="'gv-gas-body'"
-      :width="'255px'"
     ></gv-title>
     <div class="gv-gas-body" id="gv-gas-body">
       <el-select

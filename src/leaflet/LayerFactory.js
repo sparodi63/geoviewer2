@@ -72,6 +72,39 @@ var layerFactory = {
     });
   },
 
+  TILESERVER_GL(style) {
+    const STYLE = style;
+    return L.tileLayer(
+      `http://master-node.regione.liguria.it:8080/styles/${STYLE}/{z}/{x}/{y}.png`,
+      {
+        attribution:
+          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        minZoom: 0,
+        maxZoom: 20,
+      }
+    );
+  },
+
+  TS_STREETS() {
+    return this.TILESERVER_GL('streets');
+  },
+
+  TS_DARK_MATTER() {
+    return this.TILESERVER_GL('dark-matter');
+  },
+
+  TS_POSITRON() {
+    return this.TILESERVER_GL('positron');
+  },
+
+  TS_MONOCHROME() {
+    return this.TILESERVER_GL('monochrome');
+  },
+
+  TS_TONER() {
+    return this.TILESERVER_GL('toner');
+  },
+
   ESRI_IMAGERY(layerConfig) {
     layerConfig.legend = {
       label: 'ESRI Imagery',
@@ -279,66 +312,6 @@ var layerFactory = {
       minZoom: 0,
       maxZoom: 20,
       ext: 'png',
-    });
-  },
-
-  RL_ORTOFOTO_2013() {
-    return this.TMS({
-      visible: false,
-      tmsParams: {
-        name: 'L4419/webmercator',
-        url: 'http://mapproxy.regione.liguria.it/mapproxy/1661/tiles/',
-      },
-      zIndex: 1,
-      attribution: 'Immagine di proprietà AGEA',
-    });
-  },
-
-  RL_ORTOFOTO_2010() {
-    return this.TMS({
-      visible: false,
-      tmsParams: {
-        name: 'L3861/webmercator',
-        url: 'http://mapproxy.regione.liguria.it/mapproxy/1505/tiles/',
-      },
-      zIndex: 1,
-      attribution: 'Immagine di proprietà AGEA',
-    });
-  },
-
-  RL_ORTOFOTO_2007() {
-    return this.TMS({
-      visible: false,
-      tmsParams: {
-        name: 'L3463/webmercator',
-        url: 'http://mapproxy.regione.liguria.it/mapproxy/1361/tiles/',
-      },
-      zIndex: 1,
-      attribution: 'Immagine di proprietà AGEA',
-    });
-  },
-
-  RL_ORTOFOTO_2000_OLD() {
-    return this.TMS({
-      visible: false,
-      tmsParams: {
-        name: 'L48/webmercator',
-        url: 'http://mapproxy.regione.liguria.it/mapproxy/48/tiles/',
-      },
-      zIndex: 1,
-      attribution: 'Immagine di proprietà AGEA',
-    });
-  },
-
-  RL_CARTE_BASE_OLD() {
-    return this.TMS({
-      visible: false,
-      tmsParams: {
-        name: 'C1623/webmercator',
-        url: 'http://mapproxy.regione.liguria.it/mapproxy/1623/tiles/',
-      },
-      zIndex: 1,
-      attribution: 'Regione Liguria',
     });
   },
 

@@ -51,9 +51,11 @@ export default {
     collapse: function() {
       if (this.collapsed) {
         document.getElementById(this.collapsible).style.display = 'block';
-        if (this.width) {
-          this.$el.style.width = this.width;
-        }
+        // if (this.width) {
+        //   this.$el.style.width = this.width;
+        // } else {
+        this.$el.style.width = null;
+        // }
       } else {
         document.getElementById(this.collapsible).style.display = 'none';
         if (this.collapsedWidth) {
@@ -70,9 +72,12 @@ export default {
   },
   mounted: function() {
     this.$el.id = this.divId + '-title';
-    if (this.width) {
-      this.$el.style.width = this.width;
-    }
+    // if (this.width) {
+    //   this.$el.style.width = this.width;
+    // } else {
+    // const parentWidth = document.getElementById(this.divId).style.width;
+    // this.$el.style.width = parentWidth;
+    // }
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="gv-layer-search-legend gv-inverted-color-scheme" id="gv-layer-search-legend">
-    <gv-title v-draggable :title="title" :divId="'gv-layer-search-legend'" :width="'360px'"></gv-title>
+    <gv-title v-draggable :title="title" :divId="'gv-layer-search-legend'"></gv-title>
     <div class="gv-layer-search-legend-body" id="gv-layer-search-legend-body">
       <el-form :model="form" ref="form">
         <el-form-item>
@@ -65,14 +65,16 @@
             size="mini"
             type="primary"
             @click="populateValueList"
-          >Lista Valori</el-button>
+            >Lista Valori</el-button
+          >
           <el-button
             id="gv-layer-search-legend-submit-button"
             v-show="showSubmitButton"
             type="primary"
             size="mini"
             @click="submit"
-          >Ricerca</el-button>
+            >Ricerca</el-button
+          >
         </el-form-item>
         <div id="gv-layer-search-legend-value-list-panel" v-show="showValueList">
           <el-table
@@ -128,17 +130,17 @@
     </div>
   </div>
 </template>
- 
-<script>
-import Vue from "vue";
 
-import mountComponent from "../util/mountComponent";
-import globals from "../globals";
-import getQueryLayer from "../services/getQueryLayer";
-import getQueryLayerValueList from "../services/getQueryLayerValueList";
-import capitalize from "../util/capitalize";
-import InfoWmsManager from "../controls/InfoWmsManager";
-import getWFSFeature from "../services/getWFSFeature";
+<script>
+import Vue from 'vue';
+
+import mountComponent from '../util/mountComponent';
+import globals from '../globals';
+import getQueryLayer from '../services/getQueryLayer';
+import getQueryLayerValueList from '../services/getQueryLayerValueList';
+import capitalize from '../util/capitalize';
+import InfoWmsManager from '../controls/InfoWmsManager';
+import getWFSFeature from '../services/getWFSFeature';
 
 import {
   Button,
@@ -150,8 +152,8 @@ import {
   Notification,
   Table,
   TableColumn,
-  Pagination
-} from "element-ui";
+  Pagination,
+} from 'element-ui';
 Vue.use(Button);
 Vue.use(Input);
 Vue.use(Form);
@@ -162,31 +164,31 @@ Vue.use(Table);
 Vue.use(TableColumn);
 Vue.use(Pagination);
 
-import lang from "element-ui/lib/locale/lang/it";
-import locale from "element-ui/lib/locale";
+import lang from 'element-ui/lib/locale/lang/it';
+import locale from 'element-ui/lib/locale';
 locale.use(lang);
 
-var VueCookie = require("vue-cookie");
+var VueCookie = require('vue-cookie');
 Vue.use(VueCookie);
 
 export default {
-  name: "gv-layer-search-legend",
+  name: 'gv-layer-search-legend',
   props: { layerId: String },
   data() {
     const layer = this.layerId ? parseInt(this.layerId) : null;
     return {
-      title: "RICERCA LIVELLI",
+      title: 'RICERCA LIVELLI',
       maps: GV.config.maps,
       operatori: [
-        { codice: "=", label: "=" },
-        { codice: "!=", label: "!=" },
-        { codice: "<", label: "<" },
-        { codice: ">", label: ">" },
-        { codice: "<=", label: "<=" },
-        { codice: ">=", label: ">=" },
-        { codice: "LIKE", label: "LIKE" }
+        { codice: '=', label: '=' },
+        { codice: '!=', label: '!=' },
+        { codice: '<', label: '<' },
+        { codice: '>', label: '>' },
+        { codice: '<=', label: '<=' },
+        { codice: '>=', label: '>=' },
+        { codice: 'LIKE', label: 'LIKE' },
       ],
-      operatore: "=",
+      operatore: '=',
       layer: layer,
       columns: [],
       column: null,
@@ -194,7 +196,7 @@ export default {
       valueList: [],
       results: [],
       limit: 10,
-      total: 0
+      total: 0,
     };
   },
   computed: {
@@ -211,14 +213,14 @@ export default {
             const columns = layer.dbSchema.columns.map(column => {
               return {
                 codice: column.name,
-                label: capitalize(column.name.replace(/_/g, " ")),
-                type: column.type
+                label: capitalize(column.name.replace(/_/g, ' ')),
+                type: column.type,
               };
             });
             layers.push({
               codice: layer.id,
               label: layer.legend.label,
-              columns: columns
+              columns: columns,
             });
           }
         });
@@ -230,7 +232,7 @@ export default {
     },
     showSubmitButton() {
       return this.layer && this.column && this.valore;
-    }
+    },
   },
   watch: {},
   mounted() {
@@ -260,19 +262,17 @@ export default {
 
       const layerName = `L${this.layer}`;
       const layerConfig = GV.config.getLayerConfig(layerName);
-      const idAttr = layerConfig.cachePostGIS
-        ? item.idField.toLowerCase()
-        : item.idField;
+      const idAttr = layerConfig.cachePostGIS ? item.idField.toLowerCase() : item.idField;
       const cqlFilter = `${idAttr}='${item.id}'`;
 
       getWFSFeature(layerConfig.wfsParams, cqlFilter)
         .then(features => {
-          const layer = GV.app.map.getLayerByName("InfoWmsHilite");
+          const layer = GV.app.map.getLayerByName('InfoWmsHilite');
           if (features && features[0] && features[0].geometry) {
             layer.clearLayers();
             layer.addData(features[0].geometry);
             GV.app.map.flyToBounds(layer.getBounds(), { maxZoom: 15 });
-            GV.app.map._container.style.cursor = "default";
+            GV.app.map._container.style.cursor = 'default';
             GV.config.hilitedLayer.push(layerName);
           }
         })
@@ -301,13 +301,7 @@ export default {
       const dataType = this.columns.filter(col => {
         return col.codice == column;
       })[0].type;
-      getQueryLayerValueList(
-        this.layer,
-        column,
-        dataType,
-        offset,
-        this.limit
-      ).then(res => {
+      getQueryLayerValueList(this.layer, column, dataType, offset, this.limit).then(res => {
         this.valueList = res.data.data;
         this.total = res.data.count;
         this.showValueList = true;
@@ -331,15 +325,7 @@ export default {
       })[0].type;
       const operator = this.operatore;
       const value = this.valore;
-      getQueryLayer(
-        this.layer,
-        offset,
-        this.limit,
-        column,
-        dataType,
-        value,
-        operator
-      ).then(res => {
+      getQueryLayer(this.layer, offset, this.limit, column, dataType, value, operator).then(res => {
         this.results = res.data.data;
         this.total = res.data.count;
         this.showValueList = false;
@@ -355,27 +341,23 @@ export default {
       this.cleanUp();
     },
     cleanUp() {
-      if (this.closeWindow === "true") {
+      if (this.closeWindow === 'true') {
         window.close();
       } else {
         document
-          .getElementById("gv-layer-search-legend")
-          .parentNode.removeChild(
-            document.getElementById("gv-layer-search-legend")
-          );
+          .getElementById('gv-layer-search-legend')
+          .parentNode.removeChild(document.getElementById('gv-layer-search-legend'));
       }
     },
     collapse: function(event) {
       if (this.show) {
-        document.getElementById("gv-layer-search-legend-body").style.display =
-          "none";
+        document.getElementById('gv-layer-search-legend-body').style.display = 'none';
       } else {
-        document.getElementById("gv-layer-search-legend-body").style.display =
-          "block";
+        document.getElementById('gv-layer-search-legend-body').style.display = 'block';
       }
       this.show = !this.show;
-    }
-  }
+    },
+  },
 };
 </script>
 

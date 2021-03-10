@@ -6,16 +6,16 @@ http://localhost:8081?ID_MAP=1709&ID_LAYER=4618&FIELD=COD_TPRAT,NUM_PRAT,PROG_PR
 
 */
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/'
+GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 // GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/geoportale/map/'
 
-var idMap = GV.utils.getUrlParam('ID_MAP')
-var idLayer = 'L' + GV.utils.getUrlParam('ID_LAYER')
-var fields = GV.utils.getUrlParam('FIELD')
-var values = GV.utils.getUrlParam('CODICE')
-var findFlag = GV.utils.getUrlParam('FIND')
-var idSession = GV.utils.getUrlParam('ID_SESSION')
-var cqlFilter = buildCQL(fields, values)
+var idMap = GV.utils.getUrlParam('ID_MAP');
+var idLayer = 'L' + GV.utils.getUrlParam('ID_LAYER');
+var fields = GV.utils.getUrlParam('FIELD');
+var values = GV.utils.getUrlParam('CODICE');
+var findFlag = GV.utils.getUrlParam('FIND');
+var idSession = GV.utils.getUrlParam('ID_SESSION');
+var cqlFilter = buildCQL(fields, values);
 
 var findOptions =
   findFlag === 'SI'
@@ -23,35 +23,35 @@ var findOptions =
         layers: [idLayer],
         cqlFilter: cqlFilter,
       }
-    : null
+    : null;
 
 function buildCQL(fields, values) {
-  var fieldsArray = fields.split(',')
-  var valuesArray = values.split(',')
-  var exprArray = []
+  var fieldsArray = fields.split(',');
+  var valuesArray = values.split(',');
+  var exprArray = [];
   for (var i = 0; i < fieldsArray.length; i++) {
-    var expr = fieldsArray[i] + "='" + valuesArray[i] + "'"
-    exprArray.push(expr)
+    var expr = fieldsArray[i] + "='" + valuesArray[i] + "'";
+    exprArray.push(expr);
   }
-  var cql = exprArray.join(' AND ')
-  return cql
+  var cql = exprArray.join(' AND ');
+  return cql;
 }
 
 window.addEventListener('beforeunload', function() {
-  beforeUnload()
-})
+  beforeUnload();
+});
 
-GV.globals.flagInsert = false
+GV.globals.flagInsert = false;
 
 function beforeUnload() {
   if (GV.globals.flagInsert) {
-    return
+    return;
   }
-  insert(0, 0, 'NO')
+  insert(0, 0, 'NO');
 }
 
 function insert(x, y, esito) {
-  GV.utils.insertAgCoordinate(idSession, x.toFixed(0), y.toFixed(0), esito)
+  GV.utils.insertAgCoordinate(idSession, x.toFixed(0), y.toFixed(0), esito);
 }
 
 //
@@ -101,11 +101,11 @@ GV.init({
           options: {
             projection: 'EPSG:3003',
             submit: function(x, y) {
-              console.log('submit', x, y)
-              insert(x, y, 'SI')
+              console.log('submit', x, y);
+              insert(x, y, 'SI');
             },
             cancel: function() {
-              insert(0, 0, 'NO')
+              insert(0, 0, 'NO');
             },
           },
         },
@@ -123,7 +123,7 @@ GV.init({
       visible: true,
     },
     {
-      type: 'MAPBOX_STREETS',
+      type: 'OSM',
     },
     {
       type: 'RL_ORTOFOTO_2016',
@@ -136,4 +136,4 @@ GV.init({
     },
   ],
   maps: [],
-})
+});

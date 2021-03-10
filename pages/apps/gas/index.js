@@ -15,6 +15,6 @@ GV.init({
       tools: [{ name: 'gv-geocoder' }, { name: 'gv-gas', options: { env: 'TEST' } }],
     },
   },
-  baseLayers: [{ type: 'MAPBOX_STREETS', visible: true }],
+  baseLayers: [{ type: 'OSM', visible: true }],
   maps: [],
 });

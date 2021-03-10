@@ -43,17 +43,8 @@ GV.init({
   },
   baseLayers: [
     {
-      type: 'MAPBOX_STREETS',
-    },
-    {
       type: 'OSM',
       visible: true,
-    },
-    {
-      type: 'MAPBOX_VIABILITA',
-    },
-    {
-      type: 'MAPBOX_VIABILITA_SATELLITARE',
     },
     {
       type: 'BLANK',

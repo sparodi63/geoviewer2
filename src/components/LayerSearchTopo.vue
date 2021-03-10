@@ -5,7 +5,6 @@
       :title="title"
       :divId="'gv-layer-search-topo'"
       :noClose="true"
-      :width="'810px'"
       :collapsible="'gv-layer-search-topo-body'"
       :collapsedWidth="'180px'"
     ></gv-title>

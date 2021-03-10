@@ -6,7 +6,6 @@
       :divId="'gv-map-selezione-fogli'"
       :noClose="true"
       :collapsible="'gv-map-selezione-fogli-body'"
-      :width="'270px'"
     ></gv-title>
     <div class="gv-map-selezione-fogli-body" id="gv-map-selezione-fogli-body">
       <el-select v-model="fogli" size="mini" multiple collapse-tags placeholder="Seleziona">

@@ -73,9 +73,6 @@ GV.init({
       visible: true,
     },
     {
-      type: 'MAPBOX_STREETS',
-    },
-    {
       type: 'OSM',
     },
     {

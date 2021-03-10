@@ -1,12 +1,6 @@
 <template>
   <div id="gv-draw-panel" class="gv-draw-panel">
-    <gv-title
-      :title="title"
-      :width="'245px'"
-      :divId="'gv-draw-panel'"
-      v-draggable
-      :noClose="true"
-    ></gv-title>
+    <gv-title :title="title" :divId="'gv-draw-panel'" v-draggable :noClose="true"></gv-title>
     <div id="gv-draw-panel-body" class="gv-draw-panel-body gv-inverted-color-scheme">
       <div class="gv-draw-panel-result gv-inverted-color-scheme">
         <div id="gv-draw-panel-draw"></div>

@@ -29,7 +29,7 @@
     </div>
     <div id="gv-scuoladigitale-legend-wrapper" class="gv-scuoladigitale-legend-wrapper">
       <div>
-        <div id="gv-scuoladigitale-legend-body">
+        <div id="gv-scuoladigitale-legend-body" class="gv-inverted-color-scheme">
           <!-- <div id="gv-scuoladigitale-legend-combo" class="gv-color-scheme">
             <el-select
               placeholder="Scegli Visualizzazione"

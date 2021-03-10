@@ -200,7 +200,7 @@ GV.init({
       type: 'ESRI_IMAGERY',
     },
     {
-      type: 'MAPBOX_STREETS',
+      type: 'OSM',
     },
     {
       type: 'RL_ORTOFOTO_2016',

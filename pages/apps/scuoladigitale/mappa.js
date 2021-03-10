@@ -1,16 +1,14 @@
-var infoUrl =
+const infoUrl =
   'http://www.cartografiarl.regione.liguria.it/ScuolaDigitale_Info/Info_progetti.asp?codice_scuola={COD_MECC}';
-var popupTemplate = '';
-popupTemplate += '<div class="popup">';
-popupTemplate +=
-  '<img src="http://srvcarto.regione.liguria.it/geoservices/apps/viewer/static/img/scuoladigitale/ico-scuola.png" width="27" height="24" > <span><b>{DENOMINAZIONE}</b></span>';
-popupTemplate += '<br>{INDIRIZZO}  - {CAP} {COMUNE}';
-popupTemplate +=
-  '<br><img src="http://srvcarto.regione.liguria.it/geoservices/apps/viewer/static/img/scuoladigitale/ico-web.png" width="18" height="18" ><span><a href="{SITOWEB}" target="_blank">sito scuola</a> </span>';
-popupTemplate += '</div>';
-popupTemplate += '<br><br><div id="popup-header" ><b><a href=' + infoUrl;
-popupTemplate +=
-  ' target="_blank">VAI AI PROGETTI DELLA SCUOLA <span class="fa fa-angle-right"></span></a></b></div>';
+
+const popupTemplate = `
+<div class="popup">
+  <img src="http://srvcarto.regione.liguria.it/geoservices/apps/viewer/static/img/scuoladigitale/ico-scuola.png" width="27" height="24" > <span><b>{DENOMINAZIONE}</b></span>
+  <br>{INDIRIZZO}  - {CAP} {COMUNE}
+  <br><img src="http://srvcarto.regione.liguria.it/geoservices/apps/viewer/static/img/scuoladigitale/ico-web.png" width="18" height="18" ><span><a href="{SITOWEB}" target="_blank">sito scuola</a> </span>
+</div>
+<br><br><div id="popup-header" ><b><a href=${infoUrl} target="_blank">VAI AI PROGETTI DELLA SCUOLA <span class="fa fa-angle-right"></span></a></b></div>
+`;
 
 GV.globals.SCUOLA_DIGITALE_LAYERS = [
   {
@@ -267,13 +265,83 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
   },
 ];
 
-var maps = [
+const maps = [
   {
     id: 0,
     name: 'Scuole',
     layers: GV.globals.SCUOLA_DIGITALE_LAYERS,
   },
-  /*   {
+];
+
+GV.init({
+  debug: true,
+  application: {
+    layout: {
+      title: ' ',
+      tools: [
+        {
+          name: 'gv-inner-html',
+          position: 'topleft',
+          options: {
+            props: [
+              {
+                html: '<div class="gv-color-scheme" id="logo"></div>',
+              },
+            ],
+          },
+        },
+        {
+          name: 'gv-search',
+          position: 'topleft',
+          options: {
+            layers: [
+              'scuole_01',
+              'scuole_02',
+              'scuole_03',
+              'scuole_04',
+              'scuole_06',
+              'scuole_07',
+              'temi_01',
+              'temi_02',
+              'temi_03',
+              'temi_04',
+            ],
+            propertyName: 'DENOMINAZIONE',
+          },
+        },
+        {
+          name: 'gv-inner-html',
+          position: 'bottomleft',
+          options: {
+            props: [
+              {
+                html: '<div id="loghi-fesr"></div>',
+              },
+            ],
+          },
+        },
+        {
+          name: 'gv-scuoladigitale-legend',
+          position: 'topright',
+          options: {
+            maps: maps,
+          },
+        },
+      ],
+    },
+  },
+  baseLayers: [
+    {
+      type: 'OSM',
+      visible: true,
+    },
+  ],
+  maps: [],
+});
+
+// MAPPA 2
+
+/*   {
     id: 1,
     name: 'Didattica',
     layers: [
@@ -432,70 +500,3 @@ var maps = [
       },
     ],
   }, */
-];
-
-GV.init({
-  debug: true,
-  application: {
-    layout: {
-      title: ' ',
-      tools: [
-        {
-          name: 'gv-inner-html',
-          position: 'topleft',
-          options: {
-            props: [
-              {
-                html: '<div class="gv-color-scheme" id="logo"></div>',
-              },
-            ],
-          },
-        },
-        {
-          name: 'gv-search',
-          position: 'topleft',
-          options: {
-            layers: [
-              'scuole_01',
-              'scuole_02',
-              'scuole_03',
-              'scuole_04',
-              'scuole_06',
-              'scuole_07',
-              'temi_01',
-              'temi_02',
-              'temi_03',
-              'temi_04',
-            ],
-            propertyName: 'DENOMINAZIONE',
-          },
-        },
-        {
-          name: 'gv-inner-html',
-          position: 'bottomleft',
-          options: {
-            props: [
-              {
-                html: '<div id="loghi-fesr"></div>',
-              },
-            ],
-          },
-        },
-        {
-          name: 'gv-scuoladigitale-legend',
-          position: 'topright',
-          options: {
-            maps: maps,
-          },
-        },
-      ],
-    },
-  },
-  baseLayers: [
-    {
-      type: 'MAPBOX_STREETS',
-      visible: true,
-    },
-  ],
-  maps: [],
-});

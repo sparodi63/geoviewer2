@@ -160,7 +160,7 @@ GV.init({
   },
   baseLayers: [
     {
-      type: 'MAPBOX_STREETS',
+      type: 'OSM',
       visible: true,
     },
   ],
