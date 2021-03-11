@@ -1,7 +1,7 @@
-var applicazione = GV.utils.getUrlParam('applicazione') || '' // CODICE APPLICAZIONE ALFA_GIS. Es: PRESSIONI,RAPPORTI-AMBIENTALI
-var canale = GV.utils.getUrlParam('canale') // CODICE CANALE ALFA_GIS (ALTERNATIVO AD APPLICAZIONE)
-var id = GV.utils.getUrlParam('id')
-var repertorio = GV.utils.getUrlParam('cod_repertorio') || '03'
+var applicazione = GV.utils.getUrlParam('applicazione') || ''; // CODICE APPLICAZIONE ALFA_GIS. Es: PRESSIONI,RAPPORTI-AMBIENTALI
+var canale = GV.utils.getUrlParam('canale'); // CODICE CANALE ALFA_GIS (ALTERNATIVO AD APPLICAZIONE)
+var id = GV.utils.getUrlParam('id');
+var repertorio = GV.utils.getUrlParam('cod_repertorio') || '03';
 
 // GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/'
 
@@ -15,7 +15,7 @@ GV.init({
       click: 'info',
     },
     callback: function() {
-      console.log('CALLBACK!!!')
+      console.log('CALLBACK!!!');
     },
     layout: {
       legend: {
@@ -66,11 +66,10 @@ GV.init({
   },
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
-    { type: 'MAPBOX_STREETS' },
     { type: 'OSM' },
     { type: 'RL_ORTOFOTO_2016' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK' },
   ],
   maps: [],
-})
+});

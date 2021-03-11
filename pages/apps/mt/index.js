@@ -1,4 +1,4 @@
-var id = GV.utils.getUrlParam('id')
+var id = GV.utils.getUrlParam('id');
 
 GV.init({
   debug: true,
@@ -42,15 +42,18 @@ GV.init({
           },
         },
       },
-      tools: [{ name: 'gv-geocoder', position: 'topleft' }, { name: 'gv-scalebar', position: 'bottomleft' }],
+      tools: [
+        { name: 'gv-geocoder', position: 'topleft' },
+        { name: 'gv-scalebar', position: 'bottomleft' },
+      ],
     },
   },
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
-    { type: 'MAPBOX_STREETS' },
+    { type: 'OSM' },
     { type: 'RL_ORTOFOTO_2016' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK' },
   ],
   maps: [],
-})
+});

@@ -1,6 +1,6 @@
-var applicazione = 'ECOPIANO'
-var repertorio = '03'
-var canale = null
+var applicazione = 'ECOPIANO';
+var repertorio = '03';
+var canale = null;
 
 GV.init({
   debug: true,
@@ -61,11 +61,10 @@ GV.init({
   },
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
-    { type: 'MAPBOX_STREETS' },
     { type: 'OSM' },
     { type: 'RL_ORTOFOTO_2016' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK' },
   ],
   maps: [],
-})
+});

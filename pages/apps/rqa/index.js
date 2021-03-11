@@ -46,7 +46,7 @@ GV.init({
   },
   baseLayers: [
     {
-      type: 'MAPBOX_MONOCHROME',
+      type: 'OSM',
       visible: true,
     },
     {

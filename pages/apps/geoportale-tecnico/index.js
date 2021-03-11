@@ -52,7 +52,6 @@ GV.init({
   },
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
-    { type: 'MAPBOX_STREETS' },
     { type: 'OSM' },
     { type: 'RL_ORTOFOTO_2016' },
     { type: 'RL_CARTE_BASE' },

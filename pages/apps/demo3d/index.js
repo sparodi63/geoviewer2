@@ -215,9 +215,8 @@ GV.init({
   },
   baseLayers: [
     { type: 'ESRI_IMAGERY' },
-    { type: 'MAPBOX_STREETS' },
+    { type: 'OSM' },
     { type: 'STAMEN_TERRAIN' },
-    { type: 'MAPBOX_OUTDOOR' },
     { type: 'RL_ORTOFOTO_2016' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK', visible: true },
