@@ -15,7 +15,8 @@ http://localhost:8081/?&CODICE=010001
 
 var idMap = 'D66';
 var idLayer = 'L6422';
-var field = 'codice_comune';
+var field = 'codice_comune'
+// var field = 'CODICE_COMUNE';
 var value = GV.utils.getUrlParam('codice');
 var lon = GV.utils.getUrlParam('lon');
 var lat = GV.utils.getUrlParam('lat');

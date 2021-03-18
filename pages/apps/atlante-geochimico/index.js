@@ -53,7 +53,7 @@ GV.init({
   },
   baseLayers: [
     {
-      type: 'OSM',
+      type: 'TS_MONOCHROME',
       visible: true,
     },
     {

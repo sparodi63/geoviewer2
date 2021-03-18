@@ -1,34 +1,92 @@
 <template>
   <div class="gv-scuoladigitale-ricerca gv-inverted-color-scheme" id="gv-scuoladigitale-ricerca">
-    <gv-title
+    <div
       v-draggable
-      title="Ricerca Tematica"
-      :divId="'gv-scuoladigitale-ricerca'"
-      :hide="true"
-    ></gv-title>
+      id="gv-scuoladigitale-ricerca-title"
+      class="gv-scuoladigitale-ricerca-title gv-color-scheme"
+    >
+      <b>RICERCHE</b>
+      <button
+        :class="toggleCollapseClass()"
+        size="mini"
+        @click="hidePanel"
+        title="Nascondi Pannello"
+      ></button>
+    </div>
+
     <div class="gv-scuoladigitale-ricerca-body" id="gv-scuoladigitale-ricerca-body">
       <el-select
-        v-model="ordini"
-        size="small"
-        collapse-tags
-        multiple
-        placeholder="Ordine Scuola"
-        style="width: 170px !important;"
+        placeholder="Scegli Visualizzazione"
+        v-model="tipo"
+        size="mini"
+        @change="changeTipo"
       >
-        <el-option v-for="item in listaOrdini" :key="item.id" :value="item.id" :label="item.label">
-        </el-option>
+        <el-option
+          v-for="item in tipi"
+          :key="item.id"
+          :value="item.id"
+          :label="item.label"
+        ></el-option>
       </el-select>
-      <el-select
-        v-model="parole"
-        size="small"
-        multiple
-        collapse-tags
-        placeholder="Parole Chiave"
-        style="width: 270px !important;"
-      >
-        <el-option v-for="item in listaParole" :key="item.id" :value="item.id" :label="item.label">
-        </el-option>
-      </el-select>
+      <div v-show="showRicercaScuola" id="gv-scuoladigitale-ricerca-scuola">
+        <el-select
+          id="gv-seach-input"
+          v-model="scuole"
+          filterable
+          clearable
+          remote
+          size="small"
+          placeholder="Ricerca per nome scuola..."
+          :remote-method="search"
+          @change="onChange"
+          :loading="loading"
+          loading-text="Caricamento... "
+          no-match-text="Nessun elemento trovato"
+          no-data-text="Nessun elemento trovato"
+        >
+          <el-option
+            v-for="item in results"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </div>
+      <div v-show="showRicercaTemi" id="gv-scuoladigitale-ricerca-temi">
+        <el-select
+          v-model="ordini"
+          size="small"
+          collapse-tags
+          multiple
+          placeholder="Ordine Scuola"
+          style="width: 170px !important;"
+        >
+          <el-option
+            v-for="item in listaOrdini"
+            :key="item.id"
+            :value="item.id"
+            :label="item.label"
+          >
+          </el-option>
+        </el-select>
+        <el-select
+          v-model="parole"
+          size="small"
+          multiple
+          collapse-tags
+          placeholder="Parole Chiave"
+          style="width: 270px !important;"
+        >
+          <el-option
+            v-for="item in listaParole"
+            :key="item.id"
+            :value="item.id"
+            :label="item.label"
+          >
+          </el-option>
+        </el-select>
+      </div>
       <div class="gv-scuoladigitale-ricerca-buttons">
         <el-button id="gv-scuoladigitale-ricerca-submit" type="info" size="mini" @click="submit"
           >Conferma</el-button
@@ -115,35 +173,27 @@ export default {
   },
   data() {
     return {
+      tipi: [
+        { id: 'scuola', label: 'Ricerca per nome scuola' },
+        { id: 'temi', label: 'Ricerca per parole chiave' },
+      ],
+      tipo: 'scuola',
       ordini: [],
+      scuole: [],
+      layers: ['scuole_01', 'scuole_02', 'scuole_03', 'scuole_04', 'scuole_06', 'scuole_07'],
+      propertyName: 'DENOMINAZIONE',
+      results: [],
       listaOrdini: [],
       parole: [],
       listaParole: [],
       listaProgetti: [],
       listaScuole: [],
       showResult: false,
-      // buttonDisabled: true,
+      loading: false,
+      show: false,
+      showRicercaScuola: true,
+      showRicercaTemi: false,
     };
-  },
-  computed: {
-    // buttonDisabled() {
-    //   console.log(this.listaProgetti.length);
-    //   if (this.listaProgetti.length > 0) return false;
-    //   return true;
-    // },
-  },
-  watch: {
-    // listaProgetti() {
-    //   deep: true,
-    //   handler(progetti) {
-    //     console.log('sono qui');
-    //     if (this.listaProgetti.length > 0) {
-    //       this.buttonDisabled = false;
-    //     } else {
-    //       this.buttonDisabled = true;
-    //     }
-    //   }
-    // },
   },
   async mounted() {
     let ordini = await axios.get('/geoservices/REST/scuola/ordini');
@@ -152,6 +202,63 @@ export default {
     this.listaParole = await parole.data.data;
   },
   methods: {
+    changeTipo(value) {
+      console.log(value);
+      if (value === 'scuola') {
+        this.showRicercaScuola = true;
+        this.showRicercaTemi = false;
+      }
+      if (value === 'temi') {
+        this.showRicercaScuola = false;
+        this.showRicercaTemi = true;
+      }
+    },
+    search(query) {
+      this.results = [];
+      if (query.length < 3) {
+        return;
+      }
+      this.results = this.filterData(query);
+      // console.log(results);
+    },
+    filterData(text) {
+      let results = [];
+      text = text.replace(/[*+?^${}()|[\]\\]/g, '');
+      if (text === '') {
+        return [];
+      }
+      this.layers.forEach(sLayer => {
+        GV.app.map.eachLayer(layer => {
+          if (layer.name === sLayer) {
+            if (layer instanceof L.LayerGroup) {
+              layer.eachLayer(m => {
+                let loc = m.getLatLng();
+                loc.layer = m;
+                const key = m.feature.properties[this.propertyName];
+                if (new RegExp(text, 'i').test(key)) {
+                  const addLabel = this.additionalLabel
+                    ? m.feature.properties[this.additionalLabel]
+                    : null;
+                  const label = this.additionalLabel ? `${key} (${addLabel})` : key;
+                  const value = m.feature.properties.COD_MECC;
+                  results.push({
+                    label: label,
+                    value: value,
+                    location: loc,
+                  });
+                }
+              });
+            }
+          }
+        });
+      });
+      return results;
+    },
+    onChange(value) {
+      console.log(value);
+      this.listaScuole = [value];
+      this.filtraMappa();
+    },
     async submit() {
       if (this.parole.length === 0) {
         notification('Selezionare almeno una parola chiave', 'warning');
@@ -206,6 +313,21 @@ export default {
     selectRiga(row) {
       console.log(row);
     },
+    hidePanel: function(event) {
+      if (this.show) {
+        document.getElementById('gv-scuoladigitale-ricerca-body').style.display = 'block';
+        document.getElementById('gv-scuoladigitale-ricerca').style.width = '480px';
+      } else {
+        document.getElementById('gv-scuoladigitale-ricerca-body').style.display = 'none';
+        document.getElementById('gv-scuoladigitale-ricerca').style.width = '110px';
+      }
+      this.show = !this.show;
+    },
+    toggleCollapseClass() {
+      return this.show
+        ? 'gv-scuoladigitale-ricerca-collapse gv-color-scheme el-icon-arrow-down'
+        : 'gv-scuoladigitale-ricerca-collapse gv-color-scheme el-icon-arrow-up';
+    },
   },
 };
 </script>
@@ -216,9 +338,28 @@ export default {
   left: 0;
   top: 0;
   width: 480px;
-  margin-left: 100px;
-  margin-top: 150px;
+  margin-left: 20px;
+  margin-top: 20px;
   z-index: 800;
+}
+
+.gv-scuoladigitale-ricerca-title {
+  position: relative;
+  display: block;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  padding-right: 0rem;
+  padding-left: 0.5rem;
+  margin-bottom: -1px;
+  color: #ccc;
+  cursor: default;
+  font-weight: 800;
+  font-family: 'Raleway', Arial, sans-serif !important;
+  font-size: 14px;
+}
+
+.gv-scuoladigitale-ricerca-title :focus {
+  outline: -webkit-focus-ring-color auto 0px;
 }
 
 .gv-scuoladigitale-ricerca-body {
@@ -230,12 +371,6 @@ export default {
   width: 150px;
 }
 
-.gv-scuoladigitale-ricerca-title {
-  display: inline-block;
-  font-weight: 800;
-  width: 700px;
-  margin-bottom: 20px;
-}
 .gv-scuoladigitale-ricerca-buttons {
   margin-top: 10px;
   margin-left: 5px;
@@ -243,6 +378,16 @@ export default {
 .gv-scuoladigitale-ricerca-result {
   margin-top: 10px;
   margin-left: 5px;
+}
+
+.gv-scuoladigitale-ricerca-collapse {
+  cursor: pointer;
+  border: 0;
+  -webkit-appearance: none;
+  float: right;
+  font-size: 14px;
+  margin-top: 3px;
+  opacity: 1;
 }
 </style>
 

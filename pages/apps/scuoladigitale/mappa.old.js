@@ -10,10 +10,6 @@ const popupTemplate = `
 <br><br><div id="popup-header" ><b><a href=${infoUrl} target="_blank">VAI AI PROGETTI DELLA SCUOLA <span class="fa fa-angle-right"></span></a></b></div>
 `;
 
-function markerOnClick(e) {
-  console.log(e);
-}
-
 GV.globals.SCUOLA_DIGITALE_LAYERS = [
   {
     type: 'JSON',
@@ -40,7 +36,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    popup: popupTemplate,
     classes: [
       {
         name: 'TIPO 01',
@@ -82,7 +78,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       label: 'Istruzione Superiore',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    popup: popupTemplate,
     classes: [
       {
         name: 'TIPO 02',
@@ -124,7 +120,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       label: 'IC :  infanzia, primaria, media',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    popup: popupTemplate,
     classes: [
       {
         name: 'TIPO 03',
@@ -166,7 +162,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       label: 'Istituti Omnicomprensivi',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    popup: popupTemplate,
     classes: [
       {
         name: 'TIPO 04',
@@ -208,7 +204,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       label: 'Istituti Paritari',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    popup: popupTemplate,
     classes: [
       {
         name: 'TIPO 06',
@@ -250,7 +246,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       label: 'Istruzione e Formazione Professionale',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    popup: popupTemplate,
     classes: [
       {
         name: 'TIPO 07',
@@ -283,6 +279,36 @@ GV.init({
     layout: {
       title: ' ',
       tools: [
+        // {
+        //   name: 'gv-inner-html',
+        //   position: 'topleft',
+        //   options: {
+        //     props: [
+        //       {
+        //         html: '<div class="gv-color-scheme" id="logo"></div>',
+        //       },
+        //     ],
+        //   },
+        // },
+        // {
+        //   name: 'gv-search',
+        //   position: 'topleft',
+        //   options: {
+        //     layers: [
+        //       'scuole_01',
+        //       'scuole_02',
+        //       'scuole_03',
+        //       'scuole_04',
+        //       'scuole_06',
+        //       'scuole_07',
+        //       'temi_01',
+        //       'temi_02',
+        //       'temi_03',
+        //       'temi_04',
+        //     ],
+        //     propertyName: 'DENOMINAZIONE',
+        //   },
+        // },
         {
           name: 'gv-inner-html',
           position: 'bottomleft',
@@ -312,3 +338,165 @@ GV.init({
   ],
   maps: [],
 });
+
+// MAPPA 2
+
+/*   {
+    id: 1,
+    name: 'Didattica',
+    layers: [
+      {
+        type: 'JSON',
+        dataType: 'json',
+        cluster: {
+          options: {
+            iconCreateFunction: function(cluster) {
+              return L.divIcon({
+                html: cluster.getChildCount(),
+                className: 'cluster_temi_01',
+                iconSize: L.point(28, 28),
+              });
+            },
+            showCoverageOnHover: false,
+            maxClusterRadius: 80,
+          },
+        },
+        name: 'temi_01',
+        visible: true,
+        geomSubType: 'POINT',
+        url: '/geoservices/data/scuoladigitale/temi01.json',
+        legend: {
+          label: 'Coding e Robotica educativa',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi01.png',
+        },
+        tooltip: '{DENOMINAZIONE}',
+        popup: popupTemplate,
+        classes: [
+          {
+            name: 'TIPO 01',
+            style: {
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi01.png',
+              iconSize: [32, 37],
+              iconAnchor: [16, 37],
+              popupAnchor: [0, -37],
+            },
+          },
+        ],
+      },
+      {
+        type: 'JSON',
+        dataType: 'json',
+        cluster: {
+          options: {
+            iconCreateFunction: function(cluster) {
+              return L.divIcon({
+                html: cluster.getChildCount(),
+                className: 'cluster_temi_02',
+                iconSize: L.point(28, 28),
+              });
+            },
+            showCoverageOnHover: false,
+            maxClusterRadius: 80,
+          },
+        },
+        name: 'temi_02',
+        visible: true,
+        geomSubType: 'POINT',
+        url: '/geoservices/data/scuoladigitale/temi02.json',
+        legend: {
+          label: 'Comunicazione digitale (Blog Siti web - Giornalismo digitale)',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi02.png',
+        },
+        tooltip: '{DENOMINAZIONE}',
+        popup: popupTemplate,
+        classes: [
+          {
+            name: 'TIPO 02',
+            style: {
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi02.png',
+              iconSize: [32, 37],
+              iconAnchor: [16, 37],
+              popupAnchor: [0, -37],
+            },
+          },
+        ],
+      },
+      {
+        type: 'JSON',
+        dataType: 'json',
+        cluster: {
+          options: {
+            iconCreateFunction: function(cluster) {
+              return L.divIcon({
+                html: cluster.getChildCount(),
+                className: 'cluster_temi_03',
+                iconSize: L.point(28, 28),
+              });
+            },
+            showCoverageOnHover: false,
+            maxClusterRadius: 80,
+          },
+        },
+        name: 'temi_03',
+        visible: true,
+        geomSubType: 'POINT',
+        url: '/geoservices/data/scuoladigitale/temi03.json',
+        legend: {
+          label: 'Contenuti digitali (Ebook, Multimedia, Video e Realtà aumentata)',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi03.png',
+        },
+        tooltip: '{DENOMINAZIONE}',
+        popup: popupTemplate,
+        classes: [
+          {
+            name: 'TIPO 03',
+            style: {
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi03.png',
+              iconSize: [32, 37],
+              iconAnchor: [16, 37],
+              popupAnchor: [0, -37],
+            },
+          },
+        ],
+      },
+      {
+        type: 'JSON',
+        dataType: 'json',
+        cluster: {
+          options: {
+            iconCreateFunction: function(cluster) {
+              return L.divIcon({
+                html: cluster.getChildCount(),
+                className: 'cluster_temi_04',
+                iconSize: L.point(28, 28),
+              });
+            },
+            showCoverageOnHover: false,
+            maxClusterRadius: 80,
+          },
+        },
+        name: 'temi_04',
+        visible: true,
+        geomSubType: 'POINT',
+        url: '/geoservices/data/scuoladigitale/temi04.json',
+        legend: {
+          label:
+            'Smart users (Inclusione, Byod e E-learning, Sicurezza, ambiente progetti internazionali)',
+          icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi04.png',
+        },
+        tooltip: '{DENOMINAZIONE}',
+        popup: popupTemplate,
+        classes: [
+          {
+            name: 'TIPO 04',
+            style: {
+              iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/temi04.png',
+              iconSize: [32, 37],
+              iconAnchor: [16, 37],
+              popupAnchor: [0, -37],
+            },
+          },
+        ],
+      },
+    ],
+  }, */

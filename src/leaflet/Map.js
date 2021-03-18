@@ -54,6 +54,9 @@ const Map = L.Map.extend({
     this.loadControls();
 
     this.eventMngr();
+
+    const pageLoadedDiv = document.getElementById('gv-map-loaded');
+    if (pageLoadedDiv) pageLoadedDiv.style.display = 'block';
   },
 
   eventMngr() {
@@ -105,8 +108,12 @@ const Map = L.Map.extend({
   },
 
   setInitialExtent() {
-    var extent = this.mapOptions.initialExtent || '830036,5402959,1123018,5597635';
-    this.setExtent(extent);
+    if (this.mapOptions.center && this.mapOptions.zoom) {
+      this.setView(this.mapOptions.center, this.mapOptions.zoom);
+    } else {
+      var extent = this.mapOptions.initialExtent || '830036,5402959,1123018,5597635';
+      this.setExtent(extent);
+    }
   },
 
   setRestrictedExtent() {

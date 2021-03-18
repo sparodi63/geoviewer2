@@ -75,12 +75,14 @@ var layerFactory = {
   TILESERVER_GL(style) {
     const STYLE = style;
     return L.tileLayer(
-      `http://master-node.regione.liguria.it:8080/styles/${STYLE}/{z}/{x}/{y}.png`,
+      // `http://master-node.regione.liguria.it:8080/styles/${STYLE}/{z}/{x}/{y}.png`,
+      `https://geoservizi{s}.regione.liguria.it/styles/${STYLE}/{z}/{x}/{y}.png`,
       {
         attribution:
           'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         minZoom: 0,
         maxZoom: 20,
+        subdomains: ['1', '2'],
       }
     );
   },
@@ -347,18 +349,6 @@ var layerFactory = {
     });
   },
 
-  RL_ORTOFOTO_2016_OLD() {
-    return this.TMS({
-      visible: false,
-      tmsParams: {
-        name: 'L5802/webmercator',
-        url: 'http://mapproxy.regione.liguria.it/mapproxy/1828/tiles/',
-      },
-      attribution: 'Ortofoto 20cm/ ©2016 CONSORZIO TeA - TUTTI I DIRITTI RISERVATI',
-      zIndex: 1,
-    });
-  },
-
   RL_ORTOFOTO_2016() {
     return this.WMS({
       visible: false,
@@ -371,6 +361,61 @@ var layerFactory = {
       },
       zIndex: 1,
       attribution: 'Ortofoto 20cm/ ©2016 CONSORZIO TeA - TUTTI I DIRITTI RISERVATI',
+    });
+  },
+  RL_ORTOFOTO_2013() {
+    return this.WMS({
+      visible: false,
+      name: 'ORTOFOTO',
+      cacheMinZoomLevel: 8,
+      wmsParams: {
+        name: 'L4419',
+        format: 'image/jpeg',
+        url: 'https://geoservizi.regione.liguria.it/geoserver/M1661/wms?',
+      },
+      zIndex: 1,
+      attribution: 'Immagine di proprietà AGEA',
+    });
+  },
+  RL_ORTOFOTO_2010() {
+    return this.WMS({
+      visible: false,
+      name: 'ORTOFOTO',
+      cacheMinZoomLevel: 8,
+      wmsParams: {
+        name: 'L3861',
+        format: 'image/jpeg',
+        url: 'https://geoservizi.regione.liguria.it/geoserver/M1505/wms?',
+      },
+      zIndex: 1,
+      attribution: 'Immagine di proprietà AGEA',
+    });
+  },
+  RL_ORTOFOTO_2007() {
+    return this.WMS({
+      visible: false,
+      name: 'ORTOFOTO',
+      cacheMinZoomLevel: 8,
+      wmsParams: {
+        name: 'L3463',
+        format: 'image/jpeg',
+        url: 'https://geoservizi.regione.liguria.it/geoserver/M1361/wms?',
+      },
+      zIndex: 1,
+      attribution: 'Immagine di proprietà AGEA',
+    });
+  },
+  RL_ORTOFOTO_2000() {
+    return this.WMS({
+      visible: false,
+      name: 'ORTOFOTO',
+      cacheMinZoomLevel: 8,
+      wmsParams: {
+        name: 'L48',
+        format: 'image/jpeg',
+        url: 'https://geoservizi.regione.liguria.it/geoserver/M48/wms?',
+      },
+      zIndex: 1,
     });
   },
 
@@ -498,6 +543,7 @@ var layerFactory = {
       subType,
       legend,
       onEachFeature,
+      onClick,
       filter,
     } = layerConfig;
     let clusterLayer = null;
@@ -645,6 +691,10 @@ var layerFactory = {
     var layer = L.geoJson(data, options);
     layer.name = name;
     layer.geoJson = null;
+
+    if (onClick) {
+      layer.on('click', onClick);
+    }
 
     // layer.setFilter = function(filters) {
     //   layer.filter = filters;

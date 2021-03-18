@@ -70,9 +70,13 @@ body {
 }
 
 .gv-button-selected {
-  color: #ccc;
-  background-color: #24386c;
+  /* color: #ccc;
+  background-color: #24386c; 
   border-color: #24386c;
+  */
+  color: #24386c;
+  background-color: #ccc;
+  border-color: #ccc;
   border-width: 0px;
 }
 
@@ -91,6 +95,10 @@ body {
 
 .gv-button:active {
   outline: 0;
+}
+
+.gv-button:focus {
+  outline: -webkit-focus-ring-color auto 0px;
 }
 
 .gv-tool-container {

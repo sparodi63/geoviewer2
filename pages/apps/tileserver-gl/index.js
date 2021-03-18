@@ -1,4 +1,4 @@
-var id = GV.utils.getUrlParam('id');
+var id = GV.utils.getUrlParam('id')
 
 GV.init({
   debug: true,
@@ -13,8 +13,29 @@ GV.init({
         options: {
           show: true,
           showInfoMap: true,
+          showAddMap: true,
+          dontShowMapCatalogPanelOnStart: true,
           showLayersTransparency: true,
           showBaseLayerSwitcher: true,
+          addMapConfig: {
+            panels: {
+              repertorio: {
+                type: 'tree',
+                name: 'repertorio',
+                label: 'Repertorio Cartografico',
+                options: {
+                  treeServiceUrl: '/geoservices/REST/config/catalog/',
+                },
+                tree: null,
+              },
+              wms: {
+                label: 'Servizi WMS',
+              },
+              kml: {
+                label: 'KML/GPX/JSON',
+              },
+            },
+          },
         },
       },
       tools: [
@@ -51,4 +72,4 @@ GV.init({
     },
   ],
   maps: [],
-});
+})

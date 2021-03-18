@@ -566,10 +566,6 @@ export default {
     },
 
     downloadURI(url) {
-      // var link = document.createElement('a')
-      // link.download = 'download-link'
-      // link.href = url
-      // link.click()
       var link = document.createElement('a');
       link.setAttribute('target', '_blank');
       document.body.appendChild(link);

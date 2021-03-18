@@ -7,7 +7,14 @@
         size="mini"
         @click="hidePanel"
         title="Nascondi Pannello"
-      ></button>
+      />
+      <button
+        id="rqa-download-button"
+        title="Download Dati"
+        @click="download"
+        class="gv-color-scheme rqa-download-button el-icon-download"
+        size="mini"
+      />
     </div>
     <div id="rqa-wrapper" class="rqa-wrapper gv-color-scheme">
       <div class="combo">
@@ -189,6 +196,18 @@ export default {
         return layer.id === data.idLayerAA;
       })[0];
     },
+    download() {
+      this.downloadURI(
+        'https://geoservizi.regione.liguria.it/dtuff/download_statico/2219/rqa-dati.zip'
+      );
+    },
+    downloadURI(url) {
+      var link = document.createElement('a');
+      link.setAttribute('target', '_blank');
+      document.body.appendChild(link);
+      link.href = url;
+      link.click();
+    },
   },
   computed: {
     showIndicatoriGiorno() {
@@ -216,6 +235,7 @@ export default {
   padding: 1px;
 }
 .rqa-title {
+  padding: 5px;
   padding-left: 10px;
   font-weight: bold;
 }
@@ -223,7 +243,18 @@ export default {
 .rqa-button {
   margin-left: 10px;
   margin-bottom: 10px;
-  /* float: left; */
+}
+
+.rqa-download-button {
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-top: 3px;
+  border: 0;
+  -webkit-appearance: none;
+  font-size: 14px;
+  font-weight: 800;
+  float: right;
 }
 
 .label {

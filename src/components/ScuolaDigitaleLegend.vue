@@ -1,22 +1,22 @@
 <template>
   <div id="gv-scuoladigitale-legend" class="gv-inverted-color-scheme">
     <div id="gv-scuoladigitale-legend-title" class="gv-scuoladigitale-legend-title gv-color-scheme">
-      <b>LEGENDA</b>
+      <b>{{ title }}</b>
       <button
         :class="toggleCollapseClass()"
         size="mini"
         @click="hideLegend"
         title="Nascondi Legenda"
       ></button>
-      <el-button
+      <!-- <button
         id="gv-legend-add-map"
         title="Ricerca per parola chiave"
         @click="showSearch"
-        class="gv-color-scheme gv-legend-buttons el-icon-search"
+        class="gv-color-scheme gv-scuoladigitale-legend-buttons fa fa-search"
         size="mini"
-      />
+      /> -->
     </div>
-    <div
+    <!-- <div
       id="gv-scuoladigitale-legend-title-collapsed"
       class="gv-scuoladigitale-legend-title-collapsed gv-color-scheme"
     >
@@ -26,7 +26,7 @@
         @click="hideLegend"
         title="Mostra Legenda"
       ></button>
-    </div>
+    </div> -->
     <div id="gv-scuoladigitale-legend-wrapper" class="gv-scuoladigitale-legend-wrapper">
       <div>
         <div id="gv-scuoladigitale-legend-body" class="gv-inverted-color-scheme">
@@ -79,16 +79,7 @@ export default {
       maps: GV.config.maps,
       show: true,
       tema: 0,
-      // temi: [
-      //   {
-      //     id: 0,
-      //     label: 'Scuole per Tipologia',
-      //   },
-      //   {
-      //     id: 1,
-      //     label: 'Scuole per Didattica Innovativa',
-      //   },
-      // ],
+      title: 'LEGENDA',
     };
   },
   mounted() {
@@ -99,6 +90,14 @@ export default {
     }
     this.hideLegend();
     this.changeMap(0);
+    mountComponent({
+      elId: 'gv-scuoladigitale-ricerca',
+      containerId: GV.config.containerId,
+      toggleEl: true,
+      vm: new Vue({
+        template: `<gv-scuoladigitale-ricerca></gv-scuoladigitale-ricerca>`,
+      }),
+    });
   },
   methods: {
     changeMap(value) {
@@ -119,19 +118,20 @@ export default {
     },
     hideLegend: function(event) {
       if (this.show) {
-        document.getElementById('gv-scuoladigitale-legend-title').style.display = 'block';
-        document.getElementById('gv-scuoladigitale-legend-title-collapsed').style.display = 'none';
+        // document.getElementById('gv-scuoladigitale-legend-title').style.display = 'block';
+        // document.getElementById('gv-scuoladigitale-legend-title-collapsed').style.display = 'none';
         document.getElementById('gv-scuoladigitale-legend-wrapper').style.display = 'block';
         document.getElementById('gv-scuoladigitale-legend').style.width = '260px';
       } else {
-        document.getElementById('gv-scuoladigitale-legend-title').style.display = 'none';
-        document.getElementById('gv-scuoladigitale-legend-title-collapsed').style.display = 'block';
+        // document.getElementById('gv-scuoladigitale-legend-title').style.display = 'none';
+        // document.getElementById('gv-scuoladigitale-legend-title-collapsed').style.display = 'block';
         document.getElementById('gv-scuoladigitale-legend-wrapper').style.display = 'none';
-        document.getElementById('gv-scuoladigitale-legend').style.width = '26px';
+        document.getElementById('gv-scuoladigitale-legend').style.width = '100px';
       }
       this.show = !this.show;
     },
     toggleCollapseClass() {
+      console.log('legend', this.show);
       return this.show
         ? 'gv-scuoladigitale-legend-collapse gv-color-scheme el-icon-arrow-down'
         : 'gv-scuoladigitale-legend-collapse gv-color-scheme el-icon-arrow-up';
@@ -214,6 +214,8 @@ export default {
 }
 
 .gv-scuoladigitale-legend-buttons {
+  padding-top: 3px;
+  padding-right: 10px;
   cursor: pointer;
   border: 0;
   -webkit-appearance: none;
