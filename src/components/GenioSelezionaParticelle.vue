@@ -198,11 +198,6 @@ export default {
             opacity: 0.7,
           },
           visible: true,
-          onEachFeature: (feature, layer) => {
-            layer.on('click', ev => {
-              // this.hiliteLayer.removeLayer(layer);
-            });
-          },
         },
       ]);
       this.hiliteLayer = GV.app.map.getLayerByName('SelezioneParticelle');

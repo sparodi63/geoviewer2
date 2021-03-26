@@ -494,33 +494,91 @@ function openPopup(url, options) {
 }
 
 function addHiliteLayer(map) {
-  if (map.options.type === 'cesium') {
-    map.viewer.dataSources.add(new Cesium.GeoJsonDataSource('InfoWmsHilite'));
-  } else {
-    map.loadLayers([
-      {
-        name: 'InfoWmsHilite',
-        type: 'JSON',
-        style: {
-          color: '#ffcc00',
-          fillOpacity: 0,
-          weight: 6,
-          opacity: 0.6,
-        },
-        pointToLayer: function(feature, latlng) {
-          return L.circleMarker(latlng, {
+  switch (map.options.type) {
+    case 'cesium':
+      map.viewer.dataSources.add(new Cesium.GeoJsonDataSource('InfoWmsHilite'));
+      break;
+    case 'openlayers':
+      console.log('OPENLAYERS!!!!!!!!', map);
+      // TODO
+      const color = [255, 204, 0, 0.6];
+      const stroke = new ol.style.Stroke({
+        color: color,
+        width: 6,
+      });
+      const styles = {
+        Point: new ol.style.Style({
+          image: new ol.style.Circle({
             radius: 8,
+            fill: null,
+            stroke: stroke,
+          }),
+        }),
+        MultiPoint: new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 8,
+            fill: null,
+            stroke: stroke,
+          }),
+        }),
+        LineString: new ol.style.Style({
+          stroke: stroke,
+        }),
+        MultiLineString: new ol.style.Style({
+          stroke: stroke,
+        }),
+        Polygon: new ol.style.Style({
+          stroke: stroke,
+        }),
+        MultiPolygon: new ol.style.Style({
+          stroke: stroke,
+        }),
+        GeometryCollection: new ol.style.Style({
+          stroke: stroke,
+          image: new ol.style.Circle({
+            radius: 8,
+            fill: null,
+            stroke: stroke,
+          }),
+        }),
+      };
+      map.loadLayers([
+        {
+          name: 'InfoWmsHilite',
+          type: 'JSON',
+          styleFunction: feature => {
+            return styles[feature.getGeometry().getType()];
+          },
+          visible: true,
+        },
+      ]);
+      break;
+    default:
+      map.loadLayers([
+        {
+          name: 'InfoWmsHilite',
+          type: 'JSON',
+          style: {
             color: '#ffcc00',
-            fillColor: '#ffcc00',
-            fill: true,
-            fillOpacity: 0.6,
+            fillOpacity: 0,
             weight: 6,
             opacity: 0.6,
-          });
+          },
+          pointToLayer: function(feature, latlng) {
+            return L.circleMarker(latlng, {
+              radius: 8,
+              color: '#ffcc00',
+              fillColor: '#ffcc00',
+              fill: true,
+              fillOpacity: 0.6,
+              weight: 6,
+              opacity: 0.6,
+            });
+          },
+          visible: true,
         },
-        visible: true,
-      },
-    ]);
+      ]);
+      break;
   }
 }
 
@@ -553,6 +611,7 @@ export default {
     this.active = true;
 
     // Aggiungo layer per evidenziazione
+    console.log(GV.app.map);
     if (GV.app.map) {
       addHiliteLayer(GV.app.map);
     } else {
@@ -561,7 +620,8 @@ export default {
       });
     }
 
-    GV.app.map.on('click', event => {
+    GV.app.map.map.on('click', event => {
+      console.log(event);
       if (this.active) {
         if (event.mapType === 'cesium') {
           handleResponseCesium(event);

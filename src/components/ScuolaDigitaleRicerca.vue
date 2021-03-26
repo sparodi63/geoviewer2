@@ -18,8 +18,9 @@
       <el-select
         placeholder="Scegli Visualizzazione"
         v-model="tipo"
-        size="mini"
+        size="small"
         @change="changeTipo"
+        style="margin-bottom: 5px !important;"
       >
         <el-option
           v-for="item in tipi"
@@ -31,7 +32,7 @@
       <div v-show="showRicercaScuola" id="gv-scuoladigitale-ricerca-scuola">
         <el-select
           id="gv-seach-input"
-          v-model="scuole"
+          v-model="scuola"
           filterable
           clearable
           remote
@@ -43,6 +44,7 @@
           loading-text="Caricamento... "
           no-match-text="Nessun elemento trovato"
           no-data-text="Nessun elemento trovato"
+          style="width: 370px !important;"
         >
           <el-option
             v-for="item in results"
@@ -95,7 +97,7 @@
           >Annulla Selezione</el-button
         >
       </div>
-      <div class="gv-scuoladigitale-ricerca-result" v-show="showResult">
+      <!--       <div class="gv-scuoladigitale-ricerca-result" v-show="showResult">
         <div class="gv-scuoladigitale-ricerca-table">
           <el-table
             :data="listaProgetti"
@@ -145,7 +147,7 @@
             </el-table-column>
           </el-table>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -162,15 +164,22 @@ import lang from 'element-ui/lib/locale/lang/it';
 import locale from 'element-ui/lib/locale';
 locale.use(lang);
 
+import { Loading } from 'element-ui';
+Vue.use(Loading);
+
+import mountComponent from '../util/mountComponent';
 import notification from '../util/notification';
+
+import ScuolaDigitaleRicercaResults from './ScuolaDigitaleRicercaResults';
+Vue.component('gv-scuoladigitale-ricerca-results', ScuolaDigitaleRicercaResults);
+
+import ScuolaDigitaleInfo from './ScuolaDigitaleInfo';
+Vue.component('gv-scuoladigitale-info', ScuolaDigitaleInfo);
+
+// Vue.component('gv-scuoladigitale-info', () => import('./ScuolaDigitaleInfo.vue'));
 
 export default {
   name: 'gv-scuoladigitale-ricerca',
-  props: {
-    idMap: String,
-    selFogli: String,
-    field: String,
-  },
   data() {
     return {
       tipi: [
@@ -187,12 +196,14 @@ export default {
       parole: [],
       listaParole: [],
       listaProgetti: [],
+      scuola: null,
       listaScuole: [],
-      showResult: false,
+      // showResult: false,
       loading: false,
       show: false,
       showRicercaScuola: true,
       showRicercaTemi: false,
+      markerArray: [],
     };
   },
   async mounted() {
@@ -200,10 +211,15 @@ export default {
     this.listaOrdini = await ordini.data.data;
     let parole = await axios.get('/geoservices/REST/scuola/parole');
     this.listaParole = await parole.data.data;
+    GV.eventBus.$on('scuoladigitale-close-panel', e => {
+      // console.log(e.flagRicerca);
+      if (e.flagRicerca) this.reset();
+    });
   },
   methods: {
     changeTipo(value) {
-      console.log(value);
+      // console.log(value);
+      this.reset();
       if (value === 'scuola') {
         this.showRicercaScuola = true;
         this.showRicercaTemi = false;
@@ -255,26 +271,40 @@ export default {
       return results;
     },
     onChange(value) {
-      console.log(value);
+      this.scuola = value;
       this.listaScuole = [value];
-      this.filtraMappa();
     },
     async submit() {
-      if (this.parole.length === 0) {
-        notification('Selezionare almeno una parola chiave', 'warning');
-        return;
+      this.closeResultPanels();
+      if (this.tipo === 'temi') {
+        if (this.parole.length === 0) {
+          notification('Selezionare almeno una parola chiave', 'warning');
+          return;
+        }
+        const target = document.getElementById('gv-scuoladigitale-ricerca');
+        const loading = Loading.service({
+          text: 'Ricerca in corso...',
+          target: target,
+        });
+        const ordini = this.ordini.join(',');
+        const parole = this.parole.join(',');
+        let listaProgetti = await axios.get(
+          `/geoservices/REST/scuola/ricerca?ordini=${ordini}&parole=${parole}`
+        );
+        if (loading) loading.close();
+        const data = await listaProgetti.data.data;
+        if (data) {
+          this.listaProgetti = data.progetti;
+          this.listaScuole = data.scuole;
+          this.showResults();
+          this.filtraMappa(false);
+          // this.showResult = true;
+          // this.$el.style.width = '810px';
+        }
+      } else {
+        this.showInfo();
+        this.filtraMappa(true);
       }
-      const ordini = this.ordini.join(',');
-      const parole = this.parole.join(',');
-      let listaProgetti = await axios.get(
-        `/geoservices/REST/scuola/ricerca?ordini=${ordini}&parole=${parole}`
-      );
-      const data = await listaProgetti.data.data;
-      this.listaProgetti = data.progetti;
-      this.listaScuole = data.scuole;
-      this.filtraMappa();
-      this.showResult = true;
-      this.$el.style.width = '810px';
     },
     reset() {
       GV.globals.SCUOLA_DIGITALE_LAYERS.forEach(layer => {
@@ -286,33 +316,78 @@ export default {
       });
       this.listaProgetti = [];
       this.listaScuole = [];
+      this.scuole = [];
+      this.scuola = null;
+      this.results = [];
       this.ordini = [];
       this.parole = [];
-      this.showResult = false;
-      this.$el.style.width = '480px';
+      this.closeResultPanels();
     },
-    filtraMappa() {
+    closeResultPanels() {
+      const resultDiv = document.getElementById('gv-scuoladigitale-ricerca-results');
+      if (resultDiv) resultDiv.parentNode.removeChild(resultDiv);
+      // if (resultDiv) resultDiv.style.display = 'none';
+      const infoDiv = document.getElementById('gv-scuoladigitale-info');
+      if (infoDiv) infoDiv.parentNode.removeChild(infoDiv);
+      // if (infoDiv) infoDiv.style.display = 'none';
+    },
+    showInfo() {
+      mountComponent({
+        elId: 'gv-scuoladigitale-info',
+        clear: true,
+        vm: new Vue({
+          template: `<gv-scuoladigitale-info :id="id" title="RISULTATO RICERCA" :flagRicerca="flagRicerca"></gv-scuoladigitale-info>`,
+          data: {
+            id: this.scuola,
+            flagRicerca: true,
+          },
+        }),
+      });
+    },
+    showResults() {
+      mountComponent({
+        elId: 'gv-scuoladigitale-ricerca-results',
+        clear: true,
+        vm: new Vue({
+          template: `<gv-scuoladigitale-ricerca-results :listaProgetti="listaProgetti"></gv-scuoladigitale-ricerca-results>`,
+          data: {
+            listaProgetti: this.listaProgetti,
+          },
+        }),
+      });
+    },
+    filtraMappa(zoom) {
+      this.markerArray = [];
       GV.globals.SCUOLA_DIGITALE_LAYERS.forEach(layer => {
         GV.config.removeLayer(layer.name);
         layer.filter = feature => {
-          if (this.scuolaInListaScuole(feature)) return true;
+          if (this.scuolaInListaScuole(feature, zoom)) return true;
         };
         GV.config.addLayerToMap(layer, 0);
       });
     },
-    scuolaInListaScuole(feature) {
+    scuolaInListaScuole(feature, zoom) {
       let found = false;
-      this.listaScuole.forEach(scuola => {
-        if (feature.properties.COD_MECC === scuola) found = true;
-      });
+      for (let scuola of this.listaScuole) {
+        if (feature.properties.COD_MECC === scuola) {
+          found = true;
+          if (zoom) {
+            GV.app.map.setView(
+              [feature.geometry.coordinates[1], feature.geometry.coordinates[0]],
+              14
+            );
+          }
+          break;
+        }
+      }
       return found;
     },
     handleLink(index, link) {
       window.open(link);
     },
-    selectRiga(row) {
-      console.log(row);
-    },
+    // selectRiga(row) {
+    //   console.log(row);
+    // },
     hidePanel: function(event) {
       if (this.show) {
         document.getElementById('gv-scuoladigitale-ricerca-body').style.display = 'block';

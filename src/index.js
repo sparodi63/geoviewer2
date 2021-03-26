@@ -100,6 +100,17 @@ window.GV = {
       }),
     });
   },
+  mount(options) {
+    mountComponent({
+      elId: options.eldId,
+      clear: options.clear,
+      containerId: GV.config.containerId,
+      vm: new Vue({
+        template: options.template,
+        data: options.data,
+      }),
+    });
+  },
   dragbox,
   globals,
   log,

@@ -1,17 +1,12 @@
-const infoUrl =
-  'http://www.cartografiarl.regione.liguria.it/ScuolaDigitale_Info/Info_progetti.asp?codice_scuola={COD_MECC}';
-
-const popupTemplate = `
-<div class="popup">
-  <img src="http://srvcarto.regione.liguria.it/geoservices/apps/viewer/static/img/scuoladigitale/ico-scuola.png" width="27" height="24" > <span><b>{DENOMINAZIONE}</b></span>
-  <br>{INDIRIZZO}  - {CAP} {COMUNE}
-  <br><img src="http://srvcarto.regione.liguria.it/geoservices/apps/viewer/static/img/scuoladigitale/ico-web.png" width="18" height="18" ><span><a href="{SITOWEB}" target="_blank">sito scuola</a> </span>
-</div>
-<br><br><div id="popup-header" ><b><a href=${infoUrl} target="_blank">VAI AI PROGETTI DELLA SCUOLA <span class="fa fa-angle-right"></span></a></b></div>
-`;
-
 function markerOnClick(e) {
-  console.log(e);
+  GV.mount({
+    elId: 'gv-scuoladigitale-info',
+    clear: true,
+    template: `<gv-scuoladigitale-info :id="id" title="INFO SCUOLA"></gv-scuoladigitale-info>`,
+    data: {
+      id: e.layer.feature.properties.COD_MECC,
+    },
+  });
 }
 
 GV.globals.SCUOLA_DIGITALE_LAYERS = [

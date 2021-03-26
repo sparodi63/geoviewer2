@@ -262,8 +262,8 @@ export default {
 
       getWFSFeature(layerConfig.wfsParams, cqlFilter)
         .then(features => {
-          const layer = GV.app.map.getLayerByName('InfoWmsHilite');
           if (features && features[0] && features[0].geometry) {
+            const layer = GV.app.map.getLayerByName('InfoWmsHilite');
             layer.clearLayers();
             layer.addData(features[0].geometry);
             GV.app.map.flyToBounds(layer.getBounds(), { maxZoom: 15 });

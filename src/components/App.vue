@@ -1,8 +1,9 @@
 <template>
   <div id="gv-container">
     <gv-header v-if="showHeader"></gv-header>
-    <gv-map v-if="leafletMap" ref="gv-map"></gv-map>
-    <gv-cesium v-if="cesiumMap" ref="gv-cesium"></gv-cesium>
+    <gv-ll-map v-if="leafletMap" ref="gv-ll-map"></gv-ll-map>
+    <gv-ol-map v-if="olMap" ref="gv-ll-map"></gv-ol-map>
+    <gv-cesium-map v-if="cesiumMap" ref="gv-cesium"></gv-cesium-map>
     <gv-legend v-if="showLegend" ref="gv-legend"></gv-legend>
     <div class="gv-tool-container">
       <div id="gv-tool-topleft" class="gv-tool-top gv-tool-left" />
@@ -20,10 +21,12 @@ import mountComponent from '../util/mountComponent';
 import Vue from 'vue';
 
 // Componenti Vue
-import Map from './Map';
-Vue.component('gv-map', Map);
-import Cesium from './Cesium';
-Vue.component('gv-cesium', Cesium);
+import LefletMap from './LeafletMap';
+Vue.component('gv-ll-map', LefletMap);
+import OpenLayersMap from './OpenLayersMap';
+Vue.component('gv-ol-map', OpenLayersMap);
+import CesiumMap from './CesiumMap';
+Vue.component('gv-cesium-map', CesiumMap);
 import Legend from './Legend';
 Vue.component('gv-legend', Legend);
 import Header from './Header';
@@ -31,7 +34,11 @@ Vue.component('gv-header', Header);
 import Title from './Title';
 Vue.component('gv-title', Title);
 
-// Componenti lazy
+// Componenti lazy: PROBLEMA SINCRONIZZAZIONE EVENTI 'config-add-map'
+// Vue.component('gv-ll-map', () => import(/* webpackChunkName: "iFrame" */ './LeafletMap.vue'));
+// Vue.component('gv-ol-map', () => import(/* webpackChunkName: "iFrame" */ './OpenLayersMap.vue'));
+// Vue.component('gv-cesium-map', () => import(/* webpackChunkName: "iFrame" */ './CesiumMap.vue'));
+
 Vue.component('gv-iframe-panel', () => import(/* webpackChunkName: "iFrame" */ './IFrame.vue'));
 Vue.component('gv-info-wms-list', () =>
   import(/* webpackChunkName: "InfoWmsList" */ './InfoWmsList.vue')
@@ -50,6 +57,7 @@ export default {
       (GV.config.application.mapOptions && GV.config.application.mapOptions.type) || 'leaflet';
     return {
       leafletMap: mapType === 'leaflet',
+      olMap: mapType === 'ol',
       cesiumMap: mapType === 'cesium',
       showHeader: GV.config.application.layout.header,
       showLegend: GV.config.application.layout.legend,

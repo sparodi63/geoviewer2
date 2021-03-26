@@ -152,6 +152,16 @@ export default {
       icon: '/geoservices/apps/viewer/static/img/legend/esri.gif',
       printType: 'ESRI_IMAGERY',
     },
+    ESRI_GRAY: {
+      label: 'ESRI Gray',
+      icon: '/geoservices/apps/viewer/static/img/legend/esri.gif',
+      printType: 'ESRI_GRAY',
+    },
+    ESRI_DARKGRAY: {
+      label: 'ESRI Dark Gray',
+      icon: '/geoservices/apps/viewer/static/img/legend/esri.gif',
+      printType: 'ESRI_GRAY',
+    },
     ESRI_STREETS: {
       label: 'ESRI Streets',
       icon: '/geoservices/apps/viewer/static/img/legend/esri.gif',

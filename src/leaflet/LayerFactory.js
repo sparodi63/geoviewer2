@@ -696,26 +696,6 @@ var layerFactory = {
       layer.on('click', onClick);
     }
 
-    // layer.setFilter = function(filters) {
-    //   layer.filter = filters;
-    //   if (filters) {
-    //     layer.eachLayer(function(marker) {
-    //       var opacity = 0;
-    //       filters.forEach(function(filter) {
-    //         if (marker.feature.properties[filter.key] === filter.value) {
-    //           opacity = layer.config.opacity || 1;
-    //         }
-    //       });
-    //       marker.setOpacity(opacity);
-    //     });
-    //   } else {
-    //     layer.eachLayer(function(marker) {
-    //       var opacity = layer.config.opacity || 1;
-    //       marker.setOpacity(opacity);
-    //     });
-    //   }
-    // };
-
     var parameters;
 
     if (wfsParams && wfsParams.typeName && wfsParams.url) {

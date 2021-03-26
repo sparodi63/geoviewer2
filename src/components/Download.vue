@@ -595,7 +595,7 @@ export default {
         notification('Disegnare un rettangolo sulla mappa');
         return;
       }
-      if (this.selezioneTerritoriale === 2 && !this.bbox) {
+      if (this.selezioneTerritoriale === 2 && !this.comune) {
         notification('Selezionare un comune dalla lista');
         return;
       }
@@ -616,6 +616,7 @@ export default {
         codCliente: this.codCliente,
         codCatalogo: this.idMap,
         bbox: this.bbox || '',
+        codCom: this.comune,
         bboxSRS: this.bboxSRS,
         crsOut: this.sistemaCoordinate,
         formato: this.formato,

@@ -8,3 +8,8 @@ body {
   position: static;
   background: #fff !important;
 }
+
+leaflet-control-scale {
+  background-color: #fff !important;
+  margin: 25px !important;
+}

@@ -129,7 +129,6 @@ export default {
 
   changeBaseLayers(baseLayers) {
     GV.app.map.removeLayer(GV.app.map.activeBaseLayer);
-
     this.baseLayers.splice(0);
     baseLayers.forEach(layer => {
       layer.name = layer.type;
@@ -216,6 +215,7 @@ export default {
       this.maps.unshift(mapConfig);
     }
 
+    console.log('EMETTO config-add-map');
     GV.eventBus.$emit('config-add-map', {
       config: mapConfig,
     });

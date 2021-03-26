@@ -85,9 +85,10 @@ export default {
   mounted() {
     GV.log('gv-scuoladigitale-legend: mounted');
     GV.legend = this;
-    if (window.matchMedia('(max-width: 500px)').matches) {
-      this.show = false;
-    }
+    this.show = false;
+    // if (window.matchMedia('(max-width: 500px)').matches) {
+    //   this.show = false;
+    // }
     this.hideLegend();
     this.changeMap(0);
     mountComponent({

@@ -26,6 +26,7 @@ const app = process.argv[3];
 
 if (
   target !== 'LOCAL' &&
+  target !== 'TEST' &&
   target !== 'PROD' &&
   target !== 'STAGING' &&
   target !== 'PROD-PROT' &&

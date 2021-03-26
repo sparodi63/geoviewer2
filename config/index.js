@@ -29,7 +29,7 @@ module.exports = {
   deploy: {
     baseDeployDir: {
       LOCAL: 'E:/tomcat6/webapps/geoservices/apps/viewer/',
-      // 'TEST': 'O:/webapps/geoservices/apps/viewer/',
+      TEST: 'K:/webapps/geoservices/apps/viewer/',
       STAGING: 'G:/webapps/geoservices/apps/viewer_staging/',
       PROD: 'G:/webapps/geoservices/apps/viewer/',
       'STAGING-PROT': 'H:/webapps/geoservices/apps/viewer_staging/',

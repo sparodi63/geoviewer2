@@ -54,9 +54,6 @@ const Map = L.Map.extend({
     this.loadControls();
 
     this.eventMngr();
-
-    const pageLoadedDiv = document.getElementById('gv-map-loaded');
-    if (pageLoadedDiv) pageLoadedDiv.style.display = 'block';
   },
 
   eventMngr() {
@@ -108,7 +105,9 @@ const Map = L.Map.extend({
   },
 
   setInitialExtent() {
+    GV.log('setInitialExtent');
     if (this.mapOptions.center && this.mapOptions.zoom) {
+      GV.log('setView');
       this.setView(this.mapOptions.center, this.mapOptions.zoom);
     } else {
       var extent = this.mapOptions.initialExtent || '830036,5402959,1123018,5597635';
@@ -211,7 +210,6 @@ const Map = L.Map.extend({
   },
 
   loadLayers(layers) {
-    'use strict';
     layers.forEach(function(layerConfig) {
       if (!this.getLayerByName(layerConfig.name)) {
         var layer = LayerFactory.create(layerConfig, this);
@@ -324,9 +322,11 @@ const Map = L.Map.extend({
       this._spinning++;
     } else {
       this._spinning--;
+      GV.log('end load: ' + layer.config.name);
       if (this._spinning <= 0) {
-        GV.log('end load: ' + layer.config.name);
+        GV.log('FINE CARICAMENTO LAYER');
         this._container.style.cursor = 'default';
+        GV.eventBus.$emit('map-full-loaded', this._zoom);
       }
     }
   },
