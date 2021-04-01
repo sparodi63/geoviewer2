@@ -19,8 +19,7 @@ export default {
     console.log('TITLE ID: ', this.id);
     GV.eventBus.$on('title-close-panel', event => {
       if (event.divId === this.id) {
-        const layer = GV.app.map.getLayerByName('InfoWmsHilite');
-        layer.clearLayers();
+        GV.app.map.clearLayer('InfoWmsHilite');
       }
     });
   },

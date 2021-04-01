@@ -1,10 +1,10 @@
-function markerOnClick(e) {
+function onFeatureSelect(feature) {
   GV.mount({
     elId: 'gv-scuoladigitale-info',
     clear: true,
     template: `<gv-scuoladigitale-info :id="id" title="INFO SCUOLA"></gv-scuoladigitale-info>`,
     data: {
-      id: e.layer.feature.properties.COD_MECC,
+      id: feature.properties.COD_MECC,
     },
   });
 }
@@ -35,7 +35,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    onFeatureSelect: onFeatureSelect,
     classes: [
       {
         name: 'TIPO 01',
@@ -77,7 +77,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       label: 'Istruzione Superiore',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    onFeatureSelect: onFeatureSelect,
     classes: [
       {
         name: 'TIPO 02',
@@ -119,7 +119,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       label: 'IC :  infanzia, primaria, media',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    onFeatureSelect: onFeatureSelect,
     classes: [
       {
         name: 'TIPO 03',
@@ -161,7 +161,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       label: 'Istituti Omnicomprensivi',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    onFeatureSelect: onFeatureSelect,
     classes: [
       {
         name: 'TIPO 04',
@@ -203,7 +203,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       label: 'Istituti Paritari',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    onFeatureSelect: onFeatureSelect,
     classes: [
       {
         name: 'TIPO 06',
@@ -245,7 +245,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       label: 'Istruzione e Formazione Professionale',
     },
     tooltip: '{DENOMINAZIONE}',
-    onClick: markerOnClick,
+    onFeatureSelect: onFeatureSelect,
     classes: [
       {
         name: 'TIPO 07',

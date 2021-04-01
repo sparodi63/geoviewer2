@@ -39,7 +39,6 @@
             class="gv-inverted-color-scheme"
             height="300"
             size="mini"
-            @current-change="selectRiga"
           >
             <el-table-column label="Anno" align="left" width="90">
               <template slot-scope="scope">
@@ -116,9 +115,6 @@ export default {
     }
   },
   methods: {
-    selectRiga(row) {
-      // console.log(row);
-    },
     closePanel: function() {
       let div = document.getElementById('gv-scuoladigitale-info');
       if (!div) return;

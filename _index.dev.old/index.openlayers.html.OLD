@@ -6,13 +6,13 @@
     <meta charset="utf-8" />
     <title>Sviluppo GV2/openLayers</title>
 
-    <!-- librerie mapbox -->
-    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+    <!-- librerie ol -->
+    <!-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css"
       type="text/css"
-    />
+    /> -->
     <div id="gv-container"></div>
     <!-- built files will be auto injected -->
   </head>

@@ -1,23 +1,12 @@
 var id = GV.utils.getUrlParam('id');
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/map/'
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
-
-var customPageUrlList = {
-  1881: '/geoservices/apps/viewer/pages/apps/atlante-geochimico/',
-};
-
-if (id && customPageUrlList[id]) {
-  window.location = customPageUrlList[id];
-}
-
 GV.init({
   debug: true,
   idMap: id,
   application: {
     name: 'openlayers-gv2',
     mapOptions: {
-      type: 'ol',
+      type: 'openlayers',
       click: 'info',
       // restrictedExtent: '830036,5402959,1123018,5597635',
     },
@@ -64,7 +53,7 @@ GV.init({
   },
   baseLayers: [
     {
-      type: 'ESRI_STREETS',
+      type: 'ESRI_IMAGERY',
       visible: true,
     },
     {

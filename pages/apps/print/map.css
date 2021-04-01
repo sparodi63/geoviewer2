@@ -9,7 +9,18 @@ body {
   background: #fff !important;
 }
 
-leaflet-control-scale {
+.leaflet-control-scale {
   background-color: #fff !important;
-  margin: 25px !important;
+  margin-bottom: 25px !important;
+}
+
+/* #gv-map {
+  width: 900px !important;
+  height: 500px !important;
+} */
+
+#gv-print-legend {
+  position: absolute;
+  left: 20px;
+  top: 20px;
 }

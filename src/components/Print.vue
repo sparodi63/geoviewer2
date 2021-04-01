@@ -158,9 +158,25 @@ export default {
         { codice: 'landscape', label: 'Orizzontale' },
       ],
       printTitle: null,
-      pngWidth: document.getElementById('gv-container').scrollWidth,
-      pngHeight: document.getElementById('gv-container').scrollHeight,
+      pngWidth: document.getElementById('gv-map').clientWidth,
+      pngHeight: document.getElementById('gv-map').clientHeight,
       scale: true,
+      pageWidths: {
+        A5portrait: 560,
+        A5landscape: 794,
+        A4portrait: 794,
+        A4landscape: 1123,
+        A3portrait: 1123,
+        A3landscape: 1587,
+      },
+      pageHeights: {
+        A5portrait: 794,
+        A5landscape: 560,
+        A4portrait: 1123,
+        A4landscape: 794,
+        A3portrait: 1587,
+        A3landscape: 1123,
+      },
     };
   },
   methods: {
@@ -195,59 +211,23 @@ export default {
       let width = this.pngWidth;
       let height = this.pngHeight;
 
-      if (this.format === 'pdf') {
-        const ratio =
-          document.getElementById('gv-container').scrollHeight /
-          document.getElementById('gv-container').scrollWidth;
-        switch (this.pdfSize) {
-          case 'A4':
-            if (this.pdfOrientation === 'portrait') {
-              width = 900;
-              height = parseInt(width * ratio);
-            } else {
-              height = 800;
-              width = parseInt(height / ratio);
-            }
-            break;
-          case 'A3':
-            if (this.pdfOrientation === 'portrait') {
-              width = 1400;
-              height = parseInt(width * ratio);
-            } else {
-              height = 1150;
-              width = parseInt(height / ratio);
-            }
-            break;
-          case 'A5':
-            if (this.pdfOrientation === 'portrait') {
-              width = 750;
-              height = parseInt(width * ratio);
-            } else {
-              height = 600;
-              width = parseInt(height / ratio);
-            }
-            break;
-        }
-      }
-
       // costruisco configurazione
       const baseLayer = {
-        name: GV.config.getActiveBaseLayer().printType,
-        type: GV.config.getActiveBaseLayer().printType,
+        type: GV.config.getActiveBaseLayer().type,
       };
       const layers = GV.config
         .getLayersConfig(layer => {
           return layer.visible;
         })
         .reverse();
-
       let maps = [];
-
       GV.config.maps.forEach(map => {
+        // Filtro layer vettoriali visibili e inRange - escludo legenda popup
         const mapLayers = map.layers.filter(layer => {
-          return layer.visible && layer.inRange;
+          return (
+            layer.visible && layer.inRange && layer.geomType === 'VECTOR' && !layer.legend.popUpUrl
+          );
         });
-
         if (mapLayers.length > 0) {
           const map2 = {
             name: map.name,
@@ -257,6 +237,10 @@ export default {
         }
       });
 
+      const mapWidth = document.getElementById('gv-map').clientWidth;
+      const mapHeight = document.getElementById('gv-map').clientHeight;
+      const scale = this.calcScale(mapWidth, this.pdfSize, this.pdfOrientation);
+
       const data = {
         printConfig: {
           fileType: this.format,
@@ -265,23 +249,23 @@ export default {
           height: height,
           pageSize: this.pdfSize,
           orientation: this.pdfOrientation,
+          scale: scale,
+          pageWidth: this.pageWidths[`${this.pdfSize}${this.pdfOrientation}`],
+          pageHeight: this.pageHeights[`${this.pdfSize}${this.pdfOrientation}`],
         },
         mapOptions: {
           projection: 'EPSG:3857',
-          extent: GV.app.map.getExtentAsString(),
-          // center: {
-          //   lon: L.Projection.SphericalMercator.project(GV.app.map.getCenter()).x,
-          //   lat: L.Projection.SphericalMercator.project(GV.app.map.getCenter()).y,
-          // },
+          width: mapWidth,
+          height: mapHeight,
+          initialExtent: GV.app.map.getExtentAsString(),
           center: GV.app.map.getCenter(),
           zoom: GV.app.map.getZoom(),
           flagSameScale: this.scale,
           scale: GV.app.map.getScale(),
         },
         baseLayers: [baseLayer],
-        // maps: maps,
         layers: layers,
-        version: 2,
+        maps: maps,
       };
 
       let loading = Loading.service({
@@ -293,7 +277,6 @@ export default {
 
       print(data).then(response => {
         loading.close();
-        // console.log(response)
         var popup = window.open(
           response.url,
           '',
@@ -301,25 +284,17 @@ export default {
         );
         popup.focus();
       });
-
-      // if (this.format === 'pdf') {
-      //   printLegend(data).then(response => {
-      //     loading.close();
-      //     // console.log(response)
-      //     response.url.forEach(url => {
-      //       const popup = window.open(
-      //         url,
-      //         '',
-      //         'menubar=yes,location=no,resizable=no,scrollbars=no,status=no'
-      //       );
-      //       popup.focus();
-      //     });
-      //   });
-      // }
+    },
+    calcScale(mapWidth, pageSize, orientation) {
+      const pageWidth = this.pageWidths[`${pageSize}${orientation}`];
+      let scale = pageWidth / mapWidth;
+      if (scale < 0.1) scale = 0.1;
+      if (scale > 2) scale = 2;
+      return scale;
     },
   },
   mounted: function() {
-    this.printTitle = GV.config.maps[0].name;
+    if (GV.config.maps[0]) this.printTitle = GV.config.maps[0].name;
   },
 };
 </script>

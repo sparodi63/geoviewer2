@@ -25,12 +25,11 @@
   </el-select>
 </template>
 
-
 <script>
-import geocoder from "../services/getHereGeocode";
+import geocoder from '../services/getHereGeocode';
 
-import Vue from "vue";
-import { Select, Option } from "element-ui";
+import Vue from 'vue';
+import { Select, Option } from 'element-ui';
 Vue.use(Select);
 Vue.use(Option);
 
@@ -40,7 +39,7 @@ export default {
       results: [],
       address: [],
       loading: false,
-      marker: null
+      marker: null,
     };
   },
   methods: {
@@ -59,7 +58,7 @@ export default {
               this.results = results.map(result => ({
                 label: result.formatted_address,
                 value: result.place_id,
-                location: result.geometry.location
+                location: result.geometry.location,
               }));
             } else {
               this.results = [];
@@ -80,9 +79,9 @@ export default {
           GV.app.map.removeLayer(this.marker);
         }
       }
-    }
+    },
   },
-  mounted: function() {}
+  mounted: function() {},
 };
 </script>
 

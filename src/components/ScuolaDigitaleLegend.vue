@@ -8,44 +8,10 @@
         @click="hideLegend"
         title="Nascondi Legenda"
       ></button>
-      <!-- <button
-        id="gv-legend-add-map"
-        title="Ricerca per parola chiave"
-        @click="showSearch"
-        class="gv-color-scheme gv-scuoladigitale-legend-buttons fa fa-search"
-        size="mini"
-      /> -->
     </div>
-    <!-- <div
-      id="gv-scuoladigitale-legend-title-collapsed"
-      class="gv-scuoladigitale-legend-title-collapsed gv-color-scheme"
-    >
-      <button
-        :class="toggleCollapseClass()"
-        size="mini"
-        @click="hideLegend"
-        title="Mostra Legenda"
-      ></button>
-    </div> -->
     <div id="gv-scuoladigitale-legend-wrapper" class="gv-scuoladigitale-legend-wrapper">
       <div>
         <div id="gv-scuoladigitale-legend-body" class="gv-inverted-color-scheme">
-          <!-- <div id="gv-scuoladigitale-legend-combo" class="gv-color-scheme">
-            <el-select
-              placeholder="Scegli Visualizzazione"
-              v-model="tema"
-              size="mini"
-              @change="changeMap"
-            >
-              <el-option
-                v-for="item in temi"
-                :key="item.id"
-                :value="item.id"
-                :label="item.label"
-              ></el-option>
-            </el-select>
-          </div> -->
-          <!-- MAPPE -->
           <gv-legend-maps :options="options"></gv-legend-maps>
         </div>
       </div>
@@ -79,16 +45,13 @@ export default {
       maps: GV.config.maps,
       show: true,
       tema: 0,
-      title: 'LEGENDA',
+      title: 'LEGENDA ICONE',
     };
   },
   mounted() {
     GV.log('gv-scuoladigitale-legend: mounted');
     GV.legend = this;
     this.show = false;
-    // if (window.matchMedia('(max-width: 500px)').matches) {
-    //   this.show = false;
-    // }
     this.hideLegend();
     this.changeMap(0);
     mountComponent({
@@ -119,15 +82,11 @@ export default {
     },
     hideLegend: function(event) {
       if (this.show) {
-        // document.getElementById('gv-scuoladigitale-legend-title').style.display = 'block';
-        // document.getElementById('gv-scuoladigitale-legend-title-collapsed').style.display = 'none';
         document.getElementById('gv-scuoladigitale-legend-wrapper').style.display = 'block';
         document.getElementById('gv-scuoladigitale-legend').style.width = '260px';
       } else {
-        // document.getElementById('gv-scuoladigitale-legend-title').style.display = 'none';
-        // document.getElementById('gv-scuoladigitale-legend-title-collapsed').style.display = 'block';
         document.getElementById('gv-scuoladigitale-legend-wrapper').style.display = 'none';
-        document.getElementById('gv-scuoladigitale-legend').style.width = '100px';
+        document.getElementById('gv-scuoladigitale-legend').style.width = '150px';
       }
       this.show = !this.show;
     },

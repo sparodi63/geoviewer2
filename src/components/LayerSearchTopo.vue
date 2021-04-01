@@ -410,7 +410,7 @@ export default {
             layer.clearLayers();
             layer.addData(features[0].geometry);
             GV.app.map.flyToBounds(layer.getBounds(), { maxZoom: 15 });
-            GV.app.map._container.style.cursor = 'default';
+            // GV.app.map._container.style.cursor = 'default';
             GV.config.hilitedLayer.push(layerName);
           }
         })

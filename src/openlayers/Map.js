@@ -10,7 +10,7 @@ import notification from '../util/notification';
 import { Loading } from 'element-ui';
 
 const olMap = {
-  type: 'ol',
+  type: 'openlayers',
   layers: [],
   baseLayers: [],
   initialExtent: [],
@@ -24,11 +24,13 @@ const olMap = {
     maxZoom: 20,
   },
   initialize() {
-    Object.assign(this.options, GV.config.application.options);
+    Object.assign(this.options, GV.config.application.mapOptions);
 
+    console.log('MAP OPTIONS', this.options);
     // Gestione restricted extent
     const viewOptions = {};
     if (this.options.restrictedExtent) {
+      console.log('SET RESCTRICTED EXTENT');
       viewOptions.extent = this.extentToArray(this.options.restrictedExtent);
     }
 
@@ -41,25 +43,38 @@ const olMap = {
 
     this.setInitialExtent();
 
-    this.zoom = this.map.getView().getZoom();
+    this.zoom = this.getView().getZoom();
 
     this.loadBaseLayer();
 
     this.eventMngr();
 
+    if (this.options.ol3d) {
+      const GeoserverTerrainProvider = require('../cesium/GeoserverTerrainProvider');
+
+      const ol3d = new olcs.OLCesium({ map: this.map });
+      this.scene = ol3d.getCesiumScene();
+      var terrainProvider = new Cesium.GeoserverTerrainProvider({
+        url: 'https://geoservizi.regione.liguria.it/geoserver/DTM/ows',
+        layerName: 'DTM_dbtopo_5m_wgs84',
+      });
+      this.scene.terrainProvider = terrainProvider;
+
+      if (this.options.enable3d) {
+        ol3d.setEnabled(true);
+      }
+      this.ol3d = ol3d;
+    }
+
     return this;
   },
 
-  on(event) {
-    console.log('openlayers/map on', event);
-    return this.map.on(event);
-  },
   eventMngr() {
     this.map.on('moveend', e => {
-      const newZoom = this.map.getView().getZoom();
+      const newZoom = this.getView().getZoom();
       if (this.zoom != newZoom) {
-        console.log('zoom end, new zoom: ' + newZoom);
-        GV.eventBus.$emit('map-zoom', this._zoom);
+        // console.log('zoom end, new zoom: ' + newZoom);
+        GV.eventBus.$emit('map-zoom', newZoom);
         this.zoom = newZoom;
       }
     });
@@ -69,7 +84,7 @@ const olMap = {
     });
     GV.eventBus.$on('set-layer-visible', event => {
       this.setLayerVisible(event.layer, event.checked);
-      this.setHiliteLayerVisible(event);
+      this.setHiliteLayerVisible(event.layer, event.checked);
     });
     GV.eventBus.$on('set-layer-transparency', event => {
       this.setLayerOpacity(event.layerName, event.opacity);
@@ -78,22 +93,8 @@ const olMap = {
       this.changeBaseLayer(event.layer);
     });
   },
-  // TODO
-  setHiliteLayerVisible(event) {
-    if (!GV.config.hilitedLayer) {
-      return;
-    }
-    GV.config.hilitedLayer.forEach(hl => {
-      if (hl === event.layer.name) {
-        const layer = this.getLayerByName('InfoWmsHilite');
-        layer.eachLayer(m => {
-          const opacity = event.checked ? 0.6 : 0.0;
-          m.setStyle({
-            opacity: opacity,
-          });
-        });
-      }
-    });
+  getView() {
+    return this.map.getView();
   },
   setLayerOpacity(layerName, opacity) {
     const layer = this.getLayerByName(layerName);
@@ -101,7 +102,7 @@ const olMap = {
   },
   setExtent(extent) {
     const ext = this.extentToArray(extent);
-    this.map.getView().fit(ext);
+    this.getView().fit(ext);
   },
   extentToArray(extent) {
     const extFloat = extent.split(',').map(ex => {
@@ -111,14 +112,20 @@ const olMap = {
   },
   setInitialExtent() {
     GV.log('setInitialExtent');
-    if (this.options.center && this.options.zoom) {
-      GV.log('setView');
-      // TODO OL
-      this.setView(this.options.center, this.options.zoom);
-    } else {
-      var extent = this.options.initialExtent || '830036,5402959,1123018,5597635';
-      this.setExtent(extent);
-    }
+    // TODO OL
+    // if (this.options.center && this.options.zoom) {
+    //   GV.log('setView');
+    //   this.setView(this.options.center, this.options.zoom);
+    // } else {
+    //   var extent = this.options.initialExtent || '830036,5402959,1123018,5597635';
+    //   this.setExtent(extent);
+    // }
+    var extent = this.options.initialExtent || '830036,5402959,1123018,5597635';
+    this.setExtent(extent);
+  },
+  setView(center, zoom) {
+    this.getView().setCenter(center);
+    this.getView().setZoom(zoom);
   },
   getExtent() {
     var swPoint = this.getBounds().getSouthWest();
@@ -128,8 +135,7 @@ const olMap = {
     return L.bounds(swPrj, nePrj);
   },
   getExtentAsString() {
-    return this.map
-      .getView()
+    return this.getView()
       .calculateExtent()
       .join(',');
   },
@@ -137,6 +143,17 @@ const olMap = {
     const layer = this.getLayerByName(layerConfig.name);
     layer.setVisible(visible);
     layerConfig.visible = visible;
+  },
+  setHiliteLayerVisible(layerConfig, visible) {
+    if (!GV.config.hilitedLayer) {
+      return;
+    }
+    for (const hl of GV.config.hilitedLayer) {
+      if (hl[0] === layerConfig.name) {
+        const layer = this.getLayerByName('InfoWmsHilite');
+        layer.setVisible(visible);
+      }
+    }
   },
   layerInRange(layerConfig) {
     if (!layerConfig.minScale && !layerConfig.minScale) {
@@ -184,8 +201,11 @@ const olMap = {
     return foundLayer;
   },
   getScale() {
-    const scaleDenom = 591657550 / Math.pow(2, this.map.getView().getZoom());
+    const scaleDenom = 591657550 / Math.pow(2, this.getView().getZoom());
     return scaleDenom;
+  },
+  setZoom(zoom) {
+    this.getView().setZoom(zoom);
   },
   removeLayer(layer) {
     this.map.removeLayer(layer);
@@ -217,8 +237,11 @@ const olMap = {
       }
     });
   },
-  // TODO
-  // TODO
+  clearLayer() {
+    const layer = this.getLayerByName('InfoWmsHilite');
+    const source = layer.getSource();
+    source.clear(true);
+  },
   addMarker(markerConfig) {
     if (markerConfig.epsg && markerConfig.epsg != '4326') {
       getCoordTransform(
@@ -238,26 +261,34 @@ const olMap = {
       this.addMarkerToMap(markerConfig);
     }
   },
-  // TODO
   addMarkerToMap(markerConfig) {
-    const icon = L.icon({
-      iconUrl: '/geoservices/apps/viewer/dist/static/img/marker-icon.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [0, -41],
+    const feature = new ol.Feature({
+      geometry: new ol.geom.Point(
+        ol.proj.fromLonLat([markerConfig.location.lng, markerConfig.location.lat])
+      ),
+      name: markerConfig.label,
     });
-    const opts = {
-      opacity: 0.8,
-      icon: icon,
-      title: markerConfig.label,
-    };
-    if (markerConfig.type === 'circle') {
-      L.circleMarker(markerConfig.location, opts).addTo(this);
-    } else {
-      L.marker(markerConfig.location, opts).addTo(this);
-    }
-    this.flyTo(markerConfig.location, markerConfig.zoomLevel || 14);
-    // this.setView(markerConfig.location, markerConfig.zoomLevel || 14);
+
+    feature.setStyle(
+      new ol.style.Style({
+        image: new ol.style.Icon({
+          anchor: [0.5, 1],
+          src: '/geoservices/apps/viewer/dist/static/img/marker-icon.png',
+        }),
+      })
+    );
+
+    const vectorLayer = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: [feature],
+      }),
+      zIndex: 1000,
+    });
+    this.map.addLayer(vectorLayer);
+
+    GV.app.map.getView().fit(feature.getGeometry().getExtent(), {
+      maxZoom: markerConfig.zoomLevel || 14,
+    });
   },
   // TODO
   find(findOptions) {
@@ -332,6 +363,16 @@ const olMap = {
       const ne = [coord[2], coord[3]];
       this.fitBounds([sw, ne]);
     }
+  },
+  on(event, fn) {
+    this.map.on(event, fn);
+  },
+  off(event) {
+    // this.map.un(event, null);
+    this.map.removeEventListener(event);
+  },
+  forEachFeatureAtPixel(pixel, callback, options) {
+    this.map.forEachFeatureAtPixel(pixel, callback, options);
   },
 };
 

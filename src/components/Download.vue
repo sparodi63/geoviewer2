@@ -134,25 +134,6 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <span v-show="showSelectMacrobacini" class="gv-map-download-label"
-            >Selezione Macrobacino</span
-          >
-          <el-select
-            id="gv-map-download-macrobacini"
-            v-show="showSelectMacrobacini"
-            v-model="macrobacino"
-            size="mini"
-            filterable
-          >
-            <el-option
-              v-for="item in macrobacini"
-              :key="item.codice"
-              :value="item.codice"
-              :label="item.nome"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
           <el-button
             id="gv-map-download-rect-reset"
             v-show="showRectReset"
@@ -247,12 +228,12 @@ export default {
       bbox: null,
       bboxSRS: null,
       fogli: [],
-      macrobacini: [],
-      macrobacino: null,
       comuni: [],
       livelli: [],
       livello: null,
       config: {},
+      style: null,
+      hlStyle: null,
       showRectReset: false,
       storageKey: 'download',
     };
@@ -264,9 +245,6 @@ export default {
     showSelectFogli() {
       return this.selezioneTerritoriale === 3;
     },
-    showSelectMacrobacini() {
-      return this.selezioneTerritoriale === 5;
-    },
     showSelectLivelli() {
       return this.livelli.length > 0;
     },
@@ -274,9 +252,6 @@ export default {
   watch: {
     fogli(fogliSel) {
       this.syncFogli(fogliSel);
-    },
-    macrobacino(macrobacino) {
-      this.syncMacrobacino(macrobacino);
     },
     comune(comune) {
       this.syncComune(comune);
@@ -295,6 +270,8 @@ export default {
     });
     // imposto la configurazione
     this.setConfig();
+    // imposto stile feature
+    this.setFeatureStyle();
     // Leggo cookies
     this.codCliente =
       this.$cookie.get('codCliente') != 'null' ? this.$cookie.get('codCliente') : '';
@@ -302,8 +279,6 @@ export default {
     this.addLayerRettangolo();
     // Imposto layer per selezione fogli
     this.addLayerSquadri();
-    // Imposto layer per selezione macrobacini
-    this.addLayerMacrobacini();
     // Imposto layer per selezione comuni
     this.addLayerComuni();
     // Imposto combo livelli
@@ -330,77 +305,67 @@ export default {
     this.show = true;
   },
   methods: {
-    syncFogli(fogliSel) {
-      const layerFogli = GV.app.map.getLayerByName('SelezioneSquadri');
-      if (!layerFogli) {
-        return;
-      }
-      layerFogli.eachLayer(layer => {
-        layer.setStyle({ fillOpacity: 0, weight: 1 });
-      });
-      layerFogli.eachLayer(layer => {
-        fogliSel.forEach(foglio => {
-          const codice =
-            layer.feature.properties.COD_SQUADRO || layer.feature.properties.cod_squadro;
-          if (codice === foglio) {
-            layer.setStyle({ fillOpacity: 0.6, weight: 2 });
-          }
-        });
-      });
-    },
-    syncMacrobacino(macrobacino) {
-      const layerMacrobacini = GV.app.map.getLayerByName('SelezioneMacrobacino');
-      if (!layerMacrobacini) {
-        return;
-      }
-      layerMacrobacini.eachLayer(layer => {
-        layer.setStyle({ fillOpacity: 0, weight: 1 });
-      });
-      layerMacrobacini.eachLayer(layer => {
-        const codice = layer.feature.properties.COD_MB || layer.feature.properties.cod_mb;
-        if (codice === macrobacino) {
-          layer.setStyle({ fillOpacity: 0.6, weight: 2 });
-        }
-      });
-    },
     syncComune(comune) {
       const layerComuni = GV.app.map.getLayerByName('SelezioneComune');
       if (!layerComuni) {
         return;
       }
-      layerComuni.eachLayer(layer => {
-        layer.setStyle({ fillOpacity: 0, weight: 1 });
-      });
-      layerComuni.eachLayer(layer => {
-        const codice =
-          layer.feature.properties.CODICE_COMUNE || layer.feature.properties.codice_comune;
-        if (codice === comune) {
-          layer.setStyle({ fillOpacity: 0.6, weight: 2 });
+      if (GV.app.map.type === 'openlayers') {
+        const features = layerComuni.getSource().getFeatures();
+        for (const feature of features) {
+          const codice = feature.get('CODICE_COMUNE') || feature.get('codice_comune');
+          if (codice === comune) {
+            feature.setStyle(this.hlStyle);
+          } else {
+            feature.setStyle(false);
+          }
         }
-      });
-      if (layerComuni) {
+      } else {
         layerComuni.eachLayer(layer => {
-          if (
-            layer.feature.properties.CODICE_COMUNE === comune ||
-            layer.feature.properties.codice_comune === comune
-          ) {
-            this.setComuniBbox(layer);
+          layer.setStyle(this.style);
+        });
+        layerComuni.eachLayer(layer => {
+          const codice =
+            layer.feature.properties.CODICE_COMUNE || layer.feature.properties.codice_comune;
+          if (codice === comune) {
+            layer.setStyle(this.hlStyle);
           }
         });
       }
     },
-    setComuniBbox(comune) {
-      const bboxArray = comune
-        .getBounds()
-        .toBBoxString()
-        .split(',');
-
-      const xMin = bboxArray[0],
-        yMin = bboxArray[1],
-        xMax = bboxArray[2],
-        yMax = bboxArray[3];
-      this.bbox = `${xMin},${yMin},${xMax},${yMin},${xMax},${yMax},${xMin},${yMax},${xMin},${yMin}`;
-      this.bboxSRS = '4326';
+    syncFogli(fogliSel) {
+      const layerFogli = GV.app.map.getLayerByName('SelezioneSquadri');
+      if (!layerFogli) {
+        return;
+      }
+      const style = this.hlStyle;
+      if (GV.app.map.type === 'openlayers') {
+        const features = layerFogli.getSource().getFeatures();
+        for (const feature of features) {
+          feature.setStyle(false);
+        }
+        for (const foglio of fogliSel) {
+          for (const feature of features) {
+            const codice = feature.get('COD_SQUADRO') || feature.get('cod_squadro');
+            if (codice == foglio) {
+              feature.setStyle(style);
+            }
+          }
+        }
+      } else {
+        layerFogli.eachLayer(layer => {
+          layer.setStyle(this.style);
+        });
+        layerFogli.eachLayer(layer => {
+          fogliSel.forEach(foglio => {
+            const codice =
+              layer.feature.properties.COD_SQUADRO || layer.feature.properties.cod_squadro;
+            if (codice === foglio) {
+              layer.setStyle(this.hlStyle);
+            }
+          });
+        });
+      }
     },
     removePanel() {
       const dlPanel = document.getElementById('gv-map-download');
@@ -420,6 +385,49 @@ export default {
         }
       }
     },
+    setFeatureStyle() {
+      let style;
+      if (GV.app.map.type === 'openlayers') {
+        style = new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: [255, 204, 0, 1],
+            width: 1,
+          }),
+          fill: new ol.style.Fill({
+            color: [255, 204, 0, 0.1],
+          }),
+        });
+      } else {
+        style = {
+          color: '#ffcc00',
+          fillOpacity: 0,
+          weight: 1,
+          opacity: 1,
+        };
+      }
+      this.style = style;
+
+      if (GV.app.map.type === 'openlayers') {
+        style = new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: [255, 204, 0, 1],
+            width: 3,
+          }),
+          fill: new ol.style.Fill({
+            color: [255, 204, 0, 0.6],
+          }),
+        });
+      } else {
+        style = {
+          color: '#ffcc00',
+          fillOpacity: 0.6,
+          weight: 2,
+          opacity: 1,
+        };
+      }
+      this.hlStyle = style;
+    },
+
     setDefaultFormat(formati) {
       const cachedFormat =
         formati.filter(formato => {
@@ -440,12 +448,16 @@ export default {
       this.formato = formato;
     },
     addLayerRettangolo() {
-      this.drawnRectangle = new L.FeatureGroup();
-      L.drawLocal.draw.handlers.rectangle.tooltip.start =
-        'Clicca e trascina per disegnare un rettangolo';
-      L.drawLocal.draw.handlers.simpleshape.tooltip.end =
-        'Rilascia il mouse per terminare il disegno';
-      GV.app.map.addLayer(this.drawnRectangle);
+      console.log(GV.app.map.type);
+      if (GV.app.map.type === 'openlayers') {
+      } else {
+        this.drawnRectangle = new L.FeatureGroup();
+        L.drawLocal.draw.handlers.rectangle.tooltip.start =
+          'Clicca e trascina per disegnare un rettangolo';
+        L.drawLocal.draw.handlers.simpleshape.tooltip.end =
+          'Rilascia il mouse per terminare il disegno';
+        GV.app.map.addLayer(this.drawnRectangle);
+      }
     },
     addLayerSquadri() {
       let selFogli = false;
@@ -532,39 +544,6 @@ export default {
 
       this.changeSelezioneTerritoriale(this.selezioneTerritoriale, true);
     },
-
-    addLayerMacrobacini() {
-      let selMacrobacini = false;
-      if (!this.config.formati) return;
-      this.config.formati.forEach(formato => {
-        formato.selezioneTerritoriale.forEach(selTerr => {
-          if (selTerr.codice === 5) {
-            selMacrobacini = true;
-          }
-        });
-      });
-      if (selMacrobacini) {
-        const baseUrl = `${globals.DEFAULT_PROXY}https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`;
-        const url = `${baseUrl}${this.config.livelloMacrobacini}`;
-        getGeoJSON(url).then(response => {
-          this.loadDataMacrobacini(response.data);
-        });
-      }
-    },
-    loadDataMacrobacini(data) {
-      if (GV.app.map.getLayerByName('SelezioneMacrobacino')) {
-        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneMacrobacino'));
-      }
-      this.macrobacini = data.features.map(feature => {
-        return {
-          codice: feature.properties.COD_MB || feature.properties.cod_mb,
-          nome: feature.properties.NOM_MB || feature.properties.nom_mb,
-        };
-      });
-      this.layerMacrobacini = data;
-      this.changeSelezioneTerritoriale(this.selezioneTerritoriale, true);
-    },
-
     downloadURI(url) {
       var link = document.createElement('a');
       link.setAttribute('target', '_blank');
@@ -603,11 +582,6 @@ export default {
         notification('Selezionare i fogli di interesse dalla lista o sulla mappa');
         return;
       }
-      if (this.selezioneTerritoriale === 5 && !this.macrobacino) {
-        notification('Selezionare un macrobacino dalla lista o sulla mappa');
-        return;
-      }
-
       if (this.config.flagDownloadStatico) {
         this.downloadStatico();
         return;
@@ -628,7 +602,6 @@ export default {
       };
       insertRichiestaDownload(data).then(resp => {
         this.isSyncDownload() ? this.showSyncPanel(resp) : this.sendNotification(resp);
-        // this.showSyncPanel(resp);
       });
     },
     isSyncDownload() {
@@ -678,8 +651,6 @@ export default {
       let url = `${baseUrl}/${this.idMap}/${this.formato}/${this.sistemaCoordinate}/${this.selezioneTerritoriale}/`;
       console.log(url);
       if (this.config.flagDownloadLivello) {
-        // url += `${this.livello}/`;
-        // TODO CASE 3 (FOGLI) - DOWNLOAD MULTIPLI
         switch (this.selezioneTerritoriale) {
           case 0:
             url += `${this.livello}.zip`;
@@ -687,9 +658,9 @@ export default {
           case 2:
             url += `${this.livello}_${this.comune}.zip`;
             break;
-          case 5:
-            url += `${this.livello}_${this.macrobacino}.zip`;
-            break;
+          // case 5:
+          //   url += `${this.livello}_${this.macrobacino}.zip`;
+          //   break;
         }
       }
 
@@ -713,9 +684,6 @@ export default {
       if (GV.app.map.getLayerByName('SelezioneComune')) {
         GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneComune'));
       }
-      if (GV.app.map.getLayerByName('SelezioneMacrobacino')) {
-        GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneMacrobacino'));
-      }
 
       // rimuovo livello selezione libera
       if (GV.app.map.drawRectangle) {
@@ -729,7 +697,6 @@ export default {
       GV.config.activeControl.activate();
 
       // rimuovo pannello download
-      // console.log(this.closeWindow)
       if (this.closeWindow === 'true') {
         window.close();
       } else {
@@ -797,7 +764,6 @@ export default {
 
       if (codice === 1) {
         notification('Selezionare un rettangolo sulla mappa');
-        // console.log(this.drawnRectangle)
         if (!GV.app.map.drawRectangle) {
           GV.app.map.addHandler('drawRectangle', L.Draw.Rectangle);
         }
@@ -822,100 +788,25 @@ export default {
         this.showRectReset = false;
       }
 
-      // Selezione per fogli
-      if (codice === 3) {
-        GV.app.map.loadLayers([
-          {
-            name: 'SelezioneSquadri',
-            type: 'JSON',
-            style: {
-              color: '#ffcc00',
-              fillOpacity: 0,
-              weight: 1,
-              opacity: 1,
-            },
-            visible: true,
-            data: this.layerFogli,
-            onEachFeature: (feature, layer) => {
-              console.log('SelezioneSquadri');
-              layer.on('click', ev => {
-                if (this.selezioneTerritoriale !== 3) {
-                  return;
-                }
-                const codice = feature.properties.COD_SQUADRO || feature.properties.cod_squadro;
-                if (this.fogli.indexOf(codice) > -1) {
-                  this.fogli = this.fogli.filter(item => item !== codice);
-                } else {
-                  this.fogli.push(codice);
-                }
-              });
-            },
-          },
-        ]);
-        if (!silent) notification('Selezionare un foglio sulla mappa o dalla lista');
-      } else {
-        const layerSquadri = GV.app.map.getLayerByName('SelezioneSquadri');
-        if (layerSquadri) {
-          GV.app.map.removeLayer(layerSquadri);
-        }
-      }
-
-      // Selezione per macrobacino
-      if (codice === 5) {
-        GV.app.map.loadLayers([
-          {
-            name: 'SelezioneMacrobacino',
-            type: 'JSON',
-            style: {
-              color: '#ffcc00',
-              fillOpacity: 0,
-              weight: 1,
-              opacity: 1,
-            },
-            visible: true,
-            data: this.layerMacrobacini,
-            onEachFeature: (feature, layer) => {
-              layer.on('click', ev => {
-                if (this.selezioneTerritoriale !== 5) {
-                  return;
-                }
-                const codice = feature.properties.COD_MB || feature.properties.cod_mb;
-                this.macrobacino = codice;
-              });
-            },
-          },
-        ]);
-        if (!silent) notification('Selezionare un macrobacino sulla mappa o dalla lista');
-      } else {
-        const layerMacrobacini = GV.app.map.getLayerByName('SelezioneMacrobacino');
-
-        if (layerMacrobacini) {
-          GV.app.map.removeLayer(layerMacrobacini);
-        }
-      }
-
       // Selezione per comune
       if (codice === 2) {
+        if (!this.layerComuni) return;
+        const style = this.style;
         GV.app.map.loadLayers([
           {
             name: 'SelezioneComune',
             type: 'JSON',
-            style: {
-              color: '#ffcc00',
-              fillOpacity: 0,
-              weight: 1,
-              opacity: 1,
-            },
+            style: style,
             visible: true,
             data: this.layerComuni,
-            onEachFeature: (feature, layer) => {
-              layer.on('click', ev => {
-                if (this.selezioneTerritoriale !== 2) {
-                  return;
-                }
-                const codice = feature.properties.CODICE_COMUNE || feature.properties.codice_comune;
-                this.comune = codice;
-              });
+            zIndex: 100,
+            onFeatureSelect: (feature, layer) => {
+              if (this.selezioneTerritoriale !== 2) {
+                return;
+              }
+              this.comune = feature.get
+                ? feature.get('CODICE_COMUNE') || feature.get('codice_comune')
+                : feature.properties.CODICE_COMUNE || feature.properties.codice_comune;
             },
           },
         ]);
@@ -924,6 +815,41 @@ export default {
         const layerComuni = GV.app.map.getLayerByName('SelezioneComune');
         if (layerComuni) {
           GV.app.map.removeLayer(layerComuni);
+        }
+      }
+
+      // Selezione per fogli
+      if (codice === 3) {
+        if (!this.layerFogli) return;
+        const style = this.style;
+        GV.app.map.loadLayers([
+          {
+            name: 'SelezioneSquadri',
+            type: 'JSON',
+            style: style,
+            visible: true,
+            data: this.layerFogli,
+            zIndex: 100,
+            onFeatureSelect: (feature, layer) => {
+              if (this.selezioneTerritoriale !== 3) {
+                return;
+              }
+              const codice = feature.get
+                ? feature.get('COD_SQUADRO') || feature.get('cod_squadro')
+                : feature.properties.COD_SQUADRO || feature.properties.cod_squadro;
+              if (this.fogli.indexOf(codice) > -1) {
+                this.fogli = this.fogli.filter(item => item !== codice);
+              } else {
+                this.fogli.push(codice);
+              }
+            },
+          },
+        ]);
+        if (!silent) notification('Selezionare un foglio sulla mappa o dalla lista');
+      } else {
+        const layerSquadri = GV.app.map.getLayerByName('SelezioneSquadri');
+        if (layerSquadri) {
+          GV.app.map.removeLayer(layerSquadri);
         }
       }
     },

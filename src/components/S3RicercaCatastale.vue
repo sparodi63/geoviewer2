@@ -574,7 +574,7 @@ export default {
           GV.app.map.flyToBounds(hiliteLayer.getBounds(), {
             maxZoom: 17,
           });
-          GV.app.map._container.style.cursor = 'default';
+          // GV.app.map._container.style.cursor = 'default';
         }
       });
     },
@@ -594,7 +594,7 @@ export default {
           GV.app.map.flyToBounds(hiliteLayer.getBounds(), {
             maxZoom: 17,
           });
-          GV.app.map._container.style.cursor = 'default';
+          // GV.app.map._container.style.cursor = 'default';
         }
       });
     },
@@ -615,7 +615,7 @@ export default {
           GV.app.map.flyToBounds(hiliteLayer.getBounds(), {
             maxZoom: 17,
           });
-          GV.app.map._container.style.cursor = 'default';
+          //  GV.app.map._container.style.cursor = 'default';
         }
       });
     },
@@ -635,7 +635,7 @@ export default {
           GV.app.map.flyToBounds(hiliteLayer.getBounds(), {
             maxZoom: 17,
           });
-          GV.app.map._container.style.cursor = 'default';
+          // GV.app.map._container.style.cursor = 'default';
         }
       });
     },
@@ -675,7 +675,7 @@ export default {
           GV.app.map.flyToBounds(hiliteLayer.getBounds(), {
             maxZoom: 17,
           });
-          GV.app.map._container.style.cursor = 'default';
+          // GV.app.map._container.style.cursor = 'default';
         }
       });
     },

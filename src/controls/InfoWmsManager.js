@@ -25,53 +25,12 @@ function _request(event) {
   _numRequests = 0;
   _features = [];
 
-  // startLoadingService('Interrogazione livello...')
-
-  function queryLayer(layerConfig, infoFormat) {
-    let url =
-      layerConfig.infoOptions.infoQueryUrl || globals.DEFAULT_PROXY + layerConfig.wmsParams.url;
-    const layers = layerConfig.infoOptions.infoQueryLayers || layerConfig.wmsParams.name;
-    const cqlFilter = layerConfig.wmsParams.cql_filter;
-    if (layerConfig.wmsParams.infoFormat) {
-      infoFormat = layerConfig.wmsParams.infoFormat;
-    }
-
-    var wmsUrl = buildWMSOptions(
-      url,
-      layers,
-      event.latlng,
-      infoFormat,
-      layerConfig.infoBuffer,
-      cqlFilter
-    );
-    _numRequests++;
-    GV.app.map._container.style.cursor = 'progress';
-    if (infoFormat === 'application/json') {
-      getFeatureInfo(wmsUrl)
-        .then(features => _handleResponse(features, layerConfig.name))
-        .catch(error => console.error(error));
-    } else if (infoFormat === 'application/geojson') {
-      getFeatureInfoGeojson(wmsUrl, layerConfig.wmsParams.name)
-        .then(features => _handleResponse(features, layerConfig.name))
-        .catch(error => console.error(error));
-    } else if (infoFormat === 'text/plain') {
-      getFeatureInfoText(wmsUrl, layerConfig.wmsParams.name)
-        .then(data => _handleResponse(data, layerConfig.name))
-        .catch(error => console.error(error));
-    } else {
-      getFeatureInfoXML(wmsUrl, layerConfig.wmsParams.name)
-        .then(features => _handleResponse(features, layerConfig.name))
-        .catch(error => console.error(error));
-    }
-  }
-
   // Ciclo sulle mappe caricate
   GV.config.maps.forEach(function(mapConfig) {
     var infoFormat = mapConfig.flagGeoserver ? 'application/json' : 'application/vnd.ogc.gml';
     // Ciclo sui layer caricati sulla mappa
     mapConfig.layers.forEach(function(layerConfig) {
       if (
-        // layerConfig.idMap === mapConfig.id &&
         layerConfig.type === 'WMS' &&
         layerConfig.queryable &&
         layerConfig.visible &&
@@ -81,18 +40,84 @@ function _request(event) {
       }
     });
   });
+
+  function queryLayer(layerConfig, infoFormat) {
+    if (!layerConfig.wmsParams.infoFormat) layerConfig.wmsParams.infoFormat = infoFormat;
+    const wmsUrl = getGetFeatureInfoUrl(layerConfig, event);
+    _numRequests++;
+
+    switch (infoFormat) {
+      case 'application/json':
+        getFeatureInfo(wmsUrl)
+          .then(features => _handleResponse(features, layerConfig.name))
+          .catch(error => console.error(error));
+        break;
+      case 'application/geojson':
+        getFeatureInfoGeojson(wmsUrl, layerConfig.wmsParams.name)
+          .then(features => _handleResponse(features, layerConfig.name))
+          .catch(error => console.error(error));
+        break;
+      case 'text/plain':
+        getFeatureInfoText(wmsUrl, layerConfig.wmsParams.name)
+          .then(data => _handleResponse(data, layerConfig.name))
+          .catch(error => console.error(error));
+        break;
+      default:
+        getFeatureInfoXML(wmsUrl, layerConfig.wmsParams.name)
+          .then(features => _handleResponse(features, layerConfig.name))
+          .catch(error => console.error(error));
+        break;
+    }
+  }
+}
+
+function getGetFeatureInfoUrl(layerConfig, event) {
+  if (GV.app.map.type === 'openlayers') {
+    return buildOLWMSOptions(layerConfig, event);
+  } else {
+    const url =
+      layerConfig.infoOptions.infoQueryUrl || globals.DEFAULT_PROXY + layerConfig.wmsParams.url;
+    const layers = layerConfig.infoOptions.infoQueryLayers || layerConfig.wmsParams.name;
+    const cqlFilter = layerConfig.wmsParams.cql_filter;
+    const infoFormat = layerConfig.wmsParams.infoFormat;
+    return buildWMSOptions(
+      url,
+      layers,
+      event.latlng,
+      infoFormat,
+      layerConfig.infoBuffer,
+      cqlFilter
+    );
+  }
+}
+
+function buildOLWMSOptions(layerConfig, event) {
+  const url = layerConfig.infoOptions.infoQueryUrl || layerConfig.wmsParams.url;
+  const queryLayers = layerConfig.infoOptions.infoQueryLayers || layerConfig.wmsParams.name;
+  const infoFormat = layerConfig.wmsParams.infoFormat;
+  const buffer = layerConfig.infoBuffer || 10;
+  const viewProjection = GV.app.map.getView().getProjection();
+  const viewResolution = GV.app.map.getView().getResolution();
+  const source = new ol.source.ImageWMS({
+    url: url,
+    params: { LAYERS: layerConfig.wmsParams.name },
+    ratio: 1,
+    serverType: 'geoserver',
+  });
+  var infoUrl = source.getFeatureInfoUrl(event.coordinate, viewResolution, viewProjection, {
+    INFO_FORMAT: infoFormat,
+    QUERY_LAYERS: queryLayers,
+    FEATURE_COUNT: 100,
+    BUFFER: buffer,
+  });
+  infoUrl = globals.DEFAULT_PROXY + infoUrl;
+  return infoUrl;
 }
 
 function buildWMSOptions(url, layers, latlng, infoFormat, infoBuffer, cqlFilter) {
-  if (event.mapType === 'cesium') {
-    console.log('cesium getFeatureInfo');
-  }
-
-  const point = GV.app.map.latLngToContainerPoint(latlng, GV.app.map.getZoom());
+  const point = GV.app.map.getContainerPoint(latlng);
   const size = GV.app.map.getSize();
-  const bounds = GV.app.map.getBounds();
-  const sw = GV.app.map.options.crs.project(bounds.getSouthWest());
-  const ne = GV.app.map.options.crs.project(bounds.getNorthEast());
+  const bbox = GV.app.map.getBbox();
   const buffer = infoBuffer === null || infoBuffer === undefined ? 10 : infoBuffer;
   const params = {
     request: 'GetFeatureInfo',
@@ -100,7 +125,7 @@ function buildWMSOptions(url, layers, latlng, infoFormat, infoBuffer, cqlFilter)
     crs: 'EPSG:3857',
     styles: '',
     version: '1.3.0',
-    bbox: `${sw.x},${sw.y},${ne.x},${ne.y}`,
+    bbox: bbox,
     height: size.y,
     width: size.x,
     layers: layers,
@@ -114,7 +139,6 @@ function buildWMSOptions(url, layers, latlng, infoFormat, infoBuffer, cqlFilter)
   if (cqlFilter) {
     params.cql_filter = cqlFilter;
   }
-
   return url + getParamString(params, url, true);
 }
 
@@ -138,7 +162,7 @@ function _handleResponse(features, layerName) {
   Array.prototype.push.apply(_features, features);
 
   if (_requestCount === _numRequests) {
-    if (GV.app.map._container) GV.app.map._container.style.cursor = 'default';
+    // if (GV.app.map._container) GV.app.map._container.style.cursor = 'default';
 
     if (_features.length === 0) {
       GV.log('Nessun elemento trovato');
@@ -401,51 +425,28 @@ function hiliteFeature(feature) {
         const layer = GV.app.map.getLayerByName('InfoWmsHilite');
         const feature = layer && features ? features[0] : null;
         if (feature && feature.geometry) {
-          if (GV.app.map.type === 'cesium') {
-            if (feature.geometry.type === 'MultiPolygon' || feature.geometry.type === 'Polygon') {
-              layer.load(feature, {
-                stroke: new Cesium.Color(1, 0.55, 0, 0),
-                fill: new Cesium.Color(1, 0.55, 0, 0.2),
-                clampToGround: true,
+          switch (GV.app.map.type) {
+            case 'openlayers':
+              const source = layer.getSource();
+              source.clear(true);
+              const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+                featureProjection: 'EPSG:3857',
               });
-              GV.app.map.viewer.zoomTo(layer, new Cesium.HeadingPitchRange(null, -90, null));
-            }
-            if (
-              feature.geometry.type === 'MultiLineString' ||
-              feature.geometry.type === 'LineString'
-            ) {
-              layer.load(feature, {
-                stroke: new Cesium.Color(1, 0.55, 0, 0.0),
+              source.addFeature(olFeature);
+              GV.app.map.getView().fit(olFeature.getGeometry().getExtent(), {
+                maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
               });
-              GV.app.map.viewer.zoomTo(layer, new Cesium.HeadingPitchRange(null, -90, null));
-            }
-            if (feature.geometry.type === 'MultiPoint' || feature.geometry.type === 'Point') {
-              // layer.load(feature, {
-              // })
-              layer.entities.add({
-                position: Cesium.Cartesian3.fromDegrees(
-                  feature.geometry.coordinates[0],
-                  feature.geometry.coordinates[1]
-                ),
-                point: {
-                  pixelSize: 20,
-                  color: new Cesium.Color(1, 0.55, 0, 0.6),
-                },
-                label: null,
+              GV.config.hilitedLayer.push(layerName);
+              break;
+            default:
+              layer.clearLayers();
+              layer.addData(feature.geometry);
+              const maxZoom = layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17;
+              GV.app.map.flyToBounds(layer.getBounds(), {
+                maxZoom: maxZoom,
               });
-              GV.app.map.viewer.zoomTo(layer, new Cesium.HeadingPitchRange(0, -90, 3000));
-            }
-          } else {
-            layer.clearLayers();
-            layer.addData(feature.geometry);
-            // console.log(layerConfig.maxZoom)
-            // const layerConfig = GV.config.getLayerConfig(layerName)
-            const maxZoom = layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17;
-            GV.app.map.flyToBounds(layer.getBounds(), {
-              maxZoom: maxZoom,
-            });
-            GV.app.map._container.style.cursor = 'default';
-            GV.config.hilitedLayer.push(layerName);
+              GV.config.hilitedLayer.push(layerName);
+              break;
           }
         }
       })
@@ -483,6 +484,14 @@ function openPopup(url, options) {
     target,
     `status=yes, toolbar=yes, menubar=no, width=${width}, height=${height}, resizable=yes, scrollbars=yes`
   );
+  var timer = setInterval(function() {
+    if (popup.closed) {
+      clearInterval(timer);
+      console.log('Chiusa Popup');
+      GV.app.map.clearLayer('InfoWmsHilite');
+    }
+  }, 1000);
+
   if (!popup) {
     notification(
       'Popup bloccata sul browser<br>Per visualizzare info è necessario abilitare popup',
@@ -495,12 +504,7 @@ function openPopup(url, options) {
 
 function addHiliteLayer(map) {
   switch (map.options.type) {
-    case 'cesium':
-      map.viewer.dataSources.add(new Cesium.GeoJsonDataSource('InfoWmsHilite'));
-      break;
     case 'openlayers':
-      console.log('OPENLAYERS!!!!!!!!', map);
-      // TODO
       const color = [255, 204, 0, 0.6];
       const stroke = new ol.style.Stroke({
         color: color,
@@ -546,10 +550,11 @@ function addHiliteLayer(map) {
         {
           name: 'InfoWmsHilite',
           type: 'JSON',
-          styleFunction: feature => {
+          style: feature => {
             return styles[feature.getGeometry().getType()];
           },
           visible: true,
+          zIndex: 1000,
         },
       ]);
       break;
@@ -582,28 +587,13 @@ function addHiliteLayer(map) {
   }
 }
 
-function handleResponseCesium(event) {
-  _features = [];
-  if (Cesium.defined(event.featuresPromise)) {
-    Cesium.when(event.featuresPromise, features => {
-      _requestCount = 0;
-      _numRequests = 1;
-      if (features.length > 0) {
-        const wmsFeatures = features.map(feature => {
-          return feature.data;
-        });
-        _handleResponse(wmsFeatures);
-      }
-    });
-  }
-}
-
 export default {
   id: 'info-wms-manager',
   active: false,
   firstActivation: true,
   addHiliteLayer: addHiliteLayer,
-  buildWMSOptions: buildWMSOptions,
+  // buildWMSOptions: buildWMSOptions,
+  getGetFeatureInfoUrl: getGetFeatureInfoUrl,
   features: _features,
   activate: function() {
     GV.log('GV.app.infoWmsManager.activate');
@@ -611,7 +601,6 @@ export default {
     this.active = true;
 
     // Aggiungo layer per evidenziazione
-    console.log(GV.app.map);
     if (GV.app.map) {
       addHiliteLayer(GV.app.map);
     } else {
@@ -620,14 +609,10 @@ export default {
       });
     }
 
-    GV.app.map.map.on('click', event => {
-      console.log(event);
+    // GV.eventBus.$on('map-click', event => {
+    GV.app.map.on('click', event => {
       if (this.active) {
-        if (event.mapType === 'cesium') {
-          handleResponseCesium(event);
-        } else {
-          _request(event);
-        }
+        _request(event);
       }
     });
 

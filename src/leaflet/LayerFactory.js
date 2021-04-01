@@ -458,7 +458,6 @@ var layerFactory = {
     let options = {
       subdomains: ['1', '2'],
       transparent: true,
-      // FORMAT_OPTIONS: 'antialias:text', // levo antialias perchè determina cambiamento stile in Geoserver 2.14
       layers: wmsParams.name,
       format: format,
       styles: wmsParams.styles || '',
@@ -543,7 +542,7 @@ var layerFactory = {
       subType,
       legend,
       onEachFeature,
-      onClick,
+      onFeatureSelect,
       filter,
     } = layerConfig;
     let clusterLayer = null;
@@ -692,8 +691,10 @@ var layerFactory = {
     layer.name = name;
     layer.geoJson = null;
 
-    if (onClick) {
-      layer.on('click', onClick);
+    if (onFeatureSelect) {
+      layer.on('click', e => {
+        onFeatureSelect(e.layer.feature, e.layer);
+      });
     }
 
     var parameters;

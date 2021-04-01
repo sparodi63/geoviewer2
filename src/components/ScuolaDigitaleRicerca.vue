@@ -5,7 +5,7 @@
       id="gv-scuoladigitale-ricerca-title"
       class="gv-scuoladigitale-ricerca-title gv-color-scheme"
     >
-      <b>RICERCHE</b>
+      <b>RICERCHE TEMATICHE</b>
       <button
         :class="toggleCollapseClass()"
         size="mini"
@@ -97,57 +97,6 @@
           >Annulla Selezione</el-button
         >
       </div>
-      <!--       <div class="gv-scuoladigitale-ricerca-result" v-show="showResult">
-        <div class="gv-scuoladigitale-ricerca-table">
-          <el-table
-            :data="listaProgetti"
-            empty-text="Nessuna risultato trovato"
-            style="font-size: 12px !important;"
-            class="gv-inverted-color-scheme"
-            height="300"
-            size="mini"
-            @current-change="selectRiga"
-          >
-            <el-table-column label="Anno" align="center" width="80">
-              <template slot-scope="scope">
-                <span>{{ scope.row.anno }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="Nome Istituto" align="center" width="100">
-              <template slot-scope="scope">
-                <span>{{ scope.row.nome_istituto }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="Ordine" align="center" width="120">
-              <template slot-scope="scope">
-                <span>{{ scope.row.ordine }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="Titolo progetto" align="center" width="120">
-              <template slot-scope="scope">
-                <span>{{ scope.row.titolo_progetto }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="Abstract" align="center" width="300">
-              <template slot-scope="scope">
-                <span>{{ scope.row.abstract }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column width="50">
-              <template slot-scope="scope">
-                <span title="link alla documentazione">
-                  <el-button
-                    size="mini"
-                    type="primary"
-                    @click="handleLink(scope.$index, scope.row.link_documentazione)"
-                    icon="el-icon-link"
-                  ></el-button>
-                </span>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -176,8 +125,6 @@ Vue.component('gv-scuoladigitale-ricerca-results', ScuolaDigitaleRicercaResults)
 import ScuolaDigitaleInfo from './ScuolaDigitaleInfo';
 Vue.component('gv-scuoladigitale-info', ScuolaDigitaleInfo);
 
-// Vue.component('gv-scuoladigitale-info', () => import('./ScuolaDigitaleInfo.vue'));
-
 export default {
   name: 'gv-scuoladigitale-ricerca',
   data() {
@@ -198,7 +145,6 @@ export default {
       listaProgetti: [],
       scuola: null,
       listaScuole: [],
-      // showResult: false,
       loading: false,
       show: false,
       showRicercaScuola: true,
@@ -207,18 +153,17 @@ export default {
     };
   },
   async mounted() {
-    let ordini = await axios.get('/geoservices/REST/scuola/ordini');
-    this.listaOrdini = await ordini.data.data;
+    const listaOrdini = await axios.get('/geoservices/REST/scuola/ordini');
+    this.listaOrdini = await listaOrdini.data.data;
+
     let parole = await axios.get('/geoservices/REST/scuola/parole');
     this.listaParole = await parole.data.data;
     GV.eventBus.$on('scuoladigitale-close-panel', e => {
-      // console.log(e.flagRicerca);
       if (e.flagRicerca) this.reset();
     });
   },
   methods: {
     changeTipo(value) {
-      // console.log(value);
       this.reset();
       if (value === 'scuola') {
         this.showRicercaScuola = true;
@@ -235,7 +180,6 @@ export default {
         return;
       }
       this.results = this.filterData(query);
-      // console.log(results);
     },
     filterData(text) {
       let results = [];
@@ -298,8 +242,6 @@ export default {
           this.listaScuole = data.scuole;
           this.showResults();
           this.filtraMappa(false);
-          // this.showResult = true;
-          // this.$el.style.width = '810px';
         }
       } else {
         this.showInfo();
@@ -320,16 +262,15 @@ export default {
       this.scuola = null;
       this.results = [];
       this.ordini = [];
+      // this.ordini = [0];
       this.parole = [];
       this.closeResultPanels();
     },
     closeResultPanels() {
       const resultDiv = document.getElementById('gv-scuoladigitale-ricerca-results');
       if (resultDiv) resultDiv.parentNode.removeChild(resultDiv);
-      // if (resultDiv) resultDiv.style.display = 'none';
       const infoDiv = document.getElementById('gv-scuoladigitale-info');
       if (infoDiv) infoDiv.parentNode.removeChild(infoDiv);
-      // if (infoDiv) infoDiv.style.display = 'none';
     },
     showInfo() {
       mountComponent({
@@ -385,16 +326,13 @@ export default {
     handleLink(index, link) {
       window.open(link);
     },
-    // selectRiga(row) {
-    //   console.log(row);
-    // },
     hidePanel: function(event) {
       if (this.show) {
         document.getElementById('gv-scuoladigitale-ricerca-body').style.display = 'block';
         document.getElementById('gv-scuoladigitale-ricerca').style.width = '480px';
       } else {
         document.getElementById('gv-scuoladigitale-ricerca-body').style.display = 'none';
-        document.getElementById('gv-scuoladigitale-ricerca').style.width = '110px';
+        document.getElementById('gv-scuoladigitale-ricerca').style.width = '190px';
       }
       this.show = !this.show;
     },

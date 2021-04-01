@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <meta charset="utf-8" />
+    <title>Sviluppo GV2/openLayers</title>
+
+    <!-- librerie cesium -->
+    <!-- <script src="/geoservices/apps/viewer/dist/cesium/Build/Cesium/Cesium.js"></script> -->
+
+    <!-- librerie ol -->
+    <!-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css"
+      type="text/css"
+    /> -->
+
+    <!-- librerie olcs -->
+    <!-- <script src="/geoservices/apps/viewer/dist/olcs/olcesium.js"></script>
+    <link rel="stylesheet" href="/geoservices/apps/viewer/dist/olcs/olcs.css" type="text/css" /> -->
+  </head>
+
+  <body>
+    <div id="gv-container"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

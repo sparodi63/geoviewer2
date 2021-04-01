@@ -110,6 +110,7 @@ const Map = L.Map.extend({
       GV.log('setView');
       this.setView(this.mapOptions.center, this.mapOptions.zoom);
     } else {
+      GV.log('setExtent');
       var extent = this.mapOptions.initialExtent || '830036,5402959,1123018,5597635';
       this.setExtent(extent);
     }
@@ -444,6 +445,20 @@ const Map = L.Map.extend({
       const ne = [coord[2], coord[3]];
       this.fitBounds([sw, ne]);
     }
+  },
+  getContainerPoint(latlng) {
+    const point = this.latLngToContainerPoint(latlng, this.getZoom());
+    return point;
+  },
+  getBbox() {
+    const bounds = GV.app.map.getBounds();
+    const sw = GV.app.map.options.crs.project(bounds.getSouthWest());
+    const ne = GV.app.map.options.crs.project(bounds.getNorthEast());
+    return `${sw.x},${sw.y},${ne.x},${ne.y}`;
+  },
+  clearLayer() {
+    const layer = this.getLayerByName('InfoWmsHilite');
+    layer.clearLayers();
   },
 });
 

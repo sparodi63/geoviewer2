@@ -41,6 +41,7 @@ module.exports = {
         loader: 'babel',
         include: projectRoot,
         exclude: /node_modules/,
+        // exclude: /node_modules\/(?![module1|module2])/
         query: { compact: false },
       },
       {

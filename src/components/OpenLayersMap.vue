@@ -36,7 +36,8 @@ export default {
     };
   },
   mounted() {
-    // if (GV.config.application.mapOptions.type === 'leaflet') {}
+    this.setMapSize();
+
     GV.app.map = olMap.initialize(GV.config.application.mapOptions);
     this.map = GV.app.map;
 
@@ -62,6 +63,15 @@ export default {
     GV.eventBus.$emit('gv-map-mounted', GV.app.map);
   },
   methods: {
+    setMapSize() {
+      const mapDiv = document.getElementById('gv-map');
+      if (GV.config.application.mapOptions && GV.config.application.mapOptions.width) {
+        mapDiv.style.width = GV.config.application.mapOptions.width + 'px';
+      }
+      if (GV.config.application.mapOptions && GV.config.application.mapOptions.height) {
+        mapDiv.style.height = GV.config.application.mapOptions.height + 'px';
+      }
+    },
     handleResize(event) {
       const height =
         document.documentElement.clientHeight -

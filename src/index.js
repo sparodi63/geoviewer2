@@ -1,12 +1,12 @@
 // -------------------------------------------------------------------------------- //
 // CSS
-require('style!../node_modules/leaflet/dist/leaflet.css');
 require('style!./assets/css/base.css');
 require('style!./assets/css/mapskin/css/mapskin.css');
-require('style!./assets/css/leaflet.draw.css');
-require('style!./assets/css/cesium-navigation.css');
+// require('style!./assets/css/cesium-navigation.css');
 import '@fortawesome/fontawesome-free/css/all.css';
-
+//
+require('style!../node_modules/leaflet/dist/leaflet.css');
+require('style!./assets/css/leaflet.draw.css');
 // -------------------------------------------------------------------------------- //
 // Shims/Polyfill
 require('./polyfill/findIndex');
@@ -15,6 +15,7 @@ require('./polyfill/startsWith');
 require('es6-promise').polyfill();
 // -------------------------------------------------------------------------------- //
 // Imports
+import fetchInject from 'fetch-inject';
 import draggable from './directives/draggable';
 import globals from './globals';
 import getUrlParam from './util/getUrlParam';
@@ -43,6 +44,37 @@ import { get } from 'jquery';
 // -- DEFINIZIONE GV
 window.GV = {
   async init(options) {
+    if (options.application.mapOptions.type === 'openlayers') {
+      const olScripts = [
+        '/geoservices/apps/viewer/dist/openlayers/ol.js',
+        '/geoservices/apps/viewer/dist/openlayers/ol.css',
+      ];
+      if (options.application.mapOptions.ol3d) {
+        window.CESIUM_BASE_URL = '/geoservices/apps/viewer/dist/cesium/Build/Cesium';
+        const cesiumScripts = ['/geoservices/apps/viewer/dist/cesium/Build/Cesium/Cesium.js'];
+        const olcsScripts = [
+          '/geoservices/apps/viewer/dist/olcs/olcesium.js',
+          '/geoservices/apps/viewer/dist/olcs/olcs.css',
+        ];
+        console.log('Prima di fetchInject - olcs');
+        await fetchInject(olcsScripts, fetchInject(olScripts, fetchInject(cesiumScripts)));
+        // await fetchInject(olScripts).then();
+      } else {
+        console.log('Prima di fetchInject - openlayers');
+        await fetchInject(olScripts);
+      }
+      console.log('Dopo fetchInject', ol);
+    } else {
+      const lScripts = [
+        '/geoservices/apps/viewer/dist/leaflet/leaflet.js',
+        '/geoservices/apps/viewer/dist/leaflet/leaflet.css',
+      ];
+      const ldScripts = [
+        '/geoservices/apps/viewer/dist/leaflet/leaflet-draw.js',
+        '/geoservices/apps/viewer/dist/leaflet/leaflet-draw.css',
+      ];
+    }
+
     const env = await getEnv();
     GV.globals.ENV = env;
 

@@ -9,7 +9,7 @@ import InfoWmsManager from '../controls/InfoWmsManager';
 import Coordinate from '../controls/Coordinate';
 
 const events = [
-  'click',
+  // 'click',
   'dblclick',
   'mousedown',
   'mouseup',
@@ -54,7 +54,8 @@ export default {
     };
   },
   mounted() {
-    // if (GV.config.application.mapOptions.type === 'leaflet') {}
+    this.setMapSize();
+
     GV.app.map = new Map();
     this.map = GV.app.map;
 
@@ -80,6 +81,15 @@ export default {
     GV.eventBus.$emit('gv-map-mounted', GV.app.map);
   },
   methods: {
+    setMapSize() {
+      const mapDiv = document.getElementById('gv-map');
+      if (GV.config.application.mapOptions && GV.config.application.mapOptions.width) {
+        mapDiv.style.width = GV.config.application.mapOptions.width + 'px';
+      }
+      if (GV.config.application.mapOptions && GV.config.application.mapOptions.height) {
+        mapDiv.style.height = GV.config.application.mapOptions.height + 'px';
+      }
+    },
     handleResize(event) {
       const height =
         document.documentElement.clientHeight -
@@ -88,7 +98,7 @@ export default {
     },
     registerMapEvents() {
       events.forEach(eventName => {
-        const exposedName = 'map-' + eventName;
+        const exposedName = eventName === 'preclick' ? 'map-click' : 'map-' + eventName;
         GV.app.map.on(eventName, ev => {
           ev.mapType = 'leaflet';
           GV.eventBus.$emit(exposedName, ev);

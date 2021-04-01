@@ -96,8 +96,14 @@ export default {
 
     GV.eventBus.$on('map-zoom', event => {
       var layers = this.getLayersConfig();
-      layers.forEach(layer => {
-        this.setLayerAttribute(layer.name, 'inRange', GV.app.map.layerInRange(layer));
+      layers.forEach(layerConfig => {
+        this.setLayerAttribute(layerConfig.name, 'inRange', GV.app.map.layerInRange(layerConfig));
+        // Controllo visibilità per livelli openlayers
+        if (GV.app.map.type === 'openlayers') {
+          const layer = GV.app.map.getLayerByName(layerConfig.name);
+          const visible = layerConfig.visible && layerConfig.inRange;
+          layer.setVisible(visible);
+        }
       });
     });
   },

@@ -107,6 +107,7 @@ export default {
       GV.config.addRlMap(this.baseMapConfigId.toString(), true, false);
     },
     subscribeMapEvent(event) {
+      // GV.eventBus.$on('map-click', event => {
       GV.app.map.on('click', event => {
         const wmsUrl = this.getWmsUrl(event);
         if (this.layerConfig && this.layerConfig.visible) {
@@ -145,17 +146,10 @@ export default {
         // console.error('Configurazione Layer non trovata');
         return;
       }
-      let url = GV.globals.DEFAULT_PROXY + this.layerConfig.infoOptions.infoQueryUrl;
       const infoFormat = 'application/json';
-      const infoBuffer = 0;
-      const wmsUrl = InfoWmsManager.buildWMSOptions(
-        url,
-        this.layerConfig.infoOptions.infoQueryLayers,
-        event.latlng,
-        infoFormat,
-        infoBuffer
-      );
-      return wmsUrl;
+      this.layerConfig.wmsParams.infoFormat = 'application/json';
+      this.layerConfig.infoBuffer = 0;
+      return InfoWmsManager.getGetFeatureInfoUrl(this.layerConfig, event);
     },
   },
   mounted: function() {

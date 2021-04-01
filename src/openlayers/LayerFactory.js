@@ -1,50 +1,8 @@
 import globals from '../globals';
-import interpolateString from '../util/interpolateString';
-import getParamString from '../util/getParamString';
 import getZoomFromScaleDenom from '../util/getZoomFromScaleDenom';
-import getGeoJSON from '../services/getGeoJSON';
 import getWmsError from '../services/getWmsError';
-import toGeoJSON from 'togeojson';
-import parseXML from '../util/parseXML';
 
 var esriLink = '<a href="https://www.esri.com/">Esri</a>';
-
-// Funzione di costruzione geoJson
-function buildGeoJson(data, esParams) {
-  'use strict';
-  let geoJson;
-  if (esParams) {
-    var geomField = esParams.geomField || 'location';
-    var features = data.hits.hits;
-    geoJson = {
-      type: 'FeatureCollection',
-      totalFeatures: data.hits.total,
-      features: [],
-      crs: {
-        type: 'name',
-        properties: {
-          name: 'urn:ogc:def:crs:EPSG::4326',
-        },
-      },
-    };
-    features.forEach(function(feature) {
-      var coords = feature._source[geomField];
-      geoJson.features.push({
-        type: 'Feature',
-        id: feature._id,
-        geometry: {
-          type: 'Point',
-          coordinates: coords,
-        },
-        geometry_name: 'GEOMETRY',
-        properties: feature._source,
-      });
-    });
-  } else {
-    geoJson = typeof data === 'string' ? JSON.parse(data) : data;
-  }
-  return geoJson;
-}
 
 var layerFactory = {
   //OK
@@ -428,7 +386,7 @@ var layerFactory = {
       transparent: true,
       format: wmsParams.format,
       styles: wmsParams.styles || '',
-      opacity: opacity,
+      // opacity: opacity,
       // minZoom: layerConfig.minZoom,
       // maxZoom: layerConfig.maxZoom,
       client: 'GV2',
@@ -511,6 +469,7 @@ var layerFactory = {
       });
     }
 
+    layer.setOpacity(opacity);
     layer.setZIndex(zIndex);
     layer.type = 'WMS';
     layer.config = layerConfig;
@@ -525,6 +484,8 @@ var layerFactory = {
       url,
       style,
       cluster,
+      zIndex,
+      onFeatureSelect,
       subType,
       legend,
       onClick,
@@ -535,10 +496,8 @@ var layerFactory = {
 
     let vectorSource = new ol.source.Vector({});
 
-    if (data) vectorSource.features = new ol.format.GeoJSON().readFeatures(data);
-
     if (url) {
-      vectorSource.format = new ol.format.GeoJSON();
+      vectorSource.format = new ol.format.GeoJSON({});
       vectorSource.url = url;
     }
 
@@ -547,12 +506,34 @@ var layerFactory = {
       style: style,
     });
 
-    layer.name = name;
+    if (data) {
+      const source = layer.getSource();
+      source.clear(true);
+      for (const feature of data.features) {
+        const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+          featureProjection: 'EPSG:3857',
+        });
+        source.addFeature(olFeature);
+      }
+    }
+
+    if (onFeatureSelect) {
+      GV.app.map.on('click', e => {
+        GV.app.map.map.forEachFeatureAtPixel(e.pixel, onFeatureSelect);
+        // TODO OL: condizione layerFilter sul layer
+      });
+    }
 
     if (cluster) {
     }
     // return cluster ? clusterLayer : layer;
 
+    if (zIndex) layer.setZIndex(zIndex);
+
+    // Gestione altitudeMode per ol3d
+    layer.set('altitudeMode', 'clampToGround');
+
+    layer.name = name;
     return layer;
   },
 };
