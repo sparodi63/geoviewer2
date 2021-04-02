@@ -3,9 +3,10 @@
 const printConfigUrl = GV.utils.getUrlParam('print_config_url');
 
 GV.eventBus.$on('map-full-loaded', e => {
-  console.log('map-full-loaded');
-  const pageLoadedDiv = document.getElementById('gv-map-loaded');
-  if (pageLoadedDiv) pageLoadedDiv.style.display = 'block';
+  console.log('MAPPA CARICATA: inserisco elemento gv-map-loaded');
+  const mapLoaded = document.createElement('div');
+  mapLoaded.id = 'gv-map-loaded';
+  document.getElementById('gv-container').appendChild(mapLoaded);
 });
 
 fetch(printConfigUrl)
@@ -22,6 +23,7 @@ fetch(printConfigUrl)
   });
 
 function loadConfig(data) {
+  console.log('PRINT CONFIG', data);
   let config = {
     debug: true,
     application: {
@@ -47,6 +49,6 @@ function loadConfig(data) {
       },
     ],
   };
-  console.log(config);
+  console.log('MAP CONFIG', config);
   GV.init(config);
 }

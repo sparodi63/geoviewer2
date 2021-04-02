@@ -53,7 +53,7 @@ GV.init({
   },
   baseLayers: [
     {
-      type: 'TS_MONOCHROME',
+      type: 'ESRI_GRAY',
       visible: true,
     },
     {
