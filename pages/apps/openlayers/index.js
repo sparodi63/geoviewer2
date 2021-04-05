@@ -10,6 +10,10 @@ GV.init({
       click: 'info',
       // restrictedExtent: '830036,5402959,1123018,5597635',
     },
+    callback: function() {
+      // console.log('CALLBACK!!!');
+      // GV.config.addMapConfig(mapConfig);
+    },
     layout: {
       legend: {
         options: {
@@ -44,6 +48,10 @@ GV.init({
           name: 'gv-geocoder',
           position: 'topleft',
         },
+        // { name: 'gv-info-button', active: true },
+        // { name: 'gv-measure-button' },
+        // { name: 'gv-layer-search-topo-button' },
+        // { name: 'gv-ricerca-particella-button' },
         {
           name: 'gv-scalebar',
           position: 'bottomleft',
@@ -52,12 +60,13 @@ GV.init({
     },
   },
   baseLayers: [
+    // {
+    //   type: 'MBS_STREETS',
+    //   visible: true,
+    // },
     {
       type: 'ESRI_IMAGERY',
       visible: true,
-    },
-    {
-      type: 'TS_MONOCHROME',
     },
     {
       type: 'RL_ORTOFOTO_2016',
@@ -86,3 +95,19 @@ GV.init({
   ],
   maps: [],
 });
+
+const mapConfig = {
+  id: 0,
+  name: 'streets',
+  layers: [
+    {
+      type: 'MBS',
+      url: 'https://geoservizi.regione.liguria.it/tileserver-gl/styles/streets/style.json',
+      visible: true,
+      legend: {
+        label: 'Streets',
+        icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
+      },
+    },
+  ],
+};

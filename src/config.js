@@ -127,7 +127,6 @@ export default {
       layer.name = layer.type;
       layer.label = globals.BASE_LAYERS[layer.type].label;
       layer.icon = globals.BASE_LAYERS[layer.type].icon;
-      layer.printType = globals.BASE_LAYERS[layer.type].printType;
       this.baseLayers.push(layer);
       if (layer.visible) this.activeBaseLayer = layer.name;
     });
@@ -158,6 +157,7 @@ export default {
 
     layer.minScale = layer.minScale === 0 ? 591657550 : layer.minScale;
     layer.inRange = GV.app && GV.app.map ? GV.app.map.layerInRange(layer) : true;
+    if (typeof layer.opacity === 'undefined') layer.opacity = 1;
     layer.opacityBase100 = layer.opacity * 100;
     layer.zIndex = this._lastZIndex++;
     this.setLayerType(layer);

@@ -1,6 +1,6 @@
 import globals from '../globals';
 import * as LayerFactory from './LayerFactory';
-import L from 'leaflet';
+// import L from 'leaflet';
 import getWFSFeature from '../services/getWFSFeature';
 import buildCqlFilter from '../util/buildCqlFilter';
 import InfoWmsManager from '../controls/InfoWmsManager';
@@ -101,6 +101,7 @@ const Map = L.Map.extend({
 
   setExtent(extent) {
     this.initialExtent = this.projToGeoBounds(extent);
+    // console.log('SET EXTENT', this.initialExtent);
     this.fitBounds(this.initialExtent);
   },
 

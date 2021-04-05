@@ -75,117 +75,98 @@ export default {
     BLANK: {
       label: 'Sfondo Bianco',
       icon: '/geoservices/apps/viewer/static/img/legend/bianco.gif',
-      printType: 'no_base',
     },
     RL_ORTOFOTO_2013: {
       label: 'AGEA: Ortofoto 2013',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_ortofoto_2013',
     },
     RL_ORTOFOTO_2010: {
       label: 'AGEA: Ortofoto 2010',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_ortofoto_2010',
     },
     RL_ORTOFOTO_2007: {
       label: 'AGEA: Ortofoto 2007',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_ortofoto_2007',
     },
     RL_ORTOFOTO_2000: {
       label: 'Ortofoto IT 2000',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_ortofoto_2000',
     },
     RL_ORTOFOTO_2016: {
       label: 'AGEA: Ortofoto 2016',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_ortofoto_2016',
     },
     RL_CARTE_BASE: {
       label: 'Carte Regionali 2007 -2013',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_carte_base',
     },
     RL_CARTE_BASE_NC25: {
       label: 'Carta Regionale 1:25000 - DBT NC25',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_carte_base',
     },
     RL_CARTE_BASE_GS: {
       label: 'Carte Regionali 2007 -2013',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_carte_base',
     },
     TS_STREETS: {
       label: 'Stradario',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_carte_base',
     },
+    // MBS_STREETS: {
+    //   label: 'Stradario',
+    //   icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+    // },
     TS_DARK_MATTER: {
       label: 'Dark',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_carte_base',
     },
     TS_POSITRON: {
       label: 'Positron',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_carte_base',
     },
     TS_MONOCHROME: {
       label: 'Monochrome',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_carte_base',
     },
     TS_TONER: {
       label: 'Toner',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-      printType: 'rl_carte_base',
     },
     OSM: {
       label: 'OpenStreetMap',
       icon: '/geoservices/apps/viewer/static/img/legend/openstreetmap.png',
-      printType: 'OSM',
     },
     ESRI_IMAGERY: {
       label: 'ESRI Imagery',
       icon: '/geoservices/apps/viewer/static/img/legend/esri.gif',
-      printType: 'ESRI_IMAGERY',
     },
     ESRI_GRAY: {
       label: 'ESRI Gray',
       icon: '/geoservices/apps/viewer/static/img/legend/esri.gif',
-      printType: 'ESRI_GRAY',
     },
     ESRI_DARKGRAY: {
       label: 'ESRI Dark Gray',
       icon: '/geoservices/apps/viewer/static/img/legend/esri.gif',
-      printType: 'ESRI_GRAY',
     },
     ESRI_STREETS: {
       label: 'ESRI Streets',
       icon: '/geoservices/apps/viewer/static/img/legend/esri.gif',
-      printType: 'ESRI_STREETS',
     },
     MAPBOX_STREETS: {
       label: 'Mapbox Streets',
       icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
-      printType: 'MAPBOX_STREETS',
     },
     MAPBOX_MONOCHROME: {
       label: 'Mapbox Monochrome',
       icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
-      printType: 'MAPBOX_MONOCHROME',
     },
     MAPBOX_VIABILITA: {
       label: 'Carta della Viabilità',
       icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
-      printType: 'MAPBOX_STREETS',
     },
     MAPBOX_VIABILITA_SATELLITARE: {
       label: 'Carta satellitare della Viabilità',
       icon: '/geoservices/apps/viewer/static/img/legend/mapbox.png',
-      printType: 'MAPBOX_STREETS',
     },
     MAPBOX_OUTDOOR: {
       label: 'Mapbox Outdoor',

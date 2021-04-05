@@ -1,15 +1,16 @@
 import globals from '../globals';
 import getZoomFromScaleDenom from '../util/getZoomFromScaleDenom';
 import getWmsError from '../services/getWmsError';
+import createElement from '../util/createElement';
+// import olms from 'ol-mapbox-style';
+// require('./olms.js');
 
-var esriLink = '<a href="https://www.esri.com/">Esri</a>';
+const esriLink = '<a href="https://www.esri.com/">Esri</a>';
 
-var layerFactory = {
-  //OK
+const layerFactory = {
   BLANK() {
     return null;
   },
-  //OK
   OSM(layerConfig) {
     layerConfig.legend = {
       label: 'OpenStreetMap',
@@ -21,7 +22,6 @@ var layerFactory = {
     layer.name = layerConfig.name;
     return layer;
   },
-  // OK
   TILESERVER_GL(style) {
     const layer = new ol.layer.Tile({
       source: new ol.source.XYZ({
@@ -60,7 +60,6 @@ var layerFactory = {
     layer.name = layerConfig.name;
     return layer;
   },
-  // OK
   ESRI_IMAGERY(layerConfig) {
     const layer = new ol.layer.Tile({
       source: new ol.source.XYZ({
@@ -271,7 +270,6 @@ var layerFactory = {
       attribution: 'Regione Liguria',
     });
   },
-  // OK
   RL_CARTE_BASE() {
     return this.WMS({
       visible: false,
@@ -286,7 +284,6 @@ var layerFactory = {
       attribution: 'Regione Liguria',
     });
   },
-  // OK
   RL_ORTOFOTO_2016() {
     const idMap = 1828;
     const idLayer = 'L5802';
@@ -371,7 +368,6 @@ var layerFactory = {
       zIndex: 0,
     });
   },
-  // OK
   WMS(layerConfig) {
     let { name, cacheMinZoomLevel, minScale, maxScale, wmsParams, zIndex, idMap } = layerConfig;
     GV.log('layerFactory - Creazione Layer WMS: ' + name);
@@ -476,8 +472,10 @@ var layerFactory = {
     layer.name = name;
     return layer;
   },
-  // TODO
   JSON(layerConfig) {
+    return this.Vector(layerConfig);
+  },
+  Vector(layerConfig) {
     let {
       name,
       data,
@@ -487,6 +485,7 @@ var layerFactory = {
       zIndex,
       onFeatureSelect,
       subType,
+      basePopup,
       legend,
       onClick,
       onMouseOver,
@@ -494,12 +493,20 @@ var layerFactory = {
       filter,
     } = layerConfig;
 
-    let vectorSource = new ol.source.Vector({});
-
-    if (url) {
-      vectorSource.format = new ol.format.GeoJSON({});
-      vectorSource.url = url;
+    let format;
+    switch (subType) {
+      case 'KML':
+        format = new ol.format.KML({});
+        break;
+      case 'GPX':
+        format = new ol.format.GPX({});
+        break;
+      default:
+        format = new ol.format.GeoJSON({});
+        break;
     }
+
+    let vectorSource = new ol.source.Vector({ format: format, url: url });
 
     let layer = new ol.layer.Vector({
       source: vectorSource,
@@ -519,15 +526,60 @@ var layerFactory = {
 
     if (onFeatureSelect) {
       GV.app.map.on('click', e => {
-        GV.app.map.map.forEachFeatureAtPixel(e.pixel, onFeatureSelect);
-        // TODO OL: condizione layerFilter sul layer
+        GV.app.map.map.forEachFeatureAtPixel(evt.pixel, onFeatureSelect, {
+          layerFilter: fLayer => {
+            return fLayer === layer;
+          },
+        });
+      });
+    }
+
+    if (basePopup) {
+      createElement({ elId: 'ol-popup', containerId: 'body' });
+      createElement({ elId: 'ol-popup-closer', containerId: 'ol-popup' });
+      createElement({ elId: 'ol-popup-content', containerId: 'ol-popup' });
+
+      const overlay = new ol.Overlay({
+        element: document.getElementById('ol-popup'),
+        autoPan: true,
+        autoPanAnimation: {
+          duration: 250,
+        },
+      });
+      GV.app.map.addOverlay(overlay);
+
+      GV.app.map.on('pointermove', e => {
+        const pixel = GV.app.map.getEventPixel(e.originalEvent);
+        const hit = GV.app.map.map.hasFeatureAtPixel(pixel);
+        document.getElementById('gv-map').style.cursor = hit ? 'pointer' : '';
+      });
+
+      GV.app.map.on('click', evt => {
+        const pixel = evt.pixel;
+        GV.app.map.forEachFeatureAtPixel(pixel, feature => {
+          const properties = feature.getProperties();
+          const closer = document.getElementById('ol-popup-closer');
+          closer.onclick = () => {
+            overlay.setPosition(undefined);
+            closer.blur();
+            return false;
+          };
+          const content = document.getElementById('ol-popup-content');
+          content.innerHTML = `<p><b>LIVELLO</b> ${legend.label}</p><br>`;
+          Object.keys(properties).forEach(key => {
+            const value = properties[key];
+            if (typeof value === 'string' || value instanceof String || typeof value === 'number') {
+              content.innerHTML += `<b>${key}:</b> ${value} <br>`;
+            }
+          });
+          overlay.setPosition(evt.coordinate);
+        });
       });
     }
 
     if (cluster) {
     }
     // return cluster ? clusterLayer : layer;
-
     if (zIndex) layer.setZIndex(zIndex);
 
     // Gestione altitudeMode per ol3d
@@ -535,6 +587,26 @@ var layerFactory = {
 
     layer.name = name;
     return layer;
+  },
+  MBS(layerConfig, map) {
+    // console.log(map);
+    console.log(layerConfig);
+    olms(map, layerConfig.url).then(map => {
+      // let layers = map.getLayers();
+      // layers.getArray().forEach(layer => {
+      //   if (layer.get('mapbox-source')) {
+      //     console.log('TileServerGL', layer);
+      //     layer.config = layerConfig;
+      //     layer.name = layerConfig.name;
+      //   }
+      // });
+    });
+  },
+  MBS_STREETS(layerConfig, map) {
+    const style = 'streets';
+    const url = `https://geoservizi.regione.liguria.it/tileserver-gl/styles/${style}/style.json`;
+    this.MBS(url, map.map);
+    return null;
   },
 };
 
@@ -550,4 +622,5 @@ function create(layerConfig, map) {
   }
 }
 
+//# sourceMappingURL=olms.js.map
 export { create };

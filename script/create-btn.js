@@ -11,7 +11,7 @@
 
 require('shelljs/global');
 const fs = require('fs');
-const path = require('path');
+// const path = require('path');
 const byline = require('byline');
 
 const name = process.argv[2];

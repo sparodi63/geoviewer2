@@ -227,8 +227,7 @@
 <script>
 import Vue from 'vue';
 
-require('leaflet-draw');
-require('style!../../node_modules/leaflet-draw/dist/leaflet.draw.css');
+import RectDraw from '../mixins/RectDraw.js';
 
 import mountComponent from '../util/mountComponent';
 import globals from '../globals';
@@ -333,13 +332,7 @@ export default {
       return this.layer || this.layersWithSameStructure;
     },
     showSubmitButton() {
-      return (
-        // (this.layer && this.column && this.valore) ||
-        // (this.map && this.bbox) ||
-        // (this.map && this.comune) ||
-        // (this.map && this.layersWithSameStructure & this.column && this.valore)
-        this.layer || (this.map && this.layersWithSameStructure)
-      );
+      return this.layer || (this.map && this.layersWithSameStructure);
     },
   },
   watch: {
@@ -351,10 +344,10 @@ export default {
       this.showComuniReset = this.comune ? true : false;
     },
   },
+  mixins: [RectDraw],
   mounted() {
-    this.addLayerRettangolo();
+    // this.rectAddLayer();
     this.addLayerComuni();
-    //this.map=GV.config.maps[0].id
   },
   methods: {
     handlePageChange(page) {
@@ -373,15 +366,6 @@ export default {
       }
     },
     onSelectResultsRow(row) {
-      // console.log(row);
-      // console.log(this.dataTable.indexOf(row));
-      // const index = this.dataTable.indexOf(row);
-      // console.log(this.dataTable);
-      // console.log(this.idList);
-      // console.log(index);
-      // console.log(this.idList[index]);
-      // const value = this.idList[index];
-
       if (!row) return;
 
       InfoWmsManager.addHiliteLayer(GV.app.map);
@@ -406,12 +390,25 @@ export default {
       getWFSFeature(wfsParams, cqlFilter)
         .then(features => {
           if (features && features[0] && features[0].geometry) {
+            const feature = features[0];
             const layer = GV.app.map.getLayerByName('InfoWmsHilite');
-            layer.clearLayers();
-            layer.addData(features[0].geometry);
-            GV.app.map.flyToBounds(layer.getBounds(), { maxZoom: 15 });
-            // GV.app.map._container.style.cursor = 'default';
-            GV.config.hilitedLayer.push(layerName);
+            if (GV.app.map.type === 'openlayers') {
+              const source = layer.getSource();
+              source.clear(true);
+              const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+                featureProjection: 'EPSG:3857',
+              });
+              source.addFeature(olFeature);
+              GV.app.map.getView().fit(olFeature.getGeometry().getExtent(), {
+                maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
+              });
+              GV.config.hilitedLayer.push(layerName);
+            } else {
+              layer.clearLayers();
+              layer.addData(feature.geometry);
+              GV.app.map.flyToBounds(layer.getBounds(), { maxZoom: 15 });
+              GV.config.hilitedLayer.push(layerName);
+            }
           }
         })
         .catch(error => {
@@ -545,6 +542,7 @@ export default {
         value,
         operator,
         this.bbox,
+        this.bboxSRS,
         topoFeature,
         topoQuery,
         version
@@ -582,24 +580,50 @@ export default {
           .parentNode.removeChild(document.getElementById('gv-layer-search-topo'));
       }
     },
-    addLayerRettangolo() {
-      this.drawnRectangle = new L.FeatureGroup();
-      L.drawLocal.draw.handlers.rectangle.tooltip.start =
-        'Clicca e trascina per disegnare un rettangolo';
-      L.drawLocal.draw.handlers.simpleshape.tooltip.end =
-        'Rilascia il mouse per terminare il disegno';
-      GV.app.map.addLayer(this.drawnRectangle);
+    rectOnDraw(event) {
+      if (GV.app.map.type === 'openlayers') {
+        this.rectOnDrawOL(event);
+      } else {
+        this.rectOnDrawLL(event);
+      }
     },
-    rectReset() {
-      if (this.drawnRectangle) {
-        this.drawnRectangle.clearLayers();
-      }
-      if (GV.app.map.drawRectangle) {
-        GV.config.activeControl.deactivate();
-        GV.app.map.drawRectangle.disable();
-        GV.app.map.drawRectangle.enable();
-      }
-      this.bbox = null;
+    rectOnDrawOL() {
+      this.drawnRectangle.getSource().addFeature(
+        new ol.Feature({
+          geometry: this.dragBoxInteraction.getGeometry(),
+          id: 'rect',
+        })
+      );
+      const coords = this.drawnRectangle
+        .getSource()
+        .getFeatures()[0]
+        .getGeometry()
+        .getCoordinates();
+      // const trasfCoords = coords.map(coord => {
+      //   return ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
+      // });
+      this.bbox = coords.map(coord => {
+        return coord.join(',');
+      })[0];
+      console.log(this.bbox);
+      this.bboxSRS = '3857';
+      setTimeout(function() {
+        GV.config.activeControl.activate();
+      }, 10);
+    },
+    rectOnDrawLL(event) {
+      this.drawnRectangle.addLayer(event.layer);
+      const xMin = event.layer.getBounds()._southWest.lng;
+      const yMin = event.layer.getBounds()._southWest.lat;
+      const xMax = event.layer.getBounds()._northEast.lng;
+      const yMax = event.layer.getBounds()._northEast.lat;
+      this.bbox = `${xMin},${yMin},${xMax},${yMin},${xMax},${yMax},${xMin},${yMax},${xMin},${yMin}`;
+      this.bboxSRS = '4326';
+      this.showRectReset = true;
+      // Riattivo controllo base
+      setTimeout(function() {
+        GV.config.activeControl.activate();
+      }, 10);
     },
     comuniReset() {
       this.comune = null;
@@ -668,33 +692,9 @@ export default {
       }
 
       if (codice === 1) {
-        notification('Selezionare un rettangolo sulla mappa');
-        // console.log(this.drawnRectangle)
-        if (!GV.app.map.drawRectangle) {
-          GV.app.map.addHandler('drawRectangle', L.Draw.Rectangle);
-        }
-        GV.app.map.drawRectangle.enable();
-        GV.app.map.on(L.Draw.Event.CREATED, event => {
-          this.drawnRectangle.addLayer(event.layer);
-          const xMin = event.layer.getBounds()._southWest.lng;
-          const yMin = event.layer.getBounds()._southWest.lat;
-          const xMax = event.layer.getBounds()._northEast.lng;
-          const yMax = event.layer.getBounds()._northEast.lat;
-          this.bbox = `${xMin},${yMin},${xMax},${yMin},${xMax},${yMax},${xMin},${yMax},${xMin},${yMin}`;
-          this.bboxSRS = '4326';
-          this.showRectReset = true;
-          // Riattivo controllo base
-          setTimeout(function() {
-            GV.config.activeControl.activate();
-          }, 10);
-        });
+        this.rectEnable();
       } else {
-        if (GV.app.map.drawRectangle) {
-          GV.app.map.drawRectangle.disable();
-        }
-        if (this.drawnRectangle) {
-          this.drawnRectangle.clearLayers();
-        }
+        this.rectDisable();
         this.showRectReset = false;
       }
 

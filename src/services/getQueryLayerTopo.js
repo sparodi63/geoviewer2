@@ -10,6 +10,7 @@ export default function(
   value,
   operator,
   bbox,
+  bboxSRS,
   topoFeature,
   topoQuery,
   version
@@ -21,6 +22,7 @@ export default function(
   if (value) url += `&value=${value}`;
   if (operator) url += `&operator=${operator}`;
   if (bbox) url += `&bbox=${bbox}`;
+  if (bboxSRS) url += `&bboxSRS=${bboxSRS}`;
   if (topoFeature && topoQuery) url += `&topo_feature=${topoFeature}&topo_query=${topoQuery}`;
 
   let params = {};

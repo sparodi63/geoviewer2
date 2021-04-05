@@ -137,10 +137,10 @@ export default {
     GV.log('gv-legend-layers: mounted');
   },
   methods: {
-    iconUrl: function(layer) {
+    iconUrl(layer) {
       return layer.legend.icon;
     },
-    getClass: function(layer) {
+    getClass(layer) {
       return layer.inRange
         ? 'gv-list-legend-layer-item'
         : 'gv-list-legend-layer-item gv-list-legend-layer-disabled-item';
@@ -150,16 +150,12 @@ export default {
         ? 'gv-list-legend-layer-item'
         : 'gv-list-legend-layer-item gv-list-legend-layer-disabled-item';
     },
-    setLayerVisible: function(layer) {
+    setLayerVisible(layer) {
       GV.eventBus.$emit('set-layer-visible', {
         layer: layer,
         checked: layer.visible,
       });
-      const opacity = layer['opacityBase100'] / 100;
-      GV.eventBus.$emit('set-layer-transparency', {
-        layerName: layer.name,
-        opacity: opacity,
-      });
+      this.setLayerTransparency(layer);
     },
     setLayerTransparency(layer) {
       const opacity = layer['opacityBase100'] / 100;
@@ -178,7 +174,7 @@ export default {
         }),
       });
     },
-    showLegendPanel: function(layer) {
+    showLegendPanel(layer) {
       if (layer.inRange && (layer.multiClasse || layer.flagRemote || layer.legend.popUpFlag)) {
         var url = null,
           // html = null,

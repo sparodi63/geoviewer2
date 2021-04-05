@@ -7,6 +7,7 @@ function onFeatureSelect(feature) {
       id: feature.properties.COD_MECC,
     },
   });
+  GV.app.map.setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 14);
 }
 
 GV.globals.SCUOLA_DIGITALE_LAYERS = [

@@ -5,9 +5,9 @@
 <script>
 import Vue from 'vue';
 
-import L from 'leaflet';
-import '../assets/css/leaflet-control-credits.css';
-import '../leaflet/leaflet-control-credits.js';
+// import L from 'leaflet';
+// import '../assets/css/leaflet-control-credits.css';
+// import '../leaflet/leaflet-control-credits.js';
 
 export default {
   name: 'image-viewer',

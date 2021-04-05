@@ -1,3 +1,5 @@
+// http://ld-b3h7pf2-m.ld.ge/geoservices/apps/viewer/pages/apps/olcs/?id=5
+
 var id = GV.utils.getUrlParam('id');
 
 GV.init({
@@ -47,8 +49,8 @@ GV.init({
           position: 'topleft',
         },
         {
-          name: 'gv-scalebar',
-          position: 'bottomleft',
+          name: 'gv-switch3D-button',
+          position: 'topleft',
         },
       ],
     },

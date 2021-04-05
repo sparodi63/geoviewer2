@@ -115,8 +115,8 @@
 </template>
 
 <script>
-require('../leaflet/leaflet.draw-src.js')
-require("../leaflet/leaflet.drawlocal.js");
+// require('../leaflet/leaflet.draw-src.js')
+// require("../leaflet/leaflet.drawlocal.js");
 
 import Vue from 'vue'
 import getCoordTransform from '../services/getCoordTransform'

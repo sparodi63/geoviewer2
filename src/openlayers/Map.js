@@ -93,6 +93,12 @@ const olMap = {
       this.changeBaseLayer(event.layer);
     });
   },
+  addInteraction(intercation) {
+    this.map.addInteraction(intercation);
+  },
+  removeInteraction(interaction) {
+    this.map.removeInteraction(interaction);
+  },
   getView() {
     return this.map.getView();
   },
@@ -141,6 +147,7 @@ const olMap = {
   },
   setLayerVisible(layerConfig, visible) {
     const layer = this.getLayerByName(layerConfig.name);
+    console.log('setLayerVisible', layer.getOpacity());
     layer.setVisible(visible);
     layerConfig.visible = visible;
   },
@@ -210,30 +217,34 @@ const olMap = {
   removeLayer(layer) {
     this.map.removeLayer(layer);
   },
+  addOverlay(overlay) {
+    this.map.addOverlay(overlay);
+  },
+  getTarget() {
+    return this.map.getTarget();
+  },
+  getEventPixel(pixel) {
+    return this.map.getEventPixel(pixel);
+  },
   loadLayers(layers) {
     layers.forEach(layerConfig => {
       if (this.getLayerByName(layerConfig.name)) {
         return;
       }
-      console.log('loadLayers', layerConfig, this.getLayerByName(layerConfig.name));
       var layer = LayerFactory.create(layerConfig, this);
       if (layer) {
         this.map.addLayer(layer);
         this.setLayerVisible(layerConfig, layerConfig.visible);
-        // TODO
-        // layer.on('ready', () => {
-        //   if (layerConfig.zoomToLayerExtent) {
-        //     let bounds = new L.latLngBounds();
-        //     layer.eachLayer(function(_layer) {
-        //       if (_layer.getBounds) {
-        //         bounds.extend(_layer.getBounds());
-        //       } else {
-        //         bounds.extend(new L.latLngBounds(_layer._latlng, _layer._latlng));
-        //       }
-        //     });
-        //     if (bounds) this.fitBounds(bounds);
-        //   }
-        // });
+        if (layerConfig.zoomToLayerExtent) {
+          const vectorSource = layer.getSource();
+          vectorSource.once('change', () => {
+            if (vectorSource.getState() === 'ready') {
+              if (layer.getSource().getFeatures().length > 0) {
+                this.map.getView().fit(vectorSource.getExtent(), this.map.getSize());
+              }
+            }
+          });
+        }
       }
     });
   },

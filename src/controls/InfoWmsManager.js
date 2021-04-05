@@ -425,28 +425,25 @@ function hiliteFeature(feature) {
         const layer = GV.app.map.getLayerByName('InfoWmsHilite');
         const feature = layer && features ? features[0] : null;
         if (feature && feature.geometry) {
-          switch (GV.app.map.type) {
-            case 'openlayers':
-              const source = layer.getSource();
-              source.clear(true);
-              const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-                featureProjection: 'EPSG:3857',
-              });
-              source.addFeature(olFeature);
-              GV.app.map.getView().fit(olFeature.getGeometry().getExtent(), {
-                maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
-              });
-              GV.config.hilitedLayer.push(layerName);
-              break;
-            default:
-              layer.clearLayers();
-              layer.addData(feature.geometry);
-              const maxZoom = layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17;
-              GV.app.map.flyToBounds(layer.getBounds(), {
-                maxZoom: maxZoom,
-              });
-              GV.config.hilitedLayer.push(layerName);
-              break;
+          if (GV.app.map.type === 'openlayers') {
+            const source = layer.getSource();
+            source.clear(true);
+            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+              featureProjection: 'EPSG:3857',
+            });
+            source.addFeature(olFeature);
+            GV.app.map.getView().fit(olFeature.getGeometry().getExtent(), {
+              maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
+            });
+            GV.config.hilitedLayer.push(layerName);
+          } else {
+            layer.clearLayers();
+            layer.addData(feature.geometry);
+            const maxZoom = layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17;
+            GV.app.map.flyToBounds(layer.getBounds(), {
+              maxZoom: maxZoom,
+            });
+            GV.config.hilitedLayer.push(layerName);
           }
         }
       })

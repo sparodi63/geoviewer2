@@ -1,7 +1,6 @@
-import L from 'leaflet';
-require('./MarkerCluster.js');
-require('./NonTiledLayer.js');
-require('./vectorGrid.js');
+// import L from 'leaflet';
+// require('./MarkerCluster.js');
+// require('./NonTiledLayer.js');
 
 import globals from '../globals';
 import interpolateString from '../util/interpolateString';
@@ -537,7 +536,7 @@ var layerFactory = {
       tooltip,
       popup, // string: template html, viene fatta interpolazione
       basePopup, // boolean: visualizza popup base
-      customPopup, // function: funzione che prende in inpup le props della feature e ritorna una stringa
+      customPopup, // function: funzione che prende in input le props della feature e ritorna una stringa
       cluster,
       subType,
       legend,
@@ -791,27 +790,6 @@ var layerFactory = {
     }
     // console.log(clusterLayer);
     return cluster ? clusterLayer : layer;
-  },
-
-  PBF(layerConfig) {
-    if (!layerConfig.pbfParams) {
-      console.error('Parametri per layer di tipo PBF non impostati');
-    }
-    var url = layerConfig.pbfParams.url; //"https://{s}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token={token}";
-
-    var options = {
-      rendererFactory: L.canvas.tile,
-      attribution:
-        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://www.mapbox.com/about/maps/">MapBox</a>',
-      vectorTileLayerStyles: layerConfig.pbfParams.style,
-      token: layerConfig.pbfParams.token, //'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g'
-      interactive: true,
-    };
-
-    var pbfLayer = L.vectorGrid.protobuf(url, options);
-    pbfLayer.name = layerConfig.name;
-
-    return pbfLayer;
   },
 };
 

@@ -179,6 +179,11 @@ tools.push({
 import RqaLivelli from './components/RqaLivelli.vue';
 Vue.component('rqa-livelli', RqaLivelli);
 
+// Bottone Switch3D
+tools.push({ name: 'gv-switch3D-button' });
+import Switch3D from './components/buttons/Switch3D.vue';
+Vue.component('gv-switch3D-button', Switch3D);
+
 // -------------------------------------------------------------------------------- //
 
 export default tools;
