@@ -5,6 +5,7 @@ import buildCqlFilter from '../util/buildCqlFilter';
 import InfoWmsManager from '../controls/InfoWmsManager';
 import getCoordTransform from '../services/getCoordTransform';
 import getCoordTransformBbox from '../services/getCoordTransformBbox';
+import createElement from '../util/createElement';
 
 import notification from '../util/notification';
 import { Loading } from 'element-ui';
@@ -25,8 +26,8 @@ const olMap = {
   },
   initialize() {
     Object.assign(this.options, GV.config.application.mapOptions);
+    // console.log('MAP OPTIONS', this.options);
 
-    console.log('MAP OPTIONS', this.options);
     // Gestione restricted extent
     const viewOptions = {};
     if (this.options.restrictedExtent) {
@@ -40,6 +41,8 @@ const olMap = {
       controls: [],
       view: new ol.View(viewOptions),
     });
+
+    this.createPopupDiv();
 
     this.setInitialExtent();
 
@@ -225,6 +228,11 @@ const olMap = {
   },
   getEventPixel(pixel) {
     return this.map.getEventPixel(pixel);
+  },
+  createPopupDiv() {
+    createElement({ elId: 'ol-popup', containerId: 'body' });
+    createElement({ elId: 'ol-popup-closer', containerId: 'ol-popup' });
+    createElement({ elId: 'ol-popup-content', containerId: 'ol-popup' });
   },
   loadLayers(layers) {
     layers.forEach(layerConfig => {

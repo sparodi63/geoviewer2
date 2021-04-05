@@ -1,9 +1,6 @@
 import globals from '../globals';
 import getZoomFromScaleDenom from '../util/getZoomFromScaleDenom';
 import getWmsError from '../services/getWmsError';
-import createElement from '../util/createElement';
-// import olms from 'ol-mapbox-style';
-// require('./olms.js');
 
 const esriLink = '<a href="https://www.esri.com/">Esri</a>';
 
@@ -535,10 +532,6 @@ const layerFactory = {
     }
 
     if (basePopup) {
-      createElement({ elId: 'ol-popup', containerId: 'body' });
-      createElement({ elId: 'ol-popup-closer', containerId: 'ol-popup' });
-      createElement({ elId: 'ol-popup-content', containerId: 'ol-popup' });
-
       const overlay = new ol.Overlay({
         element: document.getElementById('ol-popup'),
         autoPan: true,
@@ -548,12 +541,10 @@ const layerFactory = {
       });
       GV.app.map.addOverlay(overlay);
 
-      GV.app.map.on('pointermove', e => {
-        const pixel = GV.app.map.getEventPixel(e.originalEvent);
-        const hit = GV.app.map.map.hasFeatureAtPixel(pixel);
+      GV.app.map.on('pointermove', evt => {
+        const hit = GV.app.map.map.hasFeatureAtPixel(GV.app.map.getEventPixel(evt.originalEvent));
         document.getElementById('gv-map').style.cursor = hit ? 'pointer' : '';
       });
-
       GV.app.map.on('click', evt => {
         const pixel = evt.pixel;
         GV.app.map.forEachFeatureAtPixel(pixel, feature => {
@@ -577,6 +568,7 @@ const layerFactory = {
       });
     }
 
+    //TODO OL
     if (cluster) {
     }
     // return cluster ? clusterLayer : layer;
