@@ -624,8 +624,8 @@
   white-space: nowrap;
   cursor: pointer;
   background: #EEEEEE;
-  border: 1px solid #DCDFE6;
-  border-color: #DCDFE6;
+  border: 1px solid #AAAAAA;
+  border-color: #AAAAAA;
   color: #606266;
   -webkit-appearance: none;
   text-align: center;
@@ -1364,7 +1364,7 @@
       left: 0;
       background: rgba(255, 255, 255, 0.5); }
     .el-dropdown .el-dropdown__caret-button.el-button--default::before {
-      background: rgba(220, 223, 230, 0.5); }
+      background: rgba(170, 170, 170, 0.5); }
     .el-dropdown .el-dropdown__caret-button:hover::before {
       top: 0;
       bottom: 0; }

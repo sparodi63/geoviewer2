@@ -83,6 +83,7 @@ export default {
 <style>
 .el-tabs__item.is-active {
   color: #24386c !important;
+  font-weight: 800 !important;
 }
 
 .el-tabs__header {

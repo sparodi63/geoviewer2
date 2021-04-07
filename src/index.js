@@ -57,7 +57,9 @@ window.GV = {
       const olScripts = [
         '/geoservices/apps/viewer/dist/openlayers/ol.js',
         '/geoservices/apps/viewer/dist/openlayers/ol.css',
+        '/geoservices/apps/viewer/dist/proj4js/proj4.js',
       ];
+      const projDefs = ['/geoservices/apps/viewer/dist/proj4js/3003.js'];
       if (options.application.mapOptions.ol3d) {
         window.CESIUM_BASE_URL = '/geoservices/apps/viewer/dist/cesium/Build/Cesium';
         const cesiumScripts = ['/geoservices/apps/viewer/dist/cesium/Build/Cesium/Cesium.js'];
@@ -65,8 +67,12 @@ window.GV = {
           '/geoservices/apps/viewer/dist/olcs/olcesium.js',
           '/geoservices/apps/viewer/dist/olcs/olcs.css',
         ];
-        await fetchInject(olcsScripts, fetchInject(olScripts, fetchInject(cesiumScripts)));
+        await fetchInject(
+          projDefs,
+          fetchInject(olcsScripts, fetchInject(olScripts, fetchInject(cesiumScripts)))
+        );
       } else {
+        await fetchInject(projDefs, fetchInject(olScripts));
         await fetchInject(olScripts);
       }
       // console.log('Dopo fetchInject - openlayers', ol);

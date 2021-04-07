@@ -11,8 +11,11 @@ GV.init({
       // restrictedExtent: '830036,5402959,1123018,5597635',
     },
     callback: function() {
-      // console.log('CALLBACK!!!');
-      // GV.config.addMapConfig(mapConfig);
+      GV.app.map.zoomToBound(
+        '1039849.332791538,5465171.085361816,1139523.2176754079,5534499.470016474',
+        '3003',
+        null
+      );
     },
     layout: {
       legend: {
@@ -95,19 +98,3 @@ GV.init({
   ],
   maps: [],
 });
-
-const mapConfig = {
-  id: 0,
-  name: 'streets',
-  layers: [
-    {
-      type: 'MBS',
-      url: 'https://geoservizi.regione.liguria.it/tileserver-gl/styles/streets/style.json',
-      visible: true,
-      legend: {
-        label: 'Streets',
-        icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
-      },
-    },
-  ],
-};

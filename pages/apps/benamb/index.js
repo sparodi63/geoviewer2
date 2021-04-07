@@ -63,6 +63,7 @@ GV.init({
   application: {
     name: 'benamb-gv2',
     mapOptions: {
+      // type: 'openlayers',
       click: 'info',
     },
     layout: {

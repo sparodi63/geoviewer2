@@ -51,17 +51,19 @@ export default {
   mounted() {
     GV.log('gv-scuoladigitale-legend: mounted');
     GV.legend = this;
-    this.show = false;
-    this.hideLegend();
     this.changeMap(0);
-    mountComponent({
-      elId: 'gv-scuoladigitale-ricerca',
-      containerId: GV.config.containerId,
-      toggleEl: true,
-      vm: new Vue({
-        template: `<gv-scuoladigitale-ricerca></gv-scuoladigitale-ricerca>`,
-      }),
-    });
+    this.show = false;
+    if (this.options.version === 2) {
+      this.hideLegend();
+      mountComponent({
+        elId: 'gv-scuoladigitale-ricerca',
+        containerId: GV.config.containerId,
+        toggleEl: true,
+        vm: new Vue({
+          template: `<gv-scuoladigitale-ricerca></gv-scuoladigitale-ricerca>`,
+        }),
+      });
+    }
   },
   methods: {
     changeMap(value) {

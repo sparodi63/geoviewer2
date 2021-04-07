@@ -229,6 +229,9 @@ const olMap = {
   getEventPixel(pixel) {
     return this.map.getEventPixel(pixel);
   },
+  getSize() {
+    return this.map.getSize();
+  },
   createPopupDiv() {
     createElement({ elId: 'ol-popup', containerId: 'body' });
     createElement({ elId: 'ol-popup-closer', containerId: 'ol-popup' });
@@ -248,7 +251,8 @@ const olMap = {
           vectorSource.once('change', () => {
             if (vectorSource.getState() === 'ready') {
               if (layer.getSource().getFeatures().length > 0) {
-                this.map.getView().fit(vectorSource.getExtent(), this.map.getSize());
+                // this.getView().fit(vectorSource.getExtent(), this.getSize());
+                this.getView().fit(vectorSource.getExtent());
               }
             }
           });
@@ -337,12 +341,19 @@ const olMap = {
         InfoWmsManager.addHiliteLayer(GV.app.map);
         const layer = this.getLayerByName('InfoWmsHilite');
         if (features && features.length > 0) {
-          layer.clearLayers();
-          layer.addData(features);
+          const source = layer.getSource();
+          source.clear(true);
+          for (const feature of features) {
+            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+              featureProjection: 'EPSG:3857',
+            });
+            source.addFeature(olFeature);
+          }
           const maxZoom = findOptions.maxZoom || 15;
-          this.flyToBounds(layer.getBounds(), {
+          this.getView().fit(layer.getSource().getExtent(), {
             maxZoom: maxZoom,
           });
+
           GV.config.hilitedLayer = layers;
         } else {
           if (findOptions.notFoundAlert) {
@@ -357,30 +368,20 @@ const olMap = {
         loading.close();
       });
   },
-  // TODO
+  // TODO TEST
   zoomTo(lat, lon, zoom) {
     this.setView(new L.LatLng(lat, lon), zoom);
   },
-  // TODO
-  zoomToBound(strBounds, epsg, maxZoom) {
-    // let bounds = new L.latLngBounds();
-
-    if (epsg != '4326') {
-      const srsIn = epsg;
-      const srsOut = '4326';
-      getCoordTransformBbox(srsIn, srsOut, strBounds).then(response => {
-        if (response.data.data) {
-          const sw = response.data.data[0][0].split(',').reverse();
-          const ne = response.data.data[1][0].split(',').reverse();
-          this.fitBounds([sw, ne]);
-          // this.flyToBounds([sw, ne]);
-        }
+  zoomToBound(extent, epsg, maxZoom) {
+    if (epsg != '3857') {
+      const ext = this.extentToArray(extent);
+      const prj = new ol.proj.Projection({
+        code: `EPSG:${epsg}`,
       });
+      const trExt = ol.proj.transformExtent(ext, prj, 'EPSG:3857');
+      this.getView().fit(trExt);
     } else {
-      const coord = strBounds.split(',');
-      const sw = [coord[0], coord[1]];
-      const ne = [coord[2], coord[3]];
-      this.fitBounds([sw, ne]);
+      this.setExtent(extent);
     }
   },
   on(event, fn) {

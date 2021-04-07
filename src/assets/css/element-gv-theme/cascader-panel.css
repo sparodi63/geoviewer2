@@ -635,7 +635,7 @@
   .el-checkbox.is-bordered {
     padding: 9px 20px 9px 10px;
     border-radius: 4px;
-    border: 1px solid #DCDFE6;
+    border: 1px solid #AAAAAA;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     line-height: normal;
@@ -693,7 +693,7 @@
     vertical-align: middle; }
     .el-checkbox__input.is-disabled .el-checkbox__inner {
       background-color: #edf2fc;
-      border-color: #DCDFE6;
+      border-color: #AAAAAA;
       cursor: not-allowed; }
       .el-checkbox__input.is-disabled .el-checkbox__inner::after {
         cursor: not-allowed;
@@ -702,12 +702,12 @@
         cursor: not-allowed; }
     .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
       background-color: #F2F6FC;
-      border-color: #DCDFE6; }
+      border-color: #AAAAAA; }
       .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
         border-color: #C0C4CC; }
     .el-checkbox__input.is-disabled.is-indeterminate .el-checkbox__inner {
       background-color: #F2F6FC;
-      border-color: #DCDFE6; }
+      border-color: #AAAAAA; }
       .el-checkbox__input.is-disabled.is-indeterminate .el-checkbox__inner::before {
         background-color: #C0C4CC;
         border-color: #C0C4CC; }
@@ -745,7 +745,7 @@
   .el-checkbox__inner {
     display: inline-block;
     position: relative;
-    border: 1px solid #DCDFE6;
+    border: 1px solid #AAAAAA;
     border-radius: 2px;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -804,7 +804,7 @@
     vertical-align: middle;
     cursor: pointer;
     background: #EEEEEE;
-    border: 1px solid #DCDFE6;
+    border: 1px solid #AAAAAA;
     border-left: 0;
     color: #606266;
     -webkit-appearance: none;
@@ -855,7 +855,7 @@
   .el-checkbox-button.is-disabled:first-child .el-checkbox-button__inner {
     border-left-color: #EBEEF5; }
   .el-checkbox-button:first-child .el-checkbox-button__inner {
-    border-left: 1px solid #DCDFE6;
+    border-left: 1px solid #AAAAAA;
     border-radius: 4px 0 0 4px;
     -webkit-box-shadow: none !important;
     box-shadow: none !important; }
@@ -1272,7 +1272,7 @@
   .el-radio.is-bordered {
     padding: 12px 20px 0 10px;
     border-radius: 4px;
-    border: 1px solid #DCDFE6;
+    border: 1px solid #AAAAAA;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     height: 40px; }
@@ -1348,7 +1348,7 @@
     .el-radio__input.is-focus .el-radio__inner {
       border-color: #24386c; }
   .el-radio__inner {
-    border: 1px solid #DCDFE6;
+    border: 1px solid #AAAAAA;
     border-radius: 100%;
     width: 14px;
     height: 14px;
