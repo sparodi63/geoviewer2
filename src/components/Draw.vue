@@ -365,7 +365,7 @@ export default {
             });
             const bounds = this.drawnItems.getBounds();
             if (bounds._northEast && bounds._southWest) {
-              GV.app.map.flyToBounds(this.drawnItems.getBounds(), {
+              GV.app.map.fitBounds(this.drawnItems.getBounds(), {
                 maxZoom: 17,
               });
             }

@@ -4,11 +4,11 @@
     <div class="gv-coodinate-panel-body gv-inverted-color-scheme">
       <p>
         X:
-        <span id="gv-coordinate-panel-x">{{x}}</span>
+        <span id="gv-coordinate-panel-x">{{ x }}</span>
       </p>
       <p>
         Y:
-        <span id="gv-coordinate-panel-y">{{y}}</span>
+        <span id="gv-coordinate-panel-y">{{ y }}</span>
       </p>
       <br />
       <el-button
@@ -35,20 +35,20 @@
 </template>
 
 <script>
-import Vue from "vue";
-import getCoordTransform from "../services/getCoordTransform";
+import Vue from 'vue';
+import getCoordTransform from '../services/getCoordTransform';
 
-import { Button } from "element-ui";
+import { Button } from 'element-ui';
 Vue.use(Button);
 
 export default {
-  name: "gv-coordinate-panel",
+  name: 'gv-coordinate-panel',
   data() {
     return {
       x: null,
       y: null,
-      options: GV.config.getToolOptions("gv-coordinate-button"),
-      buttonDisabled: true
+      options: GV.config.getToolOptions('gv-coordinate-button'),
+      buttonDisabled: true,
     };
   },
   methods: {
@@ -63,42 +63,58 @@ export default {
       }
     },
     handleClickEvent(event) {
-      if (this.options.projection && this.options.projection !== "EPSG:4326") {
-        const srsIn = "4326";
-        const srsOut = this.options.projection.replace("EPSG:", "");
-        getCoordTransform(
-          srsIn,
-          srsOut,
-          event.latlng.lng,
-          event.latlng.lat
-        ).then(response => {
-          if (response.data.points) {
-            const coords = response.data.points[0].split(",");
-            this.x = parseInt(coords[0]);
-            this.y = parseInt(coords[1]);
-          }
+      if (GV.app.map.type === 'openlayers') {
+        if (this.options.projection && this.options.projection !== 'EPSG:3857') {
+          const srsIn = '3857';
+          const srsOut = this.options.projection.replace('EPSG:', '');
+          getCoordTransform(srsIn, srsOut, event.coordinate[0], event.coordinate[1]).then(
+            response => {
+              if (response.data.points) {
+                const coords = response.data.points[0].split(',');
+                this.x = parseInt(coords[0]);
+                this.y = parseInt(coords[1]);
+              }
+              this.buttonDisabled = false;
+            }
+          );
+        } else {
+          this.x = event.coordinate[0];
+          this.y = event.coordinate[1];
           this.buttonDisabled = false;
-        });
+        }
       } else {
-        this.x = event.latlng.lng;
-        this.y = event.latlng.lat;
-        this.buttonDisabled = false;
+        if (this.options.projection && this.options.projection !== 'EPSG:4326') {
+          const srsIn = '4326';
+          const srsOut = this.options.projection.replace('EPSG:', '');
+          getCoordTransform(srsIn, srsOut, event.latlng.lng, event.latlng.lat).then(response => {
+            if (response.data.points) {
+              const coords = response.data.points[0].split(',');
+              this.x = parseInt(coords[0]);
+              this.y = parseInt(coords[1]);
+            }
+            this.buttonDisabled = false;
+          });
+        } else {
+          this.x = event.latlng.lng;
+          this.y = event.latlng.lat;
+          this.buttonDisabled = false;
+        }
       }
-    }
+    },
   },
   mounted: function() {
-    GV.eventBus.$on("gv-control-coordinate-activate", ev => {
-      GV.app.map.on("click", event => {
+    GV.eventBus.$on('gv-control-coordinate-activate', ev => {
+      GV.app.map.on('click', event => {
         this.handleClickEvent(event);
       });
     });
-    GV.eventBus.$on("gv-control-genio-seleziona-particelle-deactivate", ev => {
-      GV.app.map.off("click");
+    GV.eventBus.$on('gv-control-genio-seleziona-particelle-deactivate', ev => {
+      GV.app.map.off('click');
     });
-    GV.app.map.on("click", event => {
+    GV.app.map.on('click', event => {
       this.handleClickEvent(event);
     });
-  }
+  },
 };
 </script>
 

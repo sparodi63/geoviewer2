@@ -126,7 +126,7 @@ const layerFactory = {
     return L.tileLayer(
       `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
       {
-        attribution:
+        attributions:
           'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: 'abcd',
         maxZoom: 20,
@@ -146,7 +146,7 @@ const layerFactory = {
     return L.tileLayer(
       `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
       {
-        attribution:
+        attributions:
           'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: 'abcd',
         maxZoom: 20,
@@ -167,7 +167,7 @@ const layerFactory = {
     return L.tileLayer(
       `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
       {
-        attribution:
+        attributions:
           'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: 'abcd',
         maxZoom: 20,
@@ -193,7 +193,7 @@ const layerFactory = {
     return L.tileLayer(
       `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
       {
-        attribution:
+        attributions:
           'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: 'abcd',
         maxZoom: 20,
@@ -213,7 +213,7 @@ const layerFactory = {
     return L.tileLayer(
       `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
       {
-        attribution:
+        attributions:
           'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: 'abcd',
         maxZoom: 20,
@@ -226,7 +226,7 @@ const layerFactory = {
       label: 'Stamen Terrain',
     };
     return L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
-      attribution:
+      attributions:
         'Map tiles by <a href="https://stamen.com">Stamen Design</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       subdomains: 'abcd',
       minZoom: 0,
@@ -239,7 +239,7 @@ const layerFactory = {
       label: 'Stamen Toner Light',
     };
     return L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
-      attribution:
+      attributions:
         'Map tiles by <a href="https://stamen.com">Stamen Design</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       subdomains: 'abcd',
       minZoom: 0,
@@ -264,7 +264,7 @@ const layerFactory = {
         url: `https://geoservizi.regione.liguria.it/geoserver/M${idMap}/wms?`,
       },
       zIndex: 0,
-      attribution: 'Regione Liguria',
+      attributions: 'Regione Liguria',
     });
   },
   RL_CARTE_BASE() {
@@ -278,7 +278,7 @@ const layerFactory = {
         url: 'https://geoservizi.regione.liguria.it/geoserver/gwc/service/wms?',
       },
       zIndex: 1,
-      attribution: 'Regione Liguria',
+      attributions: 'Regione Liguria',
     });
   },
   RL_ORTOFOTO_2016() {
@@ -295,7 +295,7 @@ const layerFactory = {
         url: `https://geoservizi.regione.liguria.it/geoserver/M${idMap}/wms?`,
       },
       zIndex: 0,
-      attribution: 'Ortofoto 20cm/ ©2016 CONSORZIO TeA - TUTTI I DIRITTI RISERVATI',
+      attributions: 'Ortofoto 20cm/ ©2016 CONSORZIO TeA - TUTTI I DIRITTI RISERVATI',
     });
   },
   RL_ORTOFOTO_2013() {
@@ -312,7 +312,7 @@ const layerFactory = {
         url: `https://geoservizi.regione.liguria.it/geoserver/M${idMap}/wms?`,
       },
       zIndex: 0,
-      attribution: 'Immagine di proprietà AGEA',
+      attributions: 'Immagine di proprietà AGEA',
     });
   },
   RL_ORTOFOTO_2010() {
@@ -329,7 +329,7 @@ const layerFactory = {
         url: `https://geoservizi.regione.liguria.it/geoserver/M${idMap}/wms?`,
       },
       zIndex: 0,
-      attribution: 'Immagine di proprietà AGEA',
+      attributions: 'Immagine di proprietà AGEA',
     });
   },
   RL_ORTOFOTO_2007() {
@@ -346,7 +346,7 @@ const layerFactory = {
         url: `https://geoservizi.regione.liguria.it/geoserver/M${idMap}/wms?`,
       },
       zIndex: 0,
-      attribution: 'Immagine di proprietà AGEA',
+      attributions: 'Immagine di proprietà AGEA',
     });
   },
   RL_ORTOFOTO_2000() {
@@ -366,7 +366,16 @@ const layerFactory = {
     });
   },
   WMS(layerConfig) {
-    let { name, cacheMinZoomLevel, minScale, maxScale, wmsParams, zIndex, idMap } = layerConfig;
+    let {
+      name,
+      cacheMinZoomLevel,
+      minScale,
+      maxScale,
+      wmsParams,
+      zIndex,
+      idMap,
+      attributions,
+    } = layerConfig;
     GV.log('layerFactory - Creazione Layer WMS: ' + name);
     let layer = null;
 
@@ -423,6 +432,9 @@ const layerFactory = {
         sourceOptions.urls = urls;
       } else {
         sourceOptions.url = url;
+      }
+      if (attributions) {
+        sourceOptions.attributions = attributions;
       }
 
       layer = new ol.layer.Tile({
@@ -522,7 +534,7 @@ const layerFactory = {
     }
 
     if (onFeatureSelect) {
-      GV.app.map.on('click', e => {
+      GV.app.map.on('click', evt => {
         GV.app.map.map.forEachFeatureAtPixel(evt.pixel, onFeatureSelect, {
           layerFilter: fLayer => {
             return fLayer === layer;

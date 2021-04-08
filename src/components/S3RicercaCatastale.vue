@@ -571,7 +571,7 @@ export default {
         if (features && features.length > 0) {
           hiliteLayer.clearLayers();
           hiliteLayer.addData(features);
-          GV.app.map.flyToBounds(hiliteLayer.getBounds(), {
+          GV.app.map.fitBounds(hiliteLayer.getBounds(), {
             maxZoom: 17,
           });
           // GV.app.map._container.style.cursor = 'default';
@@ -591,7 +591,7 @@ export default {
         if (features && features.length > 0) {
           hiliteLayer.clearLayers();
           hiliteLayer.addData(features);
-          GV.app.map.flyToBounds(hiliteLayer.getBounds(), {
+          GV.app.map.fitBounds(hiliteLayer.getBounds(), {
             maxZoom: 17,
           });
           // GV.app.map._container.style.cursor = 'default';
@@ -612,7 +612,7 @@ export default {
         if (features && features.length > 0) {
           hiliteLayer.clearLayers();
           hiliteLayer.addData(features);
-          GV.app.map.flyToBounds(hiliteLayer.getBounds(), {
+          GV.app.map.fitBounds(hiliteLayer.getBounds(), {
             maxZoom: 17,
           });
           //  GV.app.map._container.style.cursor = 'default';
@@ -632,7 +632,7 @@ export default {
         if (features && features.length > 0) {
           hiliteLayer.clearLayers();
           hiliteLayer.addData(features);
-          GV.app.map.flyToBounds(hiliteLayer.getBounds(), {
+          GV.app.map.fitBounds(hiliteLayer.getBounds(), {
             maxZoom: 17,
           });
           // GV.app.map._container.style.cursor = 'default';
@@ -672,7 +672,7 @@ export default {
         if (features && features.length > 0) {
           hiliteLayer.clearLayers();
           hiliteLayer.addData(features);
-          GV.app.map.flyToBounds(hiliteLayer.getBounds(), {
+          GV.app.map.fitBounds(hiliteLayer.getBounds(), {
             maxZoom: 17,
           });
           // GV.app.map._container.style.cursor = 'default';

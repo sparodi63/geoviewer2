@@ -432,16 +432,15 @@ function hiliteFeature(feature) {
               featureProjection: 'EPSG:3857',
             });
             source.addFeature(olFeature);
-            GV.app.map.getView().fit(olFeature.getGeometry().getExtent(), {
+            GV.app.map.fit(olFeature.getGeometry().getExtent(), {
               maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
             });
             GV.config.hilitedLayer.push(layerName);
           } else {
             layer.clearLayers();
             layer.addData(feature.geometry);
-            const maxZoom = layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17;
-            GV.app.map.flyToBounds(layer.getBounds(), {
-              maxZoom: maxZoom,
+            GV.app.map.fitBounds(layer.getBounds(), {
+              maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
             });
             GV.config.hilitedLayer.push(layerName);
           }

@@ -22,6 +22,7 @@ GV.init({
   application: {
     name: 'selezione-fogli-gv2',
     mapOptions: {
+      // type: 'openlayers',
       click: 'info',
     },
     layout: {

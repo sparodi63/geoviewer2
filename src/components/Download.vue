@@ -781,12 +781,11 @@ export default {
       // Selezione per comune
       if (codice === 2) {
         if (!this.layerComuni) return;
-        const style = this.style;
         GV.app.map.loadLayers([
           {
             name: 'SelezioneComune',
             type: 'JSON',
-            style: style,
+            style: this.style,
             visible: true,
             data: this.layerComuni,
             zIndex: 100,

@@ -313,6 +313,8 @@ export default {
       comune: null,
       layersWithSameStructure: false,
       comuni: [],
+      style: null,
+      hlStyle: null,
     };
   },
   computed: {
@@ -347,6 +349,8 @@ export default {
   mixins: [RectDraw],
   mounted() {
     // this.rectAddLayer();
+    // imposto stile feature
+    this.setFeatureStyle();
     this.addLayerComuni();
   },
   methods: {
@@ -399,14 +403,14 @@ export default {
                 featureProjection: 'EPSG:3857',
               });
               source.addFeature(olFeature);
-              GV.app.map.getView().fit(olFeature.getGeometry().getExtent(), {
+              GV.app.map.fit(olFeature.getGeometry().getExtent(), {
                 maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
               });
               GV.config.hilitedLayer.push(layerName);
             } else {
               layer.clearLayers();
               layer.addData(feature.geometry);
-              GV.app.map.flyToBounds(layer.getBounds(), { maxZoom: 15 });
+              GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
               GV.config.hilitedLayer.push(layerName);
             }
           }
@@ -670,16 +674,81 @@ export default {
       if (!layerComuni) {
         return;
       }
-      layerComuni.eachLayer(layer => {
-        layer.setStyle({ fillOpacity: 0, weight: 1 });
-      });
-      layerComuni.eachLayer(layer => {
-        const codice =
-          layer.feature.properties.CODICE_COMUNE || layer.feature.properties.codice_comune;
-        if (codice === comune) {
-          layer.setStyle({ fillOpacity: 0, weight: 4 });
+      if (GV.app.map.type === 'openlayers') {
+        const features = layerComuni.getSource().getFeatures();
+        for (const feature of features) {
+          const codice = feature.get('CODICE_COMUNE') || feature.get('codice_comune');
+          if (codice === comune) {
+            feature.setStyle(this.hlStyle);
+          } else {
+            feature.setStyle(false);
+          }
         }
-      });
+      } else {
+        layerComuni.eachLayer(layer => {
+          layer.setStyle(this.style);
+        });
+        layerComuni.eachLayer(layer => {
+          const codice =
+            layer.feature.properties.CODICE_COMUNE || layer.feature.properties.codice_comune;
+          if (codice === comune) {
+            layer.setStyle(this.hlStyle);
+          }
+        });
+      }
+
+      // layerComuni.eachLayer(layer => {
+      //   layer.setStyle({ fillOpacity: 0, weight: 1 });
+      // });
+      // layerComuni.eachLayer(layer => {
+      //   const codice =
+      //     layer.feature.properties.CODICE_COMUNE || layer.feature.properties.codice_comune;
+      //   if (codice === comune) {
+      //     layer.setStyle({ fillOpacity: 0, weight: 4 });
+      //   }
+      // });
+    },
+    setFeatureStyle() {
+      let style;
+      if (GV.app.map.type === 'openlayers') {
+        style = new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: [255, 204, 0, 1],
+            width: 1,
+          }),
+          fill: new ol.style.Fill({
+            color: [255, 204, 0, 0.1],
+          }),
+        });
+      } else {
+        style = {
+          color: '#ffcc00',
+          fillOpacity: 0,
+          weight: 1,
+          opacity: 1,
+        };
+      }
+      this.style = style;
+
+      if (GV.app.map.type === 'openlayers') {
+        style = new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: [255, 204, 0, 1],
+            width: 3,
+          }),
+          fill: new ol.style.Fill({
+            color: [255, 204, 0, 0.6],
+          }),
+        });
+      } else {
+        style = {
+          color: '#ffcc00',
+          fillOpacity: 0.6,
+          weight: 2,
+          opacity: 1,
+        };
+      }
+      this.hlStyle = style;
     },
     changeSelezioneTerritoriale(codice, silent) {
       this.comune = null;
@@ -704,22 +773,17 @@ export default {
           {
             name: 'SelezioneComune',
             type: 'JSON',
-            style: {
-              color: '#ffcc00',
-              fillOpacity: 0,
-              weight: 1,
-              opacity: 1,
-            },
+            style: this.style,
             visible: true,
             data: this.layerComuni,
-            onEachFeature: (feature, layer) => {
-              layer.on('click', ev => {
-                if (this.selezioneTerritoriale !== 2) {
-                  return;
-                }
-                const codice = feature.properties.CODICE_COMUNE || feature.properties.codice_comune;
-                this.comune = codice;
-              });
+            zIndex: 100,
+            onFeatureSelect: (feature, layer) => {
+              if (this.selezioneTerritoriale !== 2) {
+                return;
+              }
+              this.comune = feature.get
+                ? feature.get('CODICE_COMUNE') || feature.get('codice_comune')
+                : feature.properties.CODICE_COMUNE || feature.properties.codice_comune;
             },
           },
         ]);

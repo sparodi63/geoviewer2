@@ -9,6 +9,7 @@ import createElement from '../util/createElement';
 
 import notification from '../util/notification';
 import { Loading } from 'element-ui';
+import leaflet from 'leaflet';
 
 const olMap = {
   type: 'openlayers',
@@ -38,7 +39,7 @@ const olMap = {
     this.map = new ol.Map({
       target: 'gv-map',
       layers: [],
-      controls: [],
+      controls: [new ol.control.Attribution()],
       view: new ol.View(viewOptions),
     });
 
@@ -111,7 +112,7 @@ const olMap = {
   },
   setExtent(extent) {
     const ext = this.extentToArray(extent);
-    this.getView().fit(ext);
+    this.fit(ext);
   },
   extentToArray(extent) {
     const extFloat = extent.split(',').map(ex => {
@@ -121,19 +122,17 @@ const olMap = {
   },
   setInitialExtent() {
     GV.log('setInitialExtent');
-    // TODO OL
-    // if (this.options.center && this.options.zoom) {
-    //   GV.log('setView');
-    //   this.setView(this.options.center, this.options.zoom);
-    // } else {
-    //   var extent = this.options.initialExtent || '830036,5402959,1123018,5597635';
-    //   this.setExtent(extent);
-    // }
-    var extent = this.options.initialExtent || '830036,5402959,1123018,5597635';
-    this.setExtent(extent);
+    if (this.options.center && this.options.zoom) {
+      this.setView(this.options.center, this.options.zoom);
+    } else {
+      var extent = this.options.initialExtent || '830036,5402959,1123018,5597635';
+      this.setExtent(extent);
+    }
   },
   setView(center, zoom) {
-    this.getView().setCenter(center);
+    // center: se oggetto Leaflet converto in array
+    const coords = Array.isArray(center) ? center : [center.lng, center.lat];
+    this.getView().setCenter(ol.proj.fromLonLat(coords));
     this.getView().setZoom(zoom);
   },
   getExtent() {
@@ -214,11 +213,20 @@ const olMap = {
     const scaleDenom = 591657550 / Math.pow(2, this.getView().getZoom());
     return scaleDenom;
   },
+  getZoom() {
+    return this.getView().getZoom();
+  },
   setZoom(zoom) {
     this.getView().setZoom(zoom);
   },
+  getCenter() {
+    return this.getView().getCenter();
+  },
   removeLayer(layer) {
     this.map.removeLayer(layer);
+  },
+  addLayer(layer) {
+    this.map.addLayer(layer);
   },
   addOverlay(overlay) {
     this.map.addOverlay(overlay);
@@ -232,6 +240,9 @@ const olMap = {
   getSize() {
     return this.map.getSize();
   },
+  fit(extent, opt) {
+    this.getView().fit(extent, opt);
+  },
   createPopupDiv() {
     createElement({ elId: 'ol-popup', containerId: 'body' });
     createElement({ elId: 'ol-popup-closer', containerId: 'ol-popup' });
@@ -244,15 +255,14 @@ const olMap = {
       }
       var layer = LayerFactory.create(layerConfig, this);
       if (layer) {
-        this.map.addLayer(layer);
+        this.addLayer(layer);
         this.setLayerVisible(layerConfig, layerConfig.visible);
         if (layerConfig.zoomToLayerExtent) {
           const vectorSource = layer.getSource();
           vectorSource.once('change', () => {
             if (vectorSource.getState() === 'ready') {
               if (layer.getSource().getFeatures().length > 0) {
-                // this.getView().fit(vectorSource.getExtent(), this.getSize());
-                this.getView().fit(vectorSource.getExtent());
+                this.fit(vectorSource.getExtent());
               }
             }
           });
@@ -307,13 +317,12 @@ const olMap = {
       }),
       zIndex: 1000,
     });
-    this.map.addLayer(vectorLayer);
+    this.addLayer(vectorLayer);
 
-    GV.app.map.getView().fit(feature.getGeometry().getExtent(), {
+    this.fit(feature.getGeometry().getExtent(), {
       maxZoom: markerConfig.zoomLevel || 14,
     });
   },
-  // TODO
   find(findOptions) {
     if (findOptions.bbox) {
       this.zoomToBound(findOptions.bbox, findOptions.epsg, findOptions.maxZoom);
@@ -350,7 +359,7 @@ const olMap = {
             source.addFeature(olFeature);
           }
           const maxZoom = findOptions.maxZoom || 15;
-          this.getView().fit(layer.getSource().getExtent(), {
+          this.fit(layer.getSource().getExtent(), {
             maxZoom: maxZoom,
           });
 
@@ -379,7 +388,7 @@ const olMap = {
         code: `EPSG:${epsg}`,
       });
       const trExt = ol.proj.transformExtent(ext, prj, 'EPSG:3857');
-      this.getView().fit(trExt);
+      this.fit(trExt);
     } else {
       this.setExtent(extent);
     }

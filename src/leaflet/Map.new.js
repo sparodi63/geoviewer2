@@ -317,7 +317,7 @@ const llMap = {
           layer.clearLayers();
           layer.addData(features);
           const maxZoom = findOptions.maxZoom || 15;
-          this.flyToBounds(layer.getBounds(), {
+          this.fitBounds(layer.getBounds(), {
             maxZoom: maxZoom,
           });
           GV.config.hilitedLayer = layers;
@@ -350,7 +350,6 @@ const llMap = {
           const sw = response.data.data[0][0].split(',').reverse();
           const ne = response.data.data[1][0].split(',').reverse();
           this.fitBounds([sw, ne]);
-          // this.flyToBounds([sw, ne]);
         }
       });
     } else {

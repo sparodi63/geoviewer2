@@ -8,14 +8,16 @@ GV.init({
     mapOptions: {
       type: 'openlayers',
       click: 'info',
+      // center: [9.228687, 44.335759],
+      // zoom: 12,
       // restrictedExtent: '830036,5402959,1123018,5597635',
     },
     callback: function() {
-      GV.app.map.zoomToBound(
-        '1039849.332791538,5465171.085361816,1139523.2176754079,5534499.470016474',
-        '3003',
-        null
-      );
+      // GV.app.map.zoomToBound(
+      //   '1039849.332791538,5465171.085361816,1139523.2176754079,5534499.470016474',
+      //   '3003',
+      //   null
+      // );
     },
     layout: {
       legend: {
@@ -51,9 +53,22 @@ GV.init({
           name: 'gv-geocoder',
           position: 'topleft',
         },
+        // {
+        //   name: 'gv-coordinate-button',
+        //   options: {
+        //     projection: 'EPSG:3003',
+        //     submit: function(x, y) {
+        //       conferma(x, y, 'OK');
+        //     },
+        //     cancel: function() {
+        //       conferma(null, null, 'KO');
+        //     },
+        //     active: true,
+        //   },
+        // },
         // { name: 'gv-info-button', active: true },
         // { name: 'gv-measure-button' },
-        // { name: 'gv-layer-search-topo-button' },
+        { name: 'gv-layer-search-button' },
         // { name: 'gv-ricerca-particella-button' },
         {
           name: 'gv-scalebar',
@@ -98,3 +113,7 @@ GV.init({
   ],
   maps: [],
 });
+
+function conferma(x, y, esito) {
+  console.log(x, y);
+}

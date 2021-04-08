@@ -1,4 +1,4 @@
-require('../../../src/index')
+require('../../../src/index');
 
-require('./mappa')
-require('./mappa.css')
+require('./index');
+require('./index.css');

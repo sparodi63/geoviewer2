@@ -408,3 +408,11 @@ body {
 #ol-popup-closer:after {
   content: '✖';
 }
+
+.ol-control button {
+  height: 24px !important;
+  width: 24px !important;
+  background-color: #24386c !important;
+  margin: 0px !important;
+  border-radius: 0px !important;
+}

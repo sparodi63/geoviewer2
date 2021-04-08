@@ -62,6 +62,8 @@ export default {
       fogli: [],
       config: {},
       storageKey: 'selFogli',
+      style: null,
+      hlStyle: null,
     };
   },
   computed: {},
@@ -74,28 +76,87 @@ export default {
     // imposto la configurazione dopo il caricamento della config della mappa
     GV.eventBus.$on('gv-config-init', () => {
       this.config = GV.config.getMapConfig(this.idMap).downloadConfig;
+      this.setFeatureStyle();
       this.addLayerSquadri();
       this.show = true;
     });
   },
   methods: {
+    setFeatureStyle() {
+      let style;
+      if (GV.app.map.type === 'openlayers') {
+        style = new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: [255, 204, 0, 1],
+            width: 1,
+          }),
+          fill: new ol.style.Fill({
+            color: [255, 204, 0, 0.1],
+          }),
+        });
+      } else {
+        style = {
+          color: '#ffcc00',
+          fillOpacity: 0,
+          weight: 1,
+          opacity: 1,
+        };
+      }
+      this.style = style;
+
+      if (GV.app.map.type === 'openlayers') {
+        style = new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: [255, 204, 0, 1],
+            width: 3,
+          }),
+          fill: new ol.style.Fill({
+            color: [255, 204, 0, 0.6],
+          }),
+        });
+      } else {
+        style = {
+          color: '#ffcc00',
+          fillOpacity: 0.6,
+          weight: 2,
+          opacity: 1,
+        };
+      }
+      this.hlStyle = style;
+    },
     syncFogli(fogliSel) {
       const layerFogli = GV.app.map.getLayerByName('SelezioneSquadri');
       if (!layerFogli) {
         return;
       }
-      layerFogli.eachLayer(layer => {
-        layer.setStyle({ fillOpacity: 0, weight: 1 });
-      });
-      layerFogli.eachLayer(layer => {
-        fogliSel.forEach(foglio => {
-          const codice =
-            layer.feature.properties.COD_SQUADRO || layer.feature.properties.cod_squadro;
-          if (codice === foglio) {
-            layer.setStyle({ fillOpacity: 0.6, weight: 2 });
+      const style = this.hlStyle;
+      if (GV.app.map.type === 'openlayers') {
+        const features = layerFogli.getSource().getFeatures();
+        for (const feature of features) {
+          feature.setStyle(false);
+        }
+        for (const foglio of fogliSel) {
+          for (const feature of features) {
+            const codice = feature.get('COD_SQUADRO') || feature.get('cod_squadro');
+            if (codice == foglio) {
+              feature.setStyle(style);
+            }
           }
+        }
+      } else {
+        layerFogli.eachLayer(layer => {
+          layer.setStyle(this.style);
         });
-      });
+        layerFogli.eachLayer(layer => {
+          fogliSel.forEach(foglio => {
+            const codice =
+              layer.feature.properties.COD_SQUADRO || layer.feature.properties.cod_squadro;
+            if (codice === foglio) {
+              layer.setStyle(this.hlStyle);
+            }
+          });
+        });
+      }
     },
     addLayerSquadri() {
       const baseUrl =
@@ -144,24 +205,30 @@ export default {
         {
           name: 'SelezioneSquadri',
           type: 'JSON',
-          style: {
-            color: '#ffcc00',
-            fillOpacity: 0,
-            weight: 1,
-            opacity: 1,
-          },
+          style: this.style,
           visible: true,
           data: this.layerFogli,
-          onEachFeature: (feature, layer) => {
-            layer.on('click', ev => {
-              const codice = feature.properties.COD_SQUADRO || feature.properties.cod_squadro;
-              if (this.fogli.indexOf(codice) > -1) {
-                this.fogli = this.fogli.filter(item => item !== codice);
-              } else {
-                this.fogli.push(codice);
-              }
-            });
+          zIndex: 100,
+          onFeatureSelect: (feature, layer) => {
+            const codice = feature.get
+              ? feature.get('COD_SQUADRO') || feature.get('cod_squadro')
+              : feature.properties.COD_SQUADRO || feature.properties.cod_squadro;
+            if (this.fogli.indexOf(codice) > -1) {
+              this.fogli = this.fogli.filter(item => item !== codice);
+            } else {
+              this.fogli.push(codice);
+            }
           },
+          // onEachFeature: (feature, layer) => {
+          //   layer.on('click', ev => {
+          //     const codice = feature.properties.COD_SQUADRO || feature.properties.cod_squadro;
+          //     if (this.fogli.indexOf(codice) > -1) {
+          //       this.fogli = this.fogli.filter(item => item !== codice);
+          //     } else {
+          //       this.fogli.push(codice);
+          //     }
+          //   });
+          // },
         },
       ]);
       GV.config.activeControl.deactivate();

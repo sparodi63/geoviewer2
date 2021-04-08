@@ -172,7 +172,7 @@ export default {
         layer.clearLayers();
         layer.addData(features[0].geometry);
         if (this.risknatForm.zoom) {
-          GV.app.map.flyToBounds(layer.getBounds(), { maxZoom: 17 });
+          GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 17 });
         }
       }
     },
