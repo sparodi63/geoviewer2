@@ -31,36 +31,34 @@
             empty-text="Nessuna progetto trovato"
             style="font-size: 12px !important;"
             class="gv-inverted-color-scheme"
+            :default-sort="{ prop: 'anno', order: 'descending' }"
             height="300"
             size="mini"
             @current-change="selectRiga"
           >
-            <el-table-column label="Anno" align="left" width="80">
-              <template slot-scope="scope">
-                <span>{{ scope.row.anno }}</span>
-              </template>
+            <el-table-column prop="anno" label="Anno" sortable align="left" width="80">
             </el-table-column>
-            <el-table-column label="Nome Istituto" align="left" width="100">
-              <template slot-scope="scope">
-                <span>{{ scope.row.nome_istituto }}</span>
-              </template>
+            <el-table-column
+              prop="nome_istituto"
+              label="Nome Istituto"
+              sortable
+              align="left"
+              width="100"
+            >
             </el-table-column>
-            <el-table-column label="Ordine" align="left" width="120">
-              <template slot-scope="scope">
-                <span>{{ scope.row.ordine }}</span>
-              </template>
+            <el-table-column prop="ordine" label="Ordine" sortable align="left" width="120">
             </el-table-column>
-            <el-table-column label="Titolo progetto" align="left" width="120">
-              <template slot-scope="scope">
-                <span>{{ scope.row.titolo_progetto }}</span>
-              </template>
+            <el-table-column
+              prop="titolo_progetto"
+              label="Titolo progetto"
+              sortable
+              align="left"
+              width="120"
+            >
             </el-table-column>
-            <el-table-column label="Abstract" align="left" width="400">
-              <template slot-scope="scope">
-                <span>{{ scope.row.abstract }}</span>
-              </template>
+            <el-table-column prop="abstract" label="Abstract" sortable align="left" width="390">
             </el-table-column>
-            <el-table-column width="50">
+            <el-table-column label="Link" width="50">
               <template slot-scope="scope">
                 <span v-if="scope.row.link_documentazione" title="link alla documentazione">
                   <el-button

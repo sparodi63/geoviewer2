@@ -184,6 +184,11 @@ tools.push({ name: 'gv-switch3D-button' });
 import Switch3D from './components/buttons/Switch3D.vue';
 Vue.component('gv-switch3D-button', Switch3D);
 
+// Bottone MeasureOl
+// tools.push({ name: 'gv-measure-ol-button' });
+// import MeasureOl from './components/buttons/MeasureOl.vue';
+// Vue.component('gv-measure-ol-button', MeasureOl);
+
 // -------------------------------------------------------------------------------- //
 
 export default tools;

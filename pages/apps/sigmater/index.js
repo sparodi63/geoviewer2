@@ -52,6 +52,7 @@ GV.init({
     name: 'sigmater-gv2',
     auth: auth,
     mapOptions: {
+      type: 'openlayers',
       click: 'info',
     },
     callback: getTokenBbox,

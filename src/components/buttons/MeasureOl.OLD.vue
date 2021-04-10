@@ -4,8 +4,7 @@
 
 <script>
 import SwitchActiveButton from '../../mixins/SwitchActiveButton';
-import Control from '../../controls/Measure';
-import ControlOl from '../../controls/MeasureOl';
+import Control from '../../controls/MeasureOl';
 
 const name = 'gv-measure-button';
 
@@ -16,7 +15,7 @@ export default {
     return {
       name: name,
       active: false,
-      control: null,
+      control: Control,
       options: options,
       title: 'Misurazioni',
       cssClass: 'gv-button fa fa-edit',
@@ -33,14 +32,7 @@ export default {
       return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
     },
   },
-  mounted: function() {
-    console.log('MOUNTED', GV.app.map.type);
-    if (GV.app.map.type === 'openlayers') {
-      this.control = ControlOl;
-    } else {
-      this.control = Control;
-    }
-  },
+  mounted: function() {},
 };
 </script>
 

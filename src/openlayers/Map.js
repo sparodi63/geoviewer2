@@ -27,12 +27,10 @@ const olMap = {
   },
   initialize() {
     Object.assign(this.options, GV.config.application.mapOptions);
-    // console.log('MAP OPTIONS', this.options);
 
     // Gestione restricted extent
     const viewOptions = {};
     if (this.options.restrictedExtent) {
-      console.log('SET RESCTRICTED EXTENT');
       viewOptions.extent = this.extentToArray(this.options.restrictedExtent);
     }
 
@@ -77,7 +75,6 @@ const olMap = {
     this.map.on('moveend', e => {
       const newZoom = this.getView().getZoom();
       if (this.zoom != newZoom) {
-        // console.log('zoom end, new zoom: ' + newZoom);
         GV.eventBus.$emit('map-zoom', newZoom);
         this.zoom = newZoom;
       }
@@ -105,6 +102,12 @@ const olMap = {
   },
   getView() {
     return this.map.getView();
+  },
+  getOverlays() {
+    return this.map.getOverlays();
+  },
+  removeOverlay(ovl) {
+    this.map.removeOverlay(ovl);
   },
   setLayerOpacity(layerName, opacity) {
     const layer = this.getLayerByName(layerName);
@@ -149,7 +152,6 @@ const olMap = {
   },
   setLayerVisible(layerConfig, visible) {
     const layer = this.getLayerByName(layerConfig.name);
-    console.log('setLayerVisible', layer.getOpacity());
     layer.setVisible(visible);
     layerConfig.visible = visible;
   },
@@ -185,7 +187,6 @@ const olMap = {
     var layer = LayerFactory.create(layerConfig, this);
     if (layer) {
       layer.config.baseLayer = true;
-      console.log('Creato baseLayer', layer);
       this.map.getLayers().insertAt(0, layer);
       this.activeBaseLayer = layer;
       GV.config.activeBaseLayer = layer.config.name;
@@ -194,7 +195,6 @@ const olMap = {
   changeBaseLayer(layerName) {
     if (GV.config.activeBaseLayer !== layerName) {
       const layer = this.getLayerByName(GV.config.activeBaseLayer);
-      console.log(layer);
       this.removeLayer(layer);
       const layerConfig = GV.config.getBaseLayerConfig(layerName);
       this.setBaseLayer(layerConfig);
@@ -379,7 +379,7 @@ const olMap = {
   },
   // TODO TEST
   zoomTo(lat, lon, zoom) {
-    this.setView(new L.LatLng(lat, lon), zoom);
+    this.setView([lon, lat], zoom);
   },
   zoomToBound(extent, epsg, maxZoom) {
     if (epsg != '3857') {

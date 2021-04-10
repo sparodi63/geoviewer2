@@ -11,7 +11,6 @@
 
 require('shelljs/global');
 const fs = require('fs');
-// const path = require('path');
 const byline = require('byline');
 
 const name = process.argv[2];
@@ -34,7 +33,7 @@ elaboraTools(name, nomeFile);
 function elaboraComponente(type) {
   const ext = type === 'control' ? 'js' : 'vue';
   const file = mapEvent ? `${type}-event` : type;
-  const src = `templates/create-btn-${file}.${ext}`;
+  const src = `../templates/create-btn-${file}.${ext}`;
   var linesIn = [];
   var stream = byline(
     fs.createReadStream(src, {
@@ -92,7 +91,7 @@ function scriviComponente(type, linesIn) {
 function elaboraTools() {
   var linesIn = [];
   var stream = byline(
-    fs.createReadStream('src/tools.js', {
+    fs.createReadStream('../src/tools.js', {
       encoding: 'utf8',
     }),
     {
@@ -121,7 +120,7 @@ function writeTools(linesIn) {
     }
     linesOut.push(line);
   });
-  const file = fs.createWriteStream('src/tools.js');
+  const file = fs.createWriteStream('../src/tools.js');
   file.on('error', function(err) {});
   linesOut.forEach(line => {
     file.write(line + '\n');

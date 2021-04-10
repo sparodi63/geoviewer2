@@ -8,8 +8,6 @@ GV.init({
     mapOptions: {
       type: 'openlayers',
       click: 'info',
-      // center: [9.228687, 44.335759],
-      // zoom: 12,
       // restrictedExtent: '830036,5402959,1123018,5597635',
     },
     callback: function() {
@@ -66,10 +64,11 @@ GV.init({
         //     active: true,
         //   },
         // },
-        // { name: 'gv-info-button', active: true },
-        // { name: 'gv-measure-button' },
+        { name: 'gv-info-button', active: true },
+        { name: 'gv-measure-button' },
         { name: 'gv-layer-search-button' },
         // { name: 'gv-ricerca-particella-button' },
+        { name: 'gv-ricerca-catastale-button' },
         {
           name: 'gv-scalebar',
           position: 'bottomleft',

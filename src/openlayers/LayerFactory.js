@@ -254,7 +254,7 @@ const layerFactory = {
     return this.WMS({
       idMap: idMap,
       visible: false,
-      name: idLayer,
+      name: 'RL_CARTE_BASE_NC25',
       cacheMinZoomLevel: 12,
       maxScale: 10000,
       minScale: 200000,
@@ -270,7 +270,7 @@ const layerFactory = {
   RL_CARTE_BASE() {
     return this.WMS({
       visible: false,
-      name: 'CARTE_DI_BASE',
+      name: 'RL_CARTE_BASE',
       cacheMinZoomLevel: 8,
       wmsParams: {
         name: 'CARTE_DI_BASE',
@@ -287,7 +287,7 @@ const layerFactory = {
     return this.WMS({
       idMap: idMap,
       visible: false,
-      name: idLayer,
+      name: 'RL_ORTOFOTO_2016',
       cacheMinZoomLevel: 8,
       wmsParams: {
         name: idLayer,
@@ -304,7 +304,7 @@ const layerFactory = {
     return this.WMS({
       idMap: idMap,
       visible: false,
-      name: idLayer,
+      name: 'RL_ORTOFOTO_2013',
       cacheMinZoomLevel: 8,
       wmsParams: {
         name: idLayer,
@@ -321,7 +321,7 @@ const layerFactory = {
     return this.WMS({
       idMap: idMap,
       visible: false,
-      name: idLayer,
+      name: 'RL_ORTOFOTO_2010',
       cacheMinZoomLevel: 8,
       wmsParams: {
         name: idLayer,
@@ -338,7 +338,7 @@ const layerFactory = {
     return this.WMS({
       idMap: idMap,
       visible: false,
-      name: idLayer,
+      name: 'RL_ORTOFOTO_2007',
       cacheMinZoomLevel: 8,
       wmsParams: {
         name: idLayer,
@@ -355,7 +355,7 @@ const layerFactory = {
     return this.WMS({
       idMap: idMap,
       visible: false,
-      name: idLayer,
+      name: 'RL_ORTOFOTO_2000',
       cacheMinZoomLevel: 8,
       wmsParams: {
         name: idLayer,

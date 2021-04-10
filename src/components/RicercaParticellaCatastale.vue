@@ -185,9 +185,7 @@ export default {
             featureProjection: 'EPSG:3857',
           });
           source.addFeature(olFeature);
-          GV.app.map.fit(olFeature.getGeometry().getExtent(), {
-            maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
-          });
+          GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
           GV.config.hilitedLayer.push(layerName);
         } else {
           layer.clearLayers();

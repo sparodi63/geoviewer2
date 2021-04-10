@@ -567,14 +567,26 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
         if (features && features.length > 0) {
-          hiliteLayer.clearLayers();
-          hiliteLayer.addData(features);
-          GV.app.map.fitBounds(hiliteLayer.getBounds(), {
-            maxZoom: 17,
-          });
-          // GV.app.map._container.style.cursor = 'default';
+          const feature = features[0];
+          let layer = GV.app.map.getLayerByName('InfoWmsHilite');
+          if (!layer) {
+            InfoWmsManager.addHiliteLayer(GV.app.map);
+            layer = GV.app.map.getLayerByName('InfoWmsHilite');
+          }
+          if (GV.app.map.type === 'openlayers') {
+            const source = layer.getSource();
+            source.clear(true);
+            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+              featureProjection: 'EPSG:3857',
+            });
+            source.addFeature(olFeature);
+            GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
+          } else {
+            layer.clearLayers();
+            layer.addData(feature.geometry);
+            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
+          }
         }
       });
     },
@@ -587,15 +599,36 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
         if (features && features.length > 0) {
-          hiliteLayer.clearLayers();
-          hiliteLayer.addData(features);
-          GV.app.map.fitBounds(hiliteLayer.getBounds(), {
-            maxZoom: 17,
-          });
-          // GV.app.map._container.style.cursor = 'default';
+          const feature = features[0];
+          let layer = GV.app.map.getLayerByName('InfoWmsHilite');
+          if (!layer) {
+            InfoWmsManager.addHiliteLayer(GV.app.map);
+            layer = GV.app.map.getLayerByName('InfoWmsHilite');
+          }
+          if (GV.app.map.type === 'openlayers') {
+            const source = layer.getSource();
+            source.clear(true);
+            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+              featureProjection: 'EPSG:3857',
+            });
+            source.addFeature(olFeature);
+            GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
+          } else {
+            layer.clearLayers();
+            layer.addData(feature.geometry);
+            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
+          }
         }
+
+        // const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
+        // if (features && features.length > 0) {
+        //   hiliteLayer.clearLayers();
+        //   hiliteLayer.addData(features);
+        //   GV.app.map.fitBounds(hiliteLayer.getBounds(), {
+        //     maxZoom: 17,
+        //   });
+        // }
       });
     },
     submitReticolo() {
@@ -608,15 +641,36 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
         if (features && features.length > 0) {
-          hiliteLayer.clearLayers();
-          hiliteLayer.addData(features);
-          GV.app.map.fitBounds(hiliteLayer.getBounds(), {
-            maxZoom: 17,
-          });
-          //  GV.app.map._container.style.cursor = 'default';
+          const feature = features[0];
+          let layer = GV.app.map.getLayerByName('InfoWmsHilite');
+          if (!layer) {
+            InfoWmsManager.addHiliteLayer(GV.app.map);
+            layer = GV.app.map.getLayerByName('InfoWmsHilite');
+          }
+          if (GV.app.map.type === 'openlayers') {
+            const source = layer.getSource();
+            source.clear(true);
+            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+              featureProjection: 'EPSG:3857',
+            });
+            source.addFeature(olFeature);
+            GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
+          } else {
+            layer.clearLayers();
+            layer.addData(feature.geometry);
+            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
+          }
         }
+
+        // const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
+        // if (features && features.length > 0) {
+        //   hiliteLayer.clearLayers();
+        //   hiliteLayer.addData(features);
+        //   GV.app.map.fitBounds(hiliteLayer.getBounds(), {
+        //     maxZoom: 17,
+        //   });
+        // }
       });
     },
     submitIndirizzo() {
@@ -628,15 +682,35 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
         if (features && features.length > 0) {
-          hiliteLayer.clearLayers();
-          hiliteLayer.addData(features);
-          GV.app.map.fitBounds(hiliteLayer.getBounds(), {
-            maxZoom: 17,
-          });
-          // GV.app.map._container.style.cursor = 'default';
+          const feature = features[0];
+          let layer = GV.app.map.getLayerByName('InfoWmsHilite');
+          if (!layer) {
+            InfoWmsManager.addHiliteLayer(GV.app.map);
+            layer = GV.app.map.getLayerByName('InfoWmsHilite');
+          }
+          if (GV.app.map.type === 'openlayers') {
+            const source = layer.getSource();
+            source.clear(true);
+            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+              featureProjection: 'EPSG:3857',
+            });
+            source.addFeature(olFeature);
+            GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
+          } else {
+            layer.clearLayers();
+            layer.addData(feature.geometry);
+            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
+          }
         }
+        // const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
+        // if (features && features.length > 0) {
+        //   hiliteLayer.clearLayers();
+        //   hiliteLayer.addData(features);
+        //   GV.app.map.fitBounds(hiliteLayer.getBounds(), {
+        //     maxZoom: 17,
+        //   });
+        // }
       });
     },
     submitIdentificativo() {
@@ -668,15 +742,35 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
         if (features && features.length > 0) {
-          hiliteLayer.clearLayers();
-          hiliteLayer.addData(features);
-          GV.app.map.fitBounds(hiliteLayer.getBounds(), {
-            maxZoom: 17,
-          });
-          // GV.app.map._container.style.cursor = 'default';
+          const feature = features[0];
+          let layer = GV.app.map.getLayerByName('InfoWmsHilite');
+          if (!layer) {
+            InfoWmsManager.addHiliteLayer(GV.app.map);
+            layer = GV.app.map.getLayerByName('InfoWmsHilite');
+          }
+          if (GV.app.map.type === 'openlayers') {
+            const source = layer.getSource();
+            source.clear(true);
+            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+              featureProjection: 'EPSG:3857',
+            });
+            source.addFeature(olFeature);
+            GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
+          } else {
+            layer.clearLayers();
+            layer.addData(feature.geometry);
+            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
+          }
         }
+        // const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
+        // if (features && features.length > 0) {
+        //   hiliteLayer.clearLayers();
+        //   hiliteLayer.addData(features);
+        //   GV.app.map.fitBounds(hiliteLayer.getBounds(), {
+        //     maxZoom: 17,
+        //   });
+        // }
       });
     },
     cancel() {

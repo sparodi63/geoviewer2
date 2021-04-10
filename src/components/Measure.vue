@@ -238,7 +238,7 @@ export default {
     handleMarker(latlng) {
       this.resultPointHeight = null
       this.resultPointWGS84 = latlng.lng.toFixed(6) + ',' + latlng.lat.toFixed(6)
-      getCoordTransform('4326', '3003', latlng.lng, latlng.lat).then(response => {
+      getCoordTransform('4326', '3003', latlng.lng, latlng.lat).then(response => { 
         if (response.data.points) {
           const coords = response.data.points[0].split(',')
           this.resultPointGB = parseInt(coords[0]) + ',' + parseInt(coords[1])
