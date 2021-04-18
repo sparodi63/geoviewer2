@@ -8,6 +8,7 @@
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "deploy": "node build/deploy.js",
+    "compress": "node build/compress-leaflet.js",
     "unit": "karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
@@ -19,6 +20,9 @@
   "dependencies": {
     "@mapbox/leaflet-omnivore": "^0.3.4",
     "@mapbox/togeojson": "^0.16.0",
+    "@node-minify/clean-css": "^6.2.0",
+    "@node-minify/core": "^6.2.0",
+    "@node-minify/uglify-js": "^6.2.0",
     "axios": "^0.15.3",
     "bootstrap-sass": "^3.3.7",
     "element-ui": "^2.0.5",

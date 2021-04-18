@@ -262,16 +262,17 @@ export default {
     },
   },
   mounted: function() {
-    GV.eventBus.$on('gv-control-measure-ol-activate', ev => {
-      console.log('gv-control-measure-ol-activate');
+    GV.eventBus.$on('gv-control-measure-activate', ev => {
+      console.log('gv-control-measure-activate');
     });
-    GV.eventBus.$on('gv-control-measure-ol-deactivate', ev => {
-      console.log('gv-control-measure-ol-deactivate');
+    GV.eventBus.$on('gv-control-measure-deactivate', ev => {
+      console.log('gv-control-measure-deactivate');
       this.clear();
     });
     this.layer = new ol.layer.Vector({
       source: new ol.source.Vector(),
       style: this.style,
+      zIndex: 800,
     });
     GV.app.map.addLayer(this.layer);
   },

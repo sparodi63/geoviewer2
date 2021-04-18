@@ -43,7 +43,7 @@
               label="Nome Istituto"
               sortable
               align="left"
-              width="100"
+              width="120"
             >
             </el-table-column>
             <el-table-column prop="ordine" label="Ordine" sortable align="left" width="120">
@@ -53,7 +53,7 @@
               label="Titolo progetto"
               sortable
               align="left"
-              width="120"
+              width="130"
             >
             </el-table-column>
             <el-table-column prop="abstract" label="Abstract" sortable align="left" width="390">
@@ -63,7 +63,7 @@
                 <span v-if="scope.row.link_documentazione" title="link alla documentazione">
                   <el-button
                     size="mini"
-                    style="width:20px;padding-left:5px;"
+                    style="width:20px; padding-left:5px; color:#e94e1b; background-color:#EEEEEE !important"
                     @click="handleLink(scope.$index, scope.row.link_documentazione)"
                     icon="el-icon-link"
                   ></el-button>
@@ -140,9 +140,9 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  width: 900px;
-  margin-left: 20px;
-  margin-top: 190px;
+  width: 920px;
+  margin-left: 10px;
+  margin-top: 210px;
   z-index: 800;
 }
 
@@ -154,7 +154,7 @@ export default {
   padding-right: 0rem;
   padding-left: 0.5rem;
   margin-bottom: -1px;
-  color: #ccc;
+  color: black;
   cursor: default;
   font-weight: 800;
   font-family: 'Raleway', Arial, sans-serif !important;
@@ -190,15 +190,15 @@ export default {
   background: transparent;
   border: 0;
   -webkit-appearance: none;
+  background-color: #e94e1b !important;
   float: right;
   font-size: 1rem;
   line-height: 1;
-  font-weight: bold;
-  color: #ffffff;
+  font-weight: 800;
+  color: black;
   margin-left: 5px;
   margin-right: 5px;
   margin-top: 3px;
-  opacity: 0.5;
 }
 </style>
 

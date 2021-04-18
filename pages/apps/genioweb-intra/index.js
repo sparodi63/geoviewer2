@@ -231,6 +231,7 @@ GV.init({
     name: 'genioweb-intra-gv2',
     auth: auth,
     mapOptions: {
+      type: 'openlayers',
       click: 'info',
       initialExtent: extent,
       restrictedExtent: extent,

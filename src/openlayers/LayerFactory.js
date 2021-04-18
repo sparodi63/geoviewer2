@@ -4,6 +4,55 @@ import getWmsError from '../services/getWmsError';
 
 const esriLink = '<a href="https://www.esri.com/">Esri</a>';
 
+function layerLoadEventMngrTile(layer) {
+  let loading = 0,
+    loaded = 0;
+  layer.getSource().on('tileloadstart', event => {
+    ++loading;
+    if (loading === 1) GV.eventBus.$emit('layer-load', layer);
+  });
+  layer.getSource().on('tileloadend', event => {
+    ++loaded;
+    if (loading === loaded) {
+      loading = 0;
+      loaded = 0;
+      GV.eventBus.$emit('layer-loaded', layer);
+    }
+  });
+  layer.getSource().on('tileloaderror', event => {
+    ++loaded;
+    if (loading === loaded) {
+      loading = 0;
+      loaded = 0;
+      GV.eventBus.$emit('layer-loaded', layer);
+    }
+  });
+}
+
+function layerLoadEventMngrWMS(layer) {
+  layer.getSource().on('imageloadstart', function() {
+    GV.eventBus.$emit('layer-load', layer);
+  });
+  layer.getSource().on('imageloadend', function() {
+    GV.eventBus.$emit('layer-loaded', layer);
+  });
+  layer.getSource().on('imageloaderror', function() {
+    GV.eventBus.$emit('layer-loaded', layer);
+  });
+}
+
+function layerLoadEventMngrVector(layer) {
+  const sourceEventListener = layer.getSource().on('change', function(e) {
+    if (layer.getSource().getState() == 'loading') {
+      GV.eventBus.$emit('layer-load', layer);
+    }
+    if (layer.getSource().getState() == 'ready') {
+      GV.eventBus.$emit('layer-loaded', layer);
+      layer.getSource().un('change', sourceEventListener);
+    }
+  });
+}
+
 const layerFactory = {
   BLANK() {
     return null;
@@ -68,6 +117,7 @@ const layerFactory = {
     });
     layerConfig.name = layerConfig.type;
     layer.name = layerConfig.type;
+    // layerLoadEventMngrTile(layer);
     return layer;
   },
   ESRI_STREETS(layerConfig) {
@@ -117,135 +167,6 @@ const layerFactory = {
     layerConfig.name = layerConfig.type;
     layer.name = layerConfig.type;
     return layer;
-  },
-  // TODO
-  MAPBOX(layerConfig) {
-    const USERNAME = layerConfig.mapboxConfig.userName;
-    const ACCESS_TOKEN = layerConfig.mapboxConfig.accessToken;
-    const STYLE = layerConfig.mapboxConfig.style;
-    return L.tileLayer(
-      `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
-      {
-        attributions:
-          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: 'abcd',
-        maxZoom: 20,
-      }
-    );
-  },
-  MAPBOX_VIABILITA(layerConfig) {
-    const USERNAME = 'liguriadigitale';
-    const ACCESS_TOKEN =
-      'pk.eyJ1IjoibGlndXJpYWRpZ2l0YWxlIiwiYSI6ImNqbzQzajk0bDEwa3EzcWt1ZThqazFqcGIifQ.dUhSMka7mXTD2inJGmlBMw';
-    const STYLE = 'cjo442ih3407m2slfdwc1hib5';
-    const LEGEND_LABEL = 'Carta della Viabilità';
-
-    layerConfig.legend = {
-      label: LEGEND_LABEL,
-    };
-    return L.tileLayer(
-      `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
-      {
-        attributions:
-          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: 'abcd',
-        maxZoom: 20,
-      }
-    );
-  },
-  MAPBOX_MONOCHROME(layerConfig) {
-    const USERNAME = 'liguriadigitale';
-    const ACCESS_TOKEN =
-      'pk.eyJ1IjoibGlndXJpYWRpZ2l0YWxlIiwiYSI6ImNqbzQzajk0bDEwa3EzcWt1ZThqazFqcGIifQ.dUhSMka7mXTD2inJGmlBMw';
-    const STYLE = 'ckgj8eqz80t8q19theln5gwrk';
-
-    const LEGEND_LABEL = 'Mapbox Monochrome';
-
-    layerConfig.legend = {
-      label: LEGEND_LABEL,
-    };
-    return L.tileLayer(
-      `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
-      {
-        attributions:
-          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: 'abcd',
-        maxZoom: 20,
-      }
-    );
-  },
-  MAPBOX_STREETS(layerConfig) {
-    // const USERNAME = 'stefanoparodi';
-    // const ACCESS_TOKEN =
-    //   'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2RtZm4wMGFsNDZvNXg3MTBhdjloIn0.LcH0hAI63Zm2q8hm8dw5sA';
-    // const STYLE = 'cjnbki8th45ow2rntdm9xog21';
-    const USERNAME = 'liguriadigitale';
-    const ACCESS_TOKEN =
-      'pk.eyJ1IjoibGlndXJpYWRpZ2l0YWxlIiwiYSI6ImNqbzQzajk0bDEwa3EzcWt1ZThqazFqcGIifQ.dUhSMka7mXTD2inJGmlBMw';
-    const STYLE = 'ckgj8f25p0o6y19jxk0ykap41'; // STREEET
-    // const STYLE = 'ckgj8dp1l131l19mp3na5jsjn'; // BASIC
-
-    const LEGEND_LABEL = 'Mapbox Streets';
-
-    layerConfig.legend = {
-      label: LEGEND_LABEL,
-    };
-    return L.tileLayer(
-      `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
-      {
-        attributions:
-          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: 'abcd',
-        maxZoom: 20,
-      }
-    );
-  },
-  MAPBOX_VIABILITA_SATELLITARE(layerConfig) {
-    const USERNAME = 'liguriadigitale';
-    const ACCESS_TOKEN =
-      'pk.eyJ1IjoibGlndXJpYWRpZ2l0YWxlIiwiYSI6ImNqbzQzajk0bDEwa3EzcWt1ZThqazFqcGIifQ.dUhSMka7mXTD2inJGmlBMw';
-    const STYLE = 'cjo43w54x00di2spieg5itsgf';
-    const LEGEND_LABEL = 'Carta ibrida';
-
-    layerConfig.legend = {
-      label: LEGEND_LABEL,
-    };
-    return L.tileLayer(
-      `https://api.mapbox.com/styles/v1/${USERNAME}/${STYLE}/tiles/256/{z}/{x}/{y}?access_token=${ACCESS_TOKEN}`,
-      {
-        attributions:
-          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: 'abcd',
-        maxZoom: 20,
-      }
-    );
-  },
-  // TODO https://openlayers.org/en/latest/examples/stamen.html
-  STAMEN_TERRAIN(layerConfig) {
-    layerConfig.legend = {
-      label: 'Stamen Terrain',
-    };
-    return L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
-      attributions:
-        'Map tiles by <a href="https://stamen.com">Stamen Design</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: 'abcd',
-      minZoom: 0,
-      maxZoom: 20,
-      ext: 'png',
-    });
-  },
-  STAMEN_TONER_LIGHT(layerConfig) {
-    layerConfig.legend = {
-      label: 'Stamen Toner Light',
-    };
-    return L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
-      attributions:
-        'Map tiles by <a href="https://stamen.com">Stamen Design</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: 'abcd',
-      minZoom: 0,
-      maxZoom: 20,
-      ext: 'png',
-    });
   },
   // NON SI VEDE NEANCHE SU LEAFLET
   RL_CARTE_BASE_NC25() {
@@ -388,9 +309,6 @@ const layerFactory = {
       transparent: true,
       format: wmsParams.format,
       styles: wmsParams.styles || '',
-      // opacity: opacity,
-      // minZoom: layerConfig.minZoom,
-      // maxZoom: layerConfig.maxZoom,
       client: 'GV2',
     };
     if (wmsParams.cql_filter) {
@@ -409,10 +327,10 @@ const layerFactory = {
       } else {
         params.layers = wmsParams.name;
       }
-      let urls = null;
-      if (globals.USE_SUBDOMAINS && url.indexOf('geoservizi.regione.liguria.it') > 0) {
-        urls = [url.replace('geoservizi', 'geoservizi1'), url.replace('geoservizi', 'geoservizi2')];
-      }
+      let urls =
+        globals.USE_SUBDOMAINS && url.indexOf('geoservizi.regione.liguria.it') > 0
+          ? [url.replace('geoservizi', 'geoservizi1'), url.replace('geoservizi', 'geoservizi2')]
+          : null;
       const cacheVersion =
         url.indexOf('geoservizi.datasiel.net') > 0
           ? layerConfig.cacheVersionTest
@@ -424,7 +342,6 @@ const layerFactory = {
         height: 256,
         CACHE_VERSION: cacheVersion,
       });
-
       let sourceOptions = {
         params: params,
       };
@@ -436,20 +353,10 @@ const layerFactory = {
       if (attributions) {
         sourceOptions.attributions = attributions;
       }
-
       layer = new ol.layer.Tile({
         source: new ol.source.TileWMS(sourceOptions),
       });
-
-      layer.on('tileerror', err => {
-        getWmsError(err.tile.currentSrc)
-          .then(response => {
-            console.error('ERRORE WMS');
-            if (response && response.ServiceExceptionReport)
-              console.log(response.ServiceExceptionReport.ServiceException);
-          })
-          .catch(error => console.error(error));
-      });
+      layerLoadEventMngrTile(layer);
     } else {
       Object.assign(params, {
         layers: wmsParams.name,
@@ -463,15 +370,7 @@ const layerFactory = {
         url: url,
         source: new ol.source.ImageWMS(sourceOptions),
       });
-
-      layer.on('error', err => {
-        getWmsError(err.target.url)
-          .then(response => {
-            console.error('ERRORE WMS');
-            console.log(response.ServiceExceptionReport.ServiceException);
-          })
-          .catch(error => console.error(error));
-      });
+      layerLoadEventMngrWMS(layer);
     }
 
     layer.setOpacity(opacity);
@@ -479,6 +378,7 @@ const layerFactory = {
     layer.type = 'WMS';
     layer.config = layerConfig;
     layer.name = name;
+
     return layer;
   },
   JSON(layerConfig) {
@@ -543,6 +443,7 @@ const layerFactory = {
       });
     }
 
+    // TODO METTERE IN FUNZIONE DEDICATA
     if (basePopup) {
       const overlay = new ol.Overlay({
         element: document.getElementById('ol-popup'),
@@ -579,6 +480,8 @@ const layerFactory = {
         });
       });
     }
+
+    layerLoadEventMngrVector(layer);
 
     //TODO OL
     if (cluster) {

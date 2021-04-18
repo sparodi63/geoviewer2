@@ -66,9 +66,58 @@ GV.init({
         // },
         { name: 'gv-info-button', active: true },
         { name: 'gv-measure-button' },
-        { name: 'gv-layer-search-button' },
+        // { name: 'gv-layer-search-topo-button' },
         // { name: 'gv-ricerca-particella-button' },
         { name: 'gv-ricerca-catastale-button' },
+        {
+          name: 'gv-draw-button',
+          active: false,
+          options: {
+            tools: {
+              draw: {
+                point: true,
+                polyline: true,
+                polygon: true,
+              },
+              edit: {
+                edit: true,
+                remove: true,
+              },
+            },
+            buttons: {
+              submit: true,
+              cancel: false,
+              refresh: true,
+            },
+            color: '#FF9900',
+            multiGeom: true,
+            epsg: '3003',
+            initWfsRequests: getInitWfsRequests(),
+            submit: function(data, deleted, loading, refresh) {
+              console.log('submit', data, deleted);
+              fetch('/geoservices/REST/coordinate/transform_geojson', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  geoJSON: data,
+                  srsIn: '3857',
+                  srsOut: '3003',
+                }),
+              })
+                .then(response => response.json())
+                .then(data => {
+                  console.log(data);
+                });
+
+              if (refresh) refresh();
+              if (loading) loading.close();
+            },
+            cancel: function() {},
+          },
+        },
+        { name: 'gv-print-button' },
         {
           name: 'gv-scalebar',
           position: 'bottomleft',
@@ -115,4 +164,13 @@ GV.init({
 
 function conferma(x, y, esito) {
   console.log(x, y);
+}
+
+function getInitWfsRequests() {
+  return [
+    {
+      wfsURL:
+        "https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=L7240&cql_filter=CODICE_PRATICA='GVI06559'",
+    },
+  ];
 }

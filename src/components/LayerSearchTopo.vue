@@ -393,27 +393,7 @@ export default {
 
       getWFSFeature(wfsParams, cqlFilter)
         .then(features => {
-          if (features && features[0] && features[0].geometry) {
-            const feature = features[0];
-            const layer = GV.app.map.getLayerByName('InfoWmsHilite');
-            if (GV.app.map.type === 'openlayers') {
-              const source = layer.getSource();
-              source.clear(true);
-              const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-                featureProjection: 'EPSG:3857',
-              });
-              source.addFeature(olFeature);
-              GV.app.map.fit(olFeature.getGeometry().getExtent(), {
-                maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
-              });
-              GV.config.hilitedLayer.push(layerName);
-            } else {
-              layer.clearLayers();
-              layer.addData(feature.geometry);
-              GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
-              GV.config.hilitedLayer.push(layerName);
-            }
-          }
+          GV.app.map.hiliteFeatures(features);
         })
         .catch(error => {
           console.error(error);

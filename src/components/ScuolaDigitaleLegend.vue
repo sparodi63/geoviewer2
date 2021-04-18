@@ -1,7 +1,7 @@
 <template>
   <div id="gv-scuoladigitale-legend" class="gv-inverted-color-scheme">
     <div id="gv-scuoladigitale-legend-title" class="gv-scuoladigitale-legend-title gv-color-scheme">
-      <b>{{ title }}</b>
+      {{ title }}
       <button
         :class="toggleCollapseClass()"
         size="mini"

@@ -30,19 +30,16 @@ export default {
     rectEnable() {
       notification('Disegna un rettangolo sulla mappa');
       if (GV.app.map.type === 'openlayers') {
-        this.rectEnableOL();
+        this.dragBoxInteraction = new ol.interaction.DragBox({});
+        GV.app.map.addInteraction(this.dragBoxInteraction);
+        this.dragBoxInteraction.on('boxend', this.rectOnDraw);
       } else {
-        if (!GV.app.map.drawRectangle) {
+        if (!GV.app.map.map.drawRectangle) {
           GV.app.map.addHandler('drawRectangle', L.Draw.Rectangle);
         }
-        GV.app.map.drawRectangle.enable();
+        GV.app.map.map.drawRectangle.enable();
         GV.app.map.on('draw:created', this.rectOnDraw);
       }
-    },
-    rectEnableOL() {
-      this.dragBoxInteraction = new ol.interaction.DragBox({});
-      GV.app.map.addInteraction(this.dragBoxInteraction);
-      this.dragBoxInteraction.on('boxend', this.rectOnDraw);
     },
     rectReset() {
       if (GV.app.map.type === 'openlayers') {
@@ -53,10 +50,10 @@ export default {
         if (this.drawnRectangle) {
           this.drawnRectangle.clearLayers();
         }
-        if (GV.app.map.drawRectangle) {
+        if (GV.app.map.map.drawRectangle) {
           GV.config.activeControl.deactivate();
-          GV.app.map.drawRectangle.disable();
-          GV.app.map.drawRectangle.enable();
+          GV.app.map.map.drawRectangle.disable();
+          GV.app.map.map.drawRectangle.enable();
         }
       }
     },
@@ -67,8 +64,8 @@ export default {
           this.drawnRectangle.getSource().clear();
         }
       } else {
-        if (GV.app.map.drawRectangle) {
-          GV.app.map.drawRectangle.disable();
+        if (GV.app.map.map.drawRectangle) {
+          GV.app.map.map.drawRectangle.disable();
         }
         if (this.drawnRectangle) {
           this.drawnRectangle.clearLayers();

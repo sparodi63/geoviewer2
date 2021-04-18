@@ -2,19 +2,19 @@
 // CSS
 require('style!./assets/css/base.css');
 require('style!./assets/css/mapskin/css/mapskin.css');
-// -------------------------------------------------------------------------------- //
 import '@fortawesome/fontawesome-free/css/all.css';
+// -------------------------------------------------------------------------------- //
 // leaflet
-require('style!../node_modules/leaflet/dist/leaflet.css');
-require('style!./assets/css/leaflet.draw.css');
-require('style!./assets/css/leaflet-control-credits.css');
-import L from 'leaflet';
-require('leaflet-draw');
-require('./leaflet/leaflet.drawlocal.js');
-require('./leaflet/leaflet.edit.poly.js');
-require('./leaflet/MarkerCluster.js');
-require('./leaflet/NonTiledLayer.js');
-require('./leaflet/leaflet-control-credits.js');
+// require('style!../node_modules/leaflet/dist/leaflet.css');
+// require('style!./assets/css/leaflet.draw.css');
+// require('style!./assets/css/leaflet-control-credits.css');
+// import L from 'leaflet';
+// require('leaflet-draw');
+// require('./leaflet/leaflet.drawlocal.js');
+// require('./leaflet/leaflet.edit.poly.js');
+// require('./leaflet/MarkerCluster.js');
+// require('./leaflet/NonTiledLayer.js');
+// require('./leaflet/leaflet-control-credits.js');
 // -------------------------------------------------------------------------------- //
 // Shims/Polyfill
 require('./polyfill/findIndex');
@@ -52,6 +52,7 @@ import { get } from 'jquery';
 // -- DEFINIZIONE GV
 window.GV = {
   async init(options) {
+    console.log('INIT', options);
     if (options.application.mapOptions && options.application.mapOptions.type === 'openlayers') {
       console.log('Caricamento libreria OpenLayers');
       const olScripts = [
@@ -73,21 +74,16 @@ window.GV = {
         );
       } else {
         await fetchInject(projDefs, fetchInject(olScripts));
-        await fetchInject(olScripts);
+        // await fetchInject(olScripts);
       }
       // console.log('Dopo fetchInject - openlayers', ol);
     } else {
-      // console.log('Caricamento libreria LeafLet');
-      // require('style!../node_modules/leaflet/dist/leaflet.css');
-      // require('style!./assets/css/leaflet.draw.css');
-      // require('style!./assets/css/leaflet-control-credits.css');
-      // require('leaflet/dist/leaflet.js');
-      // require('leaflet-draw');
-      // require('./leaflet/leaflet.drawlocal.js');
-      // require('./leaflet/leaflet.edit.poly.js');
-      // require('./leaflet/MarkerCluster.js');
-      // require('./leaflet/NonTiledLayer.js');
-      // require('./leaflet/leaflet-control-credits.js');
+      console.log('Caricamento libreria LeafLet');
+      const llScripts = [
+        '/geoservices/apps/viewer/dist/leaflet/leaflet-min.js',
+        '/geoservices/apps/viewer/dist/leaflet/leaflet-min.css',
+      ];
+      await fetchInject(llScripts);
     }
 
     const env = await getEnv();

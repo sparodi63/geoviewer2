@@ -10,6 +10,7 @@ GV.init({
   application: {
     name: 'ambiente-gv2',
     mapOptions: {
+      // type: 'openlayers',
       click: 'info',
       disableMaxBounds: true,
     },

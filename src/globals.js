@@ -28,9 +28,9 @@ export default {
 
   RL_CATALOG: 'pub',
 
-  // HERE_GEOCODE_PROXY: '/geoservices/REST/proxy/here_geocode.v2',
-  HERE_GEOCODE_PROXY:
-    '/geoservices/apps/proxy/proxy.jsp?url=http://10.20.4.120/geoservices/REST/proxy/here_geocode.v3?',
+  HERE_GEOCODE_PROXY: '/geoservices/REST/proxy/here_geocode.v3',
+  // HERE_GEOCODE_PROXY:
+  //   '/geoservices/apps/proxy/proxy.jsp?url=http://10.20.4.120/geoservices/REST/proxy/here_geocode.v3?',
 
   //
   MAPBOX_USERNAME: 'stefanoparodi',

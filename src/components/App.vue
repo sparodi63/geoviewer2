@@ -1,9 +1,7 @@
 <template>
   <div id="gv-container">
     <gv-header v-if="showHeader"></gv-header>
-    <gv-ll-map v-if="leafletMap" ref="gv-ll-map"></gv-ll-map>
-    <gv-ol-map v-if="olMap" ref="gv-ll-map"></gv-ol-map>
-    <!-- <gv-cesium-map v-if="cesiumMap" ref="gv-cesium"></gv-cesium-map> -->
+    <gv-map ref="gv-map"></gv-map>
     <gv-legend v-if="showLegend" ref="gv-legend"></gv-legend>
     <div class="gv-tool-container">
       <div id="gv-tool-topleft" class="gv-tool-top gv-tool-left" />
@@ -20,13 +18,9 @@ import getProtocol from '../util/getProtocol';
 import mountComponent from '../util/mountComponent';
 import Vue from 'vue';
 
-// Componenti Vue
-import LefletMap from './LeafletMap';
-Vue.component('gv-ll-map', LefletMap);
-import OpenLayersMap from './OpenLayersMap';
-Vue.component('gv-ol-map', OpenLayersMap);
-// import CesiumMap from './CesiumMap';
-// Vue.component('gv-cesium-map', CesiumMap);
+import Map from './Map';
+Vue.component('gv-map', Map);
+
 import Legend from './Legend';
 Vue.component('gv-legend', Legend);
 import Header from './Header';
@@ -48,12 +42,7 @@ Vue.component('gv-info-generico', () =>
 export default {
   name: 'gv-app',
   data() {
-    let mapType =
-      (GV.config.application.mapOptions && GV.config.application.mapOptions.type) || 'leaflet';
     return {
-      leafletMap: mapType === 'leaflet',
-      olMap: mapType === 'openlayers',
-      // cesiumMap: mapType === 'cesium',
       showHeader: GV.config.application.layout.header,
       showLegend: GV.config.application.layout.legend,
       showToolbar: GV.config.application.layout.toolbar,

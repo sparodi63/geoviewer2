@@ -162,8 +162,6 @@ function _handleResponse(features, layerName) {
   Array.prototype.push.apply(_features, features);
 
   if (_requestCount === _numRequests) {
-    // if (GV.app.map._container) GV.app.map._container.style.cursor = 'default';
-
     if (_features.length === 0) {
       GV.log('Nessun elemento trovato');
       return;
@@ -422,29 +420,7 @@ function hiliteFeature(feature) {
     }
     getWFSFeature(layerConfig.wfsParams, cqlFilter, null)
       .then(features => {
-        const layer = GV.app.map.getLayerByName('InfoWmsHilite');
-        const feature = layer && features ? features[0] : null;
-        if (feature && feature.geometry) {
-          if (GV.app.map.type === 'openlayers') {
-            const source = layer.getSource();
-            source.clear(true);
-            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-              featureProjection: 'EPSG:3857',
-            });
-            source.addFeature(olFeature);
-            GV.app.map.fit(olFeature.getGeometry().getExtent(), {
-              maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
-            });
-            GV.config.hilitedLayer.push(layerName);
-          } else {
-            layer.clearLayers();
-            layer.addData(feature.geometry);
-            GV.app.map.fitBounds(layer.getBounds(), {
-              maxZoom: layerConfig.maxZoom < 17 ? layerConfig.maxZoom : 17,
-            });
-            GV.config.hilitedLayer.push(layerName);
-          }
-        }
+        GV.app.map.hiliteFeatures(features);
       })
       .catch(error => {
         console.error(error);
@@ -498,89 +474,98 @@ function openPopup(url, options) {
   return popup;
 }
 
-function addHiliteLayer(map) {
-  switch (map.options.type) {
-    case 'openlayers':
-      const color = [255, 204, 0, 0.6];
-      const stroke = new ol.style.Stroke({
-        color: color,
-        width: 6,
-      });
-      const styles = {
-        Point: new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 8,
-            fill: null,
-            stroke: stroke,
-          }),
-        }),
-        MultiPoint: new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 8,
-            fill: null,
-            stroke: stroke,
-          }),
-        }),
-        LineString: new ol.style.Style({
-          stroke: stroke,
-        }),
-        MultiLineString: new ol.style.Style({
-          stroke: stroke,
-        }),
-        Polygon: new ol.style.Style({
-          stroke: stroke,
-        }),
-        MultiPolygon: new ol.style.Style({
-          stroke: stroke,
-        }),
-        GeometryCollection: new ol.style.Style({
-          stroke: stroke,
-          image: new ol.style.Circle({
-            radius: 8,
-            fill: null,
-            stroke: stroke,
-          }),
-        }),
-      };
-      map.loadLayers([
-        {
-          name: 'InfoWmsHilite',
-          type: 'JSON',
-          style: feature => {
-            return styles[feature.getGeometry().getType()];
-          },
-          visible: true,
-          zIndex: 1000,
-        },
-      ]);
-      break;
-    default:
-      map.loadLayers([
-        {
-          name: 'InfoWmsHilite',
-          type: 'JSON',
-          style: {
-            color: '#ffcc00',
-            fillOpacity: 0,
-            weight: 6,
-            opacity: 0.6,
-          },
-          pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, {
-              radius: 8,
-              color: '#ffcc00',
-              fillColor: '#ffcc00',
-              fill: true,
-              fillOpacity: 0.6,
-              weight: 6,
-              opacity: 0.6,
-            });
-          },
-          visible: true,
-        },
-      ]);
-      break;
+function addHiliteLayer() {
+  if (GV.app.map.type === 'openlayers') {
+    addHiliteLayerOL();
+  } else {
+    addHiliteLayerLL();
   }
+}
+
+function addHiliteLayerOL() {
+  const color = [255, 204, 0, 0.6];
+  const stroke = new ol.style.Stroke({
+    color: color,
+    width: 6,
+  });
+  const styles = {
+    Point: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 8,
+        fill: null,
+        stroke: stroke,
+      }),
+    }),
+    MultiPoint: new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 8,
+        fill: null,
+        stroke: stroke,
+      }),
+    }),
+    LineString: new ol.style.Style({
+      stroke: stroke,
+    }),
+    MultiLineString: new ol.style.Style({
+      stroke: stroke,
+    }),
+    Polygon: new ol.style.Style({
+      stroke: stroke,
+    }),
+    MultiPolygon: new ol.style.Style({
+      stroke: stroke,
+    }),
+    GeometryCollection: new ol.style.Style({
+      stroke: stroke,
+      image: new ol.style.Circle({
+        radius: 8,
+        fill: null,
+        stroke: stroke,
+      }),
+    }),
+  };
+  GV.app.map.loadLayers([
+    {
+      name: 'InfoWmsHilite',
+      type: 'JSON',
+      style: feature => {
+        return styles[feature.getGeometry().getType()];
+      },
+      visible: true,
+      zIndex: 1000,
+    },
+  ]);
+}
+
+function addHiliteLayerLL() {
+  GV.app.map.loadLayers([
+    {
+      name: 'InfoWmsHilite',
+      type: 'JSON',
+      style: {
+        color: '#ffcc00',
+        fillOpacity: 0,
+        weight: 6,
+        opacity: 0.6,
+      },
+      pointToLayer: function(feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius: 8,
+          color: '#ffcc00',
+          fillColor: '#ffcc00',
+          fill: true,
+          fillOpacity: 0.6,
+          weight: 6,
+          opacity: 0.6,
+        });
+      },
+      visible: true,
+    },
+  ]);
+}
+
+function onClick(event) {
+  _request(event);
 }
 
 export default {
@@ -591,6 +576,12 @@ export default {
   // buildWMSOptions: buildWMSOptions,
   getGetFeatureInfoUrl: getGetFeatureInfoUrl,
   features: _features,
+  // onClick: function(event) {
+  //   console.log('ON CLICK', this.active);
+  //   if (this.active) {
+  //     _request(event);
+  //   }
+  // },
   activate: function() {
     GV.log('GV.app.infoWmsManager.activate');
 
@@ -605,22 +596,15 @@ export default {
       });
     }
 
-    // GV.eventBus.$on('map-click', event => {
-    GV.app.map.on('click', event => {
-      if (this.active) {
-        _request(event);
-      }
-    });
+    GV.app.map.on('click', onClick);
 
     GV.app.infoWmsManager = this;
     GV.config.activeControl = this;
   },
-
   deactivate: function() {
     GV.log('GV.app.infoWmsManager.deactivate');
-    GV.app.map.off('click');
+    GV.app.map.off('click', onClick);
     this.active = false;
   },
-
   showFeatureInfo: _showFeatureInfo,
 };

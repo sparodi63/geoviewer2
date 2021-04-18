@@ -15,8 +15,8 @@ http://localhost:8081/?&CODICE=010001
 
 var idMap = 'D66';
 var idLayer = 'L6422';
-var field = 'codice_comune'
-// var field = 'CODICE_COMUNE';
+// var field = 'codice_comune';
+var field = 'CODICE_COMUNE';
 var value = GV.utils.getUrlParam('codice');
 var lon = GV.utils.getUrlParam('lon');
 var lat = GV.utils.getUrlParam('lat');
@@ -39,6 +39,7 @@ var findOptions = value
   : null;
 
 function conferma(x, y, esito) {
+  console.log(x, y, esito);
   window.parent.postMessage(
     { messaggio: 'selezione-coordinate', lon: x, lat: y, esito: esito },
     '*'
@@ -53,6 +54,9 @@ GV.init({
   findOptions: findOptions,
   application: {
     name: 'terrescavo-gv2',
+    mapOptions: {
+      type: 'openlayers',
+    },
     layout: {
       legend: {
         options: {

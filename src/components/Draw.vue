@@ -38,10 +38,6 @@
 </template>
 
 <script>
-// require('../leaflet/leaflet.draw-src.js');
-// require('../leaflet/leaflet.drawlocal.js');
-// require('../leaflet/leaflet.edit.poly.js');
-
 import Vue from 'vue';
 import getCoordTransform from '../services/getCoordTransform';
 import getCoordTransformPoly from '../services/getCoordTransformPoly';

@@ -169,10 +169,24 @@ export default {
         item => item.properties.ID == value || item.properties.id == value
       );
       if (layer && features && features[0] && features[0].geometry) {
-        layer.clearLayers();
-        layer.addData(features[0].geometry);
-        if (this.risknatForm.zoom) {
-          GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 17 });
+        GV.app.map.clearLayer('RisknatDataset');
+        if (GV.app.map.type === 'openlayers') {
+          const source = layer.getSource();
+          // source.clear(true);
+          for (const feature of features) {
+            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+              featureProjection: 'EPSG:3857',
+            });
+            source.addFeature(olFeature);
+          }
+          GV.app.map.fit(layer.getSource().getExtent(), {
+            maxZoom: 17,
+          });
+        } else {
+          layer.addData(features[0].geometry);
+          if (this.risknatForm.zoom) {
+            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 17 });
+          }
         }
       }
     },
@@ -198,16 +212,23 @@ export default {
     },
     loadRisknatDataset(data) {
       this.risknatForm.layerDataset = data;
+      const styleLL = {
+        color: '#ffcc00',
+        fillOpacity: 0,
+        weight: 1,
+        opacity: 1,
+      };
+      const styleOL = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'blue',
+          width: 3,
+        }),
+      });
       GV.app.map.loadLayers([
         {
           name: 'RisknatDataset',
           type: 'JSON',
-          style: {
-            color: '#ffcc00',
-            fillOpacity: 0,
-            weight: 1,
-            opacity: 1,
-          },
+          style: GV.app.map.type === 'openlayers' ? styleOL : styleLL,
           visible: true,
           data: null,
         },

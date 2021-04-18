@@ -10,40 +10,31 @@ import getCoordTransformBbox from '../services/getCoordTransformBbox';
 import notification from '../util/notification';
 import { Loading } from 'element-ui';
 
-const Map = L.Map.extend({
+const llMap = {
+  type: 'leaflet',
   layers: [],
-
   baseLayers: [],
-
   initialExtent: [],
-
+  map: null,
+  zoom: null,
   buttons: [],
-
   mapOptions: {
+    type: 'leaflet',
     zoomControl: false,
     minZoom: 7,
     maxZoom: 20,
   },
-
   initialize() {
     Object.assign(this.mapOptions, GV.config.application.mapOptions);
+    console.log('MAP OPTIONS', this.mapOptions);
 
-    if (!GV.config.application.mapOptions || !GV.config.application.mapOptions.disableMaxBounds) {
-      this.mapOptions.maxBounds = L.latLngBounds(
-        L.latLng(globals.MAX_BOUNDS.X_MIN, globals.MAX_BOUNDS.Y_MIN),
-        L.latLng(globals.MAX_BOUNDS.X_MAX, globals.MAX_BOUNDS.Y_MAX)
-      );
-      this.mapOptions.maxBoundsViscosity = 1.0;
-    }
-
-    L.Map.prototype.initialize.call(
-      this,
-      'gv-map',
-      L.extend(L.Map.prototype.options, this.mapOptions)
-    );
+    this.map = L.map('gv-map', this.mapOptions);
     this.type = 'leaflet';
+    this.options = this.map.options;
 
     this.setInitialExtent();
+
+    this.zoom = this.map._zoom;
 
     this.setRestrictedExtent();
 
@@ -54,11 +45,69 @@ const Map = L.Map.extend({
     this.loadControls();
 
     this.eventMngr();
+
+    return this;
+  },
+
+  // FUNZIONE PROXY SU MAP
+
+  on(event, fn) {
+    this.map.on(event, fn);
+  },
+  off(event) {
+    this.map.off(event);
+  },
+  fitBounds(bounds) {
+    this.map.fitBounds(bounds);
+  },
+  setView(center, zoom, opt) {
+    // center: se array converto oggetto Leaflet
+    const coords = Array.isArray(center) ? { lat: center[0], lng: center[1] } : center;
+    this.map.setView(coords, zoom, opt);
+  },
+  setMaxBounds(bounds) {
+    this.map.setMaxBounds(bounds);
+  },
+  getBounds() {
+    return this.map.getBounds();
+  },
+  getSize() {
+    return this.map.getSize();
+  },
+  getCenter() {
+    return this.map.getCenter();
+  },
+  getZoom() {
+    return this.map.getZoom();
+  },
+  setZoom(zoom, opt) {
+    this.map.setZoom(zoom, opt);
+  },
+  removeLayer(layer) {
+    this.map.removeLayer(layer);
+  },
+  addLayer(layer) {
+    this.map.addLayer(layer);
+  },
+  flyTo(center, zoom, opt) {
+    this.map.flyTo(center, zoom, opt);
+  },
+  latLngToContainerPoint(latlng) {
+    return this.map.latLngToContainerPoint(latlng);
+  },
+  addControl(control) {
+    this.map.addControl(control);
+  },
+  eachLayer(fn, context) {
+    this.map.eachLayer(fn, context);
+  },
+  addHandler(handler, fn) {
+    this.map.addHandler(handler, fn);
   },
 
   eventMngr() {
     this.on('zoom', () => {
-      GV.eventBus.$emit('map-zoom', this._zoom);
+      GV.eventBus.$emit('map-zoom', this.map._zoom);
     });
     GV.eventBus.$on('set-layer-visible', event => {
       this.setLayerVisible(event.layer, event.checked);
@@ -101,25 +150,22 @@ const Map = L.Map.extend({
 
   setExtent(extent) {
     this.initialExtent = this.projToGeoBounds(extent);
-    // console.log('SET EXTENT', this.initialExtent);
     this.fitBounds(this.initialExtent);
   },
 
   setInitialExtent() {
     GV.log('setInitialExtent');
     if (this.mapOptions.center && this.mapOptions.zoom) {
-      GV.log('setView');
       this.setView(this.mapOptions.center, this.mapOptions.zoom);
     } else {
-      GV.log('setExtent');
       var extent = this.mapOptions.initialExtent || '830036,5402959,1123018,5597635';
       this.setExtent(extent);
     }
   },
 
   setRestrictedExtent() {
-    if (this.options.restrictedExtent) {
-      this.restrictedExtent = this.projToGeoBounds(this.options.restrictedExtent);
+    if (this.mapOptions.restrictedExtent) {
+      this.restrictedExtent = this.projToGeoBounds(this.mapOptions.restrictedExtent);
       this.setMaxBounds(this.restrictedExtent);
     }
   },
@@ -167,74 +213,56 @@ const Map = L.Map.extend({
     if (this.mapOptions.controls) {
       var cntrl;
       this.controls = {};
-      this.mapOptions.controls.forEach(function(control) {
+      this.mapOptions.controls.forEach(control => {
         switch (control.name) {
           case 'scale':
             cntrl = L.control
               .scale({
                 imperial: false,
               })
-              .addTo(this);
+              .addTo(this.map);
             this.controls[control] = cntrl;
             break;
         }
-      }, this);
+      });
     }
   },
 
   loadBaseLayers() {
-    'use strict';
-
     this.baseLayers = [];
     GV.config.baseLayers.forEach(layerConfig => {
       var layer = LayerFactory.create(layerConfig, this);
       this.baseLayers[layer.config.type] = layer;
       if (layer && layerConfig.visible) {
-        layer.on(
-          'loading',
-          function() {
-            this.loading(true, layer);
-          },
-          this
-        );
-        layer.on(
-          'load',
-          function() {
-            this.loading(false, layer);
-          },
-          this
-        );
-        layer.addTo(this);
+        layer.on('loading', () => {
+          this.loading(true, layer);
+        });
+        layer.on('load', () => {
+          this.loading(false, layer);
+        });
+        layer.addTo(this.map);
         this.activeBaseLayer = layer;
         GV.config.activeBaseLayer = layer.config.name;
       }
-    }, this);
+    });
   },
 
   loadLayers(layers) {
-    layers.forEach(function(layerConfig) {
+    layers.forEach(layerConfig => {
       if (!this.getLayerByName(layerConfig.name)) {
-        var layer = LayerFactory.create(layerConfig, this);
+        var layer = LayerFactory.create(layerConfig);
         if (layer && layerConfig.visible) {
-          layer.on(
-            'loading',
-            function() {
-              this.loading(true, layer);
-            },
-            this
-          );
-          layer.on(
-            'load',
-            function() {
-              this.loading(false, layer);
-            },
-            this
-          );
-          layer.addTo(this);
+          layer.on('loading', () => {
+            this.loading(true, layer);
+          });
+          layer.on('load', () => {
+            this.loading(false, layer);
+          });
+          layer.addTo(this.map);
           layer.on('ready', () => {
             if (layerConfig.zoomToLayerExtent) {
               let bounds = new L.latLngBounds();
-              layer.eachLayer(function(_layer) {
+              layer.eachLayer(_layer => {
                 if (_layer.getBounds) {
                   bounds.extend(_layer.getBounds());
                 } else {
@@ -246,13 +274,13 @@ const Map = L.Map.extend({
           });
         }
       }
-    }, this);
+    });
   },
   filterLayer(layerName, filters) {
     const layer = this.getLayerByName(layerName);
     if (!layer) return;
     if (filters) {
-      layer.eachLayer(function(marker) {
+      layer.eachLayer(marker => {
         var opacity = 0;
         filters.forEach(function(filter) {
           if (marker.feature.properties[filter.key] === filter.value) {
@@ -262,7 +290,7 @@ const Map = L.Map.extend({
         marker.setOpacity(opacity);
       });
     } else {
-      layer.eachLayer(function(marker) {
+      layer.eachLayer(marker => {
         var opacity = layer.config.opacity || 1;
         marker.setOpacity(opacity);
       });
@@ -270,56 +298,45 @@ const Map = L.Map.extend({
   },
   getLayerByName(layerName) {
     var foundLayer = null;
-    this.eachLayer(function(layer) {
+    this.eachLayer(layer => {
       if (layer.config && layer.config.name && layer.config.name === layerName) {
         foundLayer = layer;
       }
     });
     return foundLayer;
   },
-
   changeBaseLayer(layerName) {
-    // se livello è presente in mappa e visibile non faccio niente
-    // altrimenti levo layer precedente e carico livello in mappa e rendo visibile
     const activeLayerName = GV.config.getActiveBaseLayer().name;
     if (activeLayerName !== layerName) {
-      this.baseLayers[layerName].addTo(this);
+      this.baseLayers[layerName].addTo(this.map);
       this.activeBaseLayer = this.baseLayers[layerName];
       this.removeLayer(this.baseLayers[activeLayerName]);
       GV.config.setActiveBaseLayer(layerName);
     }
   },
-
   getScale() {
-    //return globals.BASE_SCALES[this._zoom]
-    const scaleDenom = 591657550 / Math.pow(2, this._zoom);
+    const scaleDenom = 591657550 / Math.pow(2, this.map._zoom);
     return scaleDenom;
   },
-
   setLoading() {
     this._spinning = 0;
-    this.on(
-      'layerremove',
-      function(e) {
-        // Clean-up
-        if (e.layer.loading) {
-          this.loading(false);
-        }
-        if (typeof e.layer.on !== 'function') {
-          return;
-        }
-        e.layer.off('load');
-        e.layer.off('loading');
-      },
-      this
-    );
+    this.on('layerremove', e => {
+      // Clean-up
+      if (e.layer.loading) {
+        this.loading(false);
+      }
+      if (typeof e.layer.on !== 'function') {
+        return;
+      }
+      e.layer.off('load');
+      e.layer.off('loading');
+    });
   },
-
   loading(state, layer) {
     if (state) {
       if (this._spinning === 0) {
         GV.log('start load: ' + layer.config.name);
-        this._container.style.cursor = 'progress';
+        this.map._container.style.cursor = 'progress';
       }
       this._spinning++;
     } else {
@@ -327,12 +344,11 @@ const Map = L.Map.extend({
       GV.log('end load: ' + layer.config.name);
       if (this._spinning <= 0) {
         GV.log('FINE CARICAMENTO LAYER');
-        this._container.style.cursor = 'default';
-        GV.eventBus.$emit('map-full-loaded', this._zoom);
+        this.map._container.style.cursor = 'default';
+        GV.eventBus.$emit('map-full-loaded', this.map);
       }
     }
   },
-
   addMarker(markerConfig) {
     if (markerConfig.epsg && markerConfig.epsg != '4326') {
       getCoordTransform(
@@ -352,7 +368,6 @@ const Map = L.Map.extend({
       this.addMarkerToMap(markerConfig);
     }
   },
-
   addMarkerToMap(markerConfig) {
     const icon = L.icon({
       iconUrl: '/geoservices/apps/viewer/dist/static/img/marker-icon.png',
@@ -366,14 +381,12 @@ const Map = L.Map.extend({
       title: markerConfig.label,
     };
     if (markerConfig.type === 'circle') {
-      L.circleMarker(markerConfig.location, opts).addTo(this);
+      L.circleMarker(markerConfig.location, opts).addTo(this.map);
     } else {
-      L.marker(markerConfig.location, opts).addTo(this);
+      L.marker(markerConfig.location, opts).addTo(this.map);
     }
     this.flyTo(markerConfig.location, markerConfig.zoomLevel || 14);
-    // this.setView(markerConfig.location, markerConfig.zoomLevel || 14);
   },
-
   find(findOptions) {
     if (findOptions.bbox) {
       this.zoomToBound(findOptions.bbox, findOptions.epsg, findOptions.maxZoom);
@@ -398,37 +411,17 @@ const Map = L.Map.extend({
 
     getWFSFeature(wfsParams, cqlFilter)
       .then(features => {
-        InfoWmsManager.addHiliteLayer(GV.app.map);
-        const layer = this.getLayerByName('InfoWmsHilite');
-        if (features && features.length > 0) {
-          layer.clearLayers();
-          layer.addData(features);
-          const maxZoom = findOptions.maxZoom || 15;
-          this.fitBounds(layer.getBounds(), {
-            maxZoom: maxZoom,
-          });
-          GV.config.hilitedLayer = layers;
-        } else {
-          if (findOptions.notFoundAlert) {
-            notification('Nessuna Elemento Trovato');
-          }
-          console.warn('Nessuna Elemento Trovato');
-        }
-        loading.close();
+        this.hiliteFeatures(features, findOptions, layers, loading);
       })
       .catch(error => {
         console.error(error);
         loading.close();
       });
   },
-
   zoomTo(lat, lon, zoom) {
     this.setView(new L.LatLng(lat, lon), zoom);
   },
-
   zoomToBound(strBounds, epsg, maxZoom) {
-    // let bounds = new L.latLngBounds();
-
     if (epsg != '4326') {
       const srsIn = epsg;
       const srsOut = '4326';
@@ -447,7 +440,7 @@ const Map = L.Map.extend({
     }
   },
   getContainerPoint(latlng) {
-    const point = this.latLngToContainerPoint(latlng, this.getZoom());
+    const point = this.latLngToContainerPoint(latlng);
     return point;
   },
   getBbox() {
@@ -460,6 +453,25 @@ const Map = L.Map.extend({
     const layer = this.getLayerByName('InfoWmsHilite');
     layer.clearLayers();
   },
-});
+  hiliteFeatures(features, findOptions, layers, loading) {
+    InfoWmsManager.addHiliteLayer();
+    const layer = this.getLayerByName('InfoWmsHilite');
+    if (features && features.length > 0) {
+      layer.clearLayers();
+      layer.addData(features);
+      const maxZoom = findOptions && findOptions.maxZoom ? findOptions.maxZoom : 15;
+      this.fitBounds(layer.getBounds(), {
+        maxZoom: maxZoom,
+      });
+      if (layers) GV.config.hilitedLayer = layers;
+    } else {
+      if (findOptions && findOptions.notFoundAlert) {
+        notification('Nessuna Elemento Trovato');
+      }
+      console.warn('Nessuna Elemento Trovato');
+    }
+    if (loading) loading.close();
+  },
+};
 
-export default Map;
+export default llMap;

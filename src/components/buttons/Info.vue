@@ -1,44 +1,40 @@
 <template>
-            <button title="Info sui livelli della mappa" @click="onClick" :class="setClass()" />
+  <button title="Info sui livelli della mappa" @click="onClick" :class="setClass()" />
 </template>
 
 <script>
-import SwitchActiveButton from '../../mixins/SwitchActiveButton'
+import SwitchActiveButton from '../../mixins/SwitchActiveButton';
 
-import Control from '../../controls/InfoWmsManager'
+import Control from '../../controls/InfoWmsManager';
 
-const name = 'gv-info-button'
+const name = 'gv-info-button';
 
 export default {
   name: name,
   data() {
-    const options = GV.config.getToolOptions(name)
+    const options = GV.config.getToolOptions(name);
     return {
       name: name,
       active: false,
       control: Control,
       options: options,
       cssClass: 'gv-button fa fa-info',
-      cssActiveClass: 'gv-button-selected'
-    }
+      cssActiveClass: 'gv-button-selected',
+    };
   },
   mixins: [SwitchActiveButton],
   methods: {
     onClick() {
-      this.switchActiveButton()
+      this.switchActiveButton();
     },
     setClass() {
-      return (this.active)? this.cssClass + ' ' + this.cssActiveClass : this.cssClass
+      return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
     },
   },
   mounted() {
-
-    this.active = this.options.active
-  }
-}
-
+    this.active = this.options.active;
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

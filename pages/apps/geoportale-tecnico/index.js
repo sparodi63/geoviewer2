@@ -45,7 +45,7 @@ GV.init({
         { name: 'gv-measure-button' },
         // { name: 'gv-layer-search-button' },
         { name: 'gv-layer-search-topo-button' },
-        { name: 'gv-ricerca-particella-button' },
+        { name: 'gv-ricerca-catastale-button' },
         { name: 'gv-print-button' },
         { name: 'gv-scalebar', position: 'bottomleft' },
       ],

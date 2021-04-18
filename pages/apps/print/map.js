@@ -18,7 +18,6 @@ fetch(printConfigUrl)
       data.mapOptions.center = null;
       data.mapOptions.zoom = null;
     }
-    // data.mapOptions.type = 'openlayers';
     loadConfig(data);
   });
 

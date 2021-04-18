@@ -139,7 +139,7 @@
   "window.restoreFullscreen": false,
   // Consente di controllare se attivando la modalità Zen anche l'area di lavoro passa alla modalità schermo intero.
   // Consente di modificare il livello di zoom della finestra. Il valore originale è 0 e ogni incremento superiore (ad esempio 1) o inferiore (ad esempio -1) rappresenta un aumento o una diminuzione del 20% della percentuale di zoom. È anche possibile immettere valori decimali per modificare il livello di zoom con maggiore granularità.
-  "window.zoomLevel": 0,
+  "window.zoomLevel": -1,
   // Se è abilitato, visualizzerà il percorso completo dei file aperti nel titolo della finestra.
   // Consente di configurare le associazioni tra file e linguaggi, ad esempio "*.extension": "html". Queste hanno la precedenza sulle associazioni predefinite dei linguaggi installate.
   "files.associations": {},

@@ -1,6 +1,6 @@
-<template>
+<template> 
     <div id="gv-measure-panel" class="gv-measure-panel">
-        <gv-title :title="title" :divId="'gv-measure-panel'" :noClose="true"></gv-title>
+        <gv-title title="Misurazioni" :divId="'gv-measure-panel'" :noClose="true"></gv-title>
         <div class="gv-measure-panel-body gv-inverted-color-scheme">
           <el-button id="gv-measure-point" title="Misure Puntuali (Coordinate)" @click="measurePoint" class="gv-color-scheme ms ms-select-hand" size="mini" />
           <el-button id="gv-measure-line" title="Misure Lineari" @click="measureLine" class="gv-color-scheme ms ms-measure-distance" size="mini" />
@@ -126,7 +126,7 @@ import { Button } from 'element-ui'
 Vue.use(Button)
 
 export default {
-  name: 'gv-coordinate-panel',
+  name: 'gv-measure-panel',
   data() {
     const options = GV.config.getToolOptions("gv-measure-button");
 
@@ -153,19 +153,19 @@ export default {
       showResultPoint: false,
       showResultLine: false,
       showResultArea: false,
-      pointHandler: new L.Draw.Marker(GV.app.map, {
+      pointHandler: new L.Draw.Marker(GV.app.map.map, {
         icon: L.icon({
           iconUrl: '/geoservices/apps/viewer/dist/static/img/marker-icon.png',
           iconSize: [12, 20],
           iconAnchor: [6, 20],
         }),
       }),
-      lineHandler: new L.Draw.Polyline(GV.app.map, {
+      lineHandler: new L.Draw.Polyline(GV.app.map.map, {
         shapeOptions: {
           color: '#FF9900',
         },
       }),
-      areaHandler: new L.Draw.Polygon(GV.app.map, {
+      areaHandler: new L.Draw.Polygon(GV.app.map.map, {
         allowIntersection: false,
         showArea: true,
         metric: true,
@@ -289,7 +289,6 @@ export default {
           this.handleArea(this.layer.editing)
           break
       }
-      // label.setLatLng(layer.getBounds().getCenter())
     }    
   },
   mounted: function() {

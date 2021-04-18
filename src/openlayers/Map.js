@@ -1,15 +1,12 @@
-import globals from '../globals';
 import * as LayerFactory from './LayerFactory';
 import getWFSFeature from '../services/getWFSFeature';
 import buildCqlFilter from '../util/buildCqlFilter';
 import InfoWmsManager from '../controls/InfoWmsManager';
 import getCoordTransform from '../services/getCoordTransform';
-import getCoordTransformBbox from '../services/getCoordTransformBbox';
 import createElement from '../util/createElement';
 
 import notification from '../util/notification';
 import { Loading } from 'element-ui';
-import leaflet from 'leaflet';
 
 const olMap = {
   type: 'openlayers',
@@ -18,6 +15,8 @@ const olMap = {
   initialExtent: [],
   map: null,
   zoom: null,
+  loading: 0,
+  loaded: 0,
   buttons: [],
   options: {
     type: 'openlayers',
@@ -42,35 +41,50 @@ const olMap = {
     });
 
     this.createPopupDiv();
-
     this.setInitialExtent();
-
     this.zoom = this.getView().getZoom();
-
+    this.setLoading();
     this.loadBaseLayer();
-
     this.eventMngr();
 
     if (this.options.ol3d) {
-      const GeoserverTerrainProvider = require('../cesium/GeoserverTerrainProvider');
-
-      const ol3d = new olcs.OLCesium({ map: this.map });
-      this.scene = ol3d.getCesiumScene();
-      var terrainProvider = new Cesium.GeoserverTerrainProvider({
-        url: 'https://geoservizi.regione.liguria.it/geoserver/DTM/ows',
-        layerName: 'DTM_dbtopo_5m_wgs84',
-      });
-      this.scene.terrainProvider = terrainProvider;
-
-      if (this.options.enable3d) {
-        ol3d.setEnabled(true);
-      }
-      this.ol3d = ol3d;
+      this.loadCesium();
     }
 
     return this;
   },
+  loadCesium() {
+    const GeoserverTerrainProvider = require('../cesium/GeoserverTerrainProvider');
 
+    const ol3d = new olcs.OLCesium({ map: this.map });
+    this.scene = ol3d.getCesiumScene();
+    var terrainProvider = new Cesium.GeoserverTerrainProvider({
+      url: 'https://geoservizi.regione.liguria.it/geoserver/DTM/ows',
+      layerName: 'DTM_dbtopo_5m_wgs84',
+    });
+    this.scene.terrainProvider = terrainProvider;
+
+    if (this.options.enable3d) {
+      ol3d.setEnabled(true);
+    }
+    this.ol3d = ol3d;
+  },
+  setLoading() {
+    GV.eventBus.$on('layer-load', event => {
+      console.log('Inizio caricamento layer', event.name);
+      ++this.loading;
+    });
+    GV.eventBus.$on('layer-loaded', event => {
+      ++this.loaded;
+      console.log('Fine caricamento layer', event.name);
+      if (this.loading === this.loaded) {
+        this.loading = 0;
+        this.loaded = 0;
+        GV.log('FINE CARICAMENTO MAPPA');
+        GV.eventBus.$emit('map-full-loaded', this.map);
+      }
+    });
+  },
   eventMngr() {
     this.map.on('moveend', e => {
       const newZoom = this.getView().getZoom();
@@ -79,10 +93,7 @@ const olMap = {
         this.zoom = newZoom;
       }
     });
-    this.map.on('rendercomplete', e => {
-      GV.log('FINE CARICAMENTO MAPPA');
-      GV.eventBus.$emit('map-full-loaded', this._zoom);
-    });
+    this.map.on('rendercomplete', e => {});
     GV.eventBus.$on('set-layer-visible', event => {
       this.setLayerVisible(event.layer, event.checked);
       this.setHiliteLayerVisible(event.layer, event.checked);
@@ -220,7 +231,8 @@ const olMap = {
     this.getView().setZoom(zoom);
   },
   getCenter() {
-    return this.getView().getCenter();
+    // RITORNA coppia coordinate wgs84 in formate leaflet lat/lon
+    return ol.proj.transform(this.getView().getCenter(), 'EPSG:3857', 'EPSG:4326').reverse();
   },
   removeLayer(layer) {
     this.map.removeLayer(layer);
@@ -270,8 +282,8 @@ const olMap = {
       }
     });
   },
-  clearLayer() {
-    const layer = this.getLayerByName('InfoWmsHilite');
+  clearLayer(layerName) {
+    const layer = this.getLayerByName(layerName);
     const source = layer.getSource();
     source.clear(true);
   },
@@ -295,10 +307,11 @@ const olMap = {
     }
   },
   addMarkerToMap(markerConfig) {
+    const coords = Array.isArray(markerConfig.location)
+      ? markerConfig.location
+      : [markerConfig.location.lng, markerConfig.location.lat];
     const feature = new ol.Feature({
-      geometry: new ol.geom.Point(
-        ol.proj.fromLonLat([markerConfig.location.lng, markerConfig.location.lat])
-      ),
+      geometry: new ol.geom.Point(ol.proj.fromLonLat(coords)),
       name: markerConfig.label,
     });
 
@@ -347,30 +360,7 @@ const olMap = {
 
     getWFSFeature(wfsParams, cqlFilter)
       .then(features => {
-        InfoWmsManager.addHiliteLayer(GV.app.map);
-        const layer = this.getLayerByName('InfoWmsHilite');
-        if (features && features.length > 0) {
-          const source = layer.getSource();
-          source.clear(true);
-          for (const feature of features) {
-            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-              featureProjection: 'EPSG:3857',
-            });
-            source.addFeature(olFeature);
-          }
-          const maxZoom = findOptions.maxZoom || 15;
-          this.fit(layer.getSource().getExtent(), {
-            maxZoom: maxZoom,
-          });
-
-          GV.config.hilitedLayer = layers;
-        } else {
-          if (findOptions.notFoundAlert) {
-            notification('Nessuna Elemento Trovato');
-          }
-          console.warn('Nessuna Elemento Trovato');
-        }
-        loading.close();
+        this.hiliteFeatures(features, findOptions, layers, loading);
       })
       .catch(error => {
         console.error(error);
@@ -396,12 +386,36 @@ const olMap = {
   on(event, fn) {
     this.map.on(event, fn);
   },
-  off(event) {
-    // this.map.un(event, null);
-    this.map.removeEventListener(event);
+  off(event, fn) {
+    this.map.un(event, fn);
   },
   forEachFeatureAtPixel(pixel, callback, options) {
     this.map.forEachFeatureAtPixel(pixel, callback, options);
+  },
+  hiliteFeatures(features, findOptions, layers, loading) {
+    InfoWmsManager.addHiliteLayer();
+    const layer = this.getLayerByName('InfoWmsHilite');
+    if (features && features.length > 0) {
+      const source = layer.getSource();
+      source.clear(true);
+      for (const feature of features) {
+        const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+          featureProjection: 'EPSG:3857',
+        });
+        source.addFeature(olFeature);
+      }
+      const maxZoom = findOptions && findOptions.maxZoom ? findOptions.maxZoom : 15;
+      this.fit(layer.getSource().getExtent(), {
+        maxZoom: maxZoom,
+      });
+      if (layers) GV.config.hilitedLayer = layers;
+    } else {
+      if (findOptions && findOptions.notFoundAlert) {
+        notification('Nessuna Elemento Trovato');
+      }
+      console.warn('Nessuna Elemento Trovato');
+    }
+    if (loading) loading.close();
   },
 };
 

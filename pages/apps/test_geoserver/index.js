@@ -35,7 +35,7 @@ switch (target) {
     break;
 }
 
-// console.log(disableCache)
+console.log(geoserverUrl);
 
 if (geoserverUrl) {
   GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';

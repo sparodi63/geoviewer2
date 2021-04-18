@@ -256,6 +256,7 @@ export default {
         mapOptions: {
           projection: 'EPSG:3857',
           width: mapWidth,
+          // type: GV.app.map.type,
           height: mapHeight,
           initialExtent: GV.app.map.getExtentAsString(),
           center: GV.app.map.getCenter(),
@@ -267,6 +268,8 @@ export default {
         layers: layers,
         maps: maps,
       };
+
+      console.log('PRINT', GV.app.map.type, data);
 
       let loading = Loading.service({
         fullscreen: true,

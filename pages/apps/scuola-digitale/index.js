@@ -265,6 +265,8 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
   },
 ];
 
+console.log('SONO QUI');
+
 const maps = [
   {
     id: 0,
@@ -276,9 +278,23 @@ const maps = [
 GV.init({
   debug: true,
   application: {
+    mapOptions: {
+      type: 'leaflet',
+    },
     layout: {
       title: ' ',
       tools: [
+        {
+          name: 'gv-inner-html',
+          position: 'topleft',
+          options: {
+            props: [
+              {
+                html: '<div class="gv-color-scheme" id="logo"></div>',
+              },
+            ],
+          },
+        },
         {
           name: 'gv-inner-html',
           position: 'bottomleft',

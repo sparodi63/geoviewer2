@@ -36,7 +36,6 @@ import Vue from 'vue';
 import { Loading, Notification } from 'element-ui';
 
 import getGenioPraticheCollegate from '../services/getGenioPraticheCollegate';
-import getWFSFeature from '../services/getWFSFeature';
 
 export default {
   name: 'gv-genio-pratiche-collegate-panel',

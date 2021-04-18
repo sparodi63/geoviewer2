@@ -793,9 +793,9 @@ var layerFactory = {
   },
 };
 
-function create(layerConfig, map) {
+function create(layerConfig) {
   if (layerFactory[layerConfig.type]) {
-    let layer = layerFactory[layerConfig.type](layerConfig, map);
+    let layer = layerFactory[layerConfig.type](layerConfig);
     // console.log(layer);
     layer.legend = layerConfig.legend;
     layer.config = layerConfig;

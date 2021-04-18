@@ -567,70 +567,34 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        if (features && features.length > 0) {
-          const feature = features[0];
-          let layer = GV.app.map.getLayerByName('InfoWmsHilite');
-          if (!layer) {
-            InfoWmsManager.addHiliteLayer(GV.app.map);
-            layer = GV.app.map.getLayerByName('InfoWmsHilite');
-          }
-          if (GV.app.map.type === 'openlayers') {
-            const source = layer.getSource();
-            source.clear(true);
-            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-              featureProjection: 'EPSG:3857',
-            });
-            source.addFeature(olFeature);
-            GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
-          } else {
-            layer.clearLayers();
-            layer.addData(feature.geometry);
-            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
-          }
-        }
+        GV.app.map.hiliteFeatures(features);
       });
     },
     submitStrade() {
-      let typeName = 'M419:L684';
-      let cqlFilter = "cod_strada='" + this.strada + "'";
+      let typeName = 'M2245:L8244';
+      // console.log(this.strada)
+      let cqlFilter = `NOME_ST='${this.strada}' AND COD_CATASTALE='${this.comune}'`;
       const url =
         'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=' +
         typeName +
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        if (features && features.length > 0) {
-          const feature = features[0];
-          let layer = GV.app.map.getLayerByName('InfoWmsHilite');
-          if (!layer) {
-            InfoWmsManager.addHiliteLayer(GV.app.map);
-            layer = GV.app.map.getLayerByName('InfoWmsHilite');
-          }
-          if (GV.app.map.type === 'openlayers') {
-            const source = layer.getSource();
-            source.clear(true);
-            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-              featureProjection: 'EPSG:3857',
-            });
-            source.addFeature(olFeature);
-            GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
-          } else {
-            layer.clearLayers();
-            layer.addData(feature.geometry);
-            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
-          }
-        }
-
-        // const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
-        // if (features && features.length > 0) {
-        //   hiliteLayer.clearLayers();
-        //   hiliteLayer.addData(features);
-        //   GV.app.map.fitBounds(hiliteLayer.getBounds(), {
-        //     maxZoom: 17,
-        //   });
-        // }
+        GV.app.map.hiliteFeatures(features);
       });
     },
+    // submitStrade() {
+    //   let typeName = 'M419:L684';
+    //   let cqlFilter = "cod_strada='" + this.strada + "'";
+    //   const url =
+    //     'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=' +
+    //     typeName +
+    //     '&cql_filter=' +
+    //     cqlFilter;
+    //   getWFSFeature(null, null, url).then(features => {
+    //     GV.app.map.hiliteFeatures(features);
+    //   });
+    // },
     submitReticolo() {
       let typeName = 'M626:L1080';
       let cqlFilter = "denom_corpo='" + this.affluente.replace(/'/g, "''") + "'";
@@ -641,36 +605,7 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        if (features && features.length > 0) {
-          const feature = features[0];
-          let layer = GV.app.map.getLayerByName('InfoWmsHilite');
-          if (!layer) {
-            InfoWmsManager.addHiliteLayer(GV.app.map);
-            layer = GV.app.map.getLayerByName('InfoWmsHilite');
-          }
-          if (GV.app.map.type === 'openlayers') {
-            const source = layer.getSource();
-            source.clear(true);
-            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-              featureProjection: 'EPSG:3857',
-            });
-            source.addFeature(olFeature);
-            GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
-          } else {
-            layer.clearLayers();
-            layer.addData(feature.geometry);
-            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
-          }
-        }
-
-        // const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
-        // if (features && features.length > 0) {
-        //   hiliteLayer.clearLayers();
-        //   hiliteLayer.addData(features);
-        //   GV.app.map.fitBounds(hiliteLayer.getBounds(), {
-        //     maxZoom: 17,
-        //   });
-        // }
+        GV.app.map.hiliteFeatures(features);
       });
     },
     submitIndirizzo() {
@@ -682,35 +617,7 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        if (features && features.length > 0) {
-          const feature = features[0];
-          let layer = GV.app.map.getLayerByName('InfoWmsHilite');
-          if (!layer) {
-            InfoWmsManager.addHiliteLayer(GV.app.map);
-            layer = GV.app.map.getLayerByName('InfoWmsHilite');
-          }
-          if (GV.app.map.type === 'openlayers') {
-            const source = layer.getSource();
-            source.clear(true);
-            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-              featureProjection: 'EPSG:3857',
-            });
-            source.addFeature(olFeature);
-            GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
-          } else {
-            layer.clearLayers();
-            layer.addData(feature.geometry);
-            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
-          }
-        }
-        // const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
-        // if (features && features.length > 0) {
-        //   hiliteLayer.clearLayers();
-        //   hiliteLayer.addData(features);
-        //   GV.app.map.fitBounds(hiliteLayer.getBounds(), {
-        //     maxZoom: 17,
-        //   });
-        // }
+        GV.app.map.hiliteFeatures(features);
       });
     },
     submitIdentificativo() {
@@ -742,35 +649,7 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        if (features && features.length > 0) {
-          const feature = features[0];
-          let layer = GV.app.map.getLayerByName('InfoWmsHilite');
-          if (!layer) {
-            InfoWmsManager.addHiliteLayer(GV.app.map);
-            layer = GV.app.map.getLayerByName('InfoWmsHilite');
-          }
-          if (GV.app.map.type === 'openlayers') {
-            const source = layer.getSource();
-            source.clear(true);
-            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-              featureProjection: 'EPSG:3857',
-            });
-            source.addFeature(olFeature);
-            GV.app.map.fit(olFeature.getGeometry().getExtent(), { maxZoom: 15 });
-          } else {
-            layer.clearLayers();
-            layer.addData(feature.geometry);
-            GV.app.map.fitBounds(layer.getBounds(), { maxZoom: 15 });
-          }
-        }
-        // const hiliteLayer = GV.app.map.getLayerByName('InfoWmsHilite');
-        // if (features && features.length > 0) {
-        //   hiliteLayer.clearLayers();
-        //   hiliteLayer.addData(features);
-        //   GV.app.map.fitBounds(hiliteLayer.getBounds(), {
-        //     maxZoom: 17,
-        //   });
-        // }
+        GV.app.map.hiliteFeatures(features);
       });
     },
     cancel() {

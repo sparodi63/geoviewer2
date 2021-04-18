@@ -244,6 +244,10 @@ export default {
           this.filtraMappa(false);
         }
       } else {
+        if (!this.scuola) {
+          notification('Selezionare una scuola tramite la ricerca', 'warning');
+          return;
+        }
         this.showInfo();
         this.filtraMappa(true);
       }
@@ -351,8 +355,8 @@ export default {
   left: 0;
   top: 0;
   width: 480px;
-  margin-left: 20px;
-  margin-top: 20px;
+  margin-left: 10px;
+  margin-top: 50px;
   z-index: 800;
 }
 
@@ -364,7 +368,7 @@ export default {
   padding-right: 0rem;
   padding-left: 0.5rem;
   margin-bottom: -1px;
-  color: #ccc;
+  color: black;
   cursor: default;
   font-weight: 800;
   font-family: 'Raleway', Arial, sans-serif !important;

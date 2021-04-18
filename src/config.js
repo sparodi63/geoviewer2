@@ -44,6 +44,7 @@ export default {
     this.disableTMS = options.disableTMS;
     this.disableCache = options.disableCache;
     this.flagGeoserver = options.flagGeoserver;
+    this.geoserverUrl = options.geoserverUrl;
     this.agAppMap = options.agAppMapList;
 
     if (options.application) {
