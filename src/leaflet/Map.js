@@ -57,8 +57,8 @@ const llMap = {
   off(event) {
     this.map.off(event);
   },
-  fitBounds(bounds) {
-    this.map.fitBounds(bounds);
+  fitBounds(bounds, opts) {
+    this.map.fitBounds(bounds, opts);
   },
   setView(center, zoom, opt) {
     // center: se array converto oggetto Leaflet

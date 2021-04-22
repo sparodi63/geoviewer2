@@ -15,3 +15,10 @@ minify({
   output: 'dist/leaflet/leaflet-min.css',
   callback: function(err, min) {},
 });
+
+// minify({
+//   compressor: uglifyJS,
+//   input: 'dist/openlayers/ol.js',
+//   output: 'dist/openlayers/ol-min.js',
+//   callback: function(err, min) {},
+// });

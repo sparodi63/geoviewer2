@@ -26,7 +26,6 @@ export default {
       if (item === '') item = '.';
       return { value: item };
     });
-    console.log(abstract);
     return {
       options: GV.config.getToolOptions('gv-fototeca-scheda-volo-button'),
       title: GV.globals.FOTOTECA_SEL_VOLO.nome,

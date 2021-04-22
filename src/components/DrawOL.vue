@@ -52,7 +52,7 @@
       <el-button
         id="gv-draw-submit"
         title="Salva i dati sul DB"
-        @click="submit"
+        @click="confirmSubmit"
         class="gv-color-scheme"
         size="mini"
         >Salva su DB</el-button
@@ -70,7 +70,7 @@
         id="gv-draw-cancel"
         v-show="refreshButton"
         title="Ricarica dati salvati sul DB"
-        @click="refresh"
+        @click="confirmRefresh"
         class="gv-color-scheme"
         size="mini"
         >Ricarica</el-button
@@ -81,8 +81,6 @@
 
 <script>
 import Vue from 'vue';
-import getCoordTransform from '../services/getCoordTransform';
-import getCoordTransformPoly from '../services/getCoordTransformPoly';
 import getWFSFeature from '../services/getWFSFeature';
 
 import { Button, Row, Col, Loading, Notification } from 'element-ui';
@@ -94,7 +92,7 @@ export default {
   name: 'gv-draw-panel',
   data() {
     const options = GV.config.getToolOptions('gv-draw-button');
-    console.log(options);
+    // console.log(options);
     return {
       options: options,
       title: 'Acquisizione Geometrie',
@@ -206,7 +204,6 @@ export default {
         const delFeature = evt.target.getFeatures().getArray()[0];
         this.layer.getSource().removeFeature(delFeature);
         this.deletedItems.push(delFeature);
-        console.log('deleted', this.deletedItems);
       });
     },
     addInteractionDraw(type) {
@@ -247,10 +244,12 @@ export default {
             if (features && features.length > 0) {
               const source = this.layer.getSource();
               for (const feature of features) {
-                const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-                  featureProjection: 'EPSG:3857',
-                });
-                source.addFeature(olFeature);
+                if (feature.geometry) {
+                  const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+                    featureProjection: 'EPSG:3857',
+                  });
+                  source.addFeature(olFeature);
+                }
               }
               GV.app.map.fit(source.getExtent(), {
                 maxZoom: 17,
@@ -271,24 +270,27 @@ export default {
     cancel() {
       if (this.options.cancel) this.options.cancel();
     },
-    refresh() {
+    confirmRefresh() {
       var r = confirm(
         "L'operazione cancella eventuali modifiche non salvate su DB.\n\nSei sicuro?"
       );
       if (r == true) {
-        this.layer.getSource().clear();
-        this.deletedItems = [];
-        if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests);
+        this.refresh();
       }
       return;
     },
-    submit() {
+    refresh() {
+      this.layer.getSource().clear();
+      this.deletedItems = [];
+      if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests);
+    },
+    confirmSubmit() {
       var r = confirm('Sei sicuro?');
       if (r == true) {
-        this.submitOK();
+        this.submit();
       }
     },
-    submitOK() {
+    submit() {
       this.loading = Loading.service({
         text: 'Salvataggio...',
         background: 'rgba(0, 0, 0, 0.8)',
@@ -296,10 +298,10 @@ export default {
       const geoJSON = new ol.format.GeoJSON().writeFeaturesObject(
         this.layer.getSource().getFeatures()
       );
-      // console.log(this.layer.getSource().getFeatures());
-      // console.log(geoJSON);
+      const deleted = new ol.format.GeoJSON().writeFeaturesObject(this.deletedItems);
+      console.log('submit', geoJSON, deleted);
 
-      this.options.submit(geoJSON, this.deletedItems, this.loading);
+      this.options.submit(geoJSON, deleted, this.loading, this.refresh);
     },
   },
   mounted: function() {

@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
-
 // import L from 'leaflet';
 // import '../assets/css/leaflet-control-credits.css';
 // import '../leaflet/leaflet-control-credits.js';
@@ -60,7 +58,7 @@ export default {
       map.setMaxBounds(bounds);
       map.fitBounds(bounds);
 
-      L.control.zoom().addTo(map);
+      // L.control.zoom().addTo(map);
       L.controlCredits({
         image: this.logo,
         position: 'bottomleft',

@@ -20,8 +20,12 @@
 <script>
 import Vue from 'vue';
 import mountComponent from '../util/mountComponent';
-import ImageViewer from './ImageViewer.vue';
-Vue.component('image-viewer', ImageViewer);
+
+// import ImageViewer from './ImageViewer.vue';
+// Vue.component('image-viewer', ImageViewer);
+
+Vue.component('image-viewer', () => import('./ImageViewer.vue'));
+
 Vue.component('gv-fototeca-carrello-panel', () => import('./FototecaCarrello.vue'));
 
 export default {

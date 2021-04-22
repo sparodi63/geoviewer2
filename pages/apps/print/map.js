@@ -30,7 +30,7 @@ function loadConfig(data) {
       mapOptions: data.mapOptions,
       callback: app => {
         if (app.map.type !== 'openlayers') {
-          L.control.scale({ imperial: false, maxWidth: 100 }).addTo(app.map);
+          L.control.scale({ imperial: false, maxWidth: 100 }).addTo(app.map.map);
         }
       },
     },

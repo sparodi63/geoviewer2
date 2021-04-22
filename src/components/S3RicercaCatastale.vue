@@ -137,6 +137,9 @@
             Attenzione, la correttezza del risultato non e' garantita (allineamento tra censuari
             ancora in corso)
           </div>
+          <div v-show="showTableCensuario" id="gv-ricerca-catastale-istruzioni-censuario">
+            Seleziona un riga per visualizzare la particella
+          </div>
           <el-table
             id="gv-ricerca-catastale-civico-table"
             :data="particelleCensuario"
@@ -149,37 +152,37 @@
           >
             <el-table-column
               label="Sez. fabb."
-              width="40px"
+              width="50px"
               style="word-wrap: break-word"
               prop="sezFabbricati"
             ></el-table-column>
             <el-table-column
               label="Sez. urb."
-              width="30px"
+              width="50px"
               style="word-wrap: break-word"
               prop="sezUrbana"
             ></el-table-column>
             <el-table-column
               label="Foglio fabb."
-              width="40px"
+              width="50px"
               style="word-wrap: break-word"
               prop="foglioFabbricati"
             ></el-table-column>
             <el-table-column
               label="Sez. terr."
-              width="40px"
+              width="50px"
               style="word-wrap: break-word"
               prop="codSez"
             ></el-table-column>
             <el-table-column
               label="Foglio terr."
-              width="40px"
+              width="50px"
               style="word-wrap: break-word"
               prop="codFoglio"
             ></el-table-column>
             <el-table-column
               label="Mappale"
-              width="60px"
+              width="70px"
               style="word-wrap: break-word"
               prop="codParticella"
             ></el-table-column>
@@ -411,7 +414,8 @@ export default {
         return this.comune;
       }
       if (this.tipo === 1) {
-        return this.comune && this.indirizzo && this.civico;
+        return false;
+        // return this.comune && this.indirizzo && this.civico;
       }
       if (this.tipo === 2) {
         return this.bacino && this.affluente;
@@ -526,6 +530,7 @@ export default {
     },
     changeParticelleCensuario(item) {
       this.particellaCensuario = item;
+      this.submit();
     },
     changeComune3(id) {
       this.strada = null;
@@ -580,7 +585,7 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        GV.app.map.hiliteFeatures(features);
+        GV.app.map.hiliteFeatures(features, { maxZoom: 18 });
       });
     },
     // submitStrade() {
@@ -605,7 +610,7 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        GV.app.map.hiliteFeatures(features);
+        GV.app.map.hiliteFeatures(features, { maxZoom: 18 });
       });
     },
     submitIndirizzo() {
@@ -617,7 +622,7 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        GV.app.map.hiliteFeatures(features);
+        GV.app.map.hiliteFeatures(features, { maxZoom: 18 });
       });
     },
     submitIdentificativo() {
@@ -649,7 +654,7 @@ export default {
         '&cql_filter=' +
         cqlFilter;
       getWFSFeature(null, null, url).then(features => {
-        GV.app.map.hiliteFeatures(features);
+        GV.app.map.hiliteFeatures(features, { maxZoom: 18 });
       });
     },
     cancel() {
@@ -683,7 +688,7 @@ export default {
   top: 0;
   margin-left: 10px;
   margin-top: 50px;
-  width: 300px;
+  width: 350px;
   background-color: #fff;
   z-index: 800;
 }
@@ -711,6 +716,11 @@ export default {
 #gv-ricerca-catastale-attenzione-censuario {
   line-height: 15px;
   color: red;
+  margin: 5px;
+}
+#gv-ricerca-catastale-istruzioni-censuario {
+  line-height: 15px;
+  font-weight: 800;
   margin: 5px;
 }
 </style>

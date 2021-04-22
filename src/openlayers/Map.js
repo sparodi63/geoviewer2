@@ -71,12 +71,10 @@ const olMap = {
   },
   setLoading() {
     GV.eventBus.$on('layer-load', event => {
-      console.log('Inizio caricamento layer', event.name);
       ++this.loading;
     });
     GV.eventBus.$on('layer-loaded', event => {
       ++this.loaded;
-      console.log('Fine caricamento layer', event.name);
       if (this.loading === this.loaded) {
         this.loading = 0;
         this.loaded = 0;
@@ -253,7 +251,12 @@ const olMap = {
     return this.map.getSize();
   },
   fit(extent, opt) {
-    this.getView().fit(extent, opt);
+    let geom = ol.geom.Polygon.fromExtent(extent);
+    // if (opt && opt.buffer) {
+    //   geom.scale(opt.buffer);
+    // }
+    geom.scale(1.2);
+    this.getView().fit(geom, opt);
   },
   createPopupDiv() {
     createElement({ elId: 'ol-popup', containerId: 'body' });
@@ -274,7 +277,7 @@ const olMap = {
           vectorSource.once('change', () => {
             if (vectorSource.getState() === 'ready') {
               if (layer.getSource().getFeatures().length > 0) {
-                this.fit(vectorSource.getExtent());
+                this.fit(vectorSource.getExtent(), { maxZoom: 15 });
               }
             }
           });
@@ -333,7 +336,7 @@ const olMap = {
     this.addLayer(vectorLayer);
 
     this.fit(feature.getGeometry().getExtent(), {
-      maxZoom: markerConfig.zoomLevel || 14,
+      maxZoom: markerConfig.zoomLevel || 15,
     });
   },
   find(findOptions) {
@@ -378,7 +381,9 @@ const olMap = {
         code: `EPSG:${epsg}`,
       });
       const trExt = ol.proj.transformExtent(ext, prj, 'EPSG:3857');
-      this.fit(trExt);
+      this.fit(trExt, {
+        maxZoom: maxZoom || 15,
+      });
     } else {
       this.setExtent(extent);
     }

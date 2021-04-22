@@ -393,13 +393,12 @@ const layerFactory = {
       cluster,
       zIndex,
       onFeatureSelect,
+      onHover,
       subType,
       basePopup,
       legend,
-      onClick,
-      onMouseOver,
-      onMouseOut,
       filter,
+      tooltip,
     } = layerConfig;
 
     let format;
@@ -435,7 +434,17 @@ const layerFactory = {
 
     if (onFeatureSelect) {
       GV.app.map.on('click', evt => {
-        GV.app.map.map.forEachFeatureAtPixel(evt.pixel, onFeatureSelect, {
+        GV.app.map.forEachFeatureAtPixel(evt.pixel, onFeatureSelect, {
+          layerFilter: fLayer => {
+            return fLayer === layer;
+          },
+        });
+      });
+    }
+
+    if (onHover) {
+      GV.app.map.on('pointermove', evt => {
+        GV.app.map.forEachFeatureAtPixel(evt.pixel, onHover, {
           layerFilter: fLayer => {
             return fLayer === layer;
           },

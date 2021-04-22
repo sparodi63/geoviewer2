@@ -12,6 +12,7 @@ GV.init({
   application: {
     name: 'fototeca-gv2',
     mapOptions: {
+      // type: 'openlayers',
       // click: 'info',
     },
     layout: {
