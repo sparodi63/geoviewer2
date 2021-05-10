@@ -7,7 +7,7 @@
         title="Disegna punto"
         v-show="pointButton"
         @click="draw('Point')"
-        class="gv-color-scheme ms ms-draw-point"
+        class="gv-color-scheme fg-point"
         size="mini"
       ></el-button>
       <el-button
@@ -15,7 +15,7 @@
         title="Disegna linea"
         v-show="lineButton"
         @click="draw('LineString')"
-        class="gv-color-scheme ms ms-draw-line"
+        class="gv-color-scheme fg-polyline-pt"
         size="mini"
       ></el-button>
       <el-button
@@ -23,7 +23,7 @@
         title="Disegna poligono"
         v-show="polygonButton"
         @click="draw('Polygon')"
-        class="gv-color-scheme ms ms-draw-polygon"
+        class="gv-color-scheme fg-polygon-pt"
         size="mini"
       >
         <!-- <i class="fas fa-draw-polygon"></i> -->
@@ -47,6 +47,13 @@
     </div>
     <el-row type="flex" class="row-bg" justify="left">
       <el-checkbox v-model="snap" @change="setSnapInteraction">Snap</el-checkbox>
+      <!-- <el-button
+        id="gv-draw-snap"
+        title="Snap"
+        @click="setSnapInteraction"
+        class="gv-color-scheme fg-snap"
+        size="mini"
+      ></el-button> -->
     </el-row>
     <el-row type="flex" class="row-bg" justify="left">
       <el-button
@@ -96,9 +103,9 @@ export default {
     return {
       options: options,
       title: 'Acquisizione Geometrie',
-      pointClass: 'el-button--default el-button--mini el-button gv-color-scheme ms ms-draw-point',
-      lineClass: 'el-button--default el-button--mini el-button gv-color-scheme ms ms-draw-line',
-      areaClass: 'el-button--default el-button--mini el-button gv-color-scheme ms ms-draw-polygon',
+      pointClass: 'el-button--default el-button--mini el-button gv-color-scheme ms fg-point',
+      lineClass: 'el-button--default el-button--mini el-button gv-color-scheme ms fg-polyline-pt',
+      areaClass: 'el-button--default el-button--mini el-button gv-color-scheme ms fg-polygon-pt',
       modifyClass: 'el-button--default el-button--mini el-button gv-color-scheme fa fa-edit',
       deleteClass: 'el-button--default el-button--mini el-button gv-color-scheme el-icon-delete',
       style: new ol.style.Style({

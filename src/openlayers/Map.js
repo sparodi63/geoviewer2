@@ -48,6 +48,7 @@ const olMap = {
     this.eventMngr();
 
     if (this.options.ol3d) {
+      GV.globals.USE_SUBDOMAINS = false;
       this.loadCesium();
     }
 

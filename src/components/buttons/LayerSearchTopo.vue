@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import mountComponent from "../../util/mountComponent";
-import Vue from "vue";
-import { Button } from "element-ui";
+import mountComponent from '../../util/mountComponent';
+import Vue from 'vue';
+import { Button } from 'element-ui';
 Vue.use(Button);
-Vue.component("gv-layer-search-topo", () => import("../LayerSearchTopo.vue"));
+Vue.component('gv-layer-search-topo', () => import('../LayerSearchTopo.vue'));
 
-const name = "gv-layer-search-topo-button";
+const name = 'gv-layer-search-topo-button';
 
 export default {
   name: name,
@@ -24,29 +24,27 @@ export default {
     return {
       active: false,
       options: options,
-      cssClass: "gv-layer-search-topo-button gv-button fa fa-search",
-      cssActiveClass: "gv-button-selected"
+      cssClass: 'gv-layer-search-topo-button gv-button fa fa-search',
+      cssActiveClass: 'gv-button-selected',
     };
   },
 
   methods: {
     onClick() {
       mountComponent({
-        elId: "gv-layer-search-topo",
+        elId: 'gv-layer-search-topo',
         containerId: GV.config.containerId,
         toggleEl: true,
         vm: new Vue({
-          template: `<gv-layer-search-topo></gv-layer-search-topo>`
-        })
+          template: `<gv-layer-search-topo></gv-layer-search-topo>`,
+        }),
       });
     },
     setClass() {
-      return this.active
-        ? this.cssClass + " " + this.cssActiveClass
-        : this.cssClass;
-    }
+      return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
+    },
   },
-  mounted: function() {}
+  mounted: function() {},
 };
 
 /* export default {

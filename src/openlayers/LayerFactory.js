@@ -319,7 +319,10 @@ const layerFactory = {
     }
 
     let url = wmsParams.url;
-
+    console.log('URL', url);
+    // if (GV.app.map.options.ol3d) {
+    //   url = `${globals.DEFAULT_PROXY}${url}`;
+    // }
     if (isCached) {
       if (idMap) {
         url = url.replace(`M${idMap}`, 'gwc/service');

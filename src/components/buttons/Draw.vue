@@ -18,7 +18,7 @@ export default {
       control: Control,
       options: options,
       title: 'Acquisizione Geometrie',
-      cssClass: 'gv-button ms ms-draw',
+      cssClass: 'gv-button fas fa-edit',
       cssActiveClass: 'gv-button-selected',
     };
   },

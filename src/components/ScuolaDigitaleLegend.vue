@@ -88,7 +88,7 @@ export default {
         document.getElementById('gv-scuoladigitale-legend').style.width = '260px';
       } else {
         document.getElementById('gv-scuoladigitale-legend-wrapper').style.display = 'none';
-        document.getElementById('gv-scuoladigitale-legend').style.width = '150px';
+        document.getElementById('gv-scuoladigitale-legend').style.width = '160px';
       }
       this.show = !this.show;
     },

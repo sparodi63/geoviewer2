@@ -71,6 +71,11 @@
         </div>
       </div>
     </div>
+    <div class="gv-scuoladigitale-info-title gv-color-scheme">
+      <a href="https://www.scuoladigitaleliguria.it/osservatorio.html" target="_blank"
+        >SE SEI UN DOCENTE ACCEDI ALL'OSSERVATORIO</a
+      >
+    </div>
   </div>
 </template>
 
@@ -169,6 +174,13 @@ export default {
   font-weight: 800;
   font-family: 'Raleway', Arial, sans-serif !important;
   font-size: 14px;
+}
+
+.gv-scuoladigitale-info-title a {
+  margin-left: 420px;
+  font-size: 15px;
+  color: black;
+  font-weight: 900;
 }
 
 .gv-scuoladigitale-info-title :focus {

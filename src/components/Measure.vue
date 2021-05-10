@@ -2,25 +2,25 @@
     <div id="gv-measure-panel" class="gv-measure-panel">
         <gv-title title="Misurazioni" :divId="'gv-measure-panel'" :noClose="true"></gv-title>
         <div class="gv-measure-panel-body gv-inverted-color-scheme">
-          <el-button id="gv-measure-point" title="Misure Puntuali (Coordinate)" @click="measurePoint" class="gv-color-scheme ms ms-select-hand" size="mini" />
-          <el-button id="gv-measure-line" title="Misure Lineari" @click="measureLine" class="gv-color-scheme ms ms-measure-distance" size="mini" />
-          <el-button id="gv-measure-area" title="Misure Areali" @click="measureArea" class="gv-color-scheme ms ms-measure-area" size="mini" />
+          <el-button id="gv-measure-point" title="Misure Puntuali (Coordinate)" @click="measurePoint" class="gv-color-scheme fg-measure" size="mini" />
+          <el-button id="gv-measure-line" title="Misure Lineari" @click="measureLine" class="gv-color-scheme fg-measure-line" size="mini" />
+          <el-button id="gv-measure-area" title="Misure Areali" @click="measureArea" class="gv-color-scheme fg-measure-area" size="mini" />
           <div v-show="showInfo" id="gv-measure-panel-info" class="gv-measure-panel-result gv-inverted-color-scheme">
               <p>Seleziona il bottone relativo<br></p>
               <table width="90%">
                 <tr>
                   <td>
-                    <el-button id="gv-measure-point" title="Misure Puntuali (Coordinate)" @click="measurePoint" class="gv-color-scheme ms ms-select-hand" size="mini" /> Misure Puntuali (Coordinate)
+                    <el-button id="gv-measure-point" title="Misure Puntuali (Coordinate)" @click="measurePoint" class="gv-color-scheme fg-measure" size="mini" /> Misure Puntuali (Coordinate)
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <el-button id="gv-measure-line" title="Misure Lineari" @click="measureLine" class="gv-color-scheme ms ms-measure-distance" size="mini" /> Misure Lineari (Lunghezza)
+                    <el-button id="gv-measure-line" title="Misure Lineari" @click="measureLine" class="gv-color-scheme fg-measure-line" size="mini" /> Misure Lineari (Lunghezza)
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <el-button id="gv-measure-area" title="Misure Areali" @click="measureArea" class="gv-color-scheme ms ms-measure-area" size="mini" /> Misure Poligonali (Aree)
+                    <el-button id="gv-measure-area" title="Misure Areali" @click="measureArea" class="gv-color-scheme fg-measure-area" size="mini" /> Misure Poligonali (Aree)
                   </td>
                 </tr>
               </table> 
@@ -134,9 +134,9 @@ export default {
       options: options,
       title: options.title || "Misurazioni",
       buttonDisabled: true,
-      pointClass: 'el-button--default el-button--mini el-button gv-color-scheme ms ms-select-hand',
-      lineClass: 'el-button--default el-button--mini el-button gv-color-scheme ms ms-measure-distance',
-      areaClass: 'el-button--default el-button--mini el-button gv-color-scheme ms ms-measure-area',
+      pointClass: 'el-button--default el-button--mini el-button gv-color-scheme fg-measure',
+      lineClass: 'el-button--default el-button--mini el-button gv-color-scheme fg-measure-line',
+      areaClass: 'el-button--default el-button--mini el-button gv-color-scheme fg-measure-area',
       activeHandler: null,
       layer: null,
       type: null,

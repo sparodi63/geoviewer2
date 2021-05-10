@@ -6,21 +6,21 @@
         id="gv-measure-point"
         title="Misure Puntuali (Coordinate)"
         @click="measure('Point')"
-        class="gv-color-scheme ms ms-select-hand"
+        class="gv-color-scheme fg-measure"
         size="mini"
       />
       <el-button
         id="gv-measure-line"
         title="Misure Lineari"
         @click="measure('LineString')"
-        class="gv-color-scheme ms ms-measure-distance"
+        class="gv-color-scheme fg-measure-line"
         size="mini"
       />
       <el-button
         id="gv-measure-area"
         title="Misure Areali"
         @click="measure('Polygon')"
-        class="gv-color-scheme ms ms-measure-area"
+        class="gv-color-scheme fg-measure-area"
         size="mini"
       />
       <!-- <el-button
@@ -48,10 +48,9 @@ export default {
     return {
       options: options,
       title: options.title || 'Misurazioni',
-      pointClass: 'el-button--default el-button--mini el-button gv-color-scheme ms ms-select-hand',
-      lineClass:
-        'el-button--default el-button--mini el-button gv-color-scheme ms ms-measure-distance',
-      areaClass: 'el-button--default el-button--mini el-button gv-color-scheme ms ms-measure-area',
+      pointClass: 'el-button--default el-button--mini el-button gv-color-scheme fg-measure',
+      lineClass: 'el-button--default el-button--mini el-button gv-color-scheme fg-measure-line',
+      areaClass: 'el-button--default el-button--mini el-button gv-color-scheme fg-measure-area',
       layer: null,
       type: null,
       sketch: null,

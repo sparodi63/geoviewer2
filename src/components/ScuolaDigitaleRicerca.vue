@@ -76,6 +76,7 @@
           v-model="parole"
           size="small"
           multiple
+          filterable
           collapse-tags
           placeholder="Parole Chiave"
           style="width: 270px !important;"
@@ -119,11 +120,12 @@ Vue.use(Loading);
 import mountComponent from '../util/mountComponent';
 import notification from '../util/notification';
 
-import ScuolaDigitaleRicercaResults from './ScuolaDigitaleRicercaResults';
-Vue.component('gv-scuoladigitale-ricerca-results', ScuolaDigitaleRicercaResults);
-
-import ScuolaDigitaleInfo from './ScuolaDigitaleInfo';
-Vue.component('gv-scuoladigitale-info', ScuolaDigitaleInfo);
+Vue.component('gv-scuoladigitale-ricerca-results', () =>
+  import(/* webpackChunkName: "ScuolaDigitaleRicercaResults" */ './ScuolaDigitaleRicercaResults')
+);
+Vue.component('gv-scuoladigitale-info', () =>
+  import(/* webpackChunkName: "ScuolaDigitaleRicercaResults" */ './ScuolaDigitaleInfo')
+);
 
 export default {
   name: 'gv-scuoladigitale-ricerca',
@@ -420,5 +422,11 @@ export default {
 .el-tabs__header {
   margin: 0 0 5px !important;
   color: #24386c !important;
+}
+
+.el-select .el-input .el-select__caret {
+  color: black !important;
+  font-size: 16px !important;
+  font-weight: 800;
 }
 </style>

@@ -8,7 +8,7 @@
       id="gv-scuoladigitale-ricerca-results-title"
       class="gv-scuoladigitale-ricerca-results-title gv-color-scheme"
     >
-      <b>RISULTATI RICERCA</b>
+      <b>{{ title }}</b>
       <el-button
         class="gv-close gv-color-scheme"
         icon="el-icon-close"
@@ -38,13 +38,23 @@
           >
             <el-table-column prop="anno" label="Anno" sortable align="left" width="80">
             </el-table-column>
+            <!-- prop="nome_istituto" -->
             <el-table-column
-              prop="nome_istituto"
               label="Nome Istituto"
               sortable
+              sort-by="nome_istituto"
               align="left"
               width="120"
             >
+              <template slot-scope="scope">
+                <span
+                  title="link alla scuola"
+                  @click="handleClickScuola(scope.$index, scope.row.codice_scuola)"
+                  style="color:#e94e1b; cursor: pointer;"
+                >
+                  {{ scope.row.nome_istituto }}
+                </span>
+              </template>
             </el-table-column>
             <el-table-column prop="ordine" label="Ordine" sortable align="left" width="120">
             </el-table-column>
@@ -74,11 +84,15 @@
         </div>
       </div>
     </div>
+    <div class="gv-scuoladigitale-ricerca-results-title gv-color-scheme">
+      <a href="https://www.scuoladigitaleliguria.it/osservatorio.html" target="_blank"
+        >SE SEI UN DOCENTE ACCEDI ALL'OSSERVATORIO</a
+      >
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 import Vue from 'vue';
 
 import { Table } from 'element-ui';
@@ -87,7 +101,11 @@ import lang from 'element-ui/lib/locale/lang/it';
 import locale from 'element-ui/lib/locale';
 locale.use(lang);
 
-import notification from '../util/notification';
+import mountComponent from '../util/mountComponent';
+
+Vue.component('gv-scuoladigitale-info', () =>
+  import(/* webpackChunkName: "ScuolaDigitaleRicercaResults" */ './ScuolaDigitaleInfo')
+);
 
 export default {
   name: 'gv-scuoladigitale-ricerca-results',
@@ -98,15 +116,33 @@ export default {
     return {
       flagRicerca: true,
       show: false,
+      numProgetti: this.listaProgetti.length,
+      title: `RISULTATO RICERCA - Numero progetti trovati: ${this.listaProgetti.length}`,
     };
   },
-  async mounted() {},
+  async mounted() {
+    // console.log(this.listaProgetti);
+  },
   methods: {
     selectRiga(row) {
       // console.log(row);
     },
     handleLink(index, link_documentazione) {
       window.open(link_documentazione);
+    },
+    handleClickScuola(index, codice_scuola) {
+      // console.log(codice_scuola);
+      mountComponent({
+        elId: 'gv-scuoladigitale-info',
+        clear: true,
+        vm: new Vue({
+          template: `<gv-scuoladigitale-info :id="id" title="INFO SCUOLA" :flagRicerca="flagRicerca"></gv-scuoladigitale-info>`,
+          data: {
+            id: codice_scuola,
+            flagRicerca: false,
+          },
+        }),
+      });
     },
     closePanel: function() {
       let div = document.getElementById('gv-scuoladigitale-ricerca-results');
@@ -159,6 +195,13 @@ export default {
   font-weight: 800;
   font-family: 'Raleway', Arial, sans-serif !important;
   font-size: 14px;
+}
+
+.gv-scuoladigitale-ricerca-results-title a {
+  margin-left: 540px;
+  font-size: 15px;
+  color: black;
+  font-weight: 900;
 }
 
 .gv-scuoladigitale-ricerca-results-title :focus {

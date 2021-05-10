@@ -1,7 +1,7 @@
 var applicazione = 'RISKNAT';
 var repertorio = '03';
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 GV.init({
   debug: true,

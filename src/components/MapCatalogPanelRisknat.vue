@@ -116,12 +116,12 @@ export default {
   methods: {
     // RISKNAT
     submitRisknat() {
-      // TODO Caricamento livello (vedi atlante)
       const selectedDataset = this.getSelectedDatasetRisknat();
       if (!selectedDataset) return;
       const layersConfig = this.risknatForm.livelli.filter(livello => {
         return livello.id == selectedDataset.livello;
       });
+      // console.log('submitRisknat risknatFrom', this.risknatForm);
       this.loadLayerRisknat(layersConfig[0]);
     },
     loadLayerRisknat(layerConfig) {
@@ -205,6 +205,7 @@ export default {
         this.risknatForm.showForm = true;
       });
       getConfig(this.risknatForm.idMap).then(data => {
+        // console.log('getConfig', data.data.data);
         this.risknatForm.livelli = data.data.data.layers;
         this.risknatForm.downloadConfig = data.data.data.downloadConfig;
         this.risknatForm.metaData = data.data.data.metaData;
@@ -212,23 +213,27 @@ export default {
     },
     loadRisknatDataset(data) {
       this.risknatForm.layerDataset = data;
-      const styleLL = {
-        color: '#ffcc00',
-        fillOpacity: 0,
-        weight: 1,
-        opacity: 1,
-      };
-      const styleOL = new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: 'blue',
-          width: 3,
-        }),
-      });
+      let style;
+      if (GV.app.map.type === 'openlayers') {
+        style = {
+          stroke: new ol.style.Stroke({
+            color: 'blue',
+            width: 3,
+          }),
+        };
+      } else {
+        style = {
+          color: '#ffcc00',
+          fillOpacity: 0,
+          weight: 1,
+          opacity: 1,
+        };
+      }
       GV.app.map.loadLayers([
         {
           name: 'RisknatDataset',
           type: 'JSON',
-          style: GV.app.map.type === 'openlayers' ? styleOL : styleLL,
+          style: style,
           visible: true,
           data: null,
         },

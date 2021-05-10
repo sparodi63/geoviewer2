@@ -26,39 +26,47 @@ if (codice) {
       alert(error);
     });
 } else {
-  console.warning('CODICE PRATICA ASSENTE');
+  loadConfig(null);
+  console.warn('CODICE PRATICA ASSENTE');
 }
 
 function loadConfig(data) {
   // console.log(data);
-  const pratica = data.pratica;
+  const pratica = data ? data.pratica : null;
 
-  var findOptions =
-    pratica.countGeom > 0
-      ? {
-          layers: [idLayer],
-          cqlFilter: "CODICE='" + pratica.codiceDomandaGeom + "'",
-        }
-      : {
-          layers: [idLayerComune],
-          cqlFilter: "CODICE_COMUNE='" + codice_comune + "'",
-        };
+  var findOptions = null;
 
-  let tools = [
-    { name: 'gv-geocoder' },
-    { name: 'gv-info-button', active: true },
-    { name: 'gv-measure-button' },
-    { name: 'gv-layer-search-topo-button' },
-    { name: 'gv-ricerca-catastale-button' },
-    { name: 'gv-print-button' },
-    { name: 'gv-scalebar', position: 'bottomleft' },
-  ];
+  if (codice_comune) {
+    findOptions = {
+      layers: [idLayerComune],
+      cqlFilter: "CODICE_COMUNE='" + codice_comune + "'",
+    };
+  }
+  if (pratica && pratica.countGeom > 0) {
+    findOptions = {
+      layers: [idLayer],
+      cqlFilter: "CODICE='" + pratica.codiceDomandaGeom + "'",
+    };
+  }
+
+  let tools = [{ name: 'gv-geocoder' }, { name: 'gv-scalebar', position: 'bottomleft' }];
+
+  if (codice_comune && codice) {
+    tools = [
+      { name: 'gv-geocoder' },
+      { name: 'gv-info-button', active: true },
+      { name: 'gv-measure-button' },
+      { name: 'gv-layer-search-topo-button' },
+      { name: 'gv-ricerca-catastale-button' },
+      { name: 'gv-print-button' },
+      { name: 'gv-scalebar', position: 'bottomleft' },
+    ];
+  }
 
   // TODO: ABILITARE CONTROLLO SU PROTOCOLLO
-  // if (!pratica.PROTOCOLLO) {
-  //   tools.push(getDrawTool(pratica));
-  // }
-  tools.push(getDrawTool(pratica));
+  if (pratica && !pratica.PROTOCOLLO) {
+    tools.push(getDrawTool(pratica));
+  }
 
   let conf = {
     debug: true,

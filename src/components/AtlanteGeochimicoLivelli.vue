@@ -10,7 +10,13 @@
       ></button>
     </div>
     <div id="ag-wrapper" class="ag-wrapper gv-color-scheme">
-      <el-select placeholder="Seleziona Elemento" v-model="livello" size="mini" @change="onChange">
+      <el-select
+        placeholder="Seleziona Elemento"
+        filterable
+        v-model="livello"
+        size="mini"
+        @change="onChange"
+      >
         <el-option v-for="item in livelli" :key="item.id" :value="item.id" :label="item.title">
           <span style="font-size: 16px">{{ item.title }}</span>
         </el-option>

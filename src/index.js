@@ -2,7 +2,9 @@
 // CSS
 require('style!./assets/css/base.css');
 require('style!./assets/css/mapskin/css/mapskin.css');
+require('style!./assets/css/mapskin/css/mapskin.css');
 import '@fortawesome/fontawesome-free/css/all.css';
+import 'font-gis/css/font-gis.css';
 // -------------------------------------------------------------------------------- //
 // leaflet
 // require('style!../node_modules/leaflet/dist/leaflet.css');

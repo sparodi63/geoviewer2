@@ -189,6 +189,11 @@ Vue.component('gv-switch3D-button', Switch3D);
 // import MeasureOl from './components/buttons/MeasureOl.vue';
 // Vue.component('gv-measure-ol-button', MeasureOl);
 
+// Bottone Help3D
+tools.push({ name: 'gv-help3D-button' });
+import Help3D from './components/buttons/Help3D.vue';
+Vue.component('gv-help3D-button', Help3D);
+
 // -------------------------------------------------------------------------------- //
 
 export default tools;

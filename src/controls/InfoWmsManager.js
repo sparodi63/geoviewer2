@@ -262,7 +262,7 @@ function _showFeatureInfo(feature) {
     case 'xsl':
       showXml(feature);
       break;
-    case 'gv_info':
+    case 'gvi':
       showGvInfo(feature);
       break;
     default:
@@ -400,8 +400,9 @@ function showXml(data) {
 
 function getType(feature) {
   const infoUrl = feature.infoOptions.infoUrl;
+  console.log('infoUrl!!!!!!', infoUrl);
   if (feature.text) return 'text';
-  if (infoUrl === 'gv_info') return 'gv_info';
+  if (infoUrl === 'gvi') return 'gvi';
   if (infoUrl.substr(infoUrl.length - 12) === 'generico.xsl') return 'generico';
   if (infoUrl.substr(infoUrl.length - 4) === '.xsl') return 'xsl';
 }
@@ -418,13 +419,9 @@ function hiliteFeature(feature) {
     if (feature.layer.config.wmsParams.cql_filter) {
       cqlFilter += ` AND ${feature.layer.config.wmsParams.cql_filter}`;
     }
-    getWFSFeature(layerConfig.wfsParams, cqlFilter, null)
-      .then(features => {
-        GV.app.map.hiliteFeatures(features);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    getWFSFeature(layerConfig.wfsParams, cqlFilter, null).then(features => {
+      GV.app.map.hiliteFeatures(features);
+    });
   }
 }
 // apre una panel div con un documento html

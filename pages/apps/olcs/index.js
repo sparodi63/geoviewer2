@@ -52,6 +52,10 @@ GV.init({
           name: 'gv-switch3D-button',
           position: 'topleft',
         },
+        {
+          name: 'gv-help3D-button',
+          position: 'topleft',
+        },
       ],
     },
   },

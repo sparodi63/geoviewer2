@@ -18,7 +18,7 @@ export default {
       control: null,
       options: options,
       title: 'Misurazioni',
-      cssClass: 'gv-button fa fa-edit',
+      cssClass: 'gv-button fg-measure',
       cssActiveClass: 'gv-button-selected',
     };
   },
