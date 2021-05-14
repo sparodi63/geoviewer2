@@ -137,6 +137,7 @@ function getDrawTool(pratica) {
     name: 'gv-draw-button',
     active: false,
     options: {
+      idLayer: idLayer,
       tools: {
         draw: {
           point: true,

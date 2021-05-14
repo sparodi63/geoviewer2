@@ -96,6 +96,10 @@ export default {
       label: 'AGEA: Ortofoto 2016',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
     },
+    RL_ORTOFOTO_2019: {
+      label: 'AGEA: Ortofoto 2019',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+    },
     RL_CARTE_BASE: {
       label: 'Carte Regionali 2007 -2013',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',

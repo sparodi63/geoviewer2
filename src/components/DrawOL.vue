@@ -129,6 +129,7 @@ export default {
       snap: true,
       snapInteraction: true,
       deletedItems: [],
+      idLayer: options.idLayer,
       submitButton: options.buttons && options.buttons.submit,
       cancelButton: options.buttons && options.buttons.cancel,
       refreshButton: options.buttons && options.buttons.refresh,
@@ -290,6 +291,14 @@ export default {
       this.layer.getSource().clear();
       this.deletedItems = [];
       if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests);
+      this.refreshWMS();
+    },
+    refreshWMS() {
+      const layer = GV.app.map.getLayerByName(this.idLayer);
+      if (layer) {
+        const params = layer.getSource().getParams();
+        layer.getSource().updateParams(params);
+      }
     },
     confirmSubmit() {
       var r = confirm('Sei sicuro?');

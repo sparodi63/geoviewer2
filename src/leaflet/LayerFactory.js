@@ -348,6 +348,20 @@ var layerFactory = {
     });
   },
 
+  RL_ORTOFOTO_2019() {
+    return this.WMS({
+      visible: false,
+      name: 'ORTOFOTO',
+      cacheMinZoomLevel: 8,
+      wmsParams: {
+        name: 'L8256',
+        format: 'image/jpeg',
+        url: 'https://geoservizi.regione.liguria.it/geoserver/wms?',
+      },
+      zIndex: 1,
+      attribution: 'Ortofoto 20cm/ ©2019 CONSORZIO TeA - TUTTI I DIRITTI RISERVATI',
+    });
+  },
   RL_ORTOFOTO_2016() {
     return this.WMS({
       visible: false,

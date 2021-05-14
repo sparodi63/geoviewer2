@@ -202,6 +202,23 @@ const layerFactory = {
       attributions: 'Regione Liguria',
     });
   },
+  RL_ORTOFOTO_2019() {
+    const idMap = 2248;
+    const idLayer = 'L8256';
+    return this.WMS({
+      idMap: idMap,
+      visible: false,
+      name: 'RL_ORTOFOTO_2019',
+      cacheMinZoomLevel: 8,
+      wmsParams: {
+        name: idLayer,
+        format: 'image/png',
+        url: `https://geoservizi.regione.liguria.it/geoserver/M${idMap}/wms?`,
+      },
+      zIndex: 0,
+      attributions: 'Ortofoto 20cm/ ©2019 CONSORZIO TeA - TUTTI I DIRITTI RISERVATI',
+    });
+  },
   RL_ORTOFOTO_2016() {
     const idMap = 1828;
     const idLayer = 'L5802';
