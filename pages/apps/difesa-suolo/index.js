@@ -6,7 +6,9 @@ GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
 const geoserverUrl =
-  env === 'TEST' ? 'http://geoservizi.datasiel.net/' : 'https://geoservizi.regione.liguria.it/';
+  env === 'TEST'
+    ? 'http://geoservizi.datasiel.net:8080/'
+    : 'https://geoservizi.regione.liguria.it/';
 const idMap = env === 'TEST' ? 2246 : null;
 const idLayer = env === 'TEST' ? 'L8245' : null;
 const idLayerComune = 'L6422';
@@ -115,7 +117,7 @@ function loadConfig(data) {
     baseLayers: [
       { type: 'ESRI_IMAGERY', visible: true },
       { type: 'OSM' },
-      { type: 'RL_ORTOFOTO_2016' },
+      { type: 'RL_ORTOFOTO_2019' },
       { type: 'RL_CARTE_BASE' },
       { type: 'BLANK' },
     ],

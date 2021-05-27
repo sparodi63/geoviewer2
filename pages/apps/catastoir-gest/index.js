@@ -1,40 +1,56 @@
 /*
-ESEMPIO QUERY_STRING
-?ID_MAP=1709&ID_LAYER=4618&FIELD=COD_TPRAT,NUM_PRAT,PROG_PRAT,PROG_LOC&CODICE=BAN,24987,0,1&FIND=SI&ID_SESSION=12345
 
-http://localhost:8081?ID_MAP=1709&ID_LAYER=4618&FIELD=COD_TPRAT,NUM_PRAT,PROG_PRAT,PROG_LOC&CODICE=BAN,24987,0,1&FIND=SI&ID_SESSION=12345
+http://localhost:8081?ID_SESSION=12345&CODICE_COMUNE=010058&ID_PUNTO=2631
 
 */
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
-// GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/geoportale/map/'
 
-var idMap = GV.utils.getUrlParam('ID_MAP');
-var idLayer = 'L' + GV.utils.getUrlParam('ID_LAYER');
-var fields = GV.utils.getUrlParam('FIELD');
-var values = GV.utils.getUrlParam('CODICE');
-var findFlag = GV.utils.getUrlParam('FIND');
+const env = GV.globals.GENIO_WEB_ENV || 'TEST';
+
+var geoserverUrl =
+  env === 'TEST'
+    ? 'http://geoservizi.datasiel.net:8080/'
+    : 'https://geoservizi.regione.liguria.it/';
+var idMap = env === 'TEST' ? 2258 : null;
+var idLayer = env === 'TEST' ? 'L8272' : null;
+var idLayerComune = 'L6422';
+
 var idSession = GV.utils.getUrlParam('ID_SESSION');
-var cqlFilter = buildCQL(fields, values);
+var codiceComune = GV.utils.getUrlParam('CODICE_COMUNE');
+var idPunto = GV.utils.getUrlParam('ID_PUNTO');
+var coord = GV.utils.getUrlParam('COORD');
 
-var findOptions =
-  findFlag === 'SI'
-    ? {
-        layers: [idLayer],
-        cqlFilter: cqlFilter,
-      }
-    : null;
+var findOptions = setFindOptions();
+var zoomTo = setZoomTo();
 
-function buildCQL(fields, values) {
-  var fieldsArray = fields.split(',');
-  var valuesArray = values.split(',');
-  var exprArray = [];
-  for (var i = 0; i < fieldsArray.length; i++) {
-    var expr = fieldsArray[i] + "='" + valuesArray[i] + "'";
-    exprArray.push(expr);
+function setFindOptions() {
+  if (idPunto) {
+    return {
+      layers: [idLayer],
+      cqlFilter: "ID_PUNTO='" + idPunto + "'",
+    };
   }
-  var cql = exprArray.join(' AND ');
-  return cql;
+  if (codiceComune) {
+    return {
+      layers: [idLayerComune],
+      cqlFilter: "CODICE_COMUNE='" + codiceComune + "'",
+    };
+  }
+  return null;
+}
+
+function setZoomTo() {
+  if (idPunto) {
+    return null;
+  }
+  if (coord) {
+    return {
+      coord: coord,
+      epsg: '3003',
+    };
+  }
+  return null;
 }
 
 window.addEventListener('beforeunload', function() {
@@ -47,11 +63,12 @@ function beforeUnload() {
   if (GV.globals.flagInsert) {
     return;
   }
-  insert(0, 0, 'NO');
+  insert(0, 0, 0, 'NO');
 }
 
-function insert(x, y, esito) {
-  GV.utils.insertAgCoordinate(idSession, x.toFixed(0), y.toFixed(0), esito);
+function insert(x, y, z, esito) {
+  // console.log(z);
+  GV.utils.insertAgCoordinate(idSession, x.toFixed(0), y.toFixed(0), esito, z);
 }
 
 //
@@ -60,8 +77,10 @@ GV.init({
   debug: true,
   idMap: idMap,
   findOptions: findOptions,
+  zoomTo: zoomTo,
+  geoserverUrl: geoserverUrl,
   application: {
-    name: 'benamb-gv2',
+    name: 'catastoir-gv2',
     mapOptions: {
       // type: 'openlayers',
       click: 'info',
@@ -101,12 +120,13 @@ GV.init({
           name: 'gv-coordinate-button',
           options: {
             projection: 'EPSG:3003',
-            submit: function(x, y) {
-              console.log('submit', x, y);
-              insert(x, y, 'SI');
+            quota: true,
+            submit: function(x, y, z) {
+              console.log('submit', x, y, z);
+              insert(x, y, z, 'SI');
             },
             cancel: function() {
-              insert(0, 0, 'NO');
+              insert(0, 0, 0, 'NO');
             },
           },
         },
