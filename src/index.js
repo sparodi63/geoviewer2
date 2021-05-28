@@ -41,7 +41,6 @@ import getS3TokenBbox from './services/getS3TokenBbox';
 import getS3Token from './services/getS3Token';
 import getAuth from './services/getAuth';
 import getGeneric from './services/getGeneric';
-import getEnv from './services/getEnv';
 
 //
 import config from './config';
@@ -87,9 +86,6 @@ window.GV = {
       ];
       await fetchInject(llScripts);
     }
-
-    const env = await getEnv();
-    GV.globals.ENV = env;
 
     this.messageEventListener();
 

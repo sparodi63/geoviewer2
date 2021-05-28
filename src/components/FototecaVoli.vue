@@ -214,7 +214,6 @@ export default {
       if (bbox) {
         getCoordTransformBbox(srsIn, srsOut, bbox).then(response => {
           if (response.data.data) {
-            console.log(response.data.data);
             this.bbox = response.data.data[0][0] + ',' + response.data.data[1][0];
             getVoli(this.bbox).then(resp => {
               this.voli = resp;

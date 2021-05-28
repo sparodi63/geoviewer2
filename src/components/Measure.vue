@@ -251,7 +251,7 @@ export default {
         }
       })
       getElevation('4326', latlng.lng, latlng.lat).then(response => {
-        if (response.data.status === "OK" && response.data.elevation) {
+        if (response.data.status === "OK" && response.data.elevation) { 
           this.resultPointHeight = response.data.elevation[0]
         } else {
           this.resultPointHeight = null

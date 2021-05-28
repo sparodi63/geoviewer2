@@ -84,7 +84,7 @@ export default {
       },
       {
         label: 'Coeff. di dispersione dei quartili',
-        value: `${parseFloat(this.QCD).toFixed(2)}`,
+        value: `${parseFloat(this.QCD).toFixed(3)}`,
       },
     ];
     return {

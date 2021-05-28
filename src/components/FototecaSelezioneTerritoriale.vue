@@ -73,7 +73,7 @@ export default {
           .getFeatures()[0]
           .getGeometry()
           .getCoordinates();
-        this.bbox = coords.map(coord => {
+        this.bbox = coords.map(coord => { 
           return coord.join(',');
         })[0];
         // console.log(coords, this.bbox);
@@ -81,6 +81,7 @@ export default {
       } else {
         this.drawnRectangle.clearLayers();
         this.drawnRectangle.addLayer(event.layer);
+        
         const xMin = event.layer.getBounds()._southWest.lng;
         const yMin = event.layer.getBounds()._southWest.lat;
         const xMax = event.layer.getBounds()._northEast.lng;

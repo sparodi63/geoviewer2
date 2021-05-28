@@ -8,9 +8,9 @@
   UTILIZZO
   npm run deploy <TARGET> <APP>
 
-  E:\Tomcat6\webapps\ROOT\geoviewer2\deploy.bat <TARGET> <APP>
-  E:\Tomcat6\webapps\ROOT\geoviewer2\deploy.bat STAGING LIB
-  E:\Tomcat6\webapps\ROOT\geoviewer2\deploy.bat STAGING geoportale
+  D:\Tomcat\webapps\ROOT\geoviewer2\deploy.bat <TARGET> <APP>
+  D:\Tomcat\webapps\ROOT\geoviewer2\deploy.bat STAGING LIB
+  D:\Tomcat\webapps\ROOT\geoviewer2\deploy.bat STAGING geoportale
 
 */
 

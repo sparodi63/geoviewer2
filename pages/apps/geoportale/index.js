@@ -68,21 +68,11 @@ GV.init({
     {
       type: 'TS_STREETS',
     },
-    {
-      type: 'RL_ORTOFOTO_2016',
-    },
-    {
-      type: 'RL_ORTOFOTO_2013',
-    },
-    {
-      type: 'RL_ORTOFOTO_2010',
-    },
-    {
-      type: 'RL_ORTOFOTO_2007',
-    },
-    {
-      type: 'RL_ORTOFOTO_2000',
-    },
+    { type: 'RL_ORTOFOTO_2019' },
+    { type: 'RL_ORTOFOTO_2016' },
+    { type: 'RL_ORTOFOTO_2013' },
+    { type: 'RL_ORTOFOTO_2010' },
+    { type: 'RL_ORTOFOTO_2007' },
     {
       type: 'RL_CARTE_BASE',
     },

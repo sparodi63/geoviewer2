@@ -1,4 +1,4 @@
-var idElab = GV.utils.getUrlParam("ID");
+var idElab = GV.utils.getUrlParam('ID');
 GV.init({
   debug: true,
   application: {
@@ -36,14 +36,15 @@ GV.init({
           },
         },
       },
-      tools: [{
+      tools: [
+        {
           name: 'gv-geocoder',
         },
         {
           name: 'gv-cem-elaborazioni-button',
           options: {
-            idElab: idElab
-          }
+            idElab: idElab,
+          },
         },
         {
           name: 'gv-scalebar',
@@ -52,7 +53,8 @@ GV.init({
       ],
     },
   },
-  baseLayers: [{
+  baseLayers: [
+    {
       type: 'ESRI_IMAGERY',
       visible: true,
     },
@@ -60,7 +62,7 @@ GV.init({
       type: 'OSM',
     },
     {
-      type: 'RL_ORTOFOTO_2016',
+      type: 'RL_ORTOFOTO_2019',
     },
     {
       type: 'RL_CARTE_BASE',
@@ -70,4 +72,4 @@ GV.init({
     },
   ],
   maps: [],
-})
+});

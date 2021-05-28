@@ -1,6 +1,6 @@
 var idMap = null;
-GV.globals.ATLANTE_GEOCHIMICO_CONFIG_URL = '/geoservices/REST/atlante_geochimico/config/';
-// GV.globals.ATLANTE_GEOCHIMICO_CONFIG_URL = '/geoservices/data/atlante_geochimico/config.json';
+// GV.globals.ATLANTE_GEOCHIMICO_CONFIG_URL = '/geoservices/REST/atlante_geochimico/config/';
+GV.globals.ATLANTE_GEOCHIMICO_CONFIG_URL = '/geoservices/data/atlante_geochimico/config.json';
 
 GV.init({
   debug: true,
@@ -61,7 +61,10 @@ GV.init({
       type: 'ESRI_IMAGERY',
     },
     {
-      type: 'RL_ORTOFOTO_2016',
+      type: 'OSM',
+    },
+    {
+      type: 'RL_ORTOFOTO_2019',
     },
     {
       type: 'RL_CARTE_BASE',
@@ -72,3 +75,4 @@ GV.init({
   ],
   maps: [],
 });
+deploy;
