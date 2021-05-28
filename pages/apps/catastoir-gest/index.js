@@ -76,7 +76,7 @@ function insert(x, y, z, esito) {
 var auth = {
       type: 'NAM',
       options: {
-        ruolo: 'IR_AMM,IR_GES_ALL,IR_VIS,TESTAMB',
+        ruolo: 'IR_AMM,IR_GES_ALL,TESTAMB',
       },
 };
 
