@@ -1,12 +1,17 @@
-/*
 
-http://localhost:8081?ID_SESSION=12345&CODICE_COMUNE=010058&ID_PUNTO=2631
+// http://localhost:8081?ID_SESSION=12345&CODICE_COMUNE=010058&ID_PUNTO=2631
 
-*/
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
-const env = GV.globals.GENIO_WEB_ENV || 'TEST';
+const env = GV.globals.ENV || 'TEST';
+
+const auth = (env === 'PROD') ? {
+  type: 'NAM',
+  options: {
+    ruolo: 'IR_VIS,IR_AMM,IR_GES_ALL',
+  },
+} : null;
 
 var geoserverUrl =
   env === 'TEST'
@@ -54,18 +59,7 @@ function setZoomTo() {
 }
 
 
-//
-
-var auth = {
-      type: 'NAM',
-      options: {
-        ruolo: 'IR_VIS,TESTAMB',
-      },
-};
-
-if (env === 'TEST') {
-  auth = null;
-}
+//------------------------------------------
 
 
 GV.init({

@@ -10,18 +10,8 @@
     ></gv-title>
     <div class="gv-fototeca-selezione-territoriale-body gv-inverted-color-scheme">
       <el-row type="flex" class="row-bg" justify="left">
-        <!-- Disegna un rettangolo sulla mappa<br /> -->
       </el-row>
       <el-row type="flex" class="row-bg" justify="left">
-        <!-- <el-button
-          id="gv-fototeca-selezione-submit"
-          v-show="showSubmit"
-          title="Conferma"
-          @click="submit"
-          class="gv-color-scheme"
-          size="mini"
-          >Conferma</el-button
-        > -->
         <el-button
           id="gv-fototeca-selezione-annulla"
           :disabled="buttonDisabled"
@@ -42,6 +32,7 @@ import { Row, Button } from 'element-ui';
 Vue.use(Row);
 Vue.use(Button);
 import RectDraw from '../mixins/RectDraw.js';
+import InfoWmsManager from '../controls/InfoWmsManager';
 
 // require('leaflet-draw');
 
@@ -76,12 +67,13 @@ export default {
         this.bbox = coords.map(coord => { 
           return coord.join(',');
         })[0];
-        // console.log(coords, this.bbox);
         this.bboxSRS = '3857';
       } else {
-        this.drawnRectangle.clearLayers();
-        this.drawnRectangle.addLayer(event.layer);
-        
+        InfoWmsManager.addHiliteLayer(GV.app.map);
+        const layer = GV.app.map.getLayerByName('InfoWmsHilite');
+        layer.clearLayers();
+        layer.addLayer(event.layer);
+
         const xMin = event.layer.getBounds()._southWest.lng;
         const yMin = event.layer.getBounds()._southWest.lat;
         const xMax = event.layer.getBounds()._northEast.lng;
@@ -98,7 +90,7 @@ export default {
     annullaSelezione() {
       const r = confirm('Sei sicuro?');
       if (r == true) {
-        this.drawnRectangle.clearLayers();
+        GV.app.map.getLayerByName('InfoWmsHilite').clearLayers();
         this.bbox = null;
         this.buttonDisabled = true;
         GV.eventBus.$emit('gv-fototeca-reload-voli', {
