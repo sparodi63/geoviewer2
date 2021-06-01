@@ -280,6 +280,7 @@ GV.init({
   application: {
     mapOptions: {
       type: 'leaflet',
+      maxZoom: 19,
     },
     layout: {
       title: ' ',

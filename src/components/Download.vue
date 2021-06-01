@@ -288,6 +288,14 @@ export default {
           codice: layer.id,
           nome: layer.legend.label,
         };
+      })
+      this.livelli.sort((a,b) => {
+        if (a.nome < b.nome) {
+          return -1;
+        }
+        if (a.nome > b.nome) {
+          return 1;
+        }        
       });
       if (this.livelli.length === 1) {
         this.livello = this.livelli[0].codice;
@@ -546,10 +554,10 @@ export default {
     submit() {
       // CONTROLLI
       if (!this.config.flagDownloadStatico && !this.codCliente) {
-        notification('Indicare Indirizzo Email');
+        notification('Indicare Indirizzo Email'); 
         return;
       }
-      if (!this.validateEmail(this.codCliente)) {
+      if (!this.config.flagDownloadStatico && !this.validateEmail(this.codCliente)) {
         notification('Indirizzo Email non valido');
         return;
       }

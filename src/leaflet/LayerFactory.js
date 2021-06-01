@@ -67,7 +67,7 @@ var layerFactory = {
     };
     return L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-      maxZoom: 20,
+      maxZoom: 21,
     });
   },
 

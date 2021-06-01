@@ -71,6 +71,12 @@ Vue.component('gv-cem-scheda-panel', () => import('./CemScheda.vue'));
 export default {
   data() {
     const options = GV.config.getToolOptions('gv-cem-elaborazioni-button');
+    const idLayer = options.idLayer
+    const layerName = `L${idLayer}`
+    const idMap = `M${options.idMap}` 
+    const geoserverUrl = options.geoserverUrl
+    const url = `${geoserverUrl}geoserver/${idMap}/`
+
     return {
       buttonDisabled: true,
       options: options,
@@ -79,9 +85,9 @@ export default {
       elaborazioneSelezionata: null,
       livelli: [],
       layerConfig: {
-        id: 7268,
+        id: idLayer,
         idMap: 'CEM_ELABORAZIONI',
-        name: 'L7268',
+        name: layerName,
         type: 'WMS',
         visible: true,
         flagGeoserver: true,
@@ -91,13 +97,13 @@ export default {
         minScale: 0,
         maxScale: 0,
         wmsParams: {
-          name: 'L7268',
+          name: layerName,
           format: 'image/png8',
-          url: 'https://geoservizi.regione.liguria.it/geoserver/M2123/wms?',
+          url: `${url}wms?'`,
         },
         wfsParams: {
-          url: 'https://geoservizi.regione.liguria.it/geoserver/M2123/wfs?',
-          typeName: 'L7268',
+          url: `${url}wfs?'`,
+          typeName: layerName,
         },
         legend: {
           icon: '/geoservices/apps/viewer/static/img/legend/classi.gif',
@@ -105,7 +111,7 @@ export default {
           popUpWidth: 100,
           popUpHeight: 100,
           popUpUrl:
-            'https://geoservizi.regione.liguria.it/geoserver/M2123/wms?LAYER=L7268&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&',
+            `${url}wms?LAYER=${layerName}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&`,
         },
         infoOptions: {
           infoUrl: 'http://srvcarto.regione.liguria.it/info/generico.xsl',

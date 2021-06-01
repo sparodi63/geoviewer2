@@ -1,4 +1,21 @@
 var idElab = GV.utils.getUrlParam('ID');
+
+var env = GV.globals.ENV || 'TEST';
+
+var geoserverUrl =
+  env === 'TEST'
+    ? 'http://geoservizi.datasiel.net:8080/'
+    : 'https://geoservizi.regione.liguria.it/';
+var idMap =
+    env === 'TEST'
+    ? 2123 
+    : 2261;
+var idLayer =
+    env === 'TEST'
+    ? 7268 
+    : 8275;
+
+
 GV.init({
   debug: true,
   application: {
@@ -13,6 +30,7 @@ GV.init({
           showAddMap: true,
           dontShowMapCatalogPanelOnStart: true,
           showInfoMap: true,
+          noDeleteButton: true,
           showLayersTransparency: true,
           showBaseLayerSwitcher: true,
           addMapConfig: {
@@ -44,6 +62,9 @@ GV.init({
           name: 'gv-cem-elaborazioni-button',
           options: {
             idElab: idElab,
+            idMap: idMap,
+            idLayer: idLayer,
+            geoserverUrl: geoserverUrl
           },
         },
         {

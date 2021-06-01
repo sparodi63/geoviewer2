@@ -26,6 +26,7 @@ const llMap = {
   },
   initialize() {
     Object.assign(this.mapOptions, GV.config.application.mapOptions);
+    
     console.log('MAP OPTIONS', this.mapOptions);
 
     this.map = L.map('gv-map', this.mapOptions);
