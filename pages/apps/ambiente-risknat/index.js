@@ -11,6 +11,8 @@ GV.init({
     name: 'ambiente-gv2',
     mapOptions: {
       // type: 'openlayers',
+      // ol3d: true,
+      // enable3d: true,
       click: 'info',
       disableMaxBounds: true,
     },

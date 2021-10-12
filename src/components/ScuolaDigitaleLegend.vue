@@ -34,24 +34,39 @@ Vue.use(Table);
 Vue.use(TableColumn);
 
 import mountComponent from '../util/mountComponent';
+import loadComponent from '../util/loadComponent';
 
 Vue.component('gv-scuoladigitale-ricerca', () => import('./ScuolaDigitaleRicerca.vue'));
+Vue.component('gv-scuoladigitale-ricerca-conn', () => import('./ScuolaDigitaleRicercaConn.vue'));
 
 export default {
   name: 'gv-scuoladigitale-legend',
   data() {
+    const options = GV.config.getToolOptions('gv-scuoladigitale-legend')
+
     return {
-      options: GV.config.getToolOptions('gv-scuoladigitale-legend'),
+      options: options,
       maps: GV.config.maps,
       show: true,
       tema: 0,
       title: 'LEGENDA ICONE',
     };
   },
-  mounted() {
+  async mounted() {
     GV.log('gv-scuoladigitale-legend: mounted');
     GV.legend = this;
-    this.changeMap(0);
+    if (this.options.version === 3) {
+      const mapConfig = await GV.config.addRlMap("2223", true, false)
+      mountComponent({
+        elId: 'gv-scuoladigitale-ricerca',
+        containerId: GV.config.containerId,
+        toggleEl: true,
+        vm: new Vue({
+          template: `<gv-scuoladigitale-ricerca-conn></gv-scuoladigitale-ricerca-conn>`,
+        }),
+      });
+    }
+    GV.config.addMapConfig(this.options.maps[0]);
     this.show = false;
     if (this.options.version === 2) {
       this.hideLegend();
@@ -64,14 +79,9 @@ export default {
         }),
       });
     }
+
   },
   methods: {
-    changeMap(value) {
-      if (GV.config.maps[0]) {
-        GV.config.removeMap(GV.config.maps[0].id);
-      }
-      GV.config.addMapConfig(this.options.maps[value]);
-    },
     showSearch() {
       mountComponent({
         elId: 'gv-scuoladigitale-ricerca',

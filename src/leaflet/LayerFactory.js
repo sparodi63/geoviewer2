@@ -431,6 +431,32 @@ var layerFactory = {
       zIndex: 1,
     });
   },
+  RL_ORTOFOTO_1986() {
+    return this.WMS({
+      visible: false,
+      name: 'ORTOFOTO',
+      // cacheMinZoomLevel: 8,
+      wmsParams: {
+        name: 'L1070',
+        format: 'image/jpeg',
+        url: 'https://geoservizi.regione.liguria.it/geoserver/M11/wms?',
+      },
+      zIndex: 1,
+    });
+  },
+  RL_ORTOFOTO_COSTIERA_2003() {
+    return this.WMS({
+      visible: false,
+      name: 'ORTOFOTO',
+      cacheMinZoomLevel: 7,
+      wmsParams: {
+        name: 'L8279',
+        format: 'image/png',
+        url: 'https://geoservizi.regione.liguria.it/geoserver/M2264/wms?',
+      },
+      zIndex: 1,
+    });
+  },
 
   TMS(layerConfig) {
     const url = layerConfig.tmsParams.url.replace('/tms/', '/tiles/');
@@ -560,7 +586,7 @@ var layerFactory = {
     } = layerConfig;
     let clusterLayer = null;
     let options = {};
-
+    
     if (classes && classes.length > 0) {
       if (layerConfig.geomSubType === 'POINT') {
         options.pointToLayer = function(feature, latlng) {

@@ -1,15 +1,17 @@
 var id = GV.utils.getUrlParam('id');
 
 // GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/map/'
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
+// GESTIONE PAGINE CUSTOM --------------------------------------------
 var customPageUrlList = {
   1881: '/geoservices/apps/viewer/pages/apps/atlante-geochimico/',
 };
-
 if (id && customPageUrlList[id]) {
   window.location = customPageUrlList[id];
 }
+// GESTIONE PAGINE CUSTOM --------------------------------------------
+
 
 GV.init({
   debug: true,
@@ -18,6 +20,7 @@ GV.init({
     name: 'geoportale-gv2',
     mapOptions: {
       click: 'info',
+      maxZoom: 19,
     },
     layout: {
       legend: {

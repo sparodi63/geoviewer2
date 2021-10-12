@@ -141,7 +141,7 @@ export default {
           offset: 70,
           dangerouslyUseHTMLString: true,
           position: 'bottom-left',
-          message: 'Il parametro "Area" è obbligatorio',
+          message: 'Il parametro "Area" Ã¨ obbligatorio',
         });
       }
     },

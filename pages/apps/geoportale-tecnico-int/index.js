@@ -1,6 +1,15 @@
 var id = GV.utils.getUrlParam('id');
 GV.globals.RL_CATALOG = 'int';
 
+// GESTIONE PAGINE CUSTOM --------------------------------------------
+var customPageUrlList = {
+  1881: '/geoservices/apps/viewer/pages/apps/atlante-geochimico/',
+};
+if (id && customPageUrlList[id]) {
+  window.location = customPageUrlList[id];
+}
+// GESTIONE PAGINE CUSTOM --------------------------------------------
+
 GV.init({
   debug: true,
   idMap: id,

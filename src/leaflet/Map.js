@@ -61,6 +61,9 @@ const llMap = {
   fitBounds(bounds, opts) {
     this.map.fitBounds(bounds, opts);
   },
+  panTo(coords) {
+    this.map.panTo(coords);
+  },
   setView(center, zoom, opt) {
     // center: se array converto oggetto Leaflet
     const coords = Array.isArray(center) ? { lat: center[0], lng: center[1] } : center;
@@ -362,11 +365,11 @@ const llMap = {
           const lon = response.data.points[0].split(',')[0];
           const lat = response.data.points[0].split(',')[1];
           markerConfig.location = [lat, lon];
-          this.addMarkerToMap(markerConfig);
+          return this.addMarkerToMap(markerConfig);
         }
       });
     } else {
-      this.addMarkerToMap(markerConfig);
+      return this.addMarkerToMap(markerConfig);
     }
   },
   addMarkerToMap(markerConfig) {
@@ -381,12 +384,9 @@ const llMap = {
       icon: icon,
       title: markerConfig.label,
     };
-    if (markerConfig.type === 'circle') {
-      L.circleMarker(markerConfig.location, opts).addTo(this.map);
-    } else {
-      L.marker(markerConfig.location, opts).addTo(this.map);
-    }
+    let marker = (markerConfig.type === 'circle') ? L.circleMarker(markerConfig.location, opts).addTo(this.map) : L.marker(markerConfig.location, opts).addTo(this.map)
     this.flyTo(markerConfig.location, markerConfig.zoomLevel || 14);
+    return marker
   },
   find(findOptions) {
     if (findOptions.bbox) {

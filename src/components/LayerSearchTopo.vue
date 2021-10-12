@@ -287,9 +287,11 @@ export default {
         { codice: 'LIKE', label: 'LIKE' },
       ],
       operatore: '=',
-      map: null,
       layers: [],
+      map: null,
       layer: null,
+      // map: 2258,
+      // layer: 8272,
       columns: [],
       column: null,
       valore: null,
@@ -696,9 +698,9 @@ export default {
             color: [255, 204, 0, 1],
             width: 1,
           }),
-          fill: new ol.style.Fill({
-            color: [255, 204, 0, 0.1],
-          }),
+          // fill: new ol.style.Fill({
+          //   color: [255, 204, 0, 0.1],
+          // }),
         });
       } else {
         style = {

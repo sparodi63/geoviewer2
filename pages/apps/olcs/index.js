@@ -1,4 +1,4 @@
-// http://ld-b3h7pf2-m.ld.ge/geoservices/apps/viewer/pages/apps/olcs/?id=5
+// http://ld-paordi-m.ld.ge/geoservices/apps/viewer/pages/apps/olcs/?id=5
 
 var id = GV.utils.getUrlParam('id');
 
@@ -55,6 +55,9 @@ GV.init({
         {
           name: 'gv-help3D-button',
           position: 'topleft',
+          options: {
+            showOnStart: true
+          }
         },
       ],
     },
@@ -62,13 +65,10 @@ GV.init({
   baseLayers: [
     {
       type: 'ESRI_IMAGERY',
-      visible: true,
-    },
-    {
-      type: 'TS_MONOCHROME',
     },
     {
       type: 'RL_ORTOFOTO_2019',
+      visible: true,
     },
     {
       type: 'RL_ORTOFOTO_2013',

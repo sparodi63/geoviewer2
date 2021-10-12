@@ -1,5 +1,5 @@
 var applicazione = 'ECOPIANO';
-var repertorio = '03';
+var repertorio = '03'; 
 var canale = null;
 
 GV.init({

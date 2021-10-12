@@ -6,7 +6,7 @@ http://localhost:8081?ID_SESSION=12345&CODICE_COMUNE=010058&ID_PUNTO=2631
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
-const env = GV.globals.ENV || 'TEST';
+const env = GV.globals.ENV || 'TEST'; 
 
 var geoserverUrl =
   env === 'TEST'
@@ -97,7 +97,7 @@ GV.init({
           show: true,
           showAddMap: true,
           showBaseLayerSwitcher: true,
-          showLayersTransparency: true,
+          showLayersTransparency: true, 
           addMapConfig: {
             panels: {
               repertorio: {
@@ -122,6 +122,7 @@ GV.init({
           name: 'gv-info-button',
           active: true,
         },
+        { name: 'gv-layer-search-topo-button' },
         {
           name: 'gv-coordinate-button',
           options: {

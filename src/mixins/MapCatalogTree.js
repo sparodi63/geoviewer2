@@ -9,11 +9,11 @@ export default {
       if (data.children && !indeterminate) {
         if (checked) {
           data.children.forEach(child => {
-            this.addToSelection(child.id);
+            if (!child.children) this.addToSelection(child.id);
           });
         } else {
           data.children.forEach(child => {
-            this.removeFromSelection(child.id);
+            if (!child.children) this.removeFromSelection(child.id);
           });
         }
       } else {

@@ -15,6 +15,7 @@ var idLayer =
     ? 7268 
     : 8275;
 
+console.log('ENV', env)
 
 GV.init({
   debug: true,

@@ -436,6 +436,11 @@ export default {
   },
   async loadCatalog(params) {
     const catalog = await getCatalog(params);
+    if (!catalog) {
+      console.error("loadCatalog: Non sono riuscito a caricare il catalogo.")
+      return
+    }
+
     this.catalog = this.catalogFull = catalog.children;
 
     const enti = await getEnti();

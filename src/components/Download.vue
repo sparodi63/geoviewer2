@@ -658,6 +658,8 @@ export default {
           //   url += `${this.livello}_${this.macrobacino}.zip`;
           //   break;
         }
+      } else {
+        url += `${this.idMap}.zip`;
       }
 
       this.downloadURI(url);

@@ -93,7 +93,7 @@ window.GV = {
       const authOptions = options.application.auth.options;
       switch (options.application.auth.type) {
         case 'NAM':
-          const auth = await getAuth(authOptions.ruolo);
+          const auth = await getAuth(options.application.name, authOptions.ruolo);
           if (auth.success) this.initConfig(options);
           else notification('ACCESSO ALLA APPLICAZIONE NON AUTORIZZATO');
           break;

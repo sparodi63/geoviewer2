@@ -62,7 +62,7 @@
         @click="confirmSubmit"
         class="gv-color-scheme"
         size="mini"
-        >Salva su DB</el-button
+        >Salva</el-button
       >
       <el-button
         id="gv-draw-cancel"

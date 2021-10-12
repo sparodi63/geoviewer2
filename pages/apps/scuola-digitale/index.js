@@ -245,7 +245,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
       icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school07.png',
       label: 'Istruzione e Formazione Professionale',
     },
-    tooltip: '{DENOMINAZIONE}',
+    tooltip: '{DENOMINAZIONE}', 
     onFeatureSelect: onFeatureSelect,
     classes: [
       {

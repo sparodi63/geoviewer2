@@ -269,8 +269,8 @@ function _showFeatureInfo(feature) {
       showHtml(feature);
       break;
   }
-
-  hiliteFeature(feature);
+  // console.log(GV.app.map.options.noInfoHiliteFeature)
+  if (!GV.app.map.options.noInfoHiliteFeature) hiliteFeature(feature);
 }
 
 function showGvInfo(feature) {
@@ -400,7 +400,6 @@ function showXml(data) {
 
 function getType(feature) {
   const infoUrl = feature.infoOptions.infoUrl;
-  console.log('infoUrl!!!!!!', infoUrl);
   if (feature.text) return 'text';
   if (infoUrl === 'gvi') return 'gvi';
   if (infoUrl.substr(infoUrl.length - 12) === 'generico.xsl') return 'generico';

@@ -5,13 +5,15 @@ var collapsed = id ? true : false;
 
 // GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
-// var customPageUrlList = {
-//   1881: '/geoservices/apps/viewer/pages/apps/atlante-geochimico/',
-// };
+// GESTIONE PAGINE CUSTOM --------------------------------------------
+var customPageUrlList = {
+  1881: '/geoservices/apps/viewer/pages/apps/atlante-geochimico/',
+};
+if (id && customPageUrlList[id]) {
+  window.location = customPageUrlList[id];
+}
+// GESTIONE PAGINE CUSTOM --------------------------------------------
 
-// if (id && customPageUrlList[id]) {
-//   window.location = customPageUrlList[id];
-// }
 
 GV.init({
   debug: true,

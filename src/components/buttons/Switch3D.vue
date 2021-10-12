@@ -23,7 +23,8 @@ export default {
     onClick() {
       this.enable3d = !this.enable3d;
       this.setLabel();
-      GV.app.map.ol3d.setEnabled(this.enable3d);
+      GV.app.map.ol3d.setEnabled(this.enable3d); 
+      GV.app.map.ol3dEnabled = this.enable3d
     },
     setLabel() {
       if (this.enable3d) {

@@ -26,6 +26,7 @@ export default function getConfig(idMap) {
     params.geoserver = 'true';
   }
 
+  // console.log('GET CONFIG', url)
   return axios.get(url, {
     params: params,
   });

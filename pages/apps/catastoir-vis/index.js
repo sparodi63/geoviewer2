@@ -99,13 +99,14 @@ GV.init({
       },
       tools: [
         {
-          name: 'gv-geocoder',
+          name: 'gv-geocoder', 
           position: 'topleft',
         },
         {
           name: 'gv-info-button',
           active: true,
         },
+        { name: 'gv-layer-search-topo-button' },
         {
           name: 'gv-scalebar',
           position: 'bottomleft',

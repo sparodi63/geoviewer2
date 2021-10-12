@@ -18,7 +18,6 @@ export default {
   name: name,
   data() {
     const options = GV.config.getToolOptions(name);
-
     return {
       active: false,
       options: options,
@@ -42,7 +41,18 @@ export default {
       return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
     },
   },
-  mounted: function() {},
+  mounted: function() {
+    if (this.options.showOnStart) {
+      mountComponent({
+        elId: 'gv-help3D-panel',
+        containerId: GV.config.containerId,
+        toggleEl: true,
+        vm: new Vue({
+          template: `<gv-help3D-panel></gv-help3D-panel>`,
+        }),
+      });
+    }
+  },
 };
 </script>
 

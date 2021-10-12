@@ -68,17 +68,19 @@ export default {
               layer.eachLayer(m => {
                 let loc = m.getLatLng();
                 loc.layer = m;
-                const key = m.feature.properties[this.propertyName];
-                if (new RegExp(text, 'i').test(key)) {
-                  const addLabel = this.additionalLabel
-                    ? m.feature.properties[this.additionalLabel]
-                    : null;
-                  const label = this.additionalLabel ? `${key} (${addLabel})` : key;
-                  results.push({
-                    label: label,
-                    value: label,
-                    location: loc,
-                  });
+                if (m.feature) {
+                  const key = m.feature.properties[this.propertyName];
+                  if (new RegExp(text, 'i').test(key)) {
+                    const addLabel = this.additionalLabel
+                      ? m.feature.properties[this.additionalLabel]
+                      : null;
+                    const label = this.additionalLabel ? `${key} (${addLabel})` : key;
+                    results.push({
+                      label: label,
+                      value: label,
+                      location: loc,
+                    });
+                  }
                 }
               });
             }

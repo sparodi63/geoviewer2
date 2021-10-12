@@ -8,6 +8,7 @@
             <el-button
               title="Mostra/Nascondi Livelli in Legenda"
               @click="toggleLayers(map)"
+              v-if="!options.noToggleLayers"
               :class="getToggleLayersClass(map)"
               size="mini"
             ></el-button>
@@ -94,6 +95,7 @@ export default {
         this.openDownloadPanel(GV.config.idMap);
       });
     }
+    // console.log('options', this.options)
   },
   methods: {
     showMapLayers(map) {
@@ -116,6 +118,9 @@ export default {
     },
     checkInfoMap(map) {
       return this.options.showInfoMap && GV.config.getMapConfig(map.id).metaData;
+    },
+    checkDeleteMap(map) {
+      return !this.options.hideDeleteButton;
     },
     showMapInfoPanel: function(map) {
       const metaData = GV.config.getMapConfig(map.id).metaData;

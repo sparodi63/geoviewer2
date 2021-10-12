@@ -215,12 +215,18 @@ export default {
       this.risknatForm.layerDataset = data;
       let style;
       if (GV.app.map.type === 'openlayers') {
-        style = {
+        // style = {
+        //   stroke: new ol.style.Stroke({
+        //     color: 'blue',
+        //     width: 3,
+        //   }),
+        // };
+        style = new ol.style.Style({
           stroke: new ol.style.Stroke({
             color: 'blue',
             width: 3,
           }),
-        };
+        })
       } else {
         style = {
           color: '#ffcc00',

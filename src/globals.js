@@ -76,6 +76,18 @@ export default {
       label: 'Sfondo Bianco',
       icon: '/geoservices/apps/viewer/static/img/legend/bianco.gif',
     },
+    RL_ORTOFOTO_1986: {
+      label: 'Ortofotocarta Regionale sc. 1:10000 (B/N) - 1986',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+    },
+    RL_ORTOFOTO_2000: {
+      label: 'Ortofoto IT 2000',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+    },
+    RL_ORTOFOTO_COSTIERA_2003: {
+      label: 'Ortofoto Costiera 2003',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+    },
     RL_ORTOFOTO_2013: {
       label: 'AGEA: Ortofoto 2013',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
@@ -86,10 +98,6 @@ export default {
     },
     RL_ORTOFOTO_2007: {
       label: 'AGEA: Ortofoto 2007',
-      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-    },
-    RL_ORTOFOTO_2000: {
-      label: 'Ortofoto IT 2000',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
     },
     RL_ORTOFOTO_2016: {

@@ -9,8 +9,8 @@ const geoserverUrl =
   env === 'TEST'
     ? 'http://geoservizi.datasiel.net:8080/'
     : 'https://geoservizi.regione.liguria.it/';
-const idMap = env === 'TEST' ? 2246 : null;
-const idLayer = env === 'TEST' ? 'L8245' : null;
+const idMap = env === 'TEST' ? 2246 : 2278;
+const idLayer = env === 'TEST' ? 'L8245' : 'L8323';
 const idLayerComune = 'L6422';
 
 if (codice) {
@@ -131,7 +131,7 @@ function getDrawTool(pratica) {
   const codiceDomandaGeom = pratica.CODICE_DOMANDA_REF || pratica.CODICE;
   const initWfsRequest = [
     {
-      wfsURL: `${geoserverUrl}/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${idLayer}&cql_filter=CODICE='${codiceDomandaGeom}'`,
+      wfsURL: `${geoserverUrl}geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${idLayer}&cql_filter=CODICE='${codiceDomandaGeom}'`,
     },
   ];
 

@@ -16,8 +16,9 @@ const olMap = {
   map: null,
   zoom: null,
   loading: 0,
-  loaded: 0,
+  loaded: 0, 
   buttons: [],
+  ol3dEnabled: false,
   options: {
     type: 'openlayers',
     zoomControl: false,
@@ -65,10 +66,19 @@ const olMap = {
     });
     this.scene.terrainProvider = terrainProvider;
 
+    // this.ol3d = ol3d;
+    // this.ol3dEnabled = (this.options.enable3d)? true: false
+    // this.ol3d.setEnabled(this.ol3dEnabled);
     if (this.options.enable3d) {
       ol3d.setEnabled(true);
-    }
+      this.ol3dEnabled = true
+    } 
     this.ol3d = ol3d;
+  },
+  switch3d() {
+    console.log('SWITCH 3D')
+    this.ol3dEnabled = !this.ol3dEnabled
+    this.ol3d.setEnabled(this.ol3dEnabled);    
   },
   setLoading() {
     GV.eventBus.$on('layer-load', event => {
@@ -265,20 +275,35 @@ const olMap = {
     createElement({ elId: 'ol-popup-content', containerId: 'ol-popup' });
   },
   loadLayers(layers) {
+    console.log('ol3dEnabled', this.ol3dEnabled)
+    let switch3d = false
     layers.forEach(layerConfig => {
       if (this.getLayerByName(layerConfig.name)) {
         return;
       }
       var layer = LayerFactory.create(layerConfig, this);
       if (layer) {
+        if (layerConfig.type === 'JSON' && layerConfig.name !== 'InfoWmsHilite' && layerConfig.name !== 'RisknatDataset' && this.ol3dEnabled) {
+          // console.log('SONO QUI PRIMA')
+          switch3d = true
+          this.switch3d()
+        }
         this.addLayer(layer);
-        this.setLayerVisible(layerConfig, layerConfig.visible);
-        if (layerConfig.zoomToLayerExtent) {
+
+        GV.config.setLayerAttribute(layerConfig.name, 'inRange', this.layerInRange(layerConfig));
+        const visible = layerConfig.visible && layerConfig.inRange;
+        layer.setVisible(visible);        
+
+        if (layerConfig.type === 'JSON') {
           const vectorSource = layer.getSource();
           vectorSource.once('change', () => {
             if (vectorSource.getState() === 'ready') {
-              if (layer.getSource().getFeatures().length > 0) {
+              if (layerConfig.zoomToLayerExtent && layer.getSource().getFeatures().length > 0) {
                 this.fit(vectorSource.getExtent(), { maxZoom: 15 });
+              }
+              if (switch3d) {
+                // console.log('SONO QUI DOPO')
+                this.switch3d()
               }
             }
           });
@@ -303,11 +328,11 @@ const olMap = {
           const lon = response.data.points[0].split(',')[0];
           const lat = response.data.points[0].split(',')[1];
           markerConfig.location = [lat, lon];
-          this.addMarkerToMap(markerConfig);
+          return this.addMarkerToMap(markerConfig);
         }
       });
     } else {
-      this.addMarkerToMap(markerConfig);
+      return this.addMarkerToMap(markerConfig);
     }
   },
   addMarkerToMap(markerConfig) {
@@ -339,6 +364,7 @@ const olMap = {
     this.fit(feature.getGeometry().getExtent(), {
       maxZoom: markerConfig.zoomLevel || 15,
     });
+    return vectorLayer
   },
   find(findOptions) {
     if (findOptions.bbox) {

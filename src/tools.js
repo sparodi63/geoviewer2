@@ -117,6 +117,12 @@ import ScuolaDigitaleLegend from './components/ScuolaDigitaleLegend.vue';
 Vue.component('gv-scuoladigitale-legend', ScuolaDigitaleLegend);
 
 tools.push({
+  name: 'gv-scuoladigitale-info-conn',
+});
+import ScuolaDigitaleInfoConn from './components/ScuolaDigitaleInfoConn.vue';
+Vue.component('gv-scuoladigitale-info-conn', ScuolaDigitaleInfoConn);
+
+tools.push({
   name: 'gv-genio-localizza-button',
 });
 import GenioLocalizza from './components/buttons/GenioLocalizza.vue';

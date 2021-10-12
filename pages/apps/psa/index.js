@@ -1,4 +1,6 @@
 GV.globals.RL_CATALOG = 'int';
+GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+
 
 var auth = {
   type: 'NAM',
