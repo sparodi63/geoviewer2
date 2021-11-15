@@ -284,6 +284,7 @@ function showGvInfo(feature) {
   } else {
     openPopup(url, feature.infoOptions);
   }
+
 }
 
 function showHtml(feature) {
@@ -445,17 +446,22 @@ function showPanel(url, configOptions, panelId) {
 function openPopup(url, options) {
   var width = options.infoWidth || 400;
   var height = options.infoHeight || 500;
-  var target = options.infoTarget;
-  // var target = '';
+  var target = '';
+  var opts = ''
+  if (options.infoTarget !== 'tab') {
+    target = options.infoTarget;
+    opts = `status=yes, toolbar=yes, menubar=no, width=${width}, height=${height}, resizable=yes, scrollbars=yes`
+  }
+
   var popup = window.open(
     url,
     target,
-    `status=yes, toolbar=yes, menubar=no, width=${width}, height=${height}, resizable=yes, scrollbars=yes`
+    opts
   );
-  var timer = setInterval(function() {
+
+  var timer = setInterval(function () {
     if (popup.closed) {
       clearInterval(timer);
-      console.log('Chiusa Popup');
       GV.app.map.clearLayer('InfoWmsHilite');
     }
   }, 1000);
@@ -520,6 +526,8 @@ function addHiliteLayerOL() {
       }),
     }),
   };
+  // const style = styles[feature.getGeometry().getType()]
+  // console.log(style)
   GV.app.map.loadLayers([
     {
       name: 'InfoWmsHilite',

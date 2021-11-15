@@ -1,10 +1,6 @@
-// http://ld-paordi-m.ld.ge/geoservices/apps/viewer/pages/apps/olcs/?id=5
-
-var id = GV.utils.getUrlParam('id');
-
 GV.init({
   debug: true,
-  idMap: id,
+  idMap: GV.utils.getUrlParam('id'),
   application: {
     name: 'liguria3d-gv2',
     mapOptions: {

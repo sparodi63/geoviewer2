@@ -5,7 +5,7 @@
     clearable
     remote
     size="mini"
-    placeholder="Ricerca Indirizzo PELIAS..."
+    placeholder="Ricerca Indirizzo..."
     :remote-method="remoteMethod"
     @change="onChange"
     :loading="loading"

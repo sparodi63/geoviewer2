@@ -54,6 +54,8 @@ import { get } from 'jquery';
 window.GV = {
   async init(options) {
     console.log('INIT', options);
+
+    // CARICAMENTO LIBRERIE
     if (options.application.mapOptions && options.application.mapOptions.type === 'openlayers') {
       console.log('Caricamento libreria OpenLayers');
       const olScripts = [

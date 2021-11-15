@@ -1,5 +1,5 @@
-const codice = GV.utils.getUrlParam('codice');
-const codice_comune = GV.utils.getUrlParam('codice_comune');
+const id = GV.utils.getUrlParam('id');
+// const comune = GV.utils.getUrlParam('comune');
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
@@ -9,12 +9,13 @@ const geoserverUrl =
   env === 'TEST'
     ? 'http://geoservizi.datasiel.net:8080/'
     : 'https://geoservizi.regione.liguria.it/';
-const idMap = env === 'TEST' ? 2300 : 2278;
-const idLayer = env === 'TEST' ? 'L8298' : 'L8323';
+const idMap = env === 'TEST' ? 2292 : null;
+const idLayer = env === 'TEST' ? 'L8480,L8482,L8485' : null;
+const layers = idLayer.split(',')
 const idLayerComune = 'L6422';
 
-if (codice) {
-  fetch(`/geoservices/REST/difesa_suolo_strutt/domanda/${codice}`)
+if (id) {
+  fetch(`/geoservices/REST/via/progetto/${id}`)
     .then(response => response.json())
     .then(data => {
       if (data.success) {
@@ -29,32 +30,30 @@ if (codice) {
     });
 } else {
   loadConfig(null);
-  console.warn('CODICE PRATICA ASSENTE');
+  console.warn('PROGETTO ASSENTE');
 }
 
 function loadConfig(data) {
-  // console.log(data);
-  const pratica = data ? data.pratica : null;
+  const countGeom = data ? data.countGeom : null;
 
   var findOptions = null;
 
-  if (codice_comune) {
+  // if (comune) {
+  //   findOptions = {
+  //     layers: [idLayerComune],
+  //     cqlFilter: "CODICE_COMUNE='" + comune + "'",
+  //   };
+  // }
+  if (countGeom > 0) {
     findOptions = {
-      layers: [idLayerComune],
-      cqlFilter: "CODICE_COMUNE='" + codice_comune + "'",
-    };
-  }
-  if (pratica && pratica.countGeom > 0) {
-    findOptions = {
-      layers: [idLayer],
-      cqlFilter: "CODICE='" + pratica.codiceDomandaGeom + "'",
+      layers: layers,
+      cqlFilter: "ID_PROGETTO=" + id,
     };
   }
 
-  let tools = [{ name: 'gv-geocoder' }, { name: 'gv-scalebar', position: 'bottomleft' }];
-
-  if (codice_comune && codice) {
-    tools = [
+  // console.log('FINDOPTIONS', findOptions)
+  
+  let tools = [
       { name: 'gv-geocoder' },
       { name: 'gv-info-button', active: true },
       { name: 'gv-measure-button' },
@@ -62,13 +61,9 @@ function loadConfig(data) {
       { name: 'gv-ricerca-catastale-button' },
       { name: 'gv-print-button' },
       { name: 'gv-scalebar', position: 'bottomleft' },
-    ];
-  }
+  ] ;
 
-  // TODO: ABILITARE CONTROLLO SU PROTOCOLLO
-  if (pratica && !pratica.PROTOCOLLO) {
-    tools.push(getDrawTool(pratica));
-  }
+  // if (id) tools.push(getDrawTool());
 
   let conf = {
     debug: true,
@@ -76,9 +71,9 @@ function loadConfig(data) {
     geoserverUrl: geoserverUrl,
     findOptions: findOptions,
     application: {
-      name: 'geoportale-tecnico-gv2',
+      name: 'via-bo-gv2',
       mapOptions: {
-        type: 'openlayers',
+        // type: 'openlayers',
         click: 'info',
       },
       layout: {
@@ -127,13 +122,14 @@ function loadConfig(data) {
   GV.init(conf);
 }
 
-function getDrawTool(pratica) {
-  const codiceDomandaGeom = pratica.CODICE_DOMANDA_REF || pratica.CODICE;
+function getDrawTool() {
   const initWfsRequest = [
     {
-      wfsURL: `${geoserverUrl}geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${idLayer}&cql_filter=CODICE='${codiceDomandaGeom}'`,
+      wfsURL: `${geoserverUrl}geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${idLayer}&cql_filter=ID_PROGETTO=${id}`,
     },
   ];
+
+  console.log('INITWFSREQUEST',initWfsRequest)
 
   return {
     name: 'gv-draw-button',
@@ -162,7 +158,7 @@ function getDrawTool(pratica) {
       initWfsRequests: initWfsRequest,
       submit: function(data, deleted, loading, refresh) {
         console.log('submit', data, deleted);
-        fetch('/geoservices/REST/difesa_suolo_strutt/insertGeomDomanda', {
+        fetch('/geoservices/REST/via/insertGeomBO', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -170,7 +166,7 @@ function getDrawTool(pratica) {
           body: JSON.stringify({
             geoJSON: data,
             deleted: deleted,
-            codiceDomandaGeom: codiceDomandaGeom,
+            id: id,
             srsIn: '3857',
             srsOut: '3003',
           }),

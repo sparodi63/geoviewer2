@@ -387,7 +387,6 @@ const olMap = {
       text: 'Ricerca...',
       background: 'rgba(0, 0, 0, 0.8)',
     });
-
     getWFSFeature(wfsParams, cqlFilter)
       .then(features => {
         this.hiliteFeatures(features, findOptions, layers, loading);
@@ -425,6 +424,7 @@ const olMap = {
     this.map.forEachFeatureAtPixel(pixel, callback, options);
   },
   hiliteFeatures(features, findOptions, layers, loading) {
+    // debugger
     InfoWmsManager.addHiliteLayer();
     const layer = this.getLayerByName('InfoWmsHilite');
     if (features && features.length > 0) {

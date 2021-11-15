@@ -33,7 +33,7 @@ if (
   target !== 'STAGING-PROT'
 ) {
   console.log(
-    '\n\n ATTENZIONE!!! Parametro "target" non corretto (LOCAL/PROD/STAGING/PROD-PROT/STAGING-PROT) '
+    '\n\n ATTENZIONE!!! Parametro "target" non corretto (LOCAL/TEST/PROD/STAGING/PROD-PROT/STAGING-PROT) '
   );
   return;
 }

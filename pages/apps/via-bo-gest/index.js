@@ -1,5 +1,4 @@
 const id = GV.utils.getUrlParam('id');
-// const stato = GV.utils.getUrlParam('stato');
 const comune = GV.utils.getUrlParam('comune');
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
@@ -40,9 +39,11 @@ function loadConfig(data) {
   var findOptions = null;
 
   if (comune) {
+    const listaComuni = comune.replaceAll("%2C", ",").split(",").map(com => `'${com}'`).join(',')
+    console.log(listaComuni)
     findOptions = {
       layers: [idLayerComune],
-      cqlFilter: "CODICE_COMUNE='" + comune + "'",
+      cqlFilter: "CODICE_COMUNE IN (" + listaComuni + ")",
     };
   }
   if (countGeom > 0) {
@@ -52,7 +53,7 @@ function loadConfig(data) {
     };
   }
 
-  console.log('FINDOPTIONS', findOptions)
+  // console.log('FINDOPTIONS', findOptions)
   
   let tools = [
       { name: 'gv-geocoder' },

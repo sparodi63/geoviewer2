@@ -10,8 +10,7 @@ var customPageUrlList = {
 if (id && customPageUrlList[id]) {
   window.location = customPageUrlList[id];
 }
-// GESTIONE PAGINE CUSTOM --------------------------------------------
-
+// FINE GESTIONE PAGINE CUSTOM --------------------------------------------
 
 GV.init({
   debug: true,
@@ -53,7 +52,7 @@ GV.init({
       },
       tools: [
         {
-          name: 'gv-geocoder',
+          name: 'gv-geocoder-pelias',
           position: 'topleft',
         },
         {
