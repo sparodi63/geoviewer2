@@ -69,6 +69,9 @@ const llMap = {
     const coords = Array.isArray(center) ? { lat: center[0], lng: center[1] } : center;
     this.map.setView(coords, zoom, opt);
   },
+  setMinZoom(bounds) {
+    this.map.setMinZoom(bounds);
+  },
   setMaxBounds(bounds) {
     this.map.setMaxBounds(bounds);
   },
@@ -170,7 +173,12 @@ const llMap = {
   setRestrictedExtent() {
     if (this.mapOptions.restrictedExtent) {
       this.restrictedExtent = this.projToGeoBounds(this.mapOptions.restrictedExtent);
+      console.log(this.projToGeoBounds(this.mapOptions.restrictedExtent))
       this.setMaxBounds(this.restrictedExtent);
+      if (this.mapOptions.restrictedExtent === this.mapOptions.initialExtent) {
+        this.setMinZoom(this.zoom)
+      }
+      GV.log('setRestrictedExtent', this.restrictedExtent);
     }
   },
 
@@ -235,7 +243,7 @@ const llMap = {
   loadBaseLayers() {
     this.baseLayers = [];
     GV.config.baseLayers.forEach(layerConfig => {
-      var layer = LayerFactory.create(layerConfig, this);
+      var layer = LayerFactory.create(layerConfig, this); 
       this.baseLayers[layer.config.type] = layer;
       if (layer && layerConfig.visible) {
         layer.on('loading', () => {
@@ -460,16 +468,22 @@ const llMap = {
     if (features && features.length > 0) {
       layer.clearLayers();
       layer.addData(features);
-      const maxZoom = findOptions && findOptions.maxZoom ? findOptions.maxZoom : 15;
-      this.fitBounds(layer.getBounds(), {
-        maxZoom: maxZoom,
-      });
+      if (!findOptions) {
+        this.fitBounds(layer.getBounds(), {});
+      } else {
+        if (!findOptions.noZoom) {
+          const maxZoom = findOptions && findOptions.maxZoom ? findOptions.maxZoom : 15;
+          this.fitBounds(layer.getBounds(), {
+            maxZoom: maxZoom,
+          });
+        }        
+      }
       if (layers) GV.config.hilitedLayer = layers;
     } else {
       if (findOptions && findOptions.notFoundAlert) {
-        notification('Nessuna Elemento Trovato');
+        notification('Nessun Elemento Trovato');
       }
-      console.warn('Nessuna Elemento Trovato');
+      console.warn('Nessun Elemento Trovato');
     }
     if (loading) loading.close();
   },

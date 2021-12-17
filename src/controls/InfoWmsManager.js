@@ -14,6 +14,8 @@ import notification from '../util/notification';
 // import startLoadingService from './util/startLoadingService'
 // import stopLoadingService from './util/stopLoadingService'
 
+import * as LayerFactory from '../openlayers/LayerFactory';
+
 var _requestCount = 0;
 var _numRequests = 0;
 var _features = [];
@@ -420,7 +422,8 @@ function hiliteFeature(feature) {
       cqlFilter += ` AND ${feature.layer.config.wmsParams.cql_filter}`;
     }
     getWFSFeature(layerConfig.wfsParams, cqlFilter, null).then(features => {
-      GV.app.map.hiliteFeatures(features);
+      const findOptions = { noZoom: true}
+      GV.app.map.hiliteFeatures(features, findOptions);
     });
   }
 }
@@ -526,8 +529,7 @@ function addHiliteLayerOL() {
       }),
     }),
   };
-  // const style = styles[feature.getGeometry().getType()]
-  // console.log(style)
+
   GV.app.map.loadLayers([
     {
       name: 'InfoWmsHilite',

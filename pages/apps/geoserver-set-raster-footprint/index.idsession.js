@@ -1,5 +1,6 @@
-const codice = GV.utils.getUrlParam('codice');
-const codice_comune = GV.utils.getUrlParam('codice_comune');
+const idIstanza = GV.utils.getUrlParam('idistanza');
+const idSession = GV.utils.getUrlParam('idsession');
+const comune = GV.utils.getUrlParam('comune');
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
@@ -9,12 +10,13 @@ const geoserverUrl =
   env === 'TEST'
     ? 'http://geoservizi.datasiel.net:8080/'
     : 'https://geoservizi.regione.liguria.it/';
-const idMap = env === 'TEST' ? 2300 : 2278;
-const idLayer = env === 'TEST' ? 'L8598' : 'L8323';
+const idMap = env === 'TEST' ? 2290 : null;
+const idLayer = env === 'TEST' ? 'L8479' : null;
 const idLayerComune = 'L6422';
 
-if (codice) {
-  fetch(`/geoservices/REST/difesa_suolo_strutt/domanda/${codice}`)
+if (idIstanza || idSession) {
+  const URL = (idIstanza) ? `/geoservices/REST/via/istanza/${idIstanza}` : `/geoservices/REST/via/session/${idSession}`  
+  fetch(URL)
     .then(response => response.json())
     .then(data => {
       if (data.success) {
@@ -29,31 +31,34 @@ if (codice) {
     });
 } else {
   loadConfig(null);
-  console.warn('CODICE PRATICA ASSENTE');
+  console.warn('IDISTANZA ASSENTE');
 }
 
 function loadConfig(data) {
   // console.log(data);
-  const pratica = data ? data.pratica : null;
+  const countGeom = data ? data.countGeom : 0;
 
   var findOptions = null;
 
-  if (codice_comune) {
+  if (comune) {
     findOptions = {
       layers: [idLayerComune],
-      cqlFilter: "CODICE_COMUNE='" + codice_comune + "'",
+      cqlFilter: "CODICE_COMUNE='" + comune + "'",
     };
   }
-  if (pratica && pratica.countGeom > 0) {
-    findOptions = {
+  if (countGeom > 0) {
+    findOptions = (idIstanza) ? {
       layers: [idLayer],
-      cqlFilter: "CODICE='" + pratica.codiceDomandaGeom + "'",
+      cqlFilter: "IDISTANZA='" + idIstanza + "'",
+    } : {
+      layers: [idLayer],
+      cqlFilter: "IDSESSION='" + idSession + "'",
     };
   }
 
   let tools = [{ name: 'gv-geocoder' }, { name: 'gv-scalebar', position: 'bottomleft' }];
 
-  if (codice_comune && codice) {
+  if (comune && idIstanza) {
     tools = [
       { name: 'gv-geocoder' },
       { name: 'gv-info-button', active: true },
@@ -65,10 +70,7 @@ function loadConfig(data) {
     ];
   }
 
-  // TODO: ABILITARE CONTROLLO SU PROTOCOLLO
-  if (pratica && !pratica.PROTOCOLLO) {
-    tools.push(getDrawTool(pratica));
-  }
+  tools.push(getDrawTool());
 
   let conf = {
     debug: true,
@@ -76,7 +78,7 @@ function loadConfig(data) {
     geoserverUrl: geoserverUrl,
     findOptions: findOptions,
     application: {
-      name: 'geoportale-tecnico-gv2',
+      name: 'via-fo-gv2',
       mapOptions: {
         type: 'openlayers',
         click: 'info',
@@ -127,11 +129,11 @@ function loadConfig(data) {
   GV.init(conf);
 }
 
-function getDrawTool(pratica) {
-  const codiceDomandaGeom = pratica.CODICE_DOMANDA_REF || pratica.CODICE;
+function getDrawTool() {
+  const cqlFilter = (idIstanza) ? `IDISTANZA='${idIstanza}'` : `IDSESSION='${idSession}'`
   const initWfsRequest = [
     {
-      wfsURL: `${geoserverUrl}geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${idLayer}&cql_filter=CODICE='${codiceDomandaGeom}'`,
+      wfsURL: `${geoserverUrl}geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${idLayer}&cql_filter=${cqlFilter}`,
     },
   ];
 
@@ -162,7 +164,7 @@ function getDrawTool(pratica) {
       initWfsRequests: initWfsRequest,
       submit: function(data, deleted, loading, refresh) {
         console.log('submit', data, deleted);
-        fetch('/geoservices/REST/difesa_suolo_strutt/insertGeomDomanda', {
+        fetch('/geoservices/REST/via/insertGeomFO', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -170,7 +172,8 @@ function getDrawTool(pratica) {
           body: JSON.stringify({
             geoJSON: data,
             deleted: deleted,
-            codiceDomandaGeom: codiceDomandaGeom,
+            idIstanza: idIstanza,
+            idSession: idSession,
             srsIn: '3857',
             srsOut: '3003',
           }),

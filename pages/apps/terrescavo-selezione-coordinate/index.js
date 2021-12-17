@@ -39,7 +39,6 @@ var findOptions = value
   : null;
 
 function conferma(x, y, esito) {
-  console.log(x, y, esito);
   window.parent.postMessage(
     { messaggio: 'selezione-coordinate', lon: x, lat: y, esito: esito },
     '*'

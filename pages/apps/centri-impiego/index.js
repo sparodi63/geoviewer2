@@ -61,7 +61,7 @@ function getTemplate(id) {
   return tpl;
 }
 
-function getLayer(id, legendLabel) {
+function getLayer(id, legendLabel) { 
   var template = getTemplate(id);
   return {
     type: 'JSON',
@@ -112,6 +112,11 @@ GV.init({
   debug: true,
   maps: [map],
   application: {
+    mapOptions: {
+      zoomSnap: 0.1,
+      initialExtent: '830036,5402959,1123018,5597635',
+      restrictedExtent: '830036,5402959,1123018,5597635',
+    },
     layout: {
       title: ' ',
       legend: {

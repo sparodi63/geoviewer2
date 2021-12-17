@@ -29,10 +29,7 @@ export default {
   RL_CATALOG: 'pub',
 
   HERE_GEOCODE_PROXY: '/geoservices/REST/proxy/here_geocode.v3',
-  // HERE_GEOCODE_PROXY:
-  //   '/geoservices/apps/proxy/proxy.jsp?url=http://10.20.4.120/geoservices/REST/proxy/here_geocode.v3?',
 
-  //
   MAPBOX_USERNAME: 'stefanoparodi',
   MAPBOX_ACCESS_TOKEN:
     'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g',

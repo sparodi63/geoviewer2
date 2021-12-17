@@ -48,7 +48,7 @@ function buildGeoJson(data, esParams) {
     geoJson = typeof data === 'string' ? JSON.parse(data) : data;
   }
   return geoJson;
-}
+} 
 
 var layerFactory = {
   BLANK(layerConfig) {
@@ -355,8 +355,8 @@ var layerFactory = {
       cacheMinZoomLevel: 8,
       wmsParams: {
         name: 'L8256',
-        format: 'image/jpeg',
-        url: 'https://geoservizi.regione.liguria.it/geoserver/wms?',
+        format: 'image/png',
+        url: 'https://geoservizi.regione.liguria.it/geoserver/M2248/wms?',
       },
       zIndex: 1,
       attribution: 'Ortofoto 20cm/ ©2019 CONSORZIO TeA - TUTTI I DIRITTI RISERVATI',

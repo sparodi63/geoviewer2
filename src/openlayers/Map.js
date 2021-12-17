@@ -275,7 +275,7 @@ const olMap = {
     createElement({ elId: 'ol-popup-content', containerId: 'ol-popup' });
   },
   loadLayers(layers) {
-    console.log('ol3dEnabled', this.ol3dEnabled)
+    // console.log('ol3dEnabled', this.ol3dEnabled)
     let switch3d = false
     layers.forEach(layerConfig => {
       if (this.getLayerByName(layerConfig.name)) {
@@ -283,27 +283,30 @@ const olMap = {
       }
       var layer = LayerFactory.create(layerConfig, this);
       if (layer) {
-        if (layerConfig.type === 'JSON' && layerConfig.name !== 'InfoWmsHilite' && layerConfig.name !== 'RisknatDataset' && this.ol3dEnabled) {
-          // console.log('SONO QUI PRIMA')
+        if (this.ol3dEnabled && layerConfig.type === 'JSON' && layerConfig.name !== 'InfoWmsHilite' && layerConfig.name !== 'RisknatDataset') {
           switch3d = true
           this.switch3d()
+          // console.log('SONO QUI PRIMA', layerConfig.name)
+          // console.log('ol3dEnabled', this.ol3dEnabled)
         }
         this.addLayer(layer);
 
         GV.config.setLayerAttribute(layerConfig.name, 'inRange', this.layerInRange(layerConfig));
-        const visible = layerConfig.visible && layerConfig.inRange;
+        const visible = layerConfig.visible && this.layerInRange(layerConfig);
         layer.setVisible(visible);        
-
+        
         if (layerConfig.type === 'JSON') {
           const vectorSource = layer.getSource();
           vectorSource.once('change', () => {
             if (vectorSource.getState() === 'ready') {
               if (layerConfig.zoomToLayerExtent && layer.getSource().getFeatures().length > 0) {
                 this.fit(vectorSource.getExtent(), { maxZoom: 15 });
+                console.log('ready', vectorSource.getFeatures())
               }
               if (switch3d) {
-                // console.log('SONO QUI DOPO')
                 this.switch3d()
+                // console.log('SONO QUI DOPO', layerConfig.name)
+                // console.log('ol3dEnabled', this.ol3dEnabled)
               }
             }
           });
@@ -314,7 +317,7 @@ const olMap = {
   clearLayer(layerName) {
     const layer = this.getLayerByName(layerName);
     const source = layer.getSource();
-    source.clear(true);
+    source.clear();
   },
   addMarker(markerConfig) {
     if (markerConfig.epsg && markerConfig.epsg != '4326') {
@@ -424,28 +427,33 @@ const olMap = {
     this.map.forEachFeatureAtPixel(pixel, callback, options);
   },
   hiliteFeatures(features, findOptions, layers, loading) {
-    // debugger
     InfoWmsManager.addHiliteLayer();
     const layer = this.getLayerByName('InfoWmsHilite');
     if (features && features.length > 0) {
       const source = layer.getSource();
-      source.clear(true);
+      source.clear();
       for (const feature of features) {
         const olFeature = new ol.format.GeoJSON().readFeature(feature, {
           featureProjection: 'EPSG:3857',
         });
         source.addFeature(olFeature);
       }
-      const maxZoom = findOptions && findOptions.maxZoom ? findOptions.maxZoom : 15;
-      this.fit(layer.getSource().getExtent(), {
-        maxZoom: maxZoom,
-      });
+      if (findOptions && !findOptions.noZoom) {
+        const maxZoom = findOptions && findOptions.maxZoom ? findOptions.maxZoom : 15;
+        this.fit(layer.getSource().getExtent(), {
+          maxZoom: maxZoom,
+        });
+      }
+      // console.log('layer', layer)
+      // console.log('zIndex', layer.getZIndex()) 
+      // console.log('features', source.getFeatures())
+      // console.log('state', source.getState())
       if (layers) GV.config.hilitedLayer = layers;
     } else {
       if (findOptions && findOptions.notFoundAlert) {
-        notification('Nessuna Elemento Trovato');
+        notification('Nessun Elemento Trovato');
       }
-      console.warn('Nessuna Elemento Trovato');
+      console.warn('Nessun Elemento Trovato');
     }
     if (loading) loading.close();
   },

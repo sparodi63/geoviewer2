@@ -14,7 +14,7 @@ const idLayer = env === 'TEST' ? 'L8479' : null;
 const idLayerComune = 'L6422';
 
 if (idIstanza) {
-  fetch(`/geoservices/REST/via/istanza/${idIstanza}`)
+  fetch(`http://srvcarto2svil.regione.liguria.it/geoservices/REST/via/istanza/${idIstanza}`)
     .then(response => response.json())
     .then(data => {
       if (data.success) {
@@ -149,7 +149,7 @@ function getDrawTool() {
       },
       buttons: {
         submit: true,
-        cancel: false,
+        cancel: true,
         refresh: true,
       },
       color: '#FF9900',
@@ -173,15 +173,27 @@ function getDrawTool() {
         })
           .then(response => response.json())
           .then(data => {
-            console.log(data);
-            if (refresh) refresh();
-            if (loading) loading.close();
+            if (data.success) {
+              console.log('insert ok: ', data);
+              window.parent.postMessage({ messaggio: 'inserimento-geometrie', esito: 'OK' }, '*');
+              // if (refresh) refresh();
+              // if (loading) loading.close();
+            } else {
+              window.parent.postMessage(
+                { messaggio: 'inserimento-geometrie', esito: 'ERRORE' },
+                '*'
+              );
+            }
           })
           .catch(error => {
             console.error('Error:', error);
+            window.parent.postMessage({ messaggio: 'inserimento-geometrie', esito: 'ERRORE' }, '*');
           });
       },
-      cancel: function() {},
+      cancel: function() {
+        console.log('CANCEL');
+        window.parent.postMessage({ messaggio: 'inserimento-geometrie', esito: 'CANCEL' }, '*');
+      },
     },
   };
 }
