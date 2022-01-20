@@ -132,7 +132,7 @@ export default {
           tipoConn = 'RTG'
           break;
       }      
-      return `https://geoservizi.regione.liguria.it/img/Istituti_scolastici_connettivita/${tipoConn}.pdf`;
+      return `https://srvcarto.regione.liguria.it/dtuff/img/Istituti_scolastici_connettivita/${tipoConn}.pdf`;
     },
   },
   methods: {

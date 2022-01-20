@@ -112,7 +112,6 @@
 <script>
 import Vue from 'vue';
 import print from '../services/print';
-import printLegend from '../services/printLegend';
 
 import {
   Button,

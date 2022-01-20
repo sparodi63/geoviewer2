@@ -116,6 +116,7 @@ export default {
       // GV.eventBus.$on('map-click', event => {
       GV.app.map.on('click', event => {
         const wmsUrl = this.getWmsUrl(event);
+        console.log(wmsUrl)
         if (this.layerConfig && this.layerConfig.visible) {
           getFeatureInfo(wmsUrl).then(features => {
             this.showInfo(features);

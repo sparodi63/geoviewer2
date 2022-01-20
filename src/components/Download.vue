@@ -148,7 +148,7 @@
           <img
             src="../../static/img/cc-by.png"
             align="bottom"
-            onclick="javascript:window.open('https://creativecommons.org/licenses/by/3.0/deed.it')"
+            onclick="window.open('https://creativecommons.org/licenses/by/3.0/')"
           />
           <el-button id="gv-map-download-submit" type="primary" size="mini" @click="submit"
             >Conferma</el-button
@@ -643,7 +643,7 @@ export default {
       }
     },
     downloadStatico() {
-      const baseUrl = 'https://geoservizi.regione.liguria.it/dtuff/download_statico/';
+      const baseUrl = 'https://srvcarto.regione.liguria.it/dtuff/download_statico/';
       let url = `${baseUrl}/${this.idMap}/${this.formato}/${this.sistemaCoordinate}/${this.selezioneTerritoriale}/`;
       console.log(url);
       if (this.config.flagDownloadLivello) {

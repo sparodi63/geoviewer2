@@ -1,18 +1,20 @@
 const idMap = GV.utils.getUrlParam('id_map');
 // const idLayer = GV.utils.getUrlParam('id_layer');
-const env = GV.utils.getUrlParam('env') || 'test';
+// const env = GV.utils.getUrlParam('env') || 'test';
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 
 // http://localhost:8081/?id_map=2&id_layer=499&env=test
 
-const geoserverUrl =
-  env === 'test'
-    ? 'http://geoservizi.datasiel.net:8080/'
-    : 'https://geoservizi.regione.liguria.it/';
+// const geoserverUrl =
+//   env === 'test'
+//     ? 'http://geoservizi.datasiel.net:8080/'
+//     : 'https://geoservizi.regione.liguria.it/';
+const geoserverUrl = 'http://geoservizi.datasiel.net:8080/'
 
-if (idMap && env) {
+
+if (idMap) {
   // loadConfig();
   fetch(`/geoservices/REST/geoportale/map/${idMap}`)
     .then(response => response.json())
@@ -40,7 +42,7 @@ if (idMap && env) {
 function loadConfig(idLayer) {
   const initWfsRequest = [
     {
-      wfsURL: `http://localhost:8081/geoservices/REST/geoserver/raster_footprint/?id_layer=${idLayer}&env=${env}`,
+      wfsURL: `https://srvcarto2svil.regione.liguria.it/geoservices/REST/geoserver/raster_footprint/?id_layer=${idLayer}`,
     },
   ];
   let tools = [
@@ -85,7 +87,7 @@ function loadConfig(idLayer) {
               geoJSON: data,
               deleted: deleted,
               idLayer: idLayer,
-              env: env,
+              // env: env,
               srsIn: '3857',
               srsOut: '3003',
             }),
@@ -142,10 +144,6 @@ function loadConfig(idLayer) {
                   type: 'tree',
                   name: 'repertorio',
                   label: 'Repertorio Cartografico',
-                  options: {
-                    treeServiceUrl: '/geoservices/REST/config/catalog/',
-                  },
-                  tree: null,
                 },
               },
             },

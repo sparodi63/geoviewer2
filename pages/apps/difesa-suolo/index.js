@@ -1,7 +1,7 @@
 const codice = GV.utils.getUrlParam('codice');
 const codice_comune = GV.utils.getUrlParam('codice_comune');
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
@@ -96,10 +96,6 @@ function loadConfig(data) {
                   type: 'tree',
                   name: 'repertorio',
                   label: 'Repertorio Cartografico',
-                  options: {
-                    treeServiceUrl: '/geoservices/REST/config/catalog/',
-                  },
-                  tree: null,
                 },
                 wms: {
                   label: 'Servizi WMS',
@@ -177,7 +173,7 @@ function getDrawTool(pratica) {
         })
           .then(response => response.json())
           .then(data => {
-            console.log(data);
+            // console.log(data);
             if (refresh) refresh();
             if (loading) loading.close();
           })

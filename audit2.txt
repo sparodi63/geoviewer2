@@ -1,0 +1,283 @@
+                       === npm audit security report ===
+
+# Run npm update brfs --depth 4 to resolve 3 vulnerabilities
+
+High Sandbox Breakout / Arbitrary Code Execution in static-eval
+
+Package static-eval
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > topojson > d3-geo-projection >
+brfs > static-module > static-eval
+
+More info https://github.com/advisories/GHSA-x9hc-rw35-f44h
+
+Moderate Prototype Pollution in minimist
+
+Package minimist
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > topojson > d3-geo-projection >
+brfs > static-module > quote-stream > minimist
+
+More info https://github.com/advisories/GHSA-vh95-rmgr-6w4m
+
+Moderate Sandbox Breakout / Arbitrary Code Execution in static-eval
+
+Package static-eval
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > topojson > d3-geo-projection >
+brfs > static-module > static-eval
+
+More info https://github.com/advisories/GHSA-5mjw-6jrh-hvfq
+
+# Run npm update places.js --depth 2 to resolve 2 vulnerabilities
+
+High Regular Expression Denial of Service in trim
+
+Package trim
+
+Dependency of vue-places
+
+Path vue-places > places.js > algoliasearch > tap-dot > tap-out >
+trim
+
+More info https://github.com/advisories/GHSA-w5p7-h5w8-2hfq
+
+Moderate Memory Exposure in tunnel-agent
+
+Package tunnel-agent
+
+Dependency of vue-places
+
+Path vue-places > places.js > algoliasearch > tunnel-agent
+
+More info https://github.com/advisories/GHSA-xc7v-wxcw-j472
+
+# Run npm update jquery --depth 1 to resolve 3 vulnerabilities
+
+Moderate Potential XSS vulnerability in jQuery
+
+Package jquery
+
+Dependency of jquery
+
+Path jquery
+
+More info https://github.com/advisories/GHSA-gxr4-xjj5-5px2
+
+Moderate Potential XSS vulnerability in jQuery
+
+Package jquery
+
+Dependency of jquery
+
+Path jquery
+
+More info https://github.com/advisories/GHSA-jpcq-cgw6-v4j6
+
+Moderate XSS in jQuery as used in Drupal, Backdrop CMS, and other
+products
+
+Package jquery
+
+Dependency of jquery
+
+Path jquery
+
+More info https://github.com/advisories/GHSA-6c3j-c64m-qhgq
+
+# Run npm update bootstrap-sass --depth 1 to resolve 1 vulnerability
+
+Moderate Moderate severity vulnerability that affects bootstrap and
+bootstrap-sass
+
+Package bootstrap-sass
+
+Dependency of bootstrap-sass
+
+Path bootstrap-sass
+
+More info https://github.com/advisories/GHSA-wh77-3x4m-4q9g
+
+# Run npm update debug --depth 4 to resolve 2 vulnerabilities
+
+Low Regular Expression Denial of Service in debug
+
+Package debug
+
+Dependency of jsonp
+
+Path jsonp > debug
+
+More info https://github.com/advisories/GHSA-gxpj-cx7g-858c
+
+Low Regular Expression Denial of Service in debug
+
+Package debug
+
+Dependency of vue-places
+
+Path vue-places > places.js > algoliasearch > debug
+
+More info https://github.com/advisories/GHSA-gxpj-cx7g-858c
+
+                                 Manual Review
+             Some vulnerabilities require your attention to resolve
+
+          Visit https://go.npm.me/audit-guide for additional guidance
+
+High Sandbox Breakout / Arbitrary Code Execution in static-eval
+
+Package static-eval
+
+Patched in >=2.0.2
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > brfs > static-module >
+static-eval
+
+More info https://github.com/advisories/GHSA-x9hc-rw35-f44h
+
+Moderate Sandbox Breakout / Arbitrary Code Execution in static-eval
+
+Package static-eval
+
+Patched in >=2.0.0
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > brfs > static-module >
+static-eval
+
+More info https://github.com/advisories/GHSA-5mjw-6jrh-hvfq
+
+Moderate Misinterpretation of malicious XML input
+
+Package xmldom
+
+Patched in No patch available
+
+Dependency of @mapbox/togeojson
+
+Path @mapbox/togeojson > xmldom
+
+More info https://github.com/advisories/GHSA-5fg8-2547-mr8q
+
+Moderate Misinterpretation of malicious XML input
+
+Package xmldom
+
+Patched in No patch available
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > togeojson > xmldom
+
+More info https://github.com/advisories/GHSA-5fg8-2547-mr8q
+
+Low Misinterpretation of malicious XML input
+
+Package xmldom
+
+Patched in >=0.5.0
+
+Dependency of @mapbox/togeojson
+
+Path @mapbox/togeojson > xmldom
+
+More info https://github.com/advisories/GHSA-h6q6-9hqw-rwfv
+
+Low Misinterpretation of malicious XML input
+
+Package xmldom
+
+Patched in >=0.5.0
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > togeojson > xmldom
+
+More info https://github.com/advisories/GHSA-h6q6-9hqw-rwfv
+
+Moderate Prototype Pollution in minimist
+
+Package minimist
+
+Patched in >=1.2.3
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > wellknown > minimist
+
+More info https://github.com/advisories/GHSA-vh95-rmgr-6w4m
+
+Moderate Prototype Pollution in minimist
+
+Package minimist
+
+Patched in >=1.2.3
+
+Dependency of @mapbox/togeojson
+
+Path @mapbox/togeojson > minimist
+
+More info https://github.com/advisories/GHSA-vh95-rmgr-6w4m
+
+Moderate Prototype Pollution in minimist
+
+Package minimist
+
+Patched in >=1.2.3
+
+Dependency of togeojson
+
+Path togeojson > minimist
+
+More info https://github.com/advisories/GHSA-vh95-rmgr-6w4m
+
+Moderate Prototype Pollution in minimist
+
+Package minimist
+
+Patched in >=0.2.1
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > togeojson > minimist
+
+More info https://github.com/advisories/GHSA-vh95-rmgr-6w4m
+
+Moderate Prototype Pollution in minimist
+
+Package minimist
+
+Patched in >=0.2.1
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > csv2geojson > optimist > minimist
+
+More info https://github.com/advisories/GHSA-vh95-rmgr-6w4m
+
+Moderate Prototype Pollution in minimist
+
+Package minimist
+
+Patched in >=0.2.1
+
+Dependency of @mapbox/leaflet-omnivore
+
+Path @mapbox/leaflet-omnivore > brfs > static-module >
+quote-stream > minimist
+
+More info https://github.com/advisories/GHSA-vh95-rmgr-6w4m
+
+found 23 vulnerabilities (4 low, 16 moderate, 3 high) in 214 scanned packages
+run `npm audit fix` to fix 11 of them.
+12 vulnerabilities require manual review. See the full report for details.

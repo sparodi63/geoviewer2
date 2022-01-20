@@ -1,13 +1,6 @@
 var id = GV.utils.getUrlParam('id');
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
-// GV.globals.RL_DYN_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/map/'
-// GV.globals.RL_CREATE_SLD_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/create_sld/'
-// GV.globals.RL_XSL_INFO_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/xsl_info_service?'
-// GV.globals.RL_CATALOG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/geoportale/catalogo/'
-// GV.globals.RL_CANALI_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/ag_app_canali_tree/'
-// GV.globals.RL_SCHEDA_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/geoportale/scheda/'
-// GV.globals.RL_ENTI_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/geoportale/enti/'
 
 //?id=56&FIND_MAP=56&FIND_FIELDS=cod_prov&FIND_VALUES=010
 // var findOptions = GV.utils.buildFindOptionsFromQueryStringParams()
@@ -43,10 +36,6 @@ GV.init({
                 type: 'tree',
                 name: 'repertorio',
                 label: 'Repertorio Cartografico',
-                options: {
-                  treeServiceUrl: '/geoservices/REST/config/catalog/',
-                },
-                tree: null,
               },
               canali: {
                 type: 'tree',

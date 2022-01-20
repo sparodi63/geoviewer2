@@ -82,6 +82,7 @@ function getGetFeatureInfoUrl(layerConfig, event) {
     const layers = layerConfig.infoOptions.infoQueryLayers || layerConfig.wmsParams.name;
     const cqlFilter = layerConfig.wmsParams.cql_filter;
     const infoFormat = layerConfig.wmsParams.infoFormat;
+    console.log(url)
     return buildWMSOptions(
       url,
       layers,

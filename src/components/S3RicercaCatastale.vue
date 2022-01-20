@@ -615,7 +615,7 @@ export default {
     },
     submitIndirizzo() {
       let typeName = 'M1047:L2624';
-      let cqlFilter = 'CT24_ID=' + this.particellaCensuario.id;
+      let cqlFilter = 'ct24_id=' + this.particellaCensuario.id;
       const url =
         'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=' +
         typeName +
@@ -645,7 +645,7 @@ export default {
       }
       if (this.particella) {
         typeName = 'M1047:L2624';
-        cqlFilter = 'CT24_ID=' + this.particella;
+        cqlFilter = 'ct24_id=' + this.particella;
       }
 
       const url =

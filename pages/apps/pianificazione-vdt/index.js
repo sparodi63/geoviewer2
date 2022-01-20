@@ -37,10 +37,6 @@ GV.init({
                 type: 'tree',
                 name: 'repertorio',
                 label: 'Repertorio Cartografico',
-                options: {
-                  treeServiceUrl: '/geoservices/REST/config/catalog/',
-                  cat: GV.globals.RL_CATALOG,
-                },
                 tree: null,
               },
               canali: {

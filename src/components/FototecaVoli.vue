@@ -58,10 +58,12 @@ export default {
       this.showSchedaVolo();
     },
     showSchedaVolo() {
+      const el = document.getElementById('gv-fototeca-scheda-volo-panel')
+      if (el) el.remove()
       mountComponent({
         elId: 'gv-fototeca-scheda-volo-panel',
         containerId: GV.config.containerId,
-        toggleEl: true,
+        toggleEl: false,
         vm: new Vue({
           template: `<gv-fototeca-scheda-volo-panel></gv-fototeca-scheda-volo-panel>`,
         }),
@@ -206,6 +208,7 @@ export default {
   mounted: function() {
     getVoli(this.bbox).then(resp => {
       this.voli = resp;
+      console.log(resp)
     });
     GV.eventBus.$on('gv-fototeca-reload-voli', event => {
       const bbox = event.bbox;

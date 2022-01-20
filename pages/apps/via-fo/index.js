@@ -93,10 +93,6 @@ function loadConfig(data) {
                   type: 'tree',
                   name: 'repertorio',
                   label: 'Repertorio Cartografico',
-                  options: {
-                    treeServiceUrl: '/geoservices/REST/config/catalog/',
-                  },
-                  tree: null,
                 },
                 wms: {
                   label: 'Servizi WMS',
@@ -176,8 +172,8 @@ function getDrawTool() {
             if (data.success) {
               console.log('insert ok: ', data);
               window.parent.postMessage({ messaggio: 'inserimento-geometrie', esito: 'OK' }, '*');
-              // if (refresh) refresh();
-              // if (loading) loading.close();
+              if (refresh) refresh();
+              if (loading) loading.close();
             } else {
               window.parent.postMessage(
                 { messaggio: 'inserimento-geometrie', esito: 'ERRORE' },

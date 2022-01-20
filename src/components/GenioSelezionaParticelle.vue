@@ -298,18 +298,23 @@ export default {
     setFeatureProperties(feature) {
       feature.properties.DATA_SEL = '';
       feature.properties.STATO = 'M';
-      feature.label = `${feature.properties.CT24_COD_COM}/${feature.properties.CT24_SEZ}/${
+      feature.label = (feature.properties.CT24_COD_COM) ? `${feature.properties.CT24_COD_COM}/${feature.properties.CT24_SEZ}/${
         feature.properties.CT24_FOGLIO
       }/${feature.properties.CT24_NUMERO.trim()}/${feature.properties.CT24_ALLEGATO}/${
         feature.properties.CT24_SVILUPPO
-      }`;
+      }` :
+      `${feature.properties.ct24_cod_com}/${feature.properties.ct24_sez}/${
+        feature.properties.ct24_foglio
+      }/${feature.properties.ct24_numero.trim()}/${feature.properties.ct24_allegato}/${
+        feature.properties.ct24_sviluppo
+      }` ;
       feature.id = feature.label;
       feature.properties.parziale = false;
       feature.properties.catalogo = true;
-      feature.properties.AREA = feature.properties.CT24_AREA;
+      feature.properties.AREA = (feature.properties.CT24_AREA) ? feature.properties.CT24_AREA : feature.properties.ct24_area;
     },
     updateLayer(feature, type) {
-      const cqlFilter = 'CT24_ID = ' + feature.properties.CT24_ID;
+      const cqlFilter = 'ct24_id = ' + feature.properties.CT24_ID;
       const wfsUrl =
         'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=M1047:L2624&cql_filter=' +
         cqlFilter;

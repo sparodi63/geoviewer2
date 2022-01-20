@@ -98,10 +98,6 @@ function loadConfig(data) {
                   type: 'tree',
                   name: 'repertorio',
                   label: 'Repertorio Cartografico',
-                  options: {
-                    treeServiceUrl: '/geoservices/REST/config/catalog/',
-                  },
-                  tree: null,
                 },
                 wms: {
                   label: 'Servizi WMS',

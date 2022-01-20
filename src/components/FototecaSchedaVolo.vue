@@ -6,11 +6,12 @@
         {{ item.value }}
       </div>
       <br />
-      <a :href="urlCertificato" target="_blank">Certificato Calibrazione</a>
+      <!-- <a :href="urlCertificato" target="_blank">Certificato Calibrazione</a> -->
+      <a v-if="showCertificato" :href="urlCertificato" target="_blank">Certificato Calibrazione</a>
     </div>
   </div>
 </template>
-
+ 
 <script>
 import Vue from 'vue';
 
@@ -31,7 +32,8 @@ export default {
       title: GV.globals.FOTOTECA_SEL_VOLO.nome,
       abstract: abstract,
       anno: GV.globals.FOTOTECA_SEL_VOLO.anno,
-      urlCertificato: `https://geoservizi.regione.liguria.it/dtuff/Img/voli/Certificati_Calibrazione/${GV.globals.FOTOTECA_SEL_VOLO.certificato_calibrazione}`,
+      showCertificato: (GV.globals.FOTOTECA_SEL_VOLO.certificato_calibrazione == null) ? false: true,
+      urlCertificato: `https://srvcarto.regione.liguria.it/dtuff/Img/voli/Certificati_Calibrazione/${GV.globals.FOTOTECA_SEL_VOLO.certificato_calibrazione}`,
     };
   },
   computed: {},
@@ -47,7 +49,7 @@ export default {
   position: absolute;
   width: 340px;
   right: 0px;
-  bottom: 0px;
+  bottom: 10px;
   margin-right: 10px;
   margin-bottom: 20px;
   z-index: 800;
@@ -56,7 +58,7 @@ export default {
 .gv-fototeca-scheda-volo-body {
   padding: 15px;
   width: 310px;
-  height: 210px;
+  /* height: 210px; */
   font-size: 12px;
 }
 

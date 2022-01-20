@@ -198,7 +198,7 @@ export default {
     },
     download() {
       this.downloadURI(
-        'https://geoservizi.regione.liguria.it/dtuff/download_statico/2219/rqa-dati.zip'
+        'https://srvcarto.regione.liguria.it/dtuff/download_statico/2219/rqa-dati.zip'
       );
     },
     downloadURI(url) {

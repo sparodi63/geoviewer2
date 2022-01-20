@@ -231,7 +231,7 @@ GV.init({
     name: 'genioweb-intra-gv2',
     auth: auth,
     mapOptions: {
-      type: 'openlayers',
+      // type: 'openlayers',
       click: 'info',
       initialExtent: extent,
       restrictedExtent: extent,
@@ -252,11 +252,6 @@ GV.init({
                 type: 'tree',
                 name: 'repertorio',
                 label: 'Repertorio Cartografico',
-                options: {
-                  treeServiceUrl: '/geoservices/REST/config/catalog/',
-                  cat: GV.globals.RL_CATALOG,
-                },
-                tree: null,
               },
               canali: {
                 type: 'tree',

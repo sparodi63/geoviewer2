@@ -10,10 +10,9 @@ export default {
   RL_QUERY_LAYER_SERVICE: '/geoservices/REST/config/query_layer/',
   RL_QUERY_LAYER_TOPO_SERVICE: '/geoservices/REST/config/query_layer_topo/',
   RL_DYN_MAP_CONFIG_SERVICE: '/geoservices/REST/config/map/',
-  RL_CREATE_SLD_SERVICE: '/geoservices/REST/config/create_sld/',
   RL_XSL_INFO_SERVICE: '/geoservices/REST/config/info_xsl?',
   RL_CATALOG_SERVICE: '/geoservices/REST/geoportale/catalogo/',
-  RL_CANALI_SERVICE: '/geoservices/REST/config/ag_app_canali_tree/',
+  RL_CANALI_SERVICE: '/geoservices/REST/config/ag_app_canali_tree/', 
   RL_CANALE_CARTE_SERVICE: '/geoservices/REST/config/ag_canale_tree/',
   RL_DOWNLOAD_CONFIG_SERVICE: '/geoservices/REST/download/map/',
   RL_DOWNLOAD_INSERT_SERVICE: '/geoservices/REST/download/insert_richiesta/',
@@ -29,10 +28,6 @@ export default {
   RL_CATALOG: 'pub',
 
   HERE_GEOCODE_PROXY: '/geoservices/REST/proxy/here_geocode.v3',
-
-  MAPBOX_USERNAME: 'stefanoparodi',
-  MAPBOX_ACCESS_TOKEN:
-    'pk.eyJ1Ijoic3RlZmFub3Bhcm9kaSIsImEiOiJjaXRma2VzeWgwMGVmMnh0bzJzMmVjcGVtIn0.2lTBdEwBI6_2QBzboizE5g',
 
   MAX_BOUNDS: {
     X_MIN: 43.4,

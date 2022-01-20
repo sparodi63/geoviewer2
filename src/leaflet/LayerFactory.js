@@ -8,7 +8,7 @@ import getParamString from '../util/getParamString';
 import getZoomFromScaleDenom from '../util/getZoomFromScaleDenom';
 import getGeoJSON from '../services/getGeoJSON';
 import getWmsError from '../services/getWmsError';
-import toGeoJSON from 'togeojson';
+import toGeoJSON from '@mapbox/togeojson';
 import parseXML from '../util/parseXML';
 
 var esriLink = '<a href="https://www.esri.com/">Esri</a>';
@@ -583,6 +583,7 @@ var layerFactory = {
       onEachFeature,
       onFeatureSelect,
       filter,
+      autoZoom,
     } = layerConfig;
     let clusterLayer = null;
     let options = {};
@@ -805,6 +806,11 @@ var layerFactory = {
           }
           layer.fire('ready');
           GV.eventBus.$emit('layer-loaded-json', layer);
+          if (autoZoom) {
+            GV.app.map.fitBounds(layer.getBounds(),{
+              maxZoom: 17,
+            })
+          }
         })
         .catch(error => console.error(error));
     }

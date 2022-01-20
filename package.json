@@ -23,7 +23,7 @@
     "@node-minify/clean-css": "^6.2.0",
     "@node-minify/core": "^6.2.0",
     "@node-minify/uglify-js": "^6.2.0",
-    "axios": "^0.15.3",
+    "axios": ">=0.21.2",
     "bootstrap-sass": "^3.3.7",
     "element-ui": "^2.0.5",
     "fetch-inject": "^1.7.2",

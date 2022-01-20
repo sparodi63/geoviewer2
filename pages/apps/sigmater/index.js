@@ -72,11 +72,6 @@ GV.init({
                 type: 'tree',
                 name: 'repertorio',
                 label: 'Repertorio Cartografico',
-                options: {
-                  treeServiceUrl: '/geoservices/REST/config/catalog/',
-                  cat: GV.globals.RL_CATALOG,
-                },
-                tree: null,
               },
               canali: {
                 type: 'tree',
@@ -160,15 +155,15 @@ function setFindOptions() {
     switch (layer) {
       case 'COMUNE':
         idLayer = 'L2626';
-        cqlFilter = "AA01_COD_COM='" + codice + "'";
+        cqlFilter = "aa01_cod_com='" + codice + "'";
         break;
       case 'FOGLIO':
         idLayer = 'L2625';
-        cqlFilter = "CT31_ID='" + codice + "'";
+        cqlFilter = "ct31_id='" + codice + "'";
         break;
       case 'PARTICELLA':
         idLayer = 'L2624';
-        cqlFilter = 'CT24_ID=' + codice + '';
+        cqlFilter = 'ct24_id=' + codice + '';
         break;
     }
     return {

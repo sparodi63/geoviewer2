@@ -33,7 +33,7 @@ export default {
   props: ['volo', 'foto'],
 
   data() {
-    const baseUrl = 'https://geoservizi.regione.liguria.it/dtuff/Img/voli/';
+    const baseUrl = 'https://srvcarto.regione.liguria.it/dtuff/Img/voli/';
     const imgUrl = `${baseUrl}${this.volo}/${this.foto}.jpg`;
     return {
       title: `Fotogramma: ${this.foto}`,

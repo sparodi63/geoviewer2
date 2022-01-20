@@ -169,7 +169,7 @@ export default {
     submit() {
       const layerName = 'L2624';
       const url =
-        'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=M1047:L2624&cql_filter=CT24_ID=' +
+        'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=M1047:L2624&cql_filter=ct24_id=' +
         this.particella;
       getWFSFeature(null, null, url).then(features => {
         GV.app.map.hiliteFeatures(features);

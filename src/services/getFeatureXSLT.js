@@ -1,6 +1,5 @@
 import axios from 'axios';
 import globals from '../globals';
-import parseXML from '../util/parseXML';
 
 export default function getFeatureXSLT(infoUrl, data) {
   const idLayer = data.layerName ? data.layerName.replace('L', '') : null;
@@ -17,5 +16,4 @@ export default function getFeatureXSLT(infoUrl, data) {
       },
     })
     .then(response => response.data);
-  // .then(data => parseXML(data));
 }

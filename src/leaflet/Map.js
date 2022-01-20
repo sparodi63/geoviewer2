@@ -47,6 +47,16 @@ const llMap = {
 
     this.eventMngr();
 
+    if (this.options.static) {
+      this.map.dragging.disable()      
+      this.map.touchZoom.disable();
+      this.map.doubleClickZoom.disable();
+      this.map.scrollWheelZoom.disable();
+      this.map.boxZoom.disable();
+      this.map.keyboard.disable();
+      if (this.map.tap) this.map.tap.disable();
+    }
+    
     return this;
   },
 
@@ -173,7 +183,6 @@ const llMap = {
   setRestrictedExtent() {
     if (this.mapOptions.restrictedExtent) {
       this.restrictedExtent = this.projToGeoBounds(this.mapOptions.restrictedExtent);
-      console.log(this.projToGeoBounds(this.mapOptions.restrictedExtent))
       this.setMaxBounds(this.restrictedExtent);
       if (this.mapOptions.restrictedExtent === this.mapOptions.initialExtent) {
         this.setMinZoom(this.zoom)
