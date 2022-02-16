@@ -1,7 +1,0 @@
-Nel file mappa.js sono definite le variabili scuole01, ecc... che contengono i dati GeoJSON forniti dalle seguenti URL
-
-scuole01 - https://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=V_SCUOLE_2014_COMPL&cql_filter=TIPO=%2701%27
-scuole02 - https://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=V_SCUOLE_2014_COMPL&cql_filter=TIPO=%2702%27
-scuole03 - https://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=V_SCUOLE_2014_COMPL&cql_filter=TIPO=%2703%27
-scuole04 - https://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=V_SCUOLE_2014_COMPL&cql_filter=TIPO=%2704%27
-scuole06 - https://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=V_SCUOLE_2014_COMPL&cql_filter=TIPO=%2706%27

@@ -30,27 +30,7 @@
 }
 
 .cluster_cpi {
-  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/cpi_nq.png);
-}
-
-.cluster_com {
-  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/com_nq.png);
-}
-
-.cluster_ef {
-  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/ef_nq.png);
-}
-
-.cluster_al {
-  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/al_nq.png);
-}
-
-.cluster_coop {
-  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/coop_nq.png);
-}
-
-.cluster_a {
-  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/a_nq.png);
+  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/cpi_nq2.png);
 }
 
 /* ----------------------------------------------- */
@@ -129,41 +109,63 @@
   left: 32px;
 }
 
-/* Popup */
-
-.leaflet-popup-content-wrapper {
-  color: black;
-}
-
-.leaflet-popup-content-wrapper a {
-  color: black;
-  text-decoration: none;
-}
-
 .leaflet-container a.leaflet-popup-close-button {
-  color: #31708f;
+  display: none;
 }
 
-#popup-header {
-  border-radius: 25px;
-  background-color: #56b71d;
-  width: 83px;
+.popup-nome {
+  background-color: #277baa;
+  text-align: center;
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  line-height: 20px;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  
+}
+
+.popup-indirizzo {
+  vertical-align: middle;
+  font-size: 1.3rem;
+  line-height: 1.2rem;
+  margin-bottom: 15px;
+  color: #4f4f4f;
+  font-family: "Titillium-Web",
+    Geneva,
+    Tahoma,
+    sans-serif;
+}
+
+.popup-prenota {
+  text-align: center;
+  width: 286px;
   color: white;
   font-size: 14px;
-  margin-top: 5px;
+  font-weight: 700;
   padding-top: 2px;
   padding-bottom: 2px;
-  padding-left: 6px;
   line-height: 20px;
 }
 
-#popup-header a {
-  color: white;
-}
-
-#popup-header span {
-  /* padding: 1px; */
-  font-size: 16px;
+.prenota-btn {
+  background-color: #277baa;
+  border: none;
+  color: #fff !important;
+  font-weight: 700;
+  height: 30px;
+  border-radius: 5px;
+  font-size: 14px;
+  letter-spacing: normal;
+  font-family: "Titillium-Web",
+  Geneva,
+  Tahoma,
+  sans-serif;
+  letter-spacing: normal;
+  cursor: pointer;
+  padding: 4px 15px;
 }
 
 .leaflet-popup-content {
@@ -175,42 +177,10 @@
   vertical-align: middle;
 }
 
-.popup {
-  display: inline-block;
-  position: relative;
-  color: black;
+@font-face {
+  font-family: 'Titillium-Web';
+  src: url('fonts/TitilliumWeb-Regular.woff2') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
-.svg-icon {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-}
-
-.div-cpi svg {
-  fill: #56b71d;
-}
-
-.div-com svg {
-  fill: #236fc1;
-}
-
-.div-ef svg {
-  fill: #ea431c;
-}
-
-.div-al svg {
-  fill: #e0bc27;
-}
-
-.div-coop svg {
-  fill: #bf358b;
-}
-
-.div-a svg {
-  fill: #f27a03;
-}
-
-.div-popup span {
-  font-weight: 600;
-}
