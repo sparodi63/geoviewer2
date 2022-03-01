@@ -1,7 +1,7 @@
 const idIstanza = GV.utils.getUrlParam('idistanza');
 const comune = GV.utils.getUrlParam('comune');
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
@@ -9,12 +9,18 @@ const geoserverUrl =
   env === 'TEST'
     ? 'http://geoservizi.datasiel.net:8080/'
     : 'https://geoservizi.regione.liguria.it/';
-const idMap = env === 'TEST' ? 2290 : null;
-const idLayer = env === 'TEST' ? 'L8479' : null;
+const idMap = env === 'TEST' ? 2290 : 2325;
+const idLayer = env === 'TEST' ? 'L8479' : 'L8693';
 const idLayerComune = 'L6422';
 
+const srvUrl =
+  env === 'TEST'
+    ? 'http://srvcarto2svil.regione.liguria.it/geoservices/REST/via/istanza/'
+    : 'https://srvcarto.regione.liguria.it/geoservices/REST/via/istanza/';
+
+
 if (idIstanza) {
-  fetch(`http://srvcarto2svil.regione.liguria.it/geoservices/REST/via/istanza/${idIstanza}`)
+  fetch(`${srvUrl}${idIstanza}`)
     .then(response => response.json())
     .then(data => {
       if (data.success) {
@@ -51,21 +57,28 @@ function loadConfig(data) {
     };
   }
 
-  let tools = [{ name: 'gv-geocoder' }, { name: 'gv-scalebar', position: 'bottomleft' }];
-
-  if (comune && idIstanza) {
-    tools = [
+  let tools = (comune && idIstanza)? 
+    [
       { name: 'gv-geocoder' },
+      getDrawTool(),
       { name: 'gv-info-button', active: true },
       { name: 'gv-measure-button' },
       { name: 'gv-layer-search-topo-button' },
       { name: 'gv-ricerca-catastale-button' },
       { name: 'gv-print-button' },
       { name: 'gv-scalebar', position: 'bottomleft' },
-    ];
-  }
+    ] :
+    [
+      { name: 'gv-geocoder' },
+      getDrawTool(),
+      {
+        name: 'gv-scalebar',
+        position: 'bottomleft'
+      }
+    ]
+  
 
-  tools.push(getDrawTool());
+  
 
   let conf = {
     debug: true,
@@ -82,6 +95,7 @@ function loadConfig(data) {
         legend: {
           options: {
             show: true,
+            collapsed: true,
             showAddMap: true,
             showInfoMap: true,
             showDownloadTotale: true,

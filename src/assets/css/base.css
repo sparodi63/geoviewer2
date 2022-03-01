@@ -60,13 +60,25 @@ body {
   background-color: #24386c;
   border-color: #24386c;
   cursor: pointer;
-  height: 24px;
+  height: 22px;
   border-width: 0px;
   border-radius: 2px;
   border-style: solid;
-  width: 36px;
-  margin-right: 10px;
   padding: 4px 10px;
+}
+
+@media only screen and (max-width: 420px) {
+  .gv-button {
+    width: 28px;
+    margin-right: 0px;
+  }
+}
+
+@media only screen and (min-width: 420px) {
+  .gv-button {
+    width: 36px;
+    margin-right: 10px;
+  }
 }
 
 .gv-button-selected {
@@ -87,7 +99,7 @@ body {
 }
 
 .gv-button.is-active,
-.gv-button:active {
+.gv-button:active { 
   background-color: #24386c;
   color: #ccc;
   border-color: #ccc;

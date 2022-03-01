@@ -37,7 +37,7 @@
         </el-col>
       </el-row>
     </form>
-    <div>
+    <div v-if="screenWidth > maxScreenWidth" >
       <div class="gv-map-catalog-tree">
         <el-tree
           id="gv-map-catalog-repertorio-tree"
@@ -55,6 +55,21 @@
       <el-button type="primary" @click="submitMultiSel" class="gv-map-catalog-button" size="mini">
         <span>Carica</span>
       </el-button>
+    </div>
+    <div class="gv-map-catalog-table" v-if="screenWidth < maxScreenWidth" >
+      <el-table
+        :data="list"
+        @current-change="handleTableRowSelect"
+        highlight-current-row
+        :show-header=false
+        :stripe=true
+        :cell-style="{ padding: '2px' }"
+        style="width: 100%">
+        <el-table-column
+          prop="text"
+          width="340">
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -107,7 +122,10 @@ export default {
       value: 'Regione Liguria',
     });
     return {
-      showEnti: window.matchMedia('(min-width: 620px)').matches,
+      screenWidth: screen.width,
+      maxScreenWidth: 420,
+      showEnti: this.screenWidth > this.maxScreenWidth,
+      list: [],
       defaultProps: {
         children: 'children',
         label: 'text',
@@ -124,7 +142,6 @@ export default {
     };
   },
   mounted() {
-    // Carico i tree per i pannelli di tipo tree
     this.loadTree();
   },
   mixins: [handleSelectionChange, submitMultiSel, handleNodeClick],
@@ -132,6 +149,12 @@ export default {
     onChangeEnte(value) {
       this.submitRepertorio();
     },
+    handleTableRowSelect(val) {
+      var r = confirm('Sei sicuro?');
+      if (r == true) {
+        GV.config.addRlMap(`${val.id}`, false, false);
+      }
+    },    
     submitRepertorio() {
       const filtriImpostati = this.formData.query !== '' || this.formData.ente !== '';
       if (filtriImpostati) {
@@ -151,6 +174,7 @@ export default {
             }
           });
         });
+        this.loadList()
         this.expanded_nodes = ['REPERTORIO ENTI LOCALI'];
         this.catalogoCompleto = false;
       } else {
@@ -161,6 +185,7 @@ export default {
         this.panel.tree.forEach(node => {
           this.expanded_nodes.push(node.id);
         });
+        this.loadList()
         this.catalogoCompleto = true;
       }
     },
@@ -174,6 +199,7 @@ export default {
         this.panel.tree.forEach(node => {
           this.expanded_nodes.push(node.id);
         });
+        this.loadList()
       } else {
         const params = {
           filterDownloadCatalog: GV.config.application.layout.legend.options.filterDownloadCatalog,
@@ -183,8 +209,23 @@ export default {
           this.panel.tree.forEach(node => {
             this.expanded_nodes.push(node.id);
           });
+          this.loadList()
         });
       }
+    },
+    loadList() {
+      const list = []
+      for (const mc of this.panel.tree) {
+        for (const cat of mc.children) {
+          for (const map of cat.children) {
+            list.push({
+              id: map.id,
+              text: map.text
+            })
+          }
+        }
+      }
+      this.list = list
     },
     renderContent(h, { node, data, store }) {
       if (node.data.type === 'MAPPA') {
@@ -212,6 +253,17 @@ export default {
   max-height: 400px;
   height: 400px;
   width: 580px;
+  overflow: auto;
+}
+
+#gv-map-catalog-panel-repertorio {
+  width: 340px;
+}
+
+.gv-map-catalog-table {
+  max-height: 400px;
+  height: 400px;
+  width: 340px;
   overflow: auto;
 }
 

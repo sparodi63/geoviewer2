@@ -1,17 +1,34 @@
 <template>
-  <div id="gv-map-catalog-panel-canali">
-    <div class="gv-map-catalog-tree">
-      <el-tree
-        :data="panel.tree"
-        show-checkbox
-        @check-change="handleSelectionChange"
-        :props="defaultProps"
-        @node-click="handleNodeClick"
-      ></el-tree>
+  <div id="gv-map-catalog-panel-canali"> 
+    <div v-if="screenWidth > maxScreenWidth" >
+      <div class="gv-map-catalog-tree" >
+        <el-tree
+          :data="panel.tree"
+          show-checkbox
+          @check-change="handleSelectionChange"
+          :props="defaultProps"
+          @node-click="handleNodeClick"
+        ></el-tree>
+      </div>
+      <el-button type="primary" @click="submitMultiSel" class="gv-map-catalog-button" size="mini">
+        <span>Carica</span>
+      </el-button>
     </div>
-    <el-button type="primary" @click="submitMultiSel" class="gv-map-catalog-button" size="mini">
-      <span>Carica</span>
-    </el-button>
+    <div class="gv-map-catalog-table" v-if="screenWidth < maxScreenWidth" >
+      <el-table
+        :data="list"
+        @current-change="handleTableRowSelect"
+        highlight-current-row
+        :show-header=false
+        :stripe=true
+        :cell-style="{ padding: '2px' }"
+        style="width: 100%">
+        <el-table-column
+          prop="text"
+          width="340">
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
@@ -39,6 +56,9 @@ export default {
   props: ['panel'],
   data() {
     return {
+      screenWidth: screen.width,
+      maxScreenWidth: 420,
+      list: [],
       defaultProps: {
         children: 'children',
         label: 'text',
@@ -68,6 +88,7 @@ export default {
             getCanali(params).then(data => {
               if (data) {
                 this.panel.tree.push(data);
+                this.loadList()
               }
             });
           });
@@ -83,6 +104,7 @@ export default {
             getCanali(params).then(data => {
               if (data) {
                 this.panel.tree.push(data);
+                this.loadList()
               }
             });
           });
@@ -92,10 +114,54 @@ export default {
           if (data) {
             this.panel.tree = data.children;
             this.panel.label = `Canali Tematici: ${data.text}`;
+            this.loadList()
           }
         });
       }
     },
+    loadList() {
+      const list = []
+      console.log("TREE ", this.panel.tree)
+      for (const el of this.panel.tree) {
+        if (el.leaf) {
+          list.push({
+            id: el.id,
+            text: el.text
+          })
+        } else {
+          for (const el2 of el.children) {
+            if (el2.leaf) {
+              list.push({
+                id: el2.id,
+                text: el2.text
+              })
+            } else {
+              for (const el3 of el2.children) {
+                list.push({
+                  id: el3.id,
+                  text: el3.text
+                })
+              }
+            }
+          }
+        }
+        // for (const cat of mc.children) {
+        //   for (const map of cat.children) {
+        //     list.push({
+        //       id: map.id,
+        //       text: map.text
+        //     })
+        //   }
+        // }
+      }
+      this.list = list
+    },    
+    handleTableRowSelect(val) {
+      var r = confirm('Sei sicuro?');
+      if (r == true) {
+        GV.config.addRlMap(`${val.id}`, false, false);
+      }
+    },    
   },
 };
 </script>
@@ -105,6 +171,13 @@ export default {
   max-height: 400px;
   height: 400px;
   width: 580px;
+  overflow: auto;
+}
+
+.gv-map-catalog-table {
+  max-height: 400px;
+  height: 400px;
+  width: 340px;
   overflow: auto;
 }
 

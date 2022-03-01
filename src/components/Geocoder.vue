@@ -90,8 +90,9 @@ export default {
   margin-right: 10px;
   width: 240px;
 }
-@media only screen and (max-width: 540px) {
+@media only screen and (max-width: 550px) {
   .gv-geocoder {
+    margin-right: 5px;
     width: 140px;
   }
 }

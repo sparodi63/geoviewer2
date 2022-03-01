@@ -9,7 +9,9 @@
           empty-text="Nessuna pratica collegata"
           :cell-style="{ padding: '2px', maxHeight: '10px' }"
         >
-          <el-table-column align="center" width="150">
+          <el-table-column 
+            align="center" 
+            width="150">
             <template slot-scope="scope">
               <span>{{ scope.row.prat_col }}</span>
             </template>
