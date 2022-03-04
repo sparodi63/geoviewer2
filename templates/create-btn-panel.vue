@@ -14,7 +14,7 @@ export default {
   name: "gv-__nome-componente__-panel",
   data() {
     return {
-      options: GV.config.getToolOptions("gv-__nome-componente__-button")
+      options: GV.config.getToolOptions("gv-__nome-componente__-button"),
     };
   },
   computed: {},

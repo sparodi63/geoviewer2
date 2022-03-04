@@ -200,6 +200,19 @@ tools.push({ name: 'gv-help3D-button' });
 import Help3D from './components/buttons/Help3D.vue';
 Vue.component('gv-help3D-button', Help3D);
 
+// Bottone InsertPoint
+tools.push({name: "gv-insert-point-button"});
+import InsertPoint from "./components/buttons/InsertPoint.vue";
+Vue.component("gv-insert-point-button", InsertPoint);
+
+// Bottone GeocoderBtn
+tools.push({name: "gv-geocoder-btn-button"});
+import GeocoderBtn from "./components/buttons/GeocoderBtn.vue";
+Vue.component("gv-geocoder-btn-button", GeocoderBtn);
+
 // -------------------------------------------------------------------------------- //
 
 export default tools;
+
+
+

@@ -360,6 +360,13 @@ export default {
   z-index: 800;
 }
 
+@media only screen and (max-width: 420px) {
+  .gv-layer-search {
+    margin-left: 0px;
+    margin-top: 28px;
+  }
+}
+
 .gv-layer-search-body {
   margin: 10px;
 }

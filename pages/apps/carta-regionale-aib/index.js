@@ -2,7 +2,7 @@
 
 var tools = [
   {
-    name: 'gv-geocoder',
+    name: 'gv-geocoder-btn-button',
   },
   {
     name: 'gv-info-button',
@@ -21,9 +21,12 @@ var tools = [
     name: 'gv-print-button',
   },
   {
-    name: 'gv-scalebar',
-    position: 'bottomright',
+    name: 'gv-insert-point-button',
   },
+  // {
+  //   name: 'gv-scalebar',
+  //   position: 'bottomright',
+  // },
 ];
 
 const id = "2317"
@@ -42,7 +45,7 @@ GV.init({
           show: true,
           showAddMap: true,
           // showDownloadTotale: true,
-          showMapCatalogPanelOnStart: true,
+          // showMapCatalogPanelOnStart: true,
           showInfoMap: true,
           showLayersTransparency: true,
           showBaseLayerSwitcher: true,

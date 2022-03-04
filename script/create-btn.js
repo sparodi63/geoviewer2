@@ -33,7 +33,7 @@ elaboraTools(name, nomeFile);
 function elaboraComponente(type) {
   const ext = type === 'control' ? 'js' : 'vue';
   const file = mapEvent ? `${type}-event` : type;
-  const src = `../templates/create-btn-${file}.${ext}`;
+  const src = `D:/node-prj/geoviewer2/templates/create-btn-${file}.${ext}`;
   var linesIn = [];
   var stream = byline(
     fs.createReadStream(src, {
@@ -60,13 +60,13 @@ function scriviComponente(type, linesIn) {
   let dst;
   switch (type) {
     case 'button':
-      dst = `src/components/buttons/${nomeFile}.${ext}`;
+      dst = `D:/node-prj/geoviewer2/src/components/buttons/${nomeFile}.${ext}`;
       break;
     case 'panel':
-      dst = `src/components/${nomeFile}.${ext}`;
+      dst = `D:/node-prj/geoviewer2/src/components/${nomeFile}.${ext}`;
       break;
     case 'control':
-      dst = `src/controls/${nomeFile}.${ext}`;
+      dst = `D:/node-prj/geoviewer2/src/controls/${nomeFile}.${ext}`;
       break;
   }
 

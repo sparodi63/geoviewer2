@@ -67,12 +67,6 @@ body {
   padding: 4px 10px;
 }
 
-@media only screen and (max-width: 420px) {
-  .gv-button {
-    width: 28px;
-    margin-right: 0px;
-  }
-}
 
 @media only screen and (min-width: 420px) {
   .gv-button {
@@ -168,6 +162,24 @@ body {
 
 .gv-tool-bottom.gv-tool-right .gv-tool {
   margin: 0px 0px;
+}
+
+@media only screen and (max-width: 420px) {
+  .gv-button {
+    width: 28px;
+    height: 28px;
+    margin-right: 0px;
+    border-radius: 0px;
+    padding: 6px 4px;
+  }
+
+  .gv-tool-top {
+    padding-top: 0px;
+  }
+
+  .gv-tool-left {
+    margin-left: 0px;
+  }
 }
 
 /* ----------------------------------------------- */
@@ -428,3 +440,4 @@ body {
   margin: 0px !important;
   border-radius: 0px !important;
 }
+

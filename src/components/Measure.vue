@@ -319,6 +319,13 @@ export default {
   z-index: 800;
 }
 
+@media only screen and (max-width: 420px) {
+  .gv-measure-panel {
+    margin-left: 0px;
+    margin-top: 28px;
+  }
+}
+
 .gv-measure-panel-body {
   position: absolute;
   padding: 10px;

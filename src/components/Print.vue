@@ -312,6 +312,12 @@ export default {
   z-index: 800;
 }
 
+@media only screen and (max-width: 420px) {
+  .gv-print-panel {
+    margin-left: 0px;
+    margin-top: 28px;
+  }
+}
 .gv-print-panel-body {
   position: absolute;
   padding: 5px;

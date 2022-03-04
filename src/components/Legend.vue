@@ -145,6 +145,7 @@ export default {
   max-height: 430px;
 }
 
+
 .gv-legend-collapse {
   cursor: pointer;
   border: 0;
@@ -186,6 +187,20 @@ export default {
   font-weight: bold;
   font-family: 'Raleway', Arial, sans-serif !important;
   font-size: 14px;
+}
+
+@media only screen and (max-width: 420px) {
+  #gv-legend {
+    margin-right: 0px;
+    margin-top: 0px;
+  }
+  .gv-legend-title-collapsed {
+    height: 20px;
+    padding-top: 0.1rem;
+    padding-bottom: 0.3rem;
+    padding-right: 0rem;
+    padding-left: 0.5rem;
+  }  
 }
 
 .gv-legend-title span {
