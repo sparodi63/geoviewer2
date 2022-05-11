@@ -1,12 +1,23 @@
 const id = GV.utils.getUrlParam('id');
 
-const template = `
+const templateOLD = `
   <div class="div-popup">
   <img src="/geoservices/apps/viewer/static/img/centri-impiego/popup_logo.png" />
   <div class="popup-nome" >{DENOMINAZIONE}</div>
-  <div class="popup-indirizzo" >{INDIRIZZO} {PROVINCIA} ({PROV_SIGLA}) - {CAP}</div>
-  <div class="popup-indirizzo" ><b>Tel.</b> {TELEFONO}</div>
-  <div class="popup-indirizzo" ><b>Email</b> <a href="mailto:{EMAIL}">{EMAIL}</a></div>
+  <div class="popup-indirizzo" >{INDIRIZZO} {PROVINCIA} ({PROV_SIGLA}) - {CAP}<br>
+  <span class="popup-bold">Tel.</span> {TELEFONO}<br>
+  <span class="popup-bold">Email</span> <a href="mailto:{EMAIL}">{EMAIL}</a><br>
+  <span class="popup-bold">Orario di apertura al pubblico</span> {ORARIO}</div>
+  <div class="popup-prenota"><a href="javascript:GV.prenota({ID})"><button type="button" class="prenota-btn"><span>Prenota appuntamento </span></button></a></div>
+  </div>
+`
+const template = `
+  <div class="div-popup">
+  <img src="/geoservices/apps/viewer/static/img/centri-impiego/svg/{SVG}" />
+  <div class="popup-indirizzo" >{INDIRIZZO} {PROVINCIA} ({PROV_SIGLA}) - {CAP}<br>
+  <span class="popup-bold">Tel.</span> {TELEFONO}<br>
+  <span class="popup-bold">Email</span> <a href="mailto:{EMAIL}">{EMAIL}</a><br>
+  <span class="popup-bold">Orario di apertura al pubblico</span> {ORARIO}</div>
   <div class="popup-prenota"><a href="javascript:GV.prenota({ID})"><button type="button" class="prenota-btn"><span>Prenota appuntamento </span></button></a></div>
   </div>
 `
@@ -19,7 +30,7 @@ const filter = (id) ? {
       }: null
 
 const layers = [{
-    type: 'JSON',
+    type: 'JSON', 
     dataType: 'json',
     cluster: {
       options: {

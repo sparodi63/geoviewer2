@@ -23,19 +23,14 @@ var tools = [
   {
     name: 'gv-insert-point-button',
   },
-  // {
-  //   name: 'gv-scalebar',
-  //   position: 'bottomright',
-  // },
 ];
-
-const id = "2317"
 
 GV.init({
   debug: true,
-  idMap: id,
+  idMap: "2317",
   application: {
     name: 'carta-regionale-aib-gv2',
+    auth: null,    
     mapOptions: {
       click: 'info',
     },
@@ -44,7 +39,6 @@ GV.init({
         options: {
           show: true,
           showAddMap: true,
-          // showDownloadTotale: true,
           // showMapCatalogPanelOnStart: true,
           showInfoMap: true,
           showLayersTransparency: true,
@@ -62,22 +56,12 @@ GV.init({
                 label: 'Cartografia regionale A.I.B.',
                 options: {
                   canale: '165',
-                  // canale: 3,
-                  // pub: false,
-                  // multiCanale: true,
-                  // canale: '55',
-                  // applicazione: 'ECO3',
-                  // tematici: 'SI',
-                  // pub: false,
                 },
                 tree: null,
               },
-              // wms: {
-              //   label: 'Servizi WMS',
-              // },
-              // kml: {
-              //   label: 'KML/GPX/JSON',
-              // },
+              kml: {
+                label: 'KML / GPX / JSON',
+              },
 
             },
             activePanel: 'canali',

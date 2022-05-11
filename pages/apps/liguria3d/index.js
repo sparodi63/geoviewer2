@@ -10,9 +10,21 @@ GV.init({
       click: 'info',
       restrictedExtent: '830036,5402959,1123018,5597635',
     },
+    // callback: function() {
+    //   console.log('CALLBACK!!!');
+    //   fetch(`/geoservices/REST/difesa_suolo/domanda/${codice}`)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       console.log(data)
+    //     })
+    //     .catch(error => {
+    //       console.error('Error:', error);
+    //       alert(error);
+    //     });
+    // },    
     layout: {
       legend: {
-        options: {
+        options: { 
           show: true,
           showAddMap: true,
           showInfoMap: true,

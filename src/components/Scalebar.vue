@@ -1,5 +1,5 @@
 <template>
-  <div id="gv-scalebar" class="scalebar">
+  <div id="gv-scalebar" v-if="largeScreen" class="scalebar">
     <el-select v-model="value" size="mini" placeholder @change="onChange">
       <el-option
         v-for="item in options"
@@ -15,66 +15,14 @@
 import Vue from 'vue';
 import { Select, Option } from 'element-ui';
 Vue.use(Select);
-Vue.use(Option);
+Vue.use(Option); 
+
+import TestScreenWidth from '../mixins/TestScreenWidth';
 
 export default {
   data() {
-    const options = [
-      {
-        value: 8,
-        label: '1:1.600.000',
-      },
-      {
-        value: 9,
-        label: '1:800.000',
-      },
-      {
-        value: 10,
-        label: '1:400.000',
-      },
-      {
-        value: 11,
-        label: '1:200.000',
-      },
-      {
-        value: 12,
-        label: '1:100.000',
-      },
-      {
-        value: 13,
-        label: '1:50.000',
-      },
-      {
-        value: 14,
-        label: '1:25.000',
-      },
-      {
-        value: 15,
-        label: '1:12.000',
-      },
-      {
-        value: 16,
-        label: '1:6.000',
-      },
-      {
-        value: 17,
-        label: '1:3.000',
-      },
-      {
-        value: 18,
-        label: '1:1.500',
-      },
-      {
-        value: 19,
-        label: '1:800',
-      },
-      {
-        value: 20,
-        label: '1:400',
-      },
-    ];
 
-    const options2 = [
+    const options = [
       {
         value: 8,
         label: '1:2.300.000',
@@ -130,10 +78,11 @@ export default {
     ];
 
     return {
-      options: options2,
+      options: options,
       value: 9,
     };
   },
+  mixins: [TestScreenWidth],
   methods: {
     onChange(value) {
       GV.app.map.setZoom(value);
@@ -143,6 +92,9 @@ export default {
     GV.eventBus.$on('map-zoom', zoom => {
       this.value = Math.round(zoom);
     });
+    // console.log('screenWidth', this.screenWidth)
+    // console.log('maxScreenWidth', this.maxScreenWidth)
+    // console.log('largeScreen',this.largeScreen)    
   },
 };
 </script>

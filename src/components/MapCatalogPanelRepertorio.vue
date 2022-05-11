@@ -2,7 +2,7 @@
   <div id="gv-map-catalog-panel-repertorio">
     <form @submit.prevent.stop @keyup.enter="submitRepertorio">
       <el-row class="gv-map-catalog-panel-form" type="flex" justify="left">
-        <el-col :span="11">
+        <el-col :span="20">
           <el-input
             id="gv-map-catalog-panel-repertorio-search"
             placeholder="Ricerca..."
@@ -17,8 +17,8 @@
             ></i>
           </el-input>
         </el-col>
-        <el-col v-if="showEnti" :span="20">
-          <span class="gv-map-catalog-label">nelle cartografie di</span>
+        <el-col v-if="largeScreen" :span="20">
+          <span class="gv-map-catalog-label"></span>
           <el-select
             v-model="formData.ente"
             size="mini"
@@ -37,7 +37,7 @@
         </el-col>
       </el-row>
     </form>
-    <div v-if="screenWidth > maxScreenWidth" >
+    <div v-if="largeScreen" >
       <div class="gv-map-catalog-tree">
         <el-tree
           id="gv-map-catalog-repertorio-tree"
@@ -56,7 +56,7 @@
         <span>Carica</span>
       </el-button>
     </div>
-    <div class="gv-map-catalog-table" v-if="screenWidth < maxScreenWidth" >
+    <div class="gv-map-catalog-table" v-if="!largeScreen" >
       <el-table
         :data="list"
         @current-change="handleTableRowSelect"
@@ -101,6 +101,8 @@ import lang from 'element-ui/lib/locale/lang/it';
 import locale from 'element-ui/lib/locale';
 locale.use(lang);
 
+import TestScreenWidth from '../mixins/TestScreenWidth';
+
 export default {
   name: 'gv-map-catalog-panel-repertorio',
   props: ['panel'],
@@ -121,10 +123,15 @@ export default {
     enti.unshift({
       value: 'Regione Liguria',
     });
+
+    // const screenWidth = document.documentElement.clientWidth
+    // const maxScreenWidth = 420
+    // const largeScreen = screenWidth > maxScreenWidth
+
     return {
-      screenWidth: screen.width,
-      maxScreenWidth: 420,
-      showEnti: this.screenWidth > this.maxScreenWidth,
+      // screenWidth: screenWidth,
+      // maxScreenWidth: maxScreenWidth,
+      // largeScreen: largeScreen,
       list: [],
       defaultProps: {
         children: 'children',
@@ -143,8 +150,10 @@ export default {
   },
   mounted() {
     this.loadTree();
+    // console.log(this.screenWidth)
+    // console.log(this.maxScreenWidth)
   },
-  mixins: [handleSelectionChange, submitMultiSel, handleNodeClick],
+  mixins: [handleSelectionChange, submitMultiSel, handleNodeClick,TestScreenWidth],
   methods: {
     onChangeEnte(value) {
       this.submitRepertorio();
@@ -225,7 +234,15 @@ export default {
           }
         }
       }
-      this.list = list
+      this.list = list.sort((a, b) => { 
+        if (a.text < b.text) {
+            return -1;
+          }
+          if (a.text > b.text) {
+            return 1;
+          }
+          return 0;        
+      })
     },
     renderContent(h, { node, data, store }) {
       if (node.data.type === 'MAPPA') {
@@ -252,25 +269,26 @@ export default {
 .gv-map-catalog-tree {
   max-height: 400px;
   height: 400px;
-  width: 580px;
+  width: 480px;
   overflow: auto;
 }
 
 #gv-map-catalog-panel-repertorio {
-  width: 340px;
+  width: 360px;
 }
 
 .gv-map-catalog-table {
   max-height: 400px;
+  margin-left: 10px;
   height: 400px;
   width: 340px;
   overflow: auto;
 }
 
-.gv-map-catalog-panel-form {
+/* .gv-map-catalog-panel-form {
   padding: 0px 10px 5px;
   width: 600px;
-}
+} */
 
 .gv-map-catalog-label {
   font-size: 12px;
@@ -278,19 +296,6 @@ export default {
   font-family: 'Raleway', Arial, sans-serif;
 }
 
-@media (max-width: 650px) {
-  .gv-map-catalog-tree {
-    width: 400px;
-    height: 350px;
-  }
-  .gv-map-catalog-panel-form {
-    width: 400px;
-  }
-  .el-select {
-    position: relative;
-    width: 110px;
-  }
-}
 </style>
 
 <style>

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div v-if="screenWidth > maxScreenWidth" class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
+  <!-- <div v-if="screenWidth > maxScreenWidth" class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
     <gv-title v-draggable :title="title" :hide="true" :divId="'gv-map-catalog-panel'"></gv-title>
     <div class="gv-map-catalog-panel-body">
       <el-tabs v-model="activeTab" type="border-card">
@@ -24,7 +24,8 @@
       </el-tabs>
     </div>
   </div>
-  <div v-if="screenWidth < maxScreenWidth" class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
+  <div v-if="screenWidth < maxScreenWidth" class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel"> -->
+  <div class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
     <gv-title v-draggable :title="title" :hide="true" :divId="'gv-map-catalog-panel'"></gv-title>
     <div class="gv-map-catalog-panels-list-div">
       <el-select
@@ -89,27 +90,34 @@ Vue.use(TabPane);
 import lang from 'element-ui/lib/locale/lang/it';
 import locale from 'element-ui/lib/locale';
 locale.use(lang);
+import TestScreenWidth from '../mixins/TestScreenWidth';
 
 export default {
   name: 'gv-map-catalog-panel',
   data() {
     const config = GV.config.application.layout.legend.options.addMapConfig;
     let panels = config.panels;
+    for (const [key, panel] of Object.entries(panels)) {
+      panel.name = key
+    }    
     let activeTab = config.activePanel || Object.keys(config.panels)[0];
     return {
       title: 'CATALOGHI CARTOGRAFIE',
       panels: panels,
       activeTab: activeTab,
-      screenWidth: screen.width,
-      maxScreenWidth: 420,
+      // screenWidth: screen.width,
+      // maxScreenWidth: 420,
     };
   },
   mounted() {
     // console.log("SCREEN WIDTH: ", this.screenWidth)
+    console.log("panels: ", this.panels)
   },
+  mixins: [TestScreenWidth],
   methods: {
     changePanel(panel) {
-      // console.log(panel)
+      console.log(panel)
+      console.log(this.activeTab)
     }
   },
 };
@@ -143,8 +151,16 @@ export default {
   margin: 0 0 5px !important;
 }
 
+@media only screen and (min-width: 420px) {
+  .gv-map-catalog-panel {
+    width: 480px;
+  }  
+}
 
 @media only screen and (max-width: 420px) {
+  .gv-map-catalog-panel {
+    width: 360px;
+  }  
   .el-select-dropdown__item {
     height: 40px;
     font-size: 12px;

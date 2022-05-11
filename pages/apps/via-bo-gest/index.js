@@ -9,8 +9,8 @@ const geoserverUrl =
   env === 'TEST'
     ? 'http://geoservizi.datasiel.net:8080/'
     : 'https://geoservizi.regione.liguria.it/';
-const idMap = env === 'TEST' ? 2292 : null;
-const idLayer = env === 'TEST' ? 'L8480,L8482,L8485' : null;
+const idMap = env === 'TEST' ? 2292 : 2327;
+const idLayer = env === 'TEST' ? 'L8480,L8482,L8485' : 'L8699,L8698,L8700';
 const layers = idLayer.split(',')
 const idLayerComune = 'L6422';
 
@@ -67,13 +67,21 @@ function loadConfig(data) {
 
   if (id) tools.push(getDrawTool());
 
+  const auth = {
+    type: 'NAM',
+    options: {
+      ruolo: 'VIA_GEST',
+    },
+  }
+
   let conf = {
     debug: true,
     idMap: idMap,
     geoserverUrl: geoserverUrl,
     findOptions: findOptions,
     application: {
-      name: 'via-bo-gv2',
+      name: 'via-bo-gest-gv2',
+      auth: auth,
       mapOptions: {
         type: 'openlayers',
         click: 'info',

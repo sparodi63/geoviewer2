@@ -385,6 +385,7 @@ export default {
       if (GV.config.getMapConfig(this.idMap) && GV.config.getMapConfig(this.idMap).downloadConfig) {
         this.config = GV.config.getMapConfig(this.idMap).downloadConfig;
         this.sistemiCoordinate = this.config.sistemiCoordinate;
+        this.sistemaCoordinate = this.sistemiCoordinate[0].epsg_code;
         if (this.config.temi && this.config.temi[0] && this.config.temi[0].codice !== 0) {
           this.config.temi.unshift({
             codice: 0,
@@ -718,22 +719,22 @@ export default {
         selTerrCached.length > 0 ? selTerrCached[0].codice : selTerr[0].codice;
       this.changeSelezioneTerritoriale(this.selezioneTerritoriale);
 
-      if (codFormato === 'KML') {
-        this.sistemaCoordinate = '4326';
-        this.config.sistemiCoordinate = [
-          {
-            epsg_code: '4326',
-            proj_descr: 'WGS84 - Coordinate Geografiche',
-          },
-        ];
-      } else {
-        this.config.sistemiCoordinate = this.sistemiCoordinate;
-        const isCached =
-          this.sistemiCoordinate.filter(sis => {
-            return sis.epsg_code == this.$cookie.get('sistemaCoordinate');
-          }).length > 0;
-        this.sistemaCoordinate = isCached ? this.$cookie.get('sistemaCoordinate') : '3003';
-      }
+      // if (codFormato === 'KML') {
+      //   this.sistemaCoordinate = '4326';
+      //   this.config.sistemiCoordinate = [
+      //     {
+      //       epsg_code: '4326',
+      //       proj_descr: 'WGS84 - Coordinate Geografiche',
+      //     },
+      //   ];
+      // } else {
+      //   this.config.sistemiCoordinate = this.sistemiCoordinate;
+      //   const isCached =
+      //     this.sistemiCoordinate.filter(sis => {
+      //       return sis.epsg_code == this.$cookie.get('sistemaCoordinate');
+      //     }).length > 0;
+      //   this.sistemaCoordinate = isCached ? this.$cookie.get('sistemaCoordinate') : '3003';
+      // }
     },
     rectOnDraw(event) {
       if (GV.app.map.type === 'openlayers') {

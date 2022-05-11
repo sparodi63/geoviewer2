@@ -733,6 +733,7 @@ var layerFactory = {
 
     if (onFeatureSelect) {
       layer.on('click', e => {
+        console.log(e)
         onFeatureSelect(e.layer.feature, e.layer);
       });
     }

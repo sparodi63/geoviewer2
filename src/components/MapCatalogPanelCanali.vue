@@ -1,6 +1,6 @@
 <template>
   <div id="gv-map-catalog-panel-canali"> 
-    <div v-if="screenWidth > maxScreenWidth" >
+    <div v-if="largeScreen" >
       <div class="gv-map-catalog-tree" >
         <el-tree
           :data="panel.tree"
@@ -14,7 +14,7 @@
         <span>Carica</span>
       </el-button>
     </div>
-    <div class="gv-map-catalog-table" v-if="screenWidth < maxScreenWidth" >
+    <div class="gv-map-catalog-table" v-if="!largeScreen" >
       <el-table
         :data="list"
         @current-change="handleTableRowSelect"
@@ -51,13 +51,15 @@ import lang from 'element-ui/lib/locale/lang/it';
 import locale from 'element-ui/lib/locale';
 locale.use(lang);
 
+import TestScreenWidth from '../mixins/TestScreenWidth';
+
 export default {
   name: 'gv-map-catalog-panel-canali',
   props: ['panel'],
   data() {
     return {
-      screenWidth: screen.width,
-      maxScreenWidth: 420,
+      // screenWidth: screen.width,
+      // maxScreenWidth: 420,
       list: [],
       defaultProps: {
         children: 'children',
@@ -71,7 +73,7 @@ export default {
     // Carico i tree per i pannelli di tipo tree
     this.loadTree();
   },
-  mixins: [handleSelectionChange, submitMultiSel, handleNodeClick],
+  mixins: [handleSelectionChange, submitMultiSel, handleNodeClick,TestScreenWidth],
   methods: {
     loadTree() {
       if (this.panel.options.multiCanale) {
@@ -154,7 +156,15 @@ export default {
         //   }
         // }
       }
-      this.list = list
+      this.list = list.sort((a, b) => { 
+        if (a.text < b.text) {
+            return -1;
+          }
+          if (a.text > b.text) {
+            return 1;
+          }
+          return 0;        
+      })
     },    
     handleTableRowSelect(val) {
       var r = confirm('Sei sicuro?');
@@ -170,7 +180,7 @@ export default {
 .gv-map-catalog-tree {
   max-height: 400px;
   height: 400px;
-  width: 580px;
+  width: 480px;
   overflow: auto;
 }
 
@@ -181,12 +191,6 @@ export default {
   overflow: auto;
 }
 
-@media (max-width: 650px) {
-  .gv-map-catalog-tree {
-    width: 400px;
-    height: 350px;
-  }
-}
 </style>
 
 <style>

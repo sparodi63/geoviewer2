@@ -122,16 +122,23 @@
   padding-top: 6px;
   padding-bottom: 6px;
   line-height: 20px;
+  width: 286px;
   letter-spacing: 2px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   
 }
 
+.popup-bold {
+  font-weight: 700;
+}
 .popup-indirizzo {
   vertical-align: middle;
-  font-size: 1.3rem;
-  line-height: 1.2rem;
-  margin-bottom: 15px;
+  font-size: 14px;
+  line-height: 1.5715;
+  display:inline-block;
+  width: 380px;
+  font-weight: 300;
+  /* margin-bottom: -10px; */
   color: #4f4f4f;
   font-family: "Titillium-Web",
     Geneva,
@@ -150,13 +157,20 @@
   line-height: 20px;
 }
 
+.leaflet-popup-content-wrapper {
+  border-radius: 2px !important;
+  width: 400px;
+}
+
 .prenota-btn {
   background-color: #277baa;
   border: none;
   color: #fff !important;
+  margin-top: 15px;
   font-weight: 700;
   height: 30px;
-  border-radius: 5px;
+  border-radius: 2px;
+  width:370px;
   font-size: 14px;
   letter-spacing: normal;
   font-family: "Titillium-Web",

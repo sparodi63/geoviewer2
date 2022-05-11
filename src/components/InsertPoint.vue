@@ -59,6 +59,10 @@ export default {
     return {
       sistemiCoordinate: [
         {
+          epsg_code: '4258',
+          proj_descr: 'WGS84 - Coordinate Geografiche',
+        },
+        {
           epsg_code: '3003',
           proj_descr: 'ROMA40 - Gauss-Boaga - Fuso Ovest',
         },
@@ -66,12 +70,8 @@ export default {
           epsg_code: '25832',
           proj_descr: 'ETRF89 - Proiezione UTM - Fuso 32',
         },
-        {
-          epsg_code: '4258',
-          proj_descr: 'WGS84 - Coordinate Geografiche',
-        },
       ],
-      sistemaCoordinate: '3003',
+      sistemaCoordinate: '4258',
       x: null,
       y: null,
       // x: 1541032,

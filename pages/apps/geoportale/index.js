@@ -1,7 +1,7 @@
 var id = GV.utils.getUrlParam('id');
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/map/'
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/map/'
+// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 // GESTIONE PAGINE CUSTOM --------------------------------------------
 var customPageUrlList = {

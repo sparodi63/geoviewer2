@@ -1,11 +1,11 @@
 <template>
-  <div @submit.prevent.stop @keyup.enter="submitKml">
+  <div @submit.prevent.stop @keyup.enter="submitKml" id="gv-map-catalog-panel-kml">
     <el-form :model="kmlForm" ref="kml-form">
       <el-form-item>
         <el-input
-          style="width: 450px;"
+          style="width: 340px;"
           size="mini"
-          placeholder="Inserisci la URL di un file KML/GPX/JSON - Es.: http://example.org/file.kml "
+          placeholder="Inserisci la URL di un file KML o GPX o JSON"
           v-model="kmlForm.URL"
         >
           <i
@@ -64,6 +64,7 @@ export default {
       kmlForm: {
         URL: '',
         fileList: [],
+        inputStyle: "width: 350px;",
       },
     };
   },
@@ -160,4 +161,20 @@ export default {
 .gv-map-catalog-button span {
   font-family: 'Raleway', Arial, sans-serif;
 }
+
+  #gv-map-catalog-panel-kml {
+    width: 360px;
+    padding: 10px;
+  }
+
+@media only screen and (min-width: 420px) {
+  #gv-map-catalog-panel-kml {
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  #gv-map-catalog-panel-kml {
+  }
+}
+
 </style>

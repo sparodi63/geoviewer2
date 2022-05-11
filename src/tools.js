@@ -210,6 +210,18 @@ tools.push({name: "gv-geocoder-btn-button"});
 import GeocoderBtn from "./components/buttons/GeocoderBtn.vue";
 Vue.component("gv-geocoder-btn-button", GeocoderBtn);
 
+//
+tools.push({
+  name: 'gv-cultura-legend',
+});
+import CulturaLegend from './components/CulturaLegend.vue';
+Vue.component('gv-cultura-legend', CulturaLegend);
+tools.push({
+  name: 'gv-cultura-info',
+});
+import CulturaInfo from './components/CulturaInfo.vue';
+Vue.component('gv-cultura-info', CulturaInfo);
+
 // -------------------------------------------------------------------------------- //
 
 export default tools;
