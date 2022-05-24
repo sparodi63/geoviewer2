@@ -147,6 +147,7 @@ window.GV = {
     mountComponent({
       elId: options.eldId,
       clear: options.clear,
+      toggleEl: options.toggleEl,
       containerId: GV.config.containerId,
       vm: new Vue({
         template: options.template,

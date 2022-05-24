@@ -1,8 +1,9 @@
 <template>
+  <div class='gv-carousel' >
+        <!-- :height="height"  -->
       <el-carousel 
         type="card" 
         :interval="interval" 
-        :height="height" 
         :autoplay="autoplay"
       >
         <el-carousel-item v-for="item in gallery" :key="item.id">
@@ -19,11 +20,13 @@
               <div :title="item.text" class="item__content">
                   {{item.text}}
               </div>
-              <img :style="imgStyle" :src="item.imgUrl" :title="item.text" />
+              <!-- <img :style="imgStyle" :src="item.imgUrl" :title="item.text" /> -->
+              <img :src="item.imgUrl" :title="item.text" />
             </div>
           </div>
         </el-carousel-item>
       </el-carousel>        
+  </div>
 </template>
 
 <script>

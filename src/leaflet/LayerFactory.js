@@ -667,9 +667,11 @@ var layerFactory = {
       };
     }
 
+
     if (style) {
       options.style = style;
     }
+
     if (pointToLayer) {
       options.pointToLayer = pointToLayer;
     }
@@ -727,13 +729,13 @@ var layerFactory = {
       options.onEachFeature = onEachFeature;
     }
 
-    var layer = L.geoJson(data, options);
+    var layer = L.geoJson(null, options);
     layer.name = name;
     layer.geoJson = null;
 
     if (onFeatureSelect) {
       layer.on('click', e => {
-        console.log(e)
+        // console.log(e)
         onFeatureSelect(e.layer.feature, e.layer);
       });
     }
@@ -818,24 +820,20 @@ var layerFactory = {
 
     if (data) {
       layer.geoJson = data;
+      layer.addData(data);
       if (cluster) {
-        clusterLayer.addLayer(layer);
         clusterLayer.geoJson = layer.geoJson;
-        if (tooltip) {
-          clusterLayer.options.title = interpolateString(tooltip, feature.properties);
-        }
-        if (popup) {
-          clusterLayer.bindPopup(interpolateString(popup, feature.properties));
-        }
-        if (basePopup) {
-          clusterLayer.bindPopup(simplePopup);
-        }
-        if (customPopup) {
-          clusterLayer.bindPopup(customPopup);
-        }
+        clusterLayer.addLayer(layer);
+      }
+      layer.fire('ready');
+      GV.eventBus.$emit('layer-loaded-json', layer);
+      if (autoZoom) {
+        GV.app.map.fitBounds(layer.getBounds(),{
+          maxZoom: 17,
+        })
       }
     }
-    // console.log(clusterLayer);
+
     return cluster ? clusterLayer : layer;
   },
 };

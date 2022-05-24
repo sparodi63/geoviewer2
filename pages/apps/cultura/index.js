@@ -1,26 +1,32 @@
 
-  fetch(`/geoservices/REST/cultura/getConfig`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        GV.globals.CULTURA_CONFIG = data.config
-        const maps = getMapConfig(data.config.raggruppamenti)
-        console.log(maps[0].layers)
-        init(maps)
-      } else {
-        throw data.message;
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert(error);
-    });
+fetch(`/geoservices/data/cultura/config.json`)
+  .then(response => response.json())
+  .then(data => {
+    GV.globals.CULTURA_CONFIG = data
+    GV.globals.CULTURA_CONFIG.filter = getFilter()
+    init(getMapConfig(data.raggruppamenti))
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert(error);
+  });
 
+function getFilter() {
+  return {
+    raggruppamento: (GV.utils.getUrlParam('RAGGRUPPAMENTO')) ? parseInt(GV.utils.getUrlParam('RAGGRUPPAMENTO')): 0,
+    categoria: (GV.utils.getUrlParam('CATEGORIA')) ? parseInt(GV.utils.getUrlParam('CATEGORIA')): 0,
+    provincia: (GV.utils.getUrlParam('PROVINCIA')) ? parseInt(GV.utils.getUrlParam('PROVINCIA')): 0,
+    comune: (GV.utils.getUrlParam('COMUNE')) ? parseInt(GV.utils.getUrlParam('COMUNE')): 0,
+    itinerario: (GV.utils.getUrlParam('ITINERARIO')) ? parseInt(GV.utils.getUrlParam('ITINERARIO')): 0,
+  }
+}
 
 function onFeatureSelect(feature) {
+  const div = document.getElementById('gv-cultura-info')
+  if (div) div.remove()
   GV.mount({
     elId: 'gv-cultura-info',
-    clear: true,
+    toggleEl: true,
     template: `<gv-cultura-info :properties="properties" ></gv-cultura-info>`,
     data: {
       properties: feature.properties
@@ -29,112 +35,92 @@ function onFeatureSelect(feature) {
   GV.app.map.setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 14);
 }
 
+// function getClassesCat(rg) {
+//   return rg.categorie.map(cat => {
+//     return {
+//       name: `${cat.id}`,
+//       filter: {
+//         key: 'CATOID',
+//         value: cat.id,
+//       },
+//       style: {
+//         // TODO: ripristinare icone di dettaglio
+//         iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
+//         // iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${cat.id}.png`,
+//         iconSize: [32, 37],
+//         iconAnchor: [16, 37],
+//         popupAnchor: [0, -37],
+//       },
+//     }
+//   })
+// }
+
+// function getClasses(rg) {
+//   return [
+//     {
+//       name: rg.id,
+//       filter: {
+//         key: "RAGGRUPPAMENTO",
+//         value: rg.id,
+//       },
+//       style: {
+//         iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
+//         iconSize: [32, 37],
+//         iconAnchor: [16, 37],
+//         popupAnchor: [0, -37],
+//       },
+//     },
+//   ]
+// } 
+
 function getMapConfig(config) {
   // console.log('config',config)
   GV.globals.CULTURA_LAYERS = config.map(rg => {
-    const classes = rg.categorie.map(cat => {
-      return {
-          name: `${cat.id}`,
-          filter: {
-            key: 'CATOID',
-            value: cat.id,
-          },
-          style: {
-            iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${cat.id}.png`,
-            iconSize: [32, 37],
-            iconAnchor: [16, 37],
-            popupAnchor: [0, -37],
-          },
-      }
-    })
-
+    // const classes = getClasses(rg)
+    // const classes = getClassesCat(rg)
     return {
       type: 'JSON',
       dataType: 'json',
       cluster: {
         options: {
           iconCreateFunction: function(cluster) {
-            return L.divIcon({
-              html: cluster.getChildCount(),
-              className: `cluster_${rg.id}`,
-              iconSize: L.point(28, 28),
+            return new L.DivIcon({
+              html: '<div><span>' + cluster.getChildCount() + '</span></div>',
+              className: 'marker-cluster marker-cluster-1',
+              iconSize: new L.Point(40, 40),
             });
           },
-          showCoverageOnHover: false,
           maxClusterRadius: 80,
+          spiderfyOnMaxZoom: true,
+          zoomToBoundsOnClick: true
         },
       },
       name: `${rg.id}`,
       visible: true,
       geomSubType: 'POINT',
-      url: `/geoservices/data/cultura/${rg.id}.json`,
+      // url: `/geoservices/data/cultura/${rg.id}.json`,
+      data: rg.data,
       legend: {
         label: rg.raggruppamento,
         icon: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
       },
       tooltip: '{NOME}',
       onFeatureSelect: onFeatureSelect,
-      classes: classes,        
+      // classes: classes,
+      pointToLayer: function(feature, latlng) {
+        const icon = L.icon({
+          // iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${feature.properties.CATOID}.png`,
+          iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
+          iconSize: [32, 37],
+          iconAnchor: [16, 37],
+          popupAnchor: [0, -37],
+        })
+        return L.marker(latlng, {
+          icon: icon,
+        });
+      }
     }
   })
-
-  // GV.globals.CULTURA_LAYERS = [
-  //   {
-  //     type: 'JSON',
-  //     dataType: 'json',
-  //     cluster: {
-  //       options: {
-  //         iconCreateFunction: function(cluster) {
-  //           return L.divIcon({
-  //             html: cluster.getChildCount(),
-  //             className: 'cluster_01',
-  //             iconSize: L.point(28, 28),
-  //           });
-  //         },
-  //         showCoverageOnHover: false,
-  //         maxClusterRadius: 80,
-  //       },
-  //     },
-  //     name: 'scuole_01',
-  //     visible: true,
-  //     geomSubType: 'POINT',
-  //     url: '/geoservices/data/cultura/1.json',
-  //     legend: {
-  //       label: 'Centro Formazione Adulti',
-  //       icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
-  //     },
-  //     tooltip: '{NOME}',
-  //     onFeatureSelect: onFeatureSelect,
-  //     classes: [
-  //       {
-  //         name: 'TIPO 01',
-  //         filter: {
-  //           key: 'CATOID',
-  //           value: 10691,
-  //         },
-  //         style: {
-  //           iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
-  //           iconSize: [32, 37],
-  //           iconAnchor: [16, 37],
-  //           popupAnchor: [0, -37],
-  //         },
-  //       },
-  //       {
-  //         name: 'TIPO 02',
-  //         filter: {
-  //           key: 'CATOID',
-  //           value: 10644,
-  //         },
-  //         style: {
-  //           iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school01.png',
-  //           iconSize: [32, 37],
-  //           iconAnchor: [16, 37],
-  //           popupAnchor: [0, -37],
-  //         },
-  //       },
-  //     ],
-  //   },    
-  // ]
 
   const maps = [
     {
@@ -157,28 +143,6 @@ function init(maps) {
       layout: {
         title: ' ',
         tools: [
-          // {
-          //   name: 'gv-inner-html',
-          //   position: 'topleft',
-          //   options: {
-          //     props: [
-          //       {
-          //         html: '<div class="gv-color-scheme" id="logo"></div>',
-          //       },
-          //     ],
-          //   },
-          // },
-          // {
-          //   name: 'gv-inner-html',
-          //   position: 'bottomleft',
-          //   options: {
-          //     props: [
-          //       {
-          //         html: '<div id="loghi-fesr"></div>',
-          //       },
-          //     ],
-          //   },
-          // },
           {
             name: 'gv-cultura-legend',
             position: 'topright',

@@ -1,11 +1,11 @@
 <template>
-  <div class="gv-cultura-info gv-inverted-color-scheme" id="gv-cultura-info">
+  <div id="gv-cultura-info-gallery" class="gv-cultura-info-gallery gv-inverted-color-scheme" >
     <div
       v-draggable
-      id="gv-cultura-info-title"
+      id="gv-cultura-info-gallery-title"
       class="gv-cultura-info-title gv-color-scheme"
     >
-      <b style="margin-left: 10px">{{ title }}</b>
+      <b>{{ title }}</b>
       <el-button
         class="gv-close gv-color-scheme"
         icon="el-icon-close"
@@ -13,36 +13,13 @@
         @click="closePanel"
         title="Chiudi Panello"
       ></el-button>
-      <!-- <button
-        :class="toggleCollapseClass()"
-        size="mini"
-        @click="hidePanel"
-        title="Nascondi Pannello"
-      ></button> -->
     </div>
     <div class="gv-cultura-info-body" id="gv-cultura-info-body">
-      <div class="gv-cultura-info-scheda">
-        <div>{{ title }}</div>
-        <br>
-        <div>Livello: {{ properties.RAGGRUPPAMENTO }}</div>
-        <div>Categoria: {{ properties.CATNAME }}</div>
-        <div>Indirizzo: {{ indirizzo }}</div>
-        <div v-if="properties.EMAIL">
-          <!-- Email: {{ properties.EMAIL }} -->
-          <br><a :href="`mailto://${properties.EMAIL}`" target=_blank>EMAIL</a>
-        </div>
-        <div v-if="properties.SITO">
-          <!-- Sito: {{ `http://${properties.SITO}` }} -->
-          <br><a :href="`http://${properties.SITO}`" target=_blank>SITO</a>
-        </div>
-        <br>
-        <div v-if="properties.DESCRIZIONE_BREVE">Descrizione breve: {{ properties.DESCRIZIONE_BREVE }}</div>
-        <br>
-        <div v-if="properties.DESCRIZIONE">Descrizione: {{ properties.DESCRIZIONE }}</div>
-      </div>
-      <div class="gv-cultura-info-button" >
-        <el-button size="mini" @click="showGallery">Galleria Immagini</el-button>
-      </div>
+      <div class="gv-cultura-info-gallery">
+        <gv-carousel 
+          :url="carouselConfig.galleryUrl"
+        >
+        </gv-carousel>        
       </div>
     </div>
   </div>
@@ -51,52 +28,39 @@
 <script>
 import Vue from 'vue';
 
-import mountComponent from '../util/mountComponent';
-
-import Carousel from './CulturaInfoGallery.vue';
-Vue.component('gv-cultura-info-gallery', Carousel);
+import Carousel from './Carousel.vue';
+Vue.component('gv-carousel', Carousel);
 
 import lang from 'element-ui/lib/locale/lang/it';
 import locale from 'element-ui/lib/locale';
 locale.use(lang);
 
 export default {
-  name: 'gv-cultura-info',
+  name: 'gv-cultura-info-gallery',
   props: {
-    properties: Object,
+    id: String,
   },
   data() {
-    let indirizzo = ''
-    if (this.properties.INDIRIZZO) indirizzo += this.properties.INDIRIZZO + ' '  
-    if (this.properties.NUMCIVICO) indirizzo += this.properties.NUMCIVICO + ' '
-    if (this.properties.LOCALITA) indirizzo += this.properties.LOCALITA + ' '
-    if (indirizzo !== '') indirizzo += ' - '
-    indirizzo += this.properties.NOMECOMUNE
-
+    // const galleryUrl = 
     return {
       show: false,
-      title: this.properties.NOME.toUpperCase(),
-      indirizzo: indirizzo
+      title: "Gallery Immagini",
+      carouselConfig: {
+        galleryUrl: `/geoservices/REST/cultura/getConfigGallery/${this.id}`,
+        // height: "400px",
+        // interval: 4000,
+        // autoplay: true,
+        // imgWidth: "600px",
+        // openImgLink: false,
+      }
     };
   },
   async mounted() {
-    console.log(this.properties)
+    // console.log(this.properties)
   },
   methods: {
-    showGallery() {
-      mountComponent({
-        elId: 'gv-cultura-info-gallery',
-        clear: true,
-        vm: new Vue({
-          template: `<gv-cultura-info-gallery :id="id" ></gv-cultura-info-gallery>`,
-          data: {
-            id: this.properties.OID,
-          },
-        }),
-      });      
-    },
     closePanel: function() {
-      let div = document.getElementById('gv-cultura-info');
+      let div = document.getElementById('gv-cultura-info-gallery');
       if (!div) return;
       div.parentNode.removeChild(div);
       GV.eventBus.$emit('cultura-close-panel', {
@@ -126,16 +90,15 @@ export default {
 </script>
 
 <style scoped>
-.gv-cultura-info {
+.gv-cultura-info-gallery {
   position: absolute;
   left: 0;
   top: 0;
-  width: 600px;
+  width: 90%;
+  height: 90%;
   margin-left: 10px;
-  margin-top: 270px;
+  margin-top: 20px;
   z-index: 800;
-    /* overflow: auto;
-  max-height: 300px; */
 }
 
 .gv-cultura-info-title {
@@ -166,14 +129,10 @@ export default {
 
 .gv-cultura-info-body {
   margin: 10px;
-  overflow: auto;
-  max-height: 300px;
 }
 
-
-.gv-cultura-info-button {
-  margin-top: 10px;
-  margin-bottom: 10px;
+.gv-cultura-info-scuola {
+  margin: 10px;
 }
 
 .gv-cultura-info-scheda {

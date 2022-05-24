@@ -53,7 +53,12 @@ const layers = [{
     onEachFeature: (id) ? null : function(feature, layer) {
       layer.bindPopup(interpolateString(popup, feature.properties));
       layer.on('click', (ev) => {
-        GV.app.map.setView(ev.latlng,14)
+        // HACK per non far uscire popup da finestra 
+        // let latlng = ev.latlng
+        let latlng = { ...ev.latlng }
+        latlng.lat += 0.01
+        //
+        GV.app.map.setView(latlng,14)
       })
     },
     autoZoom: (id)? true: false,

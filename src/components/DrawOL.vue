@@ -83,12 +83,40 @@
         >Ricarica</el-button
       >
     </el-row>
+    <div v-if="showVertexEditor" class="gv-draw-vertex-editor gv-inverted-color-scheme">
+      <el-row>
+          <b>EDITOR VERTICI</b>
+      </el-row>
+      <el-row>
+          X: <el-input style="width: 80px;" size="mini" placeholder="X" v-model="vertexX"></el-input>
+          Y: <el-input style="width: 80px;" size="mini" placeholder="Y" v-model="vertexY"></el-input>
+      </el-row>
+      <el-row>
+          <el-button
+            id="gv-draw-vertex-editor-submit"
+            title="Modifica Vertice"
+            @click="submitVertexEditor"
+            class="gv-color-scheme"
+            size="mini"
+            >Modifica</el-button
+          >
+          <el-button
+            id="gv-draw-vertex-editor-cancel"
+            title="Annulla Modifica Vertice"
+            @click="cancelVertexEditor"
+            class="gv-color-scheme"
+            size="mini"
+            >Annulla</el-button
+          >
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 import getWFSFeature from '../services/getWFSFeature';
+import getCoordTransform from '../services/getCoordTransform';
 
 import { Button, Row, Col, Loading, Notification } from 'element-ui';
 Vue.use(Button);
@@ -99,7 +127,6 @@ export default {
   name: 'gv-draw-panel',
   data() {
     const options = GV.config.getToolOptions('gv-draw-button');
-    // console.log(options);
     return {
       options: options,
       title: 'Acquisizione Geometrie',
@@ -138,6 +165,13 @@ export default {
       polygonButton: options.tools && options.tools.draw && options.tools.draw.polygon,
       modifyButton: options.tools && options.tools.edit && options.tools.edit.edit,
       deleteButton: options.tools && options.tools.edit && options.tools.edit.remove,
+      vertexEditorFeature: null,
+      vertexEditorGeomType: null,
+      showVertexEditor: false,
+      vertexIndex: -1,
+      vertexX: 0,
+      vertexY: 0,
+      vertexMarker: null
     };
   },
   computed: {},
@@ -196,8 +230,93 @@ export default {
         GV.app.map.removeInteraction(this.snapInteraction);
       }
     },
+    submitVertexEditor() {
+      getCoordTransform(this.options.epsg, '3857', this.vertexX, this.vertexY).then(
+        response => {
+          if (response.data.points) {
+            const coords = response.data.points[0].split(',');
+            if (this.vertexEditorGeomType === 'Point') {
+              const newCoords = [coords[0], coords[1]]
+              this.vertexEditorFeature.getGeometry().setCoordinates(newCoords)
+            } else {
+              let featureCoords = this.vertexEditorFeature.getGeometry().getCoordinates()
+              if (this.vertexEditorGeomType === 'Polygon') featureCoords = featureCoords[0] 
+              let newCoords = featureCoords.map((coord, index) => {
+                if (index === this.vertexIndex) {
+                  coord[0] = parseInt(coords[0])
+                  coord[1] = parseInt(coords[1])
+                } 
+                return coord
+              })
+              if (this.vertexEditorGeomType === 'Polygon') newCoords = [newCoords]
+              this.vertexEditorFeature.getGeometry().setCoordinates(newCoords)
+            }
+            this.showVertexEditor = false
+            GV.app.map.getLayerByName('InfoWmsHilite').getSource().clear();
+          }
+        }
+      );
+    },
+    cancelVertexEditor() {
+      this.vertexX = 0
+      this.vertexY = 0
+      this.showVertexEditor = false
+      GV.app.map.getLayerByName('InfoWmsHilite').getSource().clear();
+    },
+    setVertexIndex(vertexCoords) {
+      let featureCoords = this.vertexEditorFeature.getGeometry().getCoordinates()
+      if (this.vertexEditorGeomType === 'Polygon') featureCoords = featureCoords[0]
+
+      this.vertexIndex=-1
+      for (let i = 0; i < featureCoords.length; i++) {
+        if (featureCoords[i][0] === vertexCoords[0] & featureCoords[i][1] === vertexCoords[1]) this.vertexIndex = i
+      } 
+    },
+    setModifyCondition() {
+      let condition = null
+      if (this.options.vertexEditor) {
+        condition = (e) => {
+          const f = GV.app.map.map.getFeaturesAtPixel(e.pixel,{
+            hitTolerance:5
+          });
+          if (f) {
+            this.vertexEditorFeature = f[0].getProperties("features").features[0]
+            this.vertexEditorGeomType = this.vertexEditorFeature.getGeometry().getType()
+            const vertexCoords = f[0].getGeometry().flatCoordinates
+            this.setVertexIndex(vertexCoords)
+            const srsIn = '3857';
+            const srsOut = this.options.epsg;
+            getCoordTransform(srsIn, srsOut, parseInt(vertexCoords[0]), parseInt(vertexCoords[1])).then(
+              response => {
+                if (response.data.points) {
+                  const coords = response.data.points[0].split(',');
+                  this.vertexX = parseInt(coords[0])
+                  this.vertexY = parseInt(coords[1])
+                  this.showVertexEditor = true
+                  const features = [
+                    {
+                      'type': 'Feature',
+                      'geometry': {
+                        'type': 'Point',
+                        'coordinates': ol.proj.transform(vertexCoords, 'EPSG:3857', 'EPSG:4326'),
+                      },
+                    },                  
+                  ]
+                  GV.app.map.hiliteFeatures(features);
+                }
+              }
+            );
+          }
+          return true
+        }
+      }
+      return condition
+    },
     addInteractionModify() {
-      this.interaction = new ol.interaction.Modify({ source: this.layer.getSource() });
+      this.interaction = new ol.interaction.Modify({ 
+        source: this.layer.getSource(),
+        condition: this.setModifyCondition(),
+      });
       GV.app.map.addInteraction(this.interaction);
 
       this.setSnapInteraction();
@@ -209,6 +328,7 @@ export default {
       this.setSnapInteraction();
 
       this.interaction.on('select', evt => {
+        console.log(evt.target.getFeatures().getArray())
         const delFeature = evt.target.getFeatures().getArray()[0];
         this.layer.getSource().removeFeature(delFeature);
         this.deletedItems.push(delFeature);
@@ -356,11 +476,15 @@ export default {
   z-index: 800;
 }
 
+.gv-draw-vertex-editor {
+  padding-top: 10px;
+  border:1px solid white;
+}
 .gv-draw-panel-body {
   padding: 10px;
   overflow-y: auto;
   width: 240px;
-  height: 25px;
+  /* height: 25px; */
 }
 
 .gv-draw-panel-result {

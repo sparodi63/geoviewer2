@@ -426,14 +426,14 @@ const olMap = {
   forEachFeatureAtPixel(pixel, callback, options) {
     this.map.forEachFeatureAtPixel(pixel, callback, options);
   },
-  hiliteFeatures(features, findOptions, layers, loading) {
+  hiliteFeatures(features, findOptions, layers, loading) { 
     InfoWmsManager.addHiliteLayer();
     const layer = this.getLayerByName('InfoWmsHilite');
     if (features && features.length > 0) {
       const source = layer.getSource();
       source.clear();
       for (const feature of features) {
-        const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+        const olFeature = new ol.format.GeoJSON().readFeature(feature, { 
           featureProjection: 'EPSG:3857',
         });
         source.addFeature(olFeature);

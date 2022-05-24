@@ -1,7 +1,7 @@
 const codice = GV.utils.getUrlParam('codice');
 const codice_comune = GV.utils.getUrlParam('codice_comune');
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
@@ -9,8 +9,8 @@ const geoserverUrl =
   env === 'TEST'
     ? 'http://geoservizi.datasiel.net:8080/'
     : 'https://geoservizi.regione.liguria.it/';
-const idMap = env === 'TEST' ? 2300 : 2278;
-const idLayer = env === 'TEST' ? 'L8598' : 'L8323';
+const idMap = env === 'TEST' ? 2300 : 2358;
+const idLayer = env === 'TEST' ? 'L8598' : 'L8802';
 const idLayerComune = 'L6422';
 
 if (codice) {

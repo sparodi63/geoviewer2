@@ -66,14 +66,11 @@ function loadConfig(data) {
     ];
   }
 
-  // TODO: ABILITARE CONTROLLO SU PROTOCOLLO
-  if (pratica && !pratica.PROTOCOLLO) {
-    tools.push(getDrawTool(pratica));
-  }
+  tools.push(getDrawTool(pratica));
 
   let conf = {
     debug: true,
-    idMap: idMap,
+    idMap: null,
     geoserverUrl: geoserverUrl,
     findOptions: findOptions,
     application: {
@@ -156,31 +153,10 @@ function getDrawTool(pratica) {
       color: '#FF9900',
       multiGeom: true,
       epsg: '3003',
+      vertexEditor: true,
       initWfsRequests: initWfsRequest,
       submit: function(data, deleted, loading, refresh) {
         console.log('submit', data, deleted);
-        fetch('/geoservices/REST/difesa_suolo/insertGeomDomanda', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            geoJSON: data,
-            deleted: deleted,
-            codiceDomandaGeom: codiceDomandaGeom,
-            srsIn: '3857',
-            srsOut: '3003',
-          }),
-        })
-          .then(response => response.json())
-          .then(data => {
-            // console.log(data);
-            if (refresh) refresh();
-            if (loading) loading.close();
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
       },
       cancel: function() {},
     },

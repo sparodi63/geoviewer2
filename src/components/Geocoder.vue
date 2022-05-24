@@ -72,7 +72,7 @@ export default {
     },
     onChange(value) {
       const result = this.results.find(item => item.value === value);
-      if (result) {
+      if (result) { 
         this.marker = GV.app.map.addMarker(result);
       } else {
         if (this.marker) {

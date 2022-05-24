@@ -41,7 +41,7 @@
   // Controlla il ritardo in ms dopo il quale verranno visualizzati i suggerimenti rapidi
   "editor.quickSuggestionsDelay": 10,
   // Abilita i suggerimenti per i parametri
-  "editor.parameterHints": true,
+  // "editor.parameterHints": true,
   // Controlla se l'editor deve chiudere automaticamente le parentesi quadre dopo che sono state aperte
   "editor.autoClosingBrackets": "always",
   // Controlla se l'editor deve formattare automaticamente la riga dopo la digitazione
@@ -79,8 +79,6 @@
   "editor.renderWhitespace": "none",
   // Controlla se l'editor deve eseguire il rendering dei caratteri di controllo
   "editor.renderControlCharacters": false,
-  // Controlla se l'editor deve eseguire il rendering delle guide con rientro
-  "editor.renderIndentGuides": false,
   // Consente di controllare in che modo l'editor deve eseguire il rendering dell'evidenziazione di riga corrente. Le opzioni possibili sono 'none', 'gutter', 'line' e 'all'.
   "editor.renderLineHighlight": "line",
   // Controlla se nell'editor sono visualizzate le finestre di CodeLens
@@ -508,6 +506,7 @@
   // Path to another image to be presented as Bookmark
   "bookmarks.gutterIconPath": "",
   // Allow navigation look for bookmarks in all files in the project, instead of only the current
-  "bookmarks.navigateThroughAllFiles": false
+  "bookmarks.navigateThroughAllFiles": false,
+  "editor.guides.indentation": false
   // The bookmarks will be glued to the line of code instead of the line of the file
 }

@@ -15,6 +15,7 @@
     </div>
 
     <div class="gv-cultura-ricerca-body" id="gv-cultura-ricerca-body">
+      <div id="gv-cultura-ricerca-filtri">
         <!-- <span class="gv-cultura-ricerca-luoghi">RICERCA</span> 
         <el-select
           id="gv-seach-input"
@@ -41,55 +42,122 @@
           </el-option>
         </el-select> -->
       
-      <div id="gv-cultura-ricerca-filtri">
-        <div class="gv-cultura-ricerca-filtri-title"> FILTRI </div>
-        <el-select
-          v-model="raggruppamento"
-          size="small"
-          placeholder="Raggruppamento"
-          style="width: 170px !important;"
-          @change="onChangeRaggruppamento"
-        >
-          <el-option
-            v-for="item in raggruppamenti"
-            :key="item.id"
-            :value="item.id"
-            :label="item.raggruppamento"
-          >
-          </el-option>
-        </el-select>
-        <el-select
-          v-model="categoria"
-          size="small"
-          filterable
-          collapse-tags
-          placeholder="Categoria"
-          style="width: 270px !important;"
-        >
-          <el-option
-            v-for="item in categorie"
-            :key="item.id"
-            :value="item.id"
-            :label="item.categoria"
-          >
-          </el-option>
-        </el-select>
-        <el-select
-          v-model="itinerario"
-          size="small"
-          filterable
-          collapse-tags
-          placeholder="Itinerario"
-          style="width: 270px !important;"
-        >
-          <el-option
-            v-for="item in itinerari"
-            :key="item.id"
-            :value="item.id"
-            :label="item.itinerario"
-          >
-          </el-option>
-        </el-select>
+        <!-- <div class="gv-cultura-ricerca-filtri-title"> FILTRI </div> -->
+        <table>
+          <tr>
+            <td>
+              <span>LIVELLO </span>
+            </td>
+            <td>
+              <el-select
+                v-model="raggruppamento"
+                size="small"
+                placeholder="Raggruppamento"
+                style="width: 270px !important;"
+                @change="onChangeRaggruppamento"
+              >
+                <el-option
+                  v-for="item in raggruppamenti"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.raggruppamento"
+                >
+                </el-option>
+              </el-select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>CATEGORIA </span>
+            </td>
+            <td>
+              <el-select
+                v-model="categoria"
+                size="small"
+                filterable
+                collapse-tags
+                placeholder="Categoria"
+                style="width: 270px !important;"
+              >
+                <el-option
+                  v-for="item in categorie"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.categoria"
+                >
+                </el-option>
+              </el-select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>PROVINCIA </span>
+            </td>
+            <td>
+              <el-select
+                v-model="provincia"
+                size="small"
+                placeholder="Provincia"
+                style="width: 270px !important;"
+                @change="onChangeProvincia"
+              >
+                <el-option
+                  v-for="item in province"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.provincia"
+                >
+                </el-option>
+              </el-select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>COMUNE </span>
+            </td>
+              <el-select
+                v-model="comune"
+                size="small"
+                filterable
+                collapse-tags
+                placeholder="Comune"
+                style="width: 270px !important;"
+              >
+                <el-option
+                  v-for="item in comuni"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.comune"
+                >
+                </el-option>
+              </el-select> 
+            <td>
+            </td>
+          </tr>
+          <!-- <tr>
+            <td>
+              <span>ITINERARIO </span>
+            </td>
+              <el-select
+                v-model="itinerario"
+                size="small"
+                filterable
+                collapse-tags
+                placeholder="Itinerario"
+                style="width: 270px !important;"
+              >
+                <el-option
+                  v-for="item in itinerari"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.itinerario"
+                >
+                </el-option>
+              </el-select>
+            <td>
+            </td>
+          </tr> -->
+        </table>
       </div>
       <div class="gv-cultura-ricerca-buttons">
         <el-button id="gv-cultura-ricerca-submit" type="info" size="mini" @click="filterLuoghi"
@@ -131,45 +199,72 @@ import notification from '../util/notification';
 export default {
   name: 'gv-cultura-ricerca',
   data() {
-    let categorie = GV.globals.CULTURA_CONFIG.categorie
-    categorie.push({
-      id: 0,
-      categoria: 'Tutte',
-    }) 
-    categorie = categorie.sort((a,b) => a.id - b.id)
 
     let raggruppamenti = GV.globals.CULTURA_CONFIG.raggruppamenti
-    raggruppamenti.push({
+    for (const rg of raggruppamenti) {
+      rg.categorie.unshift({
+        id: 0,
+        categoria: 'Tutte',
+      })
+    }
+    raggruppamenti = raggruppamenti.sort((a,b) => a.id - b.id)
+
+    let categorie = GV.globals.CULTURA_CONFIG.categorie
+    categorie.unshift({
+      id: 0,
+      categoria: 'Tutte',
+    })
+     
+    raggruppamenti.unshift({
       id: 0,
       raggruppamento: 'Tutti',
       categorie: categorie
     }) 
-    raggruppamenti = raggruppamenti.sort((a,b) => a.id - b.id)
+
+    let province = GV.globals.CULTURA_CONFIG.province
+    for (const pr of province) {
+      pr.comuni.unshift({
+        id: 0,
+        comune: 'Tutti',
+      })
+      pr.comuni = pr.comuni.sort((a,b) => a.id - b.id)
+    }
+    let comuni = GV.globals.CULTURA_CONFIG.comuni
+    comuni.push({
+      id: 0,
+      comune: 'Tutti',
+    }) 
+    comuni = comuni.sort((a,b) => a.id - b.id)
+    province.push({
+      id: 0,
+      provincia: 'Tutte',
+      comuni: comuni
+    }) 
+    province = province.sort((a,b) => a.id - b.id)
+
+    const filter = GV.globals.CULTURA_CONFIG.filter
 
     return {
       raggruppamenti: raggruppamenti,
-      raggruppamento: null,
+      raggruppamento: filter.raggruppamento,
       categorie: categorie,
-      categoria: null,
-      province: null,
-      provincia: null,
-      comuni: null,
-      comune: null,
+      categoria: filter.categoria,
+      province: province,
+      provincia: filter.raggruppamento,
+      comuni: comuni,
+      comune: filter.comune,
       itinerari: GV.globals.CULTURA_CONFIG.itinerari,
-      itinerario: null,
-      layers: ['scuole_01', 'scuole_02', 'scuole_03', 'scuole_04', 'scuole_06', 'scuole_07'],
+      itinerario: filter.itinerario,
       propertyName: 'NOME',
-      searchResult: [],
       luoghi: null,
       filterResult: [],
       loading: false,
       show: false,
-      showRicercaScuola: true,
-      showRicercaTemi: false,
-      markerArray: [],
+      // showRicercaResult: true,
     };
   },
   async mounted() {
+    this.filterLuoghi()
     // console.log('CONFIG', GV.globals.CULTURA_CONFIG)
     // this.raggruppamenti = GV.globals.CULTURA_CONFIG.raggruppamenti.sort((a,b) => a.id - b.id)
   },
@@ -177,6 +272,12 @@ export default {
     onChangeRaggruppamento(value) {
       // console.log(value)
       this.categorie = this.raggruppamenti.filter(r => r.id === value)[0].categorie
+      this.categoria = 0
+    },
+    onChangeProvincia(value) {
+      console.log(value)
+      this.comuni = this.province.filter(r => r.id === value)[0].comuni
+      this.comune = 0
     },
     search(query) {
       this.searchResults = [];
@@ -200,39 +301,6 @@ export default {
           alert(error);
         });
     },
-    // filterData(text) {
-    //   let results = [];
-    //   text = text.replace(/[*+?^${}()|[\]\\]/g, '');
-    //   if (text === '') {
-    //     return [];
-    //   }
-    //   this.layers.forEach(sLayer => {
-    //     GV.app.map.eachLayer(layer => {
-    //       if (layer.name === sLayer) {
-    //         if (layer instanceof L.LayerGroup) {
-    //           layer.eachLayer(m => {
-    //             let loc = m.getLatLng();
-    //             loc.layer = m;
-    //             const key = m.feature.properties[this.propertyName];
-    //             if (new RegExp(text, 'i').test(key)) {
-    //               const addLabel = this.additionalLabel
-    //                 ? m.feature.properties[this.additionalLabel]
-    //                 : null;
-    //               const label = this.additionalLabel ? `${key} (${addLabel})` : key;
-    //               const value = m.feature.properties.COD_MECC;
-    //               results.push({
-    //                 label: label,
-    //                 value: value,
-    //                 location: loc,
-    //               });
-    //             }
-    //           });
-    //         }
-    //       }
-    //     });
-    //   });
-    //   return results;
-    // },
     onSelectSearch(value) {
       console.log('onSelectSearch', value)
       // this.luoghi = value;
@@ -246,7 +314,11 @@ export default {
         comune: this.comune,
         itinerario: this.itinerario,
       }
-      console.log(data)
+
+      if (this.raggruppamento===0 && this.categoria===0 && this.provincia===0 && this.comune===0 && this.itinerario===0){
+        return
+      }
+
       fetch(`/geoservices/REST/cultura/filtraLuoghi`, {
         method: 'POST',
         headers: {
@@ -270,7 +342,6 @@ export default {
         });
     },
     filtraMappa() {
-      this.markerArray = [];
       GV.globals.CULTURA_LAYERS.forEach(layer => {
         GV.config.removeLayer(layer.name);
         layer.filter = feature => {
@@ -290,6 +361,19 @@ export default {
       return found;
     },
     reset() {
+      this.raggruppamento = 0
+      this.categoria = 0
+      this.provincia=0
+      this.comune=0
+      this.onChangeRaggruppamento(0) 
+      this.onChangeProvincia(0)     
+      GV.globals.CULTURA_LAYERS.forEach(layer => {
+        GV.config.removeLayer(layer.name);
+        layer.filter = () => {
+          return true;
+        };
+        GV.config.addLayerToMap(layer, 0);
+      });      
     },
     closeResultPanels() {
     },
