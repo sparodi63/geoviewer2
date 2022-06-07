@@ -3,7 +3,13 @@ fetch(`/geoservices/data/cultura/config.json`)
   .then(response => response.json())
   .then(data => {
     GV.globals.CULTURA_CONFIG = data
+    GV.globals.CULTURA_CONFIG.luoghi = []
+    for (const rg of data.raggruppamenti) {
+      GV.globals.CULTURA_CONFIG.luoghi.push(rg.data.features)
+    }
+    GV.globals.CULTURA_CONFIG.luoghi = GV.globals.CULTURA_CONFIG.luoghi.flat()
     GV.globals.CULTURA_CONFIG.filter = getFilter()
+    GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN=GV.globals.CULTURA_CONFIG.domains[parseInt(GV.utils.getUrlParam('CURRENT_DOMAIN'))]
     init(getMapConfig(data.raggruppamenti))
   })
   .catch(error => {
@@ -17,7 +23,8 @@ function getFilter() {
     categoria: (GV.utils.getUrlParam('CATEGORIA')) ? parseInt(GV.utils.getUrlParam('CATEGORIA')): 0,
     provincia: (GV.utils.getUrlParam('PROVINCIA')) ? parseInt(GV.utils.getUrlParam('PROVINCIA')): 0,
     comune: (GV.utils.getUrlParam('COMUNE')) ? parseInt(GV.utils.getUrlParam('COMUNE')): 0,
-    itinerario: (GV.utils.getUrlParam('ITINERARIO')) ? parseInt(GV.utils.getUrlParam('ITINERARIO')): 0,
+    itinerario: (GV.utils.getUrlParam('ITINERARIO')) ? parseInt(GV.utils.getUrlParam('ITINERARIO')) : 0,
+    luogo: (GV.utils.getUrlParam('LUOGO')) ? GV.utils.getUrlParam('LUOGO') : 0,
   }
 }
 
@@ -32,7 +39,7 @@ function onFeatureSelect(feature) {
       properties: feature.properties
     },
   });
-  GV.app.map.setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 14);
+  GV.app.map.setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 19);
 }
 
 // function getClassesCat(rg) {
@@ -139,6 +146,18 @@ function init(maps) {
       mapOptions: {
         type: 'leaflet',
         maxZoom: 19,
+      },
+      callback: function () {
+        //  console.log(GV.globals.CULTURA_CONFIG.filter.luogo)
+        if (GV.globals.CULTURA_CONFIG.filter.luogo) {
+          const oid = GV.globals.CULTURA_CONFIG.filter.luogo
+          const features = GV.globals.CULTURA_CONFIG.luoghi.filter(luogo => {
+            if (luogo.properties.OID === oid) return true
+          })
+          if (features[0]) {
+             onFeatureSelect(features[0])
+          }
+        }
       },
       layout: {
         title: ' ',

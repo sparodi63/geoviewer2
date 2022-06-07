@@ -524,26 +524,26 @@ const layerFactory = {
     layer.name = name;
     return layer;
   },
-  MBS(layerConfig, map) {
-    // console.log(map);
-    console.log(layerConfig);
-    olms(map, layerConfig.url).then(map => {
-      // let layers = map.getLayers();
-      // layers.getArray().forEach(layer => {
-      //   if (layer.get('mapbox-source')) {
-      //     console.log('TileServerGL', layer);
-      //     layer.config = layerConfig;
-      //     layer.name = layerConfig.name;
-      //   }
-      // });
-    });
-  },
-  MBS_STREETS(layerConfig, map) {
-    const style = 'streets';
-    const url = `https://geoservizi.regione.liguria.it/tileserver-gl/styles/${style}/style.json`;
-    this.MBS(url, map.map);
-    return null;
-  },
+  // MBS(layerConfig, map) {
+  //   console.log(map);
+  //   console.log(layerConfig);
+  //   olms(map, layerConfig.url).then(map => {
+  //     let layers = map.getLayers();
+  //     layers.getArray().forEach(layer => {
+  //       if (layer.get('mapbox-source')) {
+  //         console.log('TileServerGL', layer);
+  //         layer.config = layerConfig;
+  //         layer.name = layerConfig.name;
+  //       }
+  //     });
+  //   });
+  // },
+  // MBS_STREETS(layerConfig, map) {
+  //   const style = 'streets';
+  //   const url = `https://geoservizi.regione.liguria.it/tileserver-gl/styles/${style}/style.json`;
+  //   this.MBS(url, map.map);
+  //   return null;
+  // },
 };
 
 function create(layerConfig, map) {

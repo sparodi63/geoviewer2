@@ -10543,7 +10543,7 @@ webpackJsonp([38,36],[
 	
 	module.exports = Vue$3;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(671).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(676).setImmediate))
 
 /***/ }),
 /* 2 */
@@ -10827,7 +10827,7 @@ webpackJsonp([38,36],[
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(222);
+	module.exports = __webpack_require__(223);
 
 /***/ }),
 /* 5 */,
@@ -11912,14 +11912,14 @@ webpackJsonp([38,36],[
 	/***/ 21:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(190);
+	module.exports = __webpack_require__(191);
 	
 	/***/ }),
 	
 	/***/ 22:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(187);
+	module.exports = __webpack_require__(188);
 	
 	/***/ }),
 	
@@ -11933,7 +11933,7 @@ webpackJsonp([38,36],[
 	/***/ 31:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(527);
+	module.exports = __webpack_require__(529);
 	
 	/***/ }),
 	
@@ -12191,7 +12191,7 @@ webpackJsonp([38,36],[
 	/***/ 37:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(520);
+	module.exports = __webpack_require__(522);
 	
 	/***/ }),
 	
@@ -13856,7 +13856,7 @@ webpackJsonp([38,36],[
 	exports.__esModule = true;
 	exports.i18n = exports.use = exports.t = undefined;
 	
-	var _zhCN = __webpack_require__(518);
+	var _zhCN = __webpack_require__(520);
 	
 	var _zhCN2 = _interopRequireDefault(_zhCN);
 	
@@ -13864,11 +13864,11 @@ webpackJsonp([38,36],[
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _deepmerge = __webpack_require__(511);
+	var _deepmerge = __webpack_require__(513);
 	
 	var _deepmerge2 = _interopRequireDefault(_deepmerge);
 	
-	var _format = __webpack_require__(517);
+	var _format = __webpack_require__(519);
 	
 	var _format2 = _interopRequireDefault(_format);
 	
@@ -13920,8 +13920,7 @@ webpackJsonp([38,36],[
 /* 15 */,
 /* 16 */,
 /* 17 */,
-/* 18 */,
-/* 19 */
+/* 18 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -14048,6 +14047,7 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
+/* 19 */,
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14069,7 +14069,7 @@ webpackJsonp([38,36],[
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _types = __webpack_require__(528);
+	var _types = __webpack_require__(530);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -14331,7 +14331,7 @@ webpackJsonp([38,36],[
 	});
 	exports.warning = undefined;
 	
-	var _extends2 = __webpack_require__(172);
+	var _extends2 = __webpack_require__(173);
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
@@ -14740,7 +14740,7 @@ webpackJsonp([38,36],[
 	/***/ 21:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(190);
+	module.exports = __webpack_require__(191);
 	
 	/***/ }),
 	
@@ -15524,7 +15524,7 @@ webpackJsonp([38,36],[
 	/***/ 9:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(42);
+	module.exports = __webpack_require__(43);
 	
 	/***/ })
 	
@@ -15532,13 +15532,56 @@ webpackJsonp([38,36],[
 
 /***/ }),
 /* 23 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	var core = module.exports = {version: '2.4.0'};
-	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+	"use strict";
+	
+	exports.__esModule = true;
+	
+	var _promise = __webpack_require__(10);
+	
+	var _promise2 = _interopRequireDefault(_promise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (fn) {
+	  return function () {
+	    var gen = fn.apply(this, arguments);
+	    return new _promise2.default(function (resolve, reject) {
+	      function step(key, arg) {
+	        try {
+	          var info = gen[key](arg);
+	          var value = info.value;
+	        } catch (error) {
+	          reject(error);
+	          return;
+	        }
+	
+	        if (info.done) {
+	          resolve(value);
+	        } else {
+	          return _promise2.default.resolve(value).then(function (value) {
+	            step("next", value);
+	          }, function (err) {
+	            step("throw", err);
+	          });
+	        }
+	      }
+	
+	      return step("next");
+	    });
+	  };
+	};
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(670);
+
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15777,54 +15820,11 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	exports.__esModule = true;
-	
-	var _promise = __webpack_require__(10);
-	
-	var _promise2 = _interopRequireDefault(_promise);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (fn) {
-	  return function () {
-	    var gen = fn.apply(this, arguments);
-	    return new _promise2.default(function (resolve, reject) {
-	      function step(key, arg) {
-	        try {
-	          var info = gen[key](arg);
-	          var value = info.value;
-	        } catch (error) {
-	          reject(error);
-	          return;
-	        }
-	
-	        if (info.done) {
-	          resolve(value);
-	        } else {
-	          return _promise2.default.resolve(value).then(function (value) {
-	            step("next", value);
-	          }, function (err) {
-	            step("throw", err);
-	          });
-	        }
-	      }
-	
-	      return step("next");
-	    });
-	  };
-	};
-
-/***/ }),
 /* 26 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-	module.exports = __webpack_require__(665);
-
+	var core = module.exports = {version: '2.4.0'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ }),
 /* 27 */
@@ -15836,27 +15836,27 @@ webpackJsonp([38,36],[
 	  value: true
 	});
 	
-	var _required = __webpack_require__(144);
+	var _required = __webpack_require__(145);
 	
 	var _required2 = _interopRequireDefault(_required);
 	
-	var _whitespace = __webpack_require__(206);
+	var _whitespace = __webpack_require__(207);
 	
 	var _whitespace2 = _interopRequireDefault(_whitespace);
 	
-	var _type = __webpack_require__(205);
+	var _type = __webpack_require__(206);
 	
 	var _type2 = _interopRequireDefault(_type);
 	
-	var _range = __webpack_require__(204);
+	var _range = __webpack_require__(205);
 	
 	var _range2 = _interopRequireDefault(_range);
 	
-	var _enum = __webpack_require__(202);
+	var _enum = __webpack_require__(203);
 	
 	var _enum2 = _interopRequireDefault(_enum);
 	
-	var _pattern = __webpack_require__(203);
+	var _pattern = __webpack_require__(204);
 	
 	var _pattern2 = _interopRequireDefault(_pattern);
 	
@@ -16093,14 +16093,14 @@ webpackJsonp([38,36],[
 	/***/ 2:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(24);
+	module.exports = __webpack_require__(25);
 	
 	/***/ }),
 	
 	/***/ 41:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(522);
+	module.exports = __webpack_require__(524);
 	
 	/***/ }),
 	
@@ -16517,7 +16517,7 @@ webpackJsonp([38,36],[
 	/***/ 9:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(42);
+	module.exports = __webpack_require__(43);
 	
 	/***/ })
 	
@@ -16530,7 +16530,7 @@ webpackJsonp([38,36],[
 
 	'use strict';
 	
-	var bind = __webpack_require__(151);
+	var bind = __webpack_require__(152);
 	
 	// utils is a library of generic helper functions non-specific to axios
 	
@@ -16883,7 +16883,7 @@ webpackJsonp([38,36],[
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(399), __esModule: true };
+	module.exports = { "default": __webpack_require__(400), __esModule: true };
 
 /***/ }),
 /* 33 */,
@@ -17359,7 +17359,7 @@ webpackJsonp([38,36],[
 	/***/ 9:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(42);
+	module.exports = __webpack_require__(43);
 	
 	/***/ })
 	
@@ -17407,993 +17407,7 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 37 */,
-/* 38 */,
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports =
-	/******/ (function(modules) { // webpackBootstrap
-	/******/ 	// The module cache
-	/******/ 	var installedModules = {};
-	/******/
-	/******/ 	// The require function
-	/******/ 	function __webpack_require__(moduleId) {
-	/******/
-	/******/ 		// Check if module is in cache
-	/******/ 		if(installedModules[moduleId]) {
-	/******/ 			return installedModules[moduleId].exports;
-	/******/ 		}
-	/******/ 		// Create a new module (and put it into the cache)
-	/******/ 		var module = installedModules[moduleId] = {
-	/******/ 			i: moduleId,
-	/******/ 			l: false,
-	/******/ 			exports: {}
-	/******/ 		};
-	/******/
-	/******/ 		// Execute the module function
-	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-	/******/
-	/******/ 		// Flag the module as loaded
-	/******/ 		module.l = true;
-	/******/
-	/******/ 		// Return the exports of the module
-	/******/ 		return module.exports;
-	/******/ 	}
-	/******/
-	/******/
-	/******/ 	// expose the modules object (__webpack_modules__)
-	/******/ 	__webpack_require__.m = modules;
-	/******/
-	/******/ 	// expose the module cache
-	/******/ 	__webpack_require__.c = installedModules;
-	/******/
-	/******/ 	// define getter function for harmony exports
-	/******/ 	__webpack_require__.d = function(exports, name, getter) {
-	/******/ 		if(!__webpack_require__.o(exports, name)) {
-	/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-	/******/ 		}
-	/******/ 	};
-	/******/
-	/******/ 	// define __esModule on exports
-	/******/ 	__webpack_require__.r = function(exports) {
-	/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-	/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-	/******/ 		}
-	/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-	/******/ 	};
-	/******/
-	/******/ 	// create a fake namespace object
-	/******/ 	// mode & 1: value is a module id, require it
-	/******/ 	// mode & 2: merge all properties of value into the ns
-	/******/ 	// mode & 4: return value when already ns object
-	/******/ 	// mode & 8|1: behave like require
-	/******/ 	__webpack_require__.t = function(value, mode) {
-	/******/ 		if(mode & 1) value = __webpack_require__(value);
-	/******/ 		if(mode & 8) return value;
-	/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-	/******/ 		var ns = Object.create(null);
-	/******/ 		__webpack_require__.r(ns);
-	/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-	/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-	/******/ 		return ns;
-	/******/ 	};
-	/******/
-	/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-	/******/ 	__webpack_require__.n = function(module) {
-	/******/ 		var getter = module && module.__esModule ?
-	/******/ 			function getDefault() { return module['default']; } :
-	/******/ 			function getModuleExports() { return module; };
-	/******/ 		__webpack_require__.d(getter, 'a', getter);
-	/******/ 		return getter;
-	/******/ 	};
-	/******/
-	/******/ 	// Object.prototype.hasOwnProperty.call
-	/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-	/******/
-	/******/ 	// __webpack_public_path__
-	/******/ 	__webpack_require__.p = "/dist/";
-	/******/
-	/******/
-	/******/ 	// Load entry module and return exports
-	/******/ 	return __webpack_require__(__webpack_require__.s = 67);
-	/******/ })
-	/************************************************************************/
-	/******/ ({
-	
-	/***/ 0:
-	/***/ (function(module, __webpack_exports__, __webpack_require__) {
-	
-	"use strict";
-	/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return normalizeComponent; });
-	/* globals __VUE_SSR_CONTEXT__ */
-	
-	// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-	// This module is a runtime utility for cleaner component module output and will
-	// be included in the final webpack user bundle.
-	
-	function normalizeComponent (
-	  scriptExports,
-	  render,
-	  staticRenderFns,
-	  functionalTemplate,
-	  injectStyles,
-	  scopeId,
-	  moduleIdentifier, /* server only */
-	  shadowMode /* vue-cli only */
-	) {
-	  // Vue.extend constructor export interop
-	  var options = typeof scriptExports === 'function'
-	    ? scriptExports.options
-	    : scriptExports
-	
-	  // render functions
-	  if (render) {
-	    options.render = render
-	    options.staticRenderFns = staticRenderFns
-	    options._compiled = true
-	  }
-	
-	  // functional template
-	  if (functionalTemplate) {
-	    options.functional = true
-	  }
-	
-	  // scopedId
-	  if (scopeId) {
-	    options._scopeId = 'data-v-' + scopeId
-	  }
-	
-	  var hook
-	  if (moduleIdentifier) { // server build
-	    hook = function (context) {
-	      // 2.3 injection
-	      context =
-	        context || // cached call
-	        (this.$vnode && this.$vnode.ssrContext) || // stateful
-	        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-	      // 2.2 with runInNewContext: true
-	      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-	        context = __VUE_SSR_CONTEXT__
-	      }
-	      // inject component styles
-	      if (injectStyles) {
-	        injectStyles.call(this, context)
-	      }
-	      // register component module identifier for async chunk inferrence
-	      if (context && context._registeredComponents) {
-	        context._registeredComponents.add(moduleIdentifier)
-	      }
-	    }
-	    // used by ssr in case component is cached and beforeCreate
-	    // never gets called
-	    options._ssrRegister = hook
-	  } else if (injectStyles) {
-	    hook = shadowMode
-	      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-	      : injectStyles
-	  }
-	
-	  if (hook) {
-	    if (options.functional) {
-	      // for template-only hot-reload because in that case the render fn doesn't
-	      // go through the normalizer
-	      options._injectStyles = hook
-	      // register for functioal component in vue file
-	      var originalRender = options.render
-	      options.render = function renderWithStyleInjection (h, context) {
-	        hook.call(context)
-	        return originalRender(h, context)
-	      }
-	    } else {
-	      // inject component registration as beforeCreate hook
-	      var existing = options.beforeCreate
-	      options.beforeCreate = existing
-	        ? [].concat(existing, hook)
-	        : [hook]
-	    }
-	  }
-	
-	  return {
-	    exports: scriptExports,
-	    options: options
-	  }
-	}
-	
-	
-	/***/ }),
-	
-	/***/ 3:
-	/***/ (function(module, exports) {
-	
-	module.exports = __webpack_require__(20);
-	
-	/***/ }),
-	
-	/***/ 4:
-	/***/ (function(module, exports) {
-	
-	module.exports = __webpack_require__(36);
-	
-	/***/ }),
-	
-	/***/ 48:
-	/***/ (function(module, exports) {
-	
-	module.exports = __webpack_require__(200);
-	
-	/***/ }),
-	
-	/***/ 67:
-	/***/ (function(module, __webpack_exports__, __webpack_require__) {
-	
-	"use strict";
-	__webpack_require__.r(__webpack_exports__);
-	
-	// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./packages/form/src/form-item.vue?vue&type=template&id=b6f3db6c&
-	var render = function() {
-	  var _vm = this
-	  var _h = _vm.$createElement
-	  var _c = _vm._self._c || _h
-	  return _c(
-	    "div",
-	    {
-	      staticClass: "el-form-item",
-	      class: [
-	        {
-	          "el-form-item--feedback": _vm.elForm && _vm.elForm.statusIcon,
-	          "is-error": _vm.validateState === "error",
-	          "is-validating": _vm.validateState === "validating",
-	          "is-success": _vm.validateState === "success",
-	          "is-required": _vm.isRequired || _vm.required,
-	          "is-no-asterisk": _vm.elForm && _vm.elForm.hideRequiredAsterisk
-	        },
-	        _vm.sizeClass ? "el-form-item--" + _vm.sizeClass : ""
-	      ]
-	    },
-	    [
-	      _c(
-	        "label-wrap",
-	        {
-	          attrs: {
-	            "is-auto-width": _vm.labelStyle && _vm.labelStyle.width === "auto",
-	            "update-all": _vm.form.labelWidth === "auto"
-	          }
-	        },
-	        [
-	          _vm.label || _vm.$slots.label
-	            ? _c(
-	                "label",
-	                {
-	                  staticClass: "el-form-item__label",
-	                  style: _vm.labelStyle,
-	                  attrs: { for: _vm.labelFor }
-	                },
-	                [
-	                  _vm._t("label", [
-	                    _vm._v(_vm._s(_vm.label + _vm.form.labelSuffix))
-	                  ])
-	                ],
-	                2
-	              )
-	            : _vm._e()
-	        ]
-	      ),
-	      _c(
-	        "div",
-	        { staticClass: "el-form-item__content", style: _vm.contentStyle },
-	        [
-	          _vm._t("default"),
-	          _c(
-	            "transition",
-	            { attrs: { name: "el-zoom-in-top" } },
-	            [
-	              _vm.validateState === "error" &&
-	              _vm.showMessage &&
-	              _vm.form.showMessage
-	                ? _vm._t(
-	                    "error",
-	                    [
-	                      _c(
-	                        "div",
-	                        {
-	                          staticClass: "el-form-item__error",
-	                          class: {
-	                            "el-form-item__error--inline":
-	                              typeof _vm.inlineMessage === "boolean"
-	                                ? _vm.inlineMessage
-	                                : (_vm.elForm && _vm.elForm.inlineMessage) ||
-	                                  false
-	                          }
-	                        },
-	                        [
-	                          _vm._v(
-	                            "\n          " +
-	                              _vm._s(_vm.validateMessage) +
-	                              "\n        "
-	                          )
-	                        ]
-	                      )
-	                    ],
-	                    { error: _vm.validateMessage }
-	                  )
-	                : _vm._e()
-	            ],
-	            2
-	          )
-	        ],
-	        2
-	      )
-	    ],
-	    1
-	  )
-	}
-	var staticRenderFns = []
-	render._withStripped = true
-	
-	
-	// CONCATENATED MODULE: ./packages/form/src/form-item.vue?vue&type=template&id=b6f3db6c&
-	
-	// EXTERNAL MODULE: external "async-validator"
-	var external_async_validator_ = __webpack_require__(48);
-	var external_async_validator_default = /*#__PURE__*/__webpack_require__.n(external_async_validator_);
-	
-	// EXTERNAL MODULE: external "element-ui/lib/mixins/emitter"
-	var emitter_ = __webpack_require__(4);
-	var emitter_default = /*#__PURE__*/__webpack_require__.n(emitter_);
-	
-	// EXTERNAL MODULE: external "element-ui/lib/utils/merge"
-	var merge_ = __webpack_require__(9);
-	var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
-	
-	// EXTERNAL MODULE: external "element-ui/lib/utils/util"
-	var util_ = __webpack_require__(3);
-	
-	// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./packages/form/src/label-wrap.vue?vue&type=script&lang=js&
-	
-	
-	/* harmony default export */ var label_wrapvue_type_script_lang_js_ = ({
-	  props: {
-	    isAutoWidth: Boolean,
-	    updateAll: Boolean
-	  },
-	
-	  inject: ['elForm', 'elFormItem'],
-	
-	  render: function render() {
-	    var h = arguments[0];
-	
-	    var slots = this.$slots.default;
-	    if (!slots) return null;
-	    if (this.isAutoWidth) {
-	      var autoLabelWidth = this.elForm.autoLabelWidth;
-	      var style = {};
-	      if (autoLabelWidth && autoLabelWidth !== 'auto') {
-	        var marginLeft = parseInt(autoLabelWidth, 10) - this.computedWidth;
-	        if (marginLeft) {
-	          style.marginLeft = marginLeft + 'px';
-	        }
-	      }
-	      return h(
-	        'div',
-	        { 'class': 'el-form-item__label-wrap', style: style },
-	        [slots]
-	      );
-	    } else {
-	      return slots[0];
-	    }
-	  },
-	
-	
-	  methods: {
-	    getLabelWidth: function getLabelWidth() {
-	      if (this.$el && this.$el.firstElementChild) {
-	        var computedWidth = window.getComputedStyle(this.$el.firstElementChild).width;
-	        return Math.ceil(parseFloat(computedWidth));
-	      } else {
-	        return 0;
-	      }
-	    },
-	    updateLabelWidth: function updateLabelWidth() {
-	      var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'update';
-	
-	      if (this.$slots.default && this.isAutoWidth && this.$el.firstElementChild) {
-	        if (action === 'update') {
-	          this.computedWidth = this.getLabelWidth();
-	        } else if (action === 'remove') {
-	          this.elForm.deregisterLabelWidth(this.computedWidth);
-	        }
-	      }
-	    }
-	  },
-	
-	  watch: {
-	    computedWidth: function computedWidth(val, oldVal) {
-	      if (this.updateAll) {
-	        this.elForm.registerLabelWidth(val, oldVal);
-	        this.elFormItem.updateComputedLabelWidth(val);
-	      }
-	    }
-	  },
-	
-	  data: function data() {
-	    return {
-	      computedWidth: 0
-	    };
-	  },
-	  mounted: function mounted() {
-	    this.updateLabelWidth('update');
-	  },
-	  updated: function updated() {
-	    this.updateLabelWidth('update');
-	  },
-	  beforeDestroy: function beforeDestroy() {
-	    this.updateLabelWidth('remove');
-	  }
-	});
-	// CONCATENATED MODULE: ./packages/form/src/label-wrap.vue?vue&type=script&lang=js&
-	 /* harmony default export */ var src_label_wrapvue_type_script_lang_js_ = (label_wrapvue_type_script_lang_js_); 
-	// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-	var componentNormalizer = __webpack_require__(0);
-	
-	// CONCATENATED MODULE: ./packages/form/src/label-wrap.vue
-	var label_wrap_render, label_wrap_staticRenderFns
-	
-	
-	
-	
-	/* normalize component */
-	
-	var component = Object(componentNormalizer["a" /* default */])(
-	  src_label_wrapvue_type_script_lang_js_,
-	  label_wrap_render,
-	  label_wrap_staticRenderFns,
-	  false,
-	  null,
-	  null,
-	  null
-	  
-	)
-	
-	/* hot reload */
-	if (false) { var api; }
-	component.options.__file = "packages/form/src/label-wrap.vue"
-	/* harmony default export */ var label_wrap = (component.exports);
-	// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./packages/form/src/form-item.vue?vue&type=script&lang=js&
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	
-	
-	
-	
-	
-	
-	/* harmony default export */ var form_itemvue_type_script_lang_js_ = ({
-	  name: 'ElFormItem',
-	
-	  componentName: 'ElFormItem',
-	
-	  mixins: [emitter_default.a],
-	
-	  provide: function provide() {
-	    return {
-	      elFormItem: this
-	    };
-	  },
-	
-	
-	  inject: ['elForm'],
-	
-	  props: {
-	    label: String,
-	    labelWidth: String,
-	    prop: String,
-	    required: {
-	      type: Boolean,
-	      default: undefined
-	    },
-	    rules: [Object, Array],
-	    error: String,
-	    validateStatus: String,
-	    for: String,
-	    inlineMessage: {
-	      type: [String, Boolean],
-	      default: ''
-	    },
-	    showMessage: {
-	      type: Boolean,
-	      default: true
-	    },
-	    size: String
-	  },
-	  components: {
-	    // use this component to calculate auto width
-	    LabelWrap: label_wrap
-	  },
-	  watch: {
-	    error: {
-	      immediate: true,
-	      handler: function handler(value) {
-	        this.validateMessage = value;
-	        this.validateState = value ? 'error' : '';
-	      }
-	    },
-	    validateStatus: function validateStatus(value) {
-	      this.validateState = value;
-	    }
-	  },
-	  computed: {
-	    labelFor: function labelFor() {
-	      return this.for || this.prop;
-	    },
-	    labelStyle: function labelStyle() {
-	      var ret = {};
-	      if (this.form.labelPosition === 'top') return ret;
-	      var labelWidth = this.labelWidth || this.form.labelWidth;
-	      if (labelWidth) {
-	        ret.width = labelWidth;
-	      }
-	      return ret;
-	    },
-	    contentStyle: function contentStyle() {
-	      var ret = {};
-	      var label = this.label;
-	      if (this.form.labelPosition === 'top' || this.form.inline) return ret;
-	      if (!label && !this.labelWidth && this.isNested) return ret;
-	      var labelWidth = this.labelWidth || this.form.labelWidth;
-	      if (labelWidth === 'auto') {
-	        if (this.labelWidth === 'auto') {
-	          ret.marginLeft = this.computedLabelWidth;
-	        } else if (this.form.labelWidth === 'auto') {
-	          ret.marginLeft = this.elForm.autoLabelWidth;
-	        }
-	      } else {
-	        ret.marginLeft = labelWidth;
-	      }
-	      return ret;
-	    },
-	    form: function form() {
-	      var parent = this.$parent;
-	      var parentName = parent.$options.componentName;
-	      while (parentName !== 'ElForm') {
-	        if (parentName === 'ElFormItem') {
-	          this.isNested = true;
-	        }
-	        parent = parent.$parent;
-	        parentName = parent.$options.componentName;
-	      }
-	      return parent;
-	    },
-	    fieldValue: function fieldValue() {
-	      var model = this.form.model;
-	      if (!model || !this.prop) {
-	        return;
-	      }
-	
-	      var path = this.prop;
-	      if (path.indexOf(':') !== -1) {
-	        path = path.replace(/:/, '.');
-	      }
-	
-	      return Object(util_["getPropByPath"])(model, path, true).v;
-	    },
-	    isRequired: function isRequired() {
-	      var rules = this.getRules();
-	      var isRequired = false;
-	
-	      if (rules && rules.length) {
-	        rules.every(function (rule) {
-	          if (rule.required) {
-	            isRequired = true;
-	            return false;
-	          }
-	          return true;
-	        });
-	      }
-	      return isRequired;
-	    },
-	    _formSize: function _formSize() {
-	      return this.elForm.size;
-	    },
-	    elFormItemSize: function elFormItemSize() {
-	      return this.size || this._formSize;
-	    },
-	    sizeClass: function sizeClass() {
-	      return this.elFormItemSize || (this.$ELEMENT || {}).size;
-	    }
-	  },
-	  data: function data() {
-	    return {
-	      validateState: '',
-	      validateMessage: '',
-	      validateDisabled: false,
-	      validator: {},
-	      isNested: false,
-	      computedLabelWidth: ''
-	    };
-	  },
-	
-	  methods: {
-	    validate: function validate(trigger) {
-	      var _this = this;
-	
-	      var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : util_["noop"];
-	
-	      this.validateDisabled = false;
-	      var rules = this.getFilteredRule(trigger);
-	      if ((!rules || rules.length === 0) && this.required === undefined) {
-	        callback();
-	        return true;
-	      }
-	
-	      this.validateState = 'validating';
-	
-	      var descriptor = {};
-	      if (rules && rules.length > 0) {
-	        rules.forEach(function (rule) {
-	          delete rule.trigger;
-	        });
-	      }
-	      descriptor[this.prop] = rules;
-	
-	      var validator = new external_async_validator_default.a(descriptor);
-	      var model = {};
-	
-	      model[this.prop] = this.fieldValue;
-	
-	      validator.validate(model, { firstFields: true }, function (errors, invalidFields) {
-	        _this.validateState = !errors ? 'success' : 'error';
-	        _this.validateMessage = errors ? errors[0].message : '';
-	
-	        callback(_this.validateMessage, invalidFields);
-	        _this.elForm && _this.elForm.$emit('validate', _this.prop, !errors, _this.validateMessage || null);
-	      });
-	    },
-	    clearValidate: function clearValidate() {
-	      this.validateState = '';
-	      this.validateMessage = '';
-	      this.validateDisabled = false;
-	    },
-	    resetField: function resetField() {
-	      var _this2 = this;
-	
-	      this.validateState = '';
-	      this.validateMessage = '';
-	
-	      var model = this.form.model;
-	      var value = this.fieldValue;
-	      var path = this.prop;
-	      if (path.indexOf(':') !== -1) {
-	        path = path.replace(/:/, '.');
-	      }
-	
-	      var prop = Object(util_["getPropByPath"])(model, path, true);
-	
-	      this.validateDisabled = true;
-	      if (Array.isArray(value)) {
-	        prop.o[prop.k] = [].concat(this.initialValue);
-	      } else {
-	        prop.o[prop.k] = this.initialValue;
-	      }
-	
-	      // reset validateDisabled after onFieldChange triggered
-	      this.$nextTick(function () {
-	        _this2.validateDisabled = false;
-	      });
-	
-	      this.broadcast('ElTimeSelect', 'fieldReset', this.initialValue);
-	    },
-	    getRules: function getRules() {
-	      var formRules = this.form.rules;
-	      var selfRules = this.rules;
-	      var requiredRule = this.required !== undefined ? { required: !!this.required } : [];
-	
-	      var prop = Object(util_["getPropByPath"])(formRules, this.prop || '');
-	      formRules = formRules ? prop.o[this.prop || ''] || prop.v : [];
-	
-	      return [].concat(selfRules || formRules || []).concat(requiredRule);
-	    },
-	    getFilteredRule: function getFilteredRule(trigger) {
-	      var rules = this.getRules();
-	
-	      return rules.filter(function (rule) {
-	        if (!rule.trigger || trigger === '') return true;
-	        if (Array.isArray(rule.trigger)) {
-	          return rule.trigger.indexOf(trigger) > -1;
-	        } else {
-	          return rule.trigger === trigger;
-	        }
-	      }).map(function (rule) {
-	        return merge_default()({}, rule);
-	      });
-	    },
-	    onFieldBlur: function onFieldBlur() {
-	      this.validate('blur');
-	    },
-	    onFieldChange: function onFieldChange() {
-	      if (this.validateDisabled) {
-	        this.validateDisabled = false;
-	        return;
-	      }
-	
-	      this.validate('change');
-	    },
-	    updateComputedLabelWidth: function updateComputedLabelWidth(width) {
-	      this.computedLabelWidth = width ? width + 'px' : '';
-	    },
-	    addValidateEvents: function addValidateEvents() {
-	      var rules = this.getRules();
-	
-	      if (rules.length || this.required !== undefined) {
-	        this.$on('el.form.blur', this.onFieldBlur);
-	        this.$on('el.form.change', this.onFieldChange);
-	      }
-	    },
-	    removeValidateEvents: function removeValidateEvents() {
-	      this.$off();
-	    }
-	  },
-	  mounted: function mounted() {
-	    if (this.prop) {
-	      this.dispatch('ElForm', 'el.form.addField', [this]);
-	
-	      var initialValue = this.fieldValue;
-	      if (Array.isArray(initialValue)) {
-	        initialValue = [].concat(initialValue);
-	      }
-	      Object.defineProperty(this, 'initialValue', {
-	        value: initialValue
-	      });
-	
-	      this.addValidateEvents();
-	    }
-	  },
-	  beforeDestroy: function beforeDestroy() {
-	    this.dispatch('ElForm', 'el.form.removeField', [this]);
-	  }
-	});
-	// CONCATENATED MODULE: ./packages/form/src/form-item.vue?vue&type=script&lang=js&
-	 /* harmony default export */ var src_form_itemvue_type_script_lang_js_ = (form_itemvue_type_script_lang_js_); 
-	// CONCATENATED MODULE: ./packages/form/src/form-item.vue
-	
-	
-	
-	
-	
-	/* normalize component */
-	
-	var form_item_component = Object(componentNormalizer["a" /* default */])(
-	  src_form_itemvue_type_script_lang_js_,
-	  render,
-	  staticRenderFns,
-	  false,
-	  null,
-	  null,
-	  null
-	  
-	)
-	
-	/* hot reload */
-	if (false) { var form_item_api; }
-	form_item_component.options.__file = "packages/form/src/form-item.vue"
-	/* harmony default export */ var form_item = (form_item_component.exports);
-	// CONCATENATED MODULE: ./packages/form-item/index.js
-	
-	
-	/* istanbul ignore next */
-	form_item.install = function (Vue) {
-	  Vue.component(form_item.name, form_item);
-	};
-	
-	/* harmony default export */ var packages_form_item = __webpack_exports__["default"] = (form_item);
-	
-	/***/ }),
-	
-	/***/ 9:
-	/***/ (function(module, exports) {
-	
-	module.exports = __webpack_require__(42);
-	
-	/***/ })
-	
-	/******/ });
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports) {
-
-	module.exports =
-	/******/ (function(modules) { // webpackBootstrap
-	/******/ 	// The module cache
-	/******/ 	var installedModules = {};
-	/******/
-	/******/ 	// The require function
-	/******/ 	function __webpack_require__(moduleId) {
-	/******/
-	/******/ 		// Check if module is in cache
-	/******/ 		if(installedModules[moduleId]) {
-	/******/ 			return installedModules[moduleId].exports;
-	/******/ 		}
-	/******/ 		// Create a new module (and put it into the cache)
-	/******/ 		var module = installedModules[moduleId] = {
-	/******/ 			i: moduleId,
-	/******/ 			l: false,
-	/******/ 			exports: {}
-	/******/ 		};
-	/******/
-	/******/ 		// Execute the module function
-	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-	/******/
-	/******/ 		// Flag the module as loaded
-	/******/ 		module.l = true;
-	/******/
-	/******/ 		// Return the exports of the module
-	/******/ 		return module.exports;
-	/******/ 	}
-	/******/
-	/******/
-	/******/ 	// expose the modules object (__webpack_modules__)
-	/******/ 	__webpack_require__.m = modules;
-	/******/
-	/******/ 	// expose the module cache
-	/******/ 	__webpack_require__.c = installedModules;
-	/******/
-	/******/ 	// define getter function for harmony exports
-	/******/ 	__webpack_require__.d = function(exports, name, getter) {
-	/******/ 		if(!__webpack_require__.o(exports, name)) {
-	/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-	/******/ 		}
-	/******/ 	};
-	/******/
-	/******/ 	// define __esModule on exports
-	/******/ 	__webpack_require__.r = function(exports) {
-	/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-	/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-	/******/ 		}
-	/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-	/******/ 	};
-	/******/
-	/******/ 	// create a fake namespace object
-	/******/ 	// mode & 1: value is a module id, require it
-	/******/ 	// mode & 2: merge all properties of value into the ns
-	/******/ 	// mode & 4: return value when already ns object
-	/******/ 	// mode & 8|1: behave like require
-	/******/ 	__webpack_require__.t = function(value, mode) {
-	/******/ 		if(mode & 1) value = __webpack_require__(value);
-	/******/ 		if(mode & 8) return value;
-	/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-	/******/ 		var ns = Object.create(null);
-	/******/ 		__webpack_require__.r(ns);
-	/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-	/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-	/******/ 		return ns;
-	/******/ 	};
-	/******/
-	/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-	/******/ 	__webpack_require__.n = function(module) {
-	/******/ 		var getter = module && module.__esModule ?
-	/******/ 			function getDefault() { return module['default']; } :
-	/******/ 			function getModuleExports() { return module; };
-	/******/ 		__webpack_require__.d(getter, 'a', getter);
-	/******/ 		return getter;
-	/******/ 	};
-	/******/
-	/******/ 	// Object.prototype.hasOwnProperty.call
-	/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-	/******/
-	/******/ 	// __webpack_public_path__
-	/******/ 	__webpack_require__.p = "/dist/";
-	/******/
-	/******/
-	/******/ 	// Load entry module and return exports
-	/******/ 	return __webpack_require__(__webpack_require__.s = 132);
-	/******/ })
-	/************************************************************************/
-	/******/ ({
-	
-	/***/ 132:
-	/***/ (function(module, __webpack_exports__, __webpack_require__) {
-	
-	"use strict";
-	__webpack_require__.r(__webpack_exports__);
-	
-	// CONCATENATED MODULE: ./packages/row/src/row.js
-	/* harmony default export */ var row = ({
-	  name: 'ElRow',
-	
-	  componentName: 'ElRow',
-	
-	  props: {
-	    tag: {
-	      type: String,
-	      default: 'div'
-	    },
-	    gutter: Number,
-	    type: String,
-	    justify: {
-	      type: String,
-	      default: 'start'
-	    },
-	    align: {
-	      type: String,
-	      default: 'top'
-	    }
-	  },
-	
-	  computed: {
-	    style: function style() {
-	      var ret = {};
-	
-	      if (this.gutter) {
-	        ret.marginLeft = '-' + this.gutter / 2 + 'px';
-	        ret.marginRight = ret.marginLeft;
-	      }
-	
-	      return ret;
-	    }
-	  },
-	
-	  render: function render(h) {
-	    return h(this.tag, {
-	      class: ['el-row', this.justify !== 'start' ? 'is-justify-' + this.justify : '', this.align !== 'top' ? 'is-align-' + this.align : '', { 'el-row--flex': this.type === 'flex' }],
-	      style: this.style
-	    }, this.$slots.default);
-	  }
-	});
-	// CONCATENATED MODULE: ./packages/row/index.js
-	
-	
-	/* istanbul ignore next */
-	row.install = function (Vue) {
-	  Vue.component(row.name, row);
-	};
-	
-	/* harmony default export */ var packages_row = __webpack_exports__["default"] = (row);
-	
-	/***/ })
-	
-	/******/ });
-
-/***/ }),
-/* 41 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports =
@@ -18589,7 +17603,7 @@ webpackJsonp([38,36],[
 	/* 2 */
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(24);
+	module.exports = __webpack_require__(25);
 	
 	/***/ }),
 	/* 3 */
@@ -18916,7 +17930,7 @@ webpackJsonp([38,36],[
 	/* 9 */
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(42);
+	module.exports = __webpack_require__(43);
 	
 	/***/ }),
 	/* 10 */,
@@ -18996,7 +18010,7 @@ webpackJsonp([38,36],[
 	/* 39 */
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(514);
+	module.exports = __webpack_require__(516);
 	
 	/***/ }),
 	/* 40 */,
@@ -19005,7 +18019,7 @@ webpackJsonp([38,36],[
 	/* 43 */
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(670);
+	module.exports = __webpack_require__(675);
 	
 	/***/ }),
 	/* 44 */,
@@ -19013,7 +18027,7 @@ webpackJsonp([38,36],[
 	/* 46 */
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(657);
+	module.exports = __webpack_require__(662);
 	
 	/***/ }),
 	/* 47 */,
@@ -23299,7 +22313,994 @@ webpackJsonp([38,36],[
 	/******/ ]);
 
 /***/ }),
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports =
+	/******/ (function(modules) { // webpackBootstrap
+	/******/ 	// The module cache
+	/******/ 	var installedModules = {};
+	/******/
+	/******/ 	// The require function
+	/******/ 	function __webpack_require__(moduleId) {
+	/******/
+	/******/ 		// Check if module is in cache
+	/******/ 		if(installedModules[moduleId]) {
+	/******/ 			return installedModules[moduleId].exports;
+	/******/ 		}
+	/******/ 		// Create a new module (and put it into the cache)
+	/******/ 		var module = installedModules[moduleId] = {
+	/******/ 			i: moduleId,
+	/******/ 			l: false,
+	/******/ 			exports: {}
+	/******/ 		};
+	/******/
+	/******/ 		// Execute the module function
+	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+	/******/
+	/******/ 		// Flag the module as loaded
+	/******/ 		module.l = true;
+	/******/
+	/******/ 		// Return the exports of the module
+	/******/ 		return module.exports;
+	/******/ 	}
+	/******/
+	/******/
+	/******/ 	// expose the modules object (__webpack_modules__)
+	/******/ 	__webpack_require__.m = modules;
+	/******/
+	/******/ 	// expose the module cache
+	/******/ 	__webpack_require__.c = installedModules;
+	/******/
+	/******/ 	// define getter function for harmony exports
+	/******/ 	__webpack_require__.d = function(exports, name, getter) {
+	/******/ 		if(!__webpack_require__.o(exports, name)) {
+	/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+	/******/ 		}
+	/******/ 	};
+	/******/
+	/******/ 	// define __esModule on exports
+	/******/ 	__webpack_require__.r = function(exports) {
+	/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+	/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+	/******/ 		}
+	/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+	/******/ 	};
+	/******/
+	/******/ 	// create a fake namespace object
+	/******/ 	// mode & 1: value is a module id, require it
+	/******/ 	// mode & 2: merge all properties of value into the ns
+	/******/ 	// mode & 4: return value when already ns object
+	/******/ 	// mode & 8|1: behave like require
+	/******/ 	__webpack_require__.t = function(value, mode) {
+	/******/ 		if(mode & 1) value = __webpack_require__(value);
+	/******/ 		if(mode & 8) return value;
+	/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+	/******/ 		var ns = Object.create(null);
+	/******/ 		__webpack_require__.r(ns);
+	/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+	/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+	/******/ 		return ns;
+	/******/ 	};
+	/******/
+	/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+	/******/ 	__webpack_require__.n = function(module) {
+	/******/ 		var getter = module && module.__esModule ?
+	/******/ 			function getDefault() { return module['default']; } :
+	/******/ 			function getModuleExports() { return module; };
+	/******/ 		__webpack_require__.d(getter, 'a', getter);
+	/******/ 		return getter;
+	/******/ 	};
+	/******/
+	/******/ 	// Object.prototype.hasOwnProperty.call
+	/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+	/******/
+	/******/ 	// __webpack_public_path__
+	/******/ 	__webpack_require__.p = "/dist/";
+	/******/
+	/******/
+	/******/ 	// Load entry module and return exports
+	/******/ 	return __webpack_require__(__webpack_require__.s = 67);
+	/******/ })
+	/************************************************************************/
+	/******/ ({
+	
+	/***/ 0:
+	/***/ (function(module, __webpack_exports__, __webpack_require__) {
+	
+	"use strict";
+	/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return normalizeComponent; });
+	/* globals __VUE_SSR_CONTEXT__ */
+	
+	// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+	// This module is a runtime utility for cleaner component module output and will
+	// be included in the final webpack user bundle.
+	
+	function normalizeComponent (
+	  scriptExports,
+	  render,
+	  staticRenderFns,
+	  functionalTemplate,
+	  injectStyles,
+	  scopeId,
+	  moduleIdentifier, /* server only */
+	  shadowMode /* vue-cli only */
+	) {
+	  // Vue.extend constructor export interop
+	  var options = typeof scriptExports === 'function'
+	    ? scriptExports.options
+	    : scriptExports
+	
+	  // render functions
+	  if (render) {
+	    options.render = render
+	    options.staticRenderFns = staticRenderFns
+	    options._compiled = true
+	  }
+	
+	  // functional template
+	  if (functionalTemplate) {
+	    options.functional = true
+	  }
+	
+	  // scopedId
+	  if (scopeId) {
+	    options._scopeId = 'data-v-' + scopeId
+	  }
+	
+	  var hook
+	  if (moduleIdentifier) { // server build
+	    hook = function (context) {
+	      // 2.3 injection
+	      context =
+	        context || // cached call
+	        (this.$vnode && this.$vnode.ssrContext) || // stateful
+	        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+	      // 2.2 with runInNewContext: true
+	      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+	        context = __VUE_SSR_CONTEXT__
+	      }
+	      // inject component styles
+	      if (injectStyles) {
+	        injectStyles.call(this, context)
+	      }
+	      // register component module identifier for async chunk inferrence
+	      if (context && context._registeredComponents) {
+	        context._registeredComponents.add(moduleIdentifier)
+	      }
+	    }
+	    // used by ssr in case component is cached and beforeCreate
+	    // never gets called
+	    options._ssrRegister = hook
+	  } else if (injectStyles) {
+	    hook = shadowMode
+	      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+	      : injectStyles
+	  }
+	
+	  if (hook) {
+	    if (options.functional) {
+	      // for template-only hot-reload because in that case the render fn doesn't
+	      // go through the normalizer
+	      options._injectStyles = hook
+	      // register for functioal component in vue file
+	      var originalRender = options.render
+	      options.render = function renderWithStyleInjection (h, context) {
+	        hook.call(context)
+	        return originalRender(h, context)
+	      }
+	    } else {
+	      // inject component registration as beforeCreate hook
+	      var existing = options.beforeCreate
+	      options.beforeCreate = existing
+	        ? [].concat(existing, hook)
+	        : [hook]
+	    }
+	  }
+	
+	  return {
+	    exports: scriptExports,
+	    options: options
+	  }
+	}
+	
+	
+	/***/ }),
+	
+	/***/ 3:
+	/***/ (function(module, exports) {
+	
+	module.exports = __webpack_require__(20);
+	
+	/***/ }),
+	
+	/***/ 4:
+	/***/ (function(module, exports) {
+	
+	module.exports = __webpack_require__(36);
+	
+	/***/ }),
+	
+	/***/ 48:
+	/***/ (function(module, exports) {
+	
+	module.exports = __webpack_require__(201);
+	
+	/***/ }),
+	
+	/***/ 67:
+	/***/ (function(module, __webpack_exports__, __webpack_require__) {
+	
+	"use strict";
+	__webpack_require__.r(__webpack_exports__);
+	
+	// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./packages/form/src/form-item.vue?vue&type=template&id=b6f3db6c&
+	var render = function() {
+	  var _vm = this
+	  var _h = _vm.$createElement
+	  var _c = _vm._self._c || _h
+	  return _c(
+	    "div",
+	    {
+	      staticClass: "el-form-item",
+	      class: [
+	        {
+	          "el-form-item--feedback": _vm.elForm && _vm.elForm.statusIcon,
+	          "is-error": _vm.validateState === "error",
+	          "is-validating": _vm.validateState === "validating",
+	          "is-success": _vm.validateState === "success",
+	          "is-required": _vm.isRequired || _vm.required,
+	          "is-no-asterisk": _vm.elForm && _vm.elForm.hideRequiredAsterisk
+	        },
+	        _vm.sizeClass ? "el-form-item--" + _vm.sizeClass : ""
+	      ]
+	    },
+	    [
+	      _c(
+	        "label-wrap",
+	        {
+	          attrs: {
+	            "is-auto-width": _vm.labelStyle && _vm.labelStyle.width === "auto",
+	            "update-all": _vm.form.labelWidth === "auto"
+	          }
+	        },
+	        [
+	          _vm.label || _vm.$slots.label
+	            ? _c(
+	                "label",
+	                {
+	                  staticClass: "el-form-item__label",
+	                  style: _vm.labelStyle,
+	                  attrs: { for: _vm.labelFor }
+	                },
+	                [
+	                  _vm._t("label", [
+	                    _vm._v(_vm._s(_vm.label + _vm.form.labelSuffix))
+	                  ])
+	                ],
+	                2
+	              )
+	            : _vm._e()
+	        ]
+	      ),
+	      _c(
+	        "div",
+	        { staticClass: "el-form-item__content", style: _vm.contentStyle },
+	        [
+	          _vm._t("default"),
+	          _c(
+	            "transition",
+	            { attrs: { name: "el-zoom-in-top" } },
+	            [
+	              _vm.validateState === "error" &&
+	              _vm.showMessage &&
+	              _vm.form.showMessage
+	                ? _vm._t(
+	                    "error",
+	                    [
+	                      _c(
+	                        "div",
+	                        {
+	                          staticClass: "el-form-item__error",
+	                          class: {
+	                            "el-form-item__error--inline":
+	                              typeof _vm.inlineMessage === "boolean"
+	                                ? _vm.inlineMessage
+	                                : (_vm.elForm && _vm.elForm.inlineMessage) ||
+	                                  false
+	                          }
+	                        },
+	                        [
+	                          _vm._v(
+	                            "\n          " +
+	                              _vm._s(_vm.validateMessage) +
+	                              "\n        "
+	                          )
+	                        ]
+	                      )
+	                    ],
+	                    { error: _vm.validateMessage }
+	                  )
+	                : _vm._e()
+	            ],
+	            2
+	          )
+	        ],
+	        2
+	      )
+	    ],
+	    1
+	  )
+	}
+	var staticRenderFns = []
+	render._withStripped = true
+	
+	
+	// CONCATENATED MODULE: ./packages/form/src/form-item.vue?vue&type=template&id=b6f3db6c&
+	
+	// EXTERNAL MODULE: external "async-validator"
+	var external_async_validator_ = __webpack_require__(48);
+	var external_async_validator_default = /*#__PURE__*/__webpack_require__.n(external_async_validator_);
+	
+	// EXTERNAL MODULE: external "element-ui/lib/mixins/emitter"
+	var emitter_ = __webpack_require__(4);
+	var emitter_default = /*#__PURE__*/__webpack_require__.n(emitter_);
+	
+	// EXTERNAL MODULE: external "element-ui/lib/utils/merge"
+	var merge_ = __webpack_require__(9);
+	var merge_default = /*#__PURE__*/__webpack_require__.n(merge_);
+	
+	// EXTERNAL MODULE: external "element-ui/lib/utils/util"
+	var util_ = __webpack_require__(3);
+	
+	// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./packages/form/src/label-wrap.vue?vue&type=script&lang=js&
+	
+	
+	/* harmony default export */ var label_wrapvue_type_script_lang_js_ = ({
+	  props: {
+	    isAutoWidth: Boolean,
+	    updateAll: Boolean
+	  },
+	
+	  inject: ['elForm', 'elFormItem'],
+	
+	  render: function render() {
+	    var h = arguments[0];
+	
+	    var slots = this.$slots.default;
+	    if (!slots) return null;
+	    if (this.isAutoWidth) {
+	      var autoLabelWidth = this.elForm.autoLabelWidth;
+	      var style = {};
+	      if (autoLabelWidth && autoLabelWidth !== 'auto') {
+	        var marginLeft = parseInt(autoLabelWidth, 10) - this.computedWidth;
+	        if (marginLeft) {
+	          style.marginLeft = marginLeft + 'px';
+	        }
+	      }
+	      return h(
+	        'div',
+	        { 'class': 'el-form-item__label-wrap', style: style },
+	        [slots]
+	      );
+	    } else {
+	      return slots[0];
+	    }
+	  },
+	
+	
+	  methods: {
+	    getLabelWidth: function getLabelWidth() {
+	      if (this.$el && this.$el.firstElementChild) {
+	        var computedWidth = window.getComputedStyle(this.$el.firstElementChild).width;
+	        return Math.ceil(parseFloat(computedWidth));
+	      } else {
+	        return 0;
+	      }
+	    },
+	    updateLabelWidth: function updateLabelWidth() {
+	      var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'update';
+	
+	      if (this.$slots.default && this.isAutoWidth && this.$el.firstElementChild) {
+	        if (action === 'update') {
+	          this.computedWidth = this.getLabelWidth();
+	        } else if (action === 'remove') {
+	          this.elForm.deregisterLabelWidth(this.computedWidth);
+	        }
+	      }
+	    }
+	  },
+	
+	  watch: {
+	    computedWidth: function computedWidth(val, oldVal) {
+	      if (this.updateAll) {
+	        this.elForm.registerLabelWidth(val, oldVal);
+	        this.elFormItem.updateComputedLabelWidth(val);
+	      }
+	    }
+	  },
+	
+	  data: function data() {
+	    return {
+	      computedWidth: 0
+	    };
+	  },
+	  mounted: function mounted() {
+	    this.updateLabelWidth('update');
+	  },
+	  updated: function updated() {
+	    this.updateLabelWidth('update');
+	  },
+	  beforeDestroy: function beforeDestroy() {
+	    this.updateLabelWidth('remove');
+	  }
+	});
+	// CONCATENATED MODULE: ./packages/form/src/label-wrap.vue?vue&type=script&lang=js&
+	 /* harmony default export */ var src_label_wrapvue_type_script_lang_js_ = (label_wrapvue_type_script_lang_js_); 
+	// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+	var componentNormalizer = __webpack_require__(0);
+	
+	// CONCATENATED MODULE: ./packages/form/src/label-wrap.vue
+	var label_wrap_render, label_wrap_staticRenderFns
+	
+	
+	
+	
+	/* normalize component */
+	
+	var component = Object(componentNormalizer["a" /* default */])(
+	  src_label_wrapvue_type_script_lang_js_,
+	  label_wrap_render,
+	  label_wrap_staticRenderFns,
+	  false,
+	  null,
+	  null,
+	  null
+	  
+	)
+	
+	/* hot reload */
+	if (false) { var api; }
+	component.options.__file = "packages/form/src/label-wrap.vue"
+	/* harmony default export */ var label_wrap = (component.exports);
+	// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./packages/form/src/form-item.vue?vue&type=script&lang=js&
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	
+	
+	
+	
+	
+	
+	/* harmony default export */ var form_itemvue_type_script_lang_js_ = ({
+	  name: 'ElFormItem',
+	
+	  componentName: 'ElFormItem',
+	
+	  mixins: [emitter_default.a],
+	
+	  provide: function provide() {
+	    return {
+	      elFormItem: this
+	    };
+	  },
+	
+	
+	  inject: ['elForm'],
+	
+	  props: {
+	    label: String,
+	    labelWidth: String,
+	    prop: String,
+	    required: {
+	      type: Boolean,
+	      default: undefined
+	    },
+	    rules: [Object, Array],
+	    error: String,
+	    validateStatus: String,
+	    for: String,
+	    inlineMessage: {
+	      type: [String, Boolean],
+	      default: ''
+	    },
+	    showMessage: {
+	      type: Boolean,
+	      default: true
+	    },
+	    size: String
+	  },
+	  components: {
+	    // use this component to calculate auto width
+	    LabelWrap: label_wrap
+	  },
+	  watch: {
+	    error: {
+	      immediate: true,
+	      handler: function handler(value) {
+	        this.validateMessage = value;
+	        this.validateState = value ? 'error' : '';
+	      }
+	    },
+	    validateStatus: function validateStatus(value) {
+	      this.validateState = value;
+	    }
+	  },
+	  computed: {
+	    labelFor: function labelFor() {
+	      return this.for || this.prop;
+	    },
+	    labelStyle: function labelStyle() {
+	      var ret = {};
+	      if (this.form.labelPosition === 'top') return ret;
+	      var labelWidth = this.labelWidth || this.form.labelWidth;
+	      if (labelWidth) {
+	        ret.width = labelWidth;
+	      }
+	      return ret;
+	    },
+	    contentStyle: function contentStyle() {
+	      var ret = {};
+	      var label = this.label;
+	      if (this.form.labelPosition === 'top' || this.form.inline) return ret;
+	      if (!label && !this.labelWidth && this.isNested) return ret;
+	      var labelWidth = this.labelWidth || this.form.labelWidth;
+	      if (labelWidth === 'auto') {
+	        if (this.labelWidth === 'auto') {
+	          ret.marginLeft = this.computedLabelWidth;
+	        } else if (this.form.labelWidth === 'auto') {
+	          ret.marginLeft = this.elForm.autoLabelWidth;
+	        }
+	      } else {
+	        ret.marginLeft = labelWidth;
+	      }
+	      return ret;
+	    },
+	    form: function form() {
+	      var parent = this.$parent;
+	      var parentName = parent.$options.componentName;
+	      while (parentName !== 'ElForm') {
+	        if (parentName === 'ElFormItem') {
+	          this.isNested = true;
+	        }
+	        parent = parent.$parent;
+	        parentName = parent.$options.componentName;
+	      }
+	      return parent;
+	    },
+	    fieldValue: function fieldValue() {
+	      var model = this.form.model;
+	      if (!model || !this.prop) {
+	        return;
+	      }
+	
+	      var path = this.prop;
+	      if (path.indexOf(':') !== -1) {
+	        path = path.replace(/:/, '.');
+	      }
+	
+	      return Object(util_["getPropByPath"])(model, path, true).v;
+	    },
+	    isRequired: function isRequired() {
+	      var rules = this.getRules();
+	      var isRequired = false;
+	
+	      if (rules && rules.length) {
+	        rules.every(function (rule) {
+	          if (rule.required) {
+	            isRequired = true;
+	            return false;
+	          }
+	          return true;
+	        });
+	      }
+	      return isRequired;
+	    },
+	    _formSize: function _formSize() {
+	      return this.elForm.size;
+	    },
+	    elFormItemSize: function elFormItemSize() {
+	      return this.size || this._formSize;
+	    },
+	    sizeClass: function sizeClass() {
+	      return this.elFormItemSize || (this.$ELEMENT || {}).size;
+	    }
+	  },
+	  data: function data() {
+	    return {
+	      validateState: '',
+	      validateMessage: '',
+	      validateDisabled: false,
+	      validator: {},
+	      isNested: false,
+	      computedLabelWidth: ''
+	    };
+	  },
+	
+	  methods: {
+	    validate: function validate(trigger) {
+	      var _this = this;
+	
+	      var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : util_["noop"];
+	
+	      this.validateDisabled = false;
+	      var rules = this.getFilteredRule(trigger);
+	      if ((!rules || rules.length === 0) && this.required === undefined) {
+	        callback();
+	        return true;
+	      }
+	
+	      this.validateState = 'validating';
+	
+	      var descriptor = {};
+	      if (rules && rules.length > 0) {
+	        rules.forEach(function (rule) {
+	          delete rule.trigger;
+	        });
+	      }
+	      descriptor[this.prop] = rules;
+	
+	      var validator = new external_async_validator_default.a(descriptor);
+	      var model = {};
+	
+	      model[this.prop] = this.fieldValue;
+	
+	      validator.validate(model, { firstFields: true }, function (errors, invalidFields) {
+	        _this.validateState = !errors ? 'success' : 'error';
+	        _this.validateMessage = errors ? errors[0].message : '';
+	
+	        callback(_this.validateMessage, invalidFields);
+	        _this.elForm && _this.elForm.$emit('validate', _this.prop, !errors, _this.validateMessage || null);
+	      });
+	    },
+	    clearValidate: function clearValidate() {
+	      this.validateState = '';
+	      this.validateMessage = '';
+	      this.validateDisabled = false;
+	    },
+	    resetField: function resetField() {
+	      var _this2 = this;
+	
+	      this.validateState = '';
+	      this.validateMessage = '';
+	
+	      var model = this.form.model;
+	      var value = this.fieldValue;
+	      var path = this.prop;
+	      if (path.indexOf(':') !== -1) {
+	        path = path.replace(/:/, '.');
+	      }
+	
+	      var prop = Object(util_["getPropByPath"])(model, path, true);
+	
+	      this.validateDisabled = true;
+	      if (Array.isArray(value)) {
+	        prop.o[prop.k] = [].concat(this.initialValue);
+	      } else {
+	        prop.o[prop.k] = this.initialValue;
+	      }
+	
+	      // reset validateDisabled after onFieldChange triggered
+	      this.$nextTick(function () {
+	        _this2.validateDisabled = false;
+	      });
+	
+	      this.broadcast('ElTimeSelect', 'fieldReset', this.initialValue);
+	    },
+	    getRules: function getRules() {
+	      var formRules = this.form.rules;
+	      var selfRules = this.rules;
+	      var requiredRule = this.required !== undefined ? { required: !!this.required } : [];
+	
+	      var prop = Object(util_["getPropByPath"])(formRules, this.prop || '');
+	      formRules = formRules ? prop.o[this.prop || ''] || prop.v : [];
+	
+	      return [].concat(selfRules || formRules || []).concat(requiredRule);
+	    },
+	    getFilteredRule: function getFilteredRule(trigger) {
+	      var rules = this.getRules();
+	
+	      return rules.filter(function (rule) {
+	        if (!rule.trigger || trigger === '') return true;
+	        if (Array.isArray(rule.trigger)) {
+	          return rule.trigger.indexOf(trigger) > -1;
+	        } else {
+	          return rule.trigger === trigger;
+	        }
+	      }).map(function (rule) {
+	        return merge_default()({}, rule);
+	      });
+	    },
+	    onFieldBlur: function onFieldBlur() {
+	      this.validate('blur');
+	    },
+	    onFieldChange: function onFieldChange() {
+	      if (this.validateDisabled) {
+	        this.validateDisabled = false;
+	        return;
+	      }
+	
+	      this.validate('change');
+	    },
+	    updateComputedLabelWidth: function updateComputedLabelWidth(width) {
+	      this.computedLabelWidth = width ? width + 'px' : '';
+	    },
+	    addValidateEvents: function addValidateEvents() {
+	      var rules = this.getRules();
+	
+	      if (rules.length || this.required !== undefined) {
+	        this.$on('el.form.blur', this.onFieldBlur);
+	        this.$on('el.form.change', this.onFieldChange);
+	      }
+	    },
+	    removeValidateEvents: function removeValidateEvents() {
+	      this.$off();
+	    }
+	  },
+	  mounted: function mounted() {
+	    if (this.prop) {
+	      this.dispatch('ElForm', 'el.form.addField', [this]);
+	
+	      var initialValue = this.fieldValue;
+	      if (Array.isArray(initialValue)) {
+	        initialValue = [].concat(initialValue);
+	      }
+	      Object.defineProperty(this, 'initialValue', {
+	        value: initialValue
+	      });
+	
+	      this.addValidateEvents();
+	    }
+	  },
+	  beforeDestroy: function beforeDestroy() {
+	    this.dispatch('ElForm', 'el.form.removeField', [this]);
+	  }
+	});
+	// CONCATENATED MODULE: ./packages/form/src/form-item.vue?vue&type=script&lang=js&
+	 /* harmony default export */ var src_form_itemvue_type_script_lang_js_ = (form_itemvue_type_script_lang_js_); 
+	// CONCATENATED MODULE: ./packages/form/src/form-item.vue
+	
+	
+	
+	
+	
+	/* normalize component */
+	
+	var form_item_component = Object(componentNormalizer["a" /* default */])(
+	  src_form_itemvue_type_script_lang_js_,
+	  render,
+	  staticRenderFns,
+	  false,
+	  null,
+	  null,
+	  null
+	  
+	)
+	
+	/* hot reload */
+	if (false) { var form_item_api; }
+	form_item_component.options.__file = "packages/form/src/form-item.vue"
+	/* harmony default export */ var form_item = (form_item_component.exports);
+	// CONCATENATED MODULE: ./packages/form-item/index.js
+	
+	
+	/* istanbul ignore next */
+	form_item.install = function (Vue) {
+	  Vue.component(form_item.name, form_item);
+	};
+	
+	/* harmony default export */ var packages_form_item = __webpack_exports__["default"] = (form_item);
+	
+	/***/ }),
+	
+	/***/ 9:
+	/***/ (function(module, exports) {
+	
+	module.exports = __webpack_require__(43);
+	
+	/***/ })
+	
+	/******/ });
+
+/***/ }),
 /* 42 */
+/***/ (function(module, exports) {
+
+	module.exports =
+	/******/ (function(modules) { // webpackBootstrap
+	/******/ 	// The module cache
+	/******/ 	var installedModules = {};
+	/******/
+	/******/ 	// The require function
+	/******/ 	function __webpack_require__(moduleId) {
+	/******/
+	/******/ 		// Check if module is in cache
+	/******/ 		if(installedModules[moduleId]) {
+	/******/ 			return installedModules[moduleId].exports;
+	/******/ 		}
+	/******/ 		// Create a new module (and put it into the cache)
+	/******/ 		var module = installedModules[moduleId] = {
+	/******/ 			i: moduleId,
+	/******/ 			l: false,
+	/******/ 			exports: {}
+	/******/ 		};
+	/******/
+	/******/ 		// Execute the module function
+	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+	/******/
+	/******/ 		// Flag the module as loaded
+	/******/ 		module.l = true;
+	/******/
+	/******/ 		// Return the exports of the module
+	/******/ 		return module.exports;
+	/******/ 	}
+	/******/
+	/******/
+	/******/ 	// expose the modules object (__webpack_modules__)
+	/******/ 	__webpack_require__.m = modules;
+	/******/
+	/******/ 	// expose the module cache
+	/******/ 	__webpack_require__.c = installedModules;
+	/******/
+	/******/ 	// define getter function for harmony exports
+	/******/ 	__webpack_require__.d = function(exports, name, getter) {
+	/******/ 		if(!__webpack_require__.o(exports, name)) {
+	/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+	/******/ 		}
+	/******/ 	};
+	/******/
+	/******/ 	// define __esModule on exports
+	/******/ 	__webpack_require__.r = function(exports) {
+	/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+	/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+	/******/ 		}
+	/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+	/******/ 	};
+	/******/
+	/******/ 	// create a fake namespace object
+	/******/ 	// mode & 1: value is a module id, require it
+	/******/ 	// mode & 2: merge all properties of value into the ns
+	/******/ 	// mode & 4: return value when already ns object
+	/******/ 	// mode & 8|1: behave like require
+	/******/ 	__webpack_require__.t = function(value, mode) {
+	/******/ 		if(mode & 1) value = __webpack_require__(value);
+	/******/ 		if(mode & 8) return value;
+	/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+	/******/ 		var ns = Object.create(null);
+	/******/ 		__webpack_require__.r(ns);
+	/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+	/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+	/******/ 		return ns;
+	/******/ 	};
+	/******/
+	/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+	/******/ 	__webpack_require__.n = function(module) {
+	/******/ 		var getter = module && module.__esModule ?
+	/******/ 			function getDefault() { return module['default']; } :
+	/******/ 			function getModuleExports() { return module; };
+	/******/ 		__webpack_require__.d(getter, 'a', getter);
+	/******/ 		return getter;
+	/******/ 	};
+	/******/
+	/******/ 	// Object.prototype.hasOwnProperty.call
+	/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+	/******/
+	/******/ 	// __webpack_public_path__
+	/******/ 	__webpack_require__.p = "/dist/";
+	/******/
+	/******/
+	/******/ 	// Load entry module and return exports
+	/******/ 	return __webpack_require__(__webpack_require__.s = 132);
+	/******/ })
+	/************************************************************************/
+	/******/ ({
+	
+	/***/ 132:
+	/***/ (function(module, __webpack_exports__, __webpack_require__) {
+	
+	"use strict";
+	__webpack_require__.r(__webpack_exports__);
+	
+	// CONCATENATED MODULE: ./packages/row/src/row.js
+	/* harmony default export */ var row = ({
+	  name: 'ElRow',
+	
+	  componentName: 'ElRow',
+	
+	  props: {
+	    tag: {
+	      type: String,
+	      default: 'div'
+	    },
+	    gutter: Number,
+	    type: String,
+	    justify: {
+	      type: String,
+	      default: 'start'
+	    },
+	    align: {
+	      type: String,
+	      default: 'top'
+	    }
+	  },
+	
+	  computed: {
+	    style: function style() {
+	      var ret = {};
+	
+	      if (this.gutter) {
+	        ret.marginLeft = '-' + this.gutter / 2 + 'px';
+	        ret.marginRight = ret.marginLeft;
+	      }
+	
+	      return ret;
+	    }
+	  },
+	
+	  render: function render(h) {
+	    return h(this.tag, {
+	      class: ['el-row', this.justify !== 'start' ? 'is-justify-' + this.justify : '', this.align !== 'top' ? 'is-align-' + this.align : '', { 'el-row--flex': this.type === 'flex' }],
+	      style: this.style
+	    }, this.$slots.default);
+	  }
+	});
+	// CONCATENATED MODULE: ./packages/row/index.js
+	
+	
+	/* istanbul ignore next */
+	row.install = function (Vue) {
+	  Vue.component(row.name, row);
+	};
+	
+	/* harmony default export */ var packages_row = __webpack_exports__["default"] = (row);
+	
+	/***/ })
+	
+	/******/ });
+
+/***/ }),
+/* 43 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -23325,7 +23326,6 @@ webpackJsonp([38,36],[
 	;
 
 /***/ }),
-/* 43 */,
 /* 44 */,
 /* 45 */,
 /* 46 */,
@@ -23352,7 +23352,7 @@ webpackJsonp([38,36],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	var global    = __webpack_require__(34)
-	  , core      = __webpack_require__(23)
+	  , core      = __webpack_require__(26)
 	  , ctx       = __webpack_require__(90)
 	  , hide      = __webpack_require__(58)
 	  , PROTOTYPE = 'prototype';
@@ -23418,7 +23418,7 @@ webpackJsonp([38,36],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	var anObject       = __webpack_require__(47)
-	  , IE8_DOM_DEFINE = __webpack_require__(174)
+	  , IE8_DOM_DEFINE = __webpack_require__(175)
 	  , toPrimitive    = __webpack_require__(124)
 	  , dP             = Object.defineProperty;
 	
@@ -23439,7 +23439,7 @@ webpackJsonp([38,36],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(175)
+	var IObject = __webpack_require__(176)
 	  , defined = __webpack_require__(116);
 	module.exports = function(it){
 	  return IObject(defined(it));
@@ -24421,7 +24421,7 @@ webpackJsonp([38,36],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-	var $keys       = __webpack_require__(179)
+	var $keys       = __webpack_require__(180)
 	  , enumBugKeys = __webpack_require__(118);
 	
 	module.exports = Object.keys || function keys(O){
@@ -25290,7 +25290,7 @@ webpackJsonp([38,36],[
 	exports.__esModule = true;
 	exports.removeResizeListener = exports.addResizeListener = undefined;
 	
-	var _resizeObserverPolyfill = __webpack_require__(667);
+	var _resizeObserverPolyfill = __webpack_require__(672);
 	
 	var _resizeObserverPolyfill2 = _interopRequireDefault(_resizeObserverPolyfill);
 	
@@ -25354,7 +25354,7 @@ webpackJsonp([38,36],[
 	            isFinite(value) &&
 	            Math.floor(value) === value;
 	    };
-	    var Cookie = __webpack_require__(672);
+	    var Cookie = __webpack_require__(677);
 	
 	    var VueCookie = {
 	
@@ -25405,11 +25405,11 @@ webpackJsonp([38,36],[
 	
 	exports.__esModule = true;
 	
-	var _iterator = __webpack_require__(396);
+	var _iterator = __webpack_require__(397);
 	
 	var _iterator2 = _interopRequireDefault(_iterator);
 	
-	var _symbol = __webpack_require__(395);
+	var _symbol = __webpack_require__(396);
 	
 	var _symbol2 = _interopRequireDefault(_symbol);
 	
@@ -25654,7 +25654,7 @@ webpackJsonp([38,36],[
 	/***/ 23:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(529);
+	module.exports = __webpack_require__(531);
 	
 	/***/ }),
 	
@@ -26062,7 +26062,7 @@ webpackJsonp([38,36],[
 	/***/ 9:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(42);
+	module.exports = __webpack_require__(43);
 	
 	/***/ })
 	
@@ -26084,11 +26084,11 @@ webpackJsonp([38,36],[
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _merge = __webpack_require__(42);
+	var _merge = __webpack_require__(43);
 	
 	var _merge2 = _interopRequireDefault(_merge);
 	
-	var _popupManager = __webpack_require__(526);
+	var _popupManager = __webpack_require__(528);
 	
 	var _popupManager2 = _interopRequireDefault(_popupManager);
 	
@@ -26096,7 +26096,7 @@ webpackJsonp([38,36],[
 	
 	var _scrollbarWidth2 = _interopRequireDefault(_scrollbarWidth);
 	
-	var _dom = __webpack_require__(24);
+	var _dom = __webpack_require__(25);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -26325,7 +26325,7 @@ webpackJsonp([38,36],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var PopperJS = _vue2.default.prototype.$isServer ? function () {} : __webpack_require__(525);
+	var PopperJS = _vue2.default.prototype.$isServer ? function () {} : __webpack_require__(527);
 	var stop = function stop(e) {
 	  return e.stopPropagation();
 	};
@@ -26741,8 +26741,8 @@ webpackJsonp([38,36],[
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
 	var utils = __webpack_require__(31);
-	var normalizeHeaderName = __webpack_require__(235);
-	var enhanceError = __webpack_require__(148);
+	var normalizeHeaderName = __webpack_require__(236);
+	var enhanceError = __webpack_require__(149);
 	
 	var DEFAULT_CONTENT_TYPE = {
 	  'Content-Type': 'application/x-www-form-urlencoded'
@@ -26758,10 +26758,10 @@ webpackJsonp([38,36],[
 	  var adapter;
 	  if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(145);
+	    adapter = __webpack_require__(146);
 	  } else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(145);
+	    adapter = __webpack_require__(146);
 	  }
 	  return adapter;
 	}
@@ -26950,7 +26950,7 @@ webpackJsonp([38,36],[
 	var $at  = __webpack_require__(434)(true);
 	
 	// 21.1.3.27 String.prototype[@@iterator]()
-	__webpack_require__(176)(String, 'String', function(iterated){
+	__webpack_require__(177)(String, 'String', function(iterated){
 	  this._t = String(iterated); // target
 	  this._i = 0;                // next index
 	// 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -27236,7 +27236,7 @@ webpackJsonp([38,36],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	var global         = __webpack_require__(34)
-	  , core           = __webpack_require__(23)
+	  , core           = __webpack_require__(26)
 	  , LIBRARY        = __webpack_require__(91)
 	  , wksExt         = __webpack_require__(126)
 	  , defineProperty = __webpack_require__(50).f;
@@ -27661,7 +27661,7 @@ webpackJsonp([38,36],[
 	/***/ 2:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(24);
+	module.exports = __webpack_require__(25);
 	
 	/***/ }),
 	
@@ -28084,7 +28084,7 @@ webpackJsonp([38,36],[
 	/***/ 2:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(24);
+	module.exports = __webpack_require__(25);
 	
 	/***/ }),
 	
@@ -28123,7 +28123,7 @@ webpackJsonp([38,36],[
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _dom = __webpack_require__(24);
+	var _dom = __webpack_require__(25);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28347,6 +28347,898 @@ webpackJsonp([38,36],[
 /* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	/*----------------------------------------*\
+	    Vuebar
+	\*----------------------------------------*/
+	;(function(){
+	    'use strict';
+	
+	
+	
+	    /*------------------------------------*\
+	        Vuebar
+	    \*------------------------------------*/
+	    var Vuebar = {};
+	    Vuebar.install = function(Vue, options){
+	
+	
+	
+	        /*------------------------------------*\
+	            Create State
+	            - contains default values
+	        \*------------------------------------*/
+	        function createState(el){
+	            el._vuebarState = {
+	
+	                // config with default values that may be overwritten on directive intialization
+	                config: {
+	                    scrollThrottle: 10,
+	                    draggerThrottle: 10,
+	                    resizeRefresh: true,
+	                    observerThrottle: 100,
+	                    resizeDebounce: 100,
+	                    unselectableBody: true,
+	                    overrideFloatingScrollbar: true,
+	                    scrollingPhantomDelay: 1000,
+	                    draggingPhantomDelay: 1000,
+	                    preventParentScroll: false,
+	                    useScrollbarPseudo: false, // experimental
+	
+	                    el1Class: 'vb',
+	                    el1ScrollVisibleClass: 'vb-visible',
+	                    el1ScrollInvisibleClass: 'vb-invisible',
+	                    el1ScrollingClass: 'vb-scrolling',
+	                    el1ScrollingPhantomClass: 'vb-scrolling-phantom',
+	                    el1DraggingClass: 'vb-dragging',
+	                    el1DraggingPhantomClass: 'vb-dragging-phantom',
+	
+	                    el2Class: 'vb-content',
+	
+	                    draggerClass: 'vb-dragger',
+	                    draggerStylerClass: 'vb-dragger-styler',
+	                },
+	
+	                // reference to binding
+	                binding: null,
+	
+	                // references to directive DOM elements
+	                el1: null,
+	                el2: null,
+	                dragger: null,
+	
+	                // show dragger
+	                draggerEnabled: null,
+	
+	                // properties computed for internal directive logic & DOM manipulations
+	                visibleArea: 0, // ratio between container height and scrollable content height
+	                scrollTop: 0, // position of content scrollTop in px
+	                barTop: 0, // position of dragger in px
+	                barHeight: 0, // height of dragger in px
+	                mouseBarOffsetY: 0, // relative position of mouse at the time of clicking on dragger
+	                barDragging: false, // when the dragger is used
+	
+	                // reference to MutationObserver
+	                mutationObserver: null,
+	
+	                // references to timeouts for DOM class manipulation
+	                scrollingClassTimeout: null,
+	                draggingClassTimeout: null,
+	                scrollingPhantomClassTimeout: null,
+	                draggingPhantomClassTimeout: null,
+	
+	                // references to a functions we'll need when removing events
+	                barMousedown: null,
+	                documentMousemove: null,
+	                documentMouseup: null,
+	                windowResize: null,
+	                scrollHandler: null,
+	                wheelHandler: null,
+	
+	            };
+	            return el._vuebarState;
+	        }
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Get State
+	        \*------------------------------------*/
+	        function getState(el){
+	            return el._vuebarState;
+	        }
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Mount Validation
+	        \*------------------------------------*/
+	        function markupValidation(el){
+	            if (!el.firstChild) {
+	                Vue.util.warn('(Vuebar) Element 1 with v-bar directive doesn\'t have required child element 2.');
+	                return false;
+	            }
+	            return true;
+	        }
+	
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Computing Properties
+	        \*------------------------------------*/
+	        function computeVisibleArea(el){
+	            var state = getState(el);
+	            state.visibleArea = (state.el2.clientHeight / state.el2.scrollHeight);
+	        }
+	
+	        function computeScrollTop(el){
+	            var state = getState(el);
+	            state.scrollTop = state.barTop * (state.el2.scrollHeight / state.el2.clientHeight);
+	        }
+	
+	        function computeBarTop(el, event){
+	            var state = getState(el);
+	
+	            // if the function gets called on scroll event
+	            if (!event) {
+	                state.barTop = state.el2.scrollTop * state.visibleArea;
+	                return false;
+	            } // else the function gets called when moving dragger with mouse
+	
+	
+	            var relativeMouseY = (event.clientY - state.el1.getBoundingClientRect().top);
+	            if (relativeMouseY <= state.mouseBarOffsetY) { // if bar is trying to go over top
+	                state.barTop = 0;
+	            }
+	
+	            if (relativeMouseY > state.mouseBarOffsetY) { // if bar is moving between top and bottom
+	                state.barTop = relativeMouseY - state.mouseBarOffsetY;
+	            }
+	
+	
+	            if ( (state.barTop + state.barHeight ) >= state.el2.clientHeight ) { // if bar is trying to go over bottom
+	                state.barTop = state.el2.clientHeight - state.barHeight;
+	            }
+	
+	        }
+	
+	        function computeBarHeight(el){
+	            var state = getState(el);
+	            if (state.visibleArea >= 1) {
+	                state.barHeight = 0;
+	            } else {
+	                state.barHeight = state.el2.clientHeight * state.visibleArea;
+	            }
+	        }
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Styles & DOM
+	        \*------------------------------------*/
+	        function createDragger(el){
+	            var state = getState(el);
+	
+	            var dragger = document.createElement('div');
+	            var draggerStyler = document.createElement('div');
+	
+	            dragger.className = state.config.draggerClass;
+	
+	            dragger.style.position = 'absolute';
+	
+	            if (!state.draggerEnabled) {
+	                dragger.style.display = 'none';
+	            }
+	
+	            draggerStyler.className = state.config.draggerStylerClass;
+	
+	            dragger.appendChild(draggerStyler);
+	            state.el1.appendChild(dragger);
+	
+	            return dragger;
+	        }
+	
+	
+	        function updateDragger(el, options){
+	            var options = options ? options : {};
+	            var state = getState(el);
+	
+	            // setting dragger styles
+	            state.dragger.style.height = parseInt( Math.round( state.barHeight)  ) + 'px';
+	            state.dragger.style.top = parseInt( Math.round( state.barTop ) ) + 'px';
+	            //state.dragger.style.height = Math.ceil( state.barHeight ) + 'px';
+	            //state.dragger.style.top = Math.ceil( state.barTop ) + 'px';
+	
+	            // scrollbar visible / invisible classes
+	            if (state.draggerEnabled && (state.visibleArea<1)) {
+	                removeClass(state.el1, state.config.el1ScrollInvisibleClass);
+	                addClass(state.el1, state.config.el1ScrollVisibleClass);
+	            } else {
+	                removeClass(state.el1, state.config.el1ScrollVisibleClass);
+	                addClass(state.el1, state.config.el1ScrollInvisibleClass);
+	            }
+	
+	
+	
+	            if (options.withScrollingClasses) {
+	
+	                // add scrolling class
+	                addClass(state.el1, state.config.el1ScrollingClass);
+	
+	                // remove scrolling class
+	                state.scrollingClassTimeout ?
+	                    clearTimeout(state.scrollingClassTimeout) : null;
+	                state.scrollingClassTimeout = setTimeout(function() {
+	                    removeClass(state.el1, state.config.el1ScrollingClass);
+	                }, state.config.scrollThrottle + 5);
+	
+	
+	
+	                // add phantom scrolling class
+	                addClass(state.el1, state.config.el1ScrollingPhantomClass);
+	
+	                // remove phantom scrolling class
+	                state.scrollingPhantomClassTimeout ?
+	                    clearTimeout(state.scrollingPhantomClassTimeout) : null;
+	                state.scrollingPhantomClassTimeout = setTimeout(function() {
+	                    removeClass(state.el1, state.config.el1ScrollingPhantomClass);
+	                }, state.config.scrollThrottle + state.config.scrollingPhantomDelay);
+	
+	            }
+	
+	        }
+	
+	
+	
+	        // this is an experimental feature
+	        // - it works only on chrome and safari
+	        // - instead of hiding scrollbar by overflowing it with its parent set to overflow:hidden
+	        //   we hide scrollbar using pseudo-element selector ::-webkit-scrollbar
+	        function hideScrollbarUsingPseudoElement(el){
+	            var state = getState(el);
+	            var idName = 'vuebar-pseudo-element-styles';
+	            var selector = '.' + state.config.el2Class + '::-webkit-scrollbar';
+	            var styleElm = document.getElementById(idName);
+	            var sheet = null;
+	
+	            if (styleElm) {
+	                sheet = styleElm.sheet;
+	            } else {
+	                styleElm = document.createElement('style');
+	                styleElm.id = idName;
+	                document.head.appendChild(styleElm);
+	                sheet = styleElm.sheet;
+	            }
+	
+	            // detect if there is a rule already added to the selector
+	            var ruleExists = false;
+	            for(var i=0, l=sheet.rules.length; i<l; i++){
+	                var rule = sheet.rules[i];
+	                if (rule.selectorText == selector) {
+	                    ruleExists = true;
+	                }
+	            }
+	
+	            // if there is rule added already then don't continue
+	            if ( ruleExists ) { return false }
+	
+	            // insert rule
+	            // - we only need to use insertRule and don't need to use addRule at all
+	            //   because we're only targeting chrome & safari browsers
+	            if (sheet.insertRule) {
+	                sheet.insertRule(selector + '{display:none}', 0);
+	            }
+	
+	        }
+	
+	
+	
+	
+	        function preventParentScroll(el, event){
+	            var state = getState(el);
+	
+	            if (state.visibleArea >= 1) {
+	                return false;
+	            }
+	
+	            var scrollDist = state.el2.scrollHeight - state.el2.clientHeight;
+	            var scrollTop = state.el2.scrollTop;
+	
+	            var wheelingUp = event.deltaY < 0;
+	            var wheelingDown = event.deltaY > 0;
+	
+	            if ( (scrollTop <= 0) && wheelingUp) {
+	                event.preventDefault();
+	                return false;
+	            }
+	
+	            if ( (scrollTop >= scrollDist) && wheelingDown) {
+	                event.preventDefault();
+	                return false;
+	            }
+	
+	        }
+	
+	
+	
+	        function updateScroll(el){
+	            var state = getState(el);
+	            state.el2.scrollTop = state.scrollTop;
+	        }
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Refresh
+	        \*------------------------------------*/
+	
+	        function refreshScrollbar(el, options){
+	            var options = options ? options : {};
+	
+	            if (options.immediate) {
+	                computeVisibleArea(el);
+	                computeBarTop(el);
+	                computeBarHeight(el);
+	                updateDragger(el);
+	            }
+	
+	            Vue.nextTick(function(){
+	                if ( !getState(el) ) { return false }
+	                computeVisibleArea(el);
+	                computeBarTop(el);
+	                computeBarHeight(el);
+	                updateDragger(el);
+	            }.bind(this));
+	        }
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Events & Handlers
+	        \*------------------------------------*/
+	
+	        function scrollHandler(el){
+	            var state = getState(el);
+	            return throttle(function(event){
+	                computeVisibleArea(el);
+	                computeBarHeight(el); // fallback for an undetected content change
+	                if (!state.barDragging) {
+	                    computeBarTop(el);
+	                    updateDragger(el, {withScrollingClasses: true});
+	                }
+	            }.bind(this), state.config.scrollThrottle);
+	        }
+	
+	
+	        function wheelHandler(el){
+	            return function(event){
+	                preventParentScroll(el, event);
+	            }.bind(this);
+	        }
+	
+	
+	        function documentMousemove(el){
+	            var state = getState(el);
+	            return throttle(function(event){
+	                computeBarTop(el, event);
+	                updateDragger(el);
+	                computeScrollTop(el);
+	                updateScroll(el);
+	            }.bind(this), state.config.draggerThrottle);
+	        }
+	
+	
+	        function documentMouseup(el){
+	            var state = getState(el);
+	            return function(event){
+	
+	                //
+	                state.barDragging = false;
+	
+	                // enable user select
+	                state.el1.style.userSelect = '';
+	                state.config.unselectableBody ? compatStyle(document.body, 'UserSelect', '') : null;
+	
+	                // remove dragging class
+	                removeClass(state.el1, state.config.el1DraggingClass);
+	                state.draggingPhantomClassTimeout = setTimeout(function() {
+	                    removeClass(state.el1, state.config.el1DraggingPhantomClass);
+	                }, state.config.draggingPhantomDelay);
+	
+	
+	                // remove events
+	                document.removeEventListener('mousemove', state.documentMousemove, 0);
+	                document.removeEventListener('mouseup', state.documentMouseup, 0);
+	
+	            }.bind(this);
+	
+	        }
+	
+	
+	        function barMousedown(el){
+	            var state = getState(el);
+	            return function(event){
+	
+	                // don't do nothing if it's not left mouse button
+	                if ( event.which!==1 ) { return false }
+	
+	                state.barDragging = true;
+	                state.mouseBarOffsetY = event.offsetY;
+	
+	                // disable user select
+	                state.el1.style.userSelect = 'none';
+	                state.config.unselectableBody ? compatStyle(document.body, 'UserSelect', 'none') : null;
+	
+	                // add dragging class
+	                addClass(state.el1, state.config.el1DraggingClass);
+	                state.draggingPhantomClassTimeout ?
+	                    clearTimeout(state.draggingPhantomClassTimeout) : null;
+	                addClass(state.el1, state.config.el1DraggingPhantomClass);
+	
+	                // add events
+	                document.addEventListener('mousemove', state.documentMousemove, 0);
+	                document.addEventListener('mouseup', state.documentMouseup, 0);
+	
+	
+	            }.bind(this);
+	        }
+	
+	
+	        function windowResize(el){
+	            var state = getState(el);
+	            return debounce(function(event){
+	                refreshScrollbar(el);
+	            }.bind(this), state.config.resizeDebounce);
+	        }
+	
+	
+	
+	
+	        function initMutationObserver(el){
+	            if (typeof MutationObserver === typeof void 0) { return null }
+	
+	            var state = getState(el);
+	
+	            var observer = new MutationObserver(throttle(function(mutations) {
+	                refreshScrollbar(el);
+	            }, state.config.observerThrottle));
+	
+	            observer.observe(state.el2, {
+	                childList: true,
+	                characterData: true,
+	                subtree: true,
+	            });
+	
+	            return observer;
+	        }
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Initialize Scrollbar
+	        \*------------------------------------*/
+	        function initScrollbar(el, kwargs){
+	
+	            // validate on directive bind if the markup is OK
+	            if ( !markupValidation.call(this, el) ) { return false }
+	
+	            // safeguard to not initialize vuebar when it's already initialized
+	            if (el._vuebarState) {
+	                // and I'm actually curious if that can happen
+	                Vue.util.warn('(Vuebar) Tried to initialize second time. If you see this please create an issue on https://github.com/DominikSerafin/vuebar with all relevent debug information. Thank you!');
+	                return false;
+	            }
+	
+	            // create state
+	            var state = createState(el);
+	
+	            // get options object
+	            // - it will come from directive binding (there is a 'value' property)
+	            // - or it will come from public method direct options object
+	            var options = kwargs.value ? kwargs.value : (kwargs ? kwargs : {});
+	
+	            // overwrite defaults with provided options
+	            for (var key in options){
+	                state.config[key] = options[key];
+	            }
+	
+	            // detect browser
+	            var browser = detectBrowser();
+	
+	            // dragger enabled?
+	            var elNativeScrollbarWidth = getNativeScrollbarWidth(el.firstElementChild);
+	            var overlayScrollbar = elNativeScrollbarWidth == 0;
+	            state.draggerEnabled = ( (!overlayScrollbar) || state.config.overrideFloatingScrollbar ) ? 1 : 0;
+	
+	            // setup scrollbar "state"
+	            state.binding = kwargs.value ? kwargs : null;
+	            state.el1 = el;
+	            state.el2 = el.firstElementChild;
+	            state.dragger = createDragger(el);
+	
+	            // create and reference event listeners
+	            state.barMousedown = barMousedown(el);
+	            state.documentMousemove = documentMousemove(el);
+	            state.documentMouseup = documentMouseup(el);
+	            state.windowResize = windowResize(el);
+	            state.scrollHandler = scrollHandler(el);
+	            state.wheelHandler = wheelHandler(el);
+	
+	            // initialize and reference mutation observer
+	            state.mutationObserver = initMutationObserver(el);
+	
+	            // el1 styles and class
+	            addClass(state.el1, state.config.el1Class);
+	            state.el1.style.position = 'relative';
+	            state.el1.style.overflow = 'hidden';
+	
+	            // el2 styles and class
+	            addClass(state.el2, state.config.el2Class);
+	            state.el2.style.display = 'block';
+	            state.el2.style.overflowX = 'hidden';
+	            state.el2.style.overflowY = 'scroll';
+	            state.el2.style.height = '100%';
+	
+	            // do the magic
+	            if (state.draggerEnabled) {
+	
+	                // hide original browser scrollbar using pseudo css selectors (only chrome & safari)
+	                if ( state.config.useScrollbarPseudo && (browser.chrome || browser.safari) ) {
+	                    state.el2.style.width = '100%';
+	                    hideScrollbarUsingPseudoElement(el);
+	                }
+	
+	                // hide original browser overlay scrollbar and add padding to compensate for that
+	                else if (overlayScrollbar) {
+	                    /* state.el2.style.width = 'calc(100% + ' + 20 + 'px)';
+	                    compatStyle(state.el2, 'BoxSizing', 'border-box'); */
+	                    state.el2.style.width = '100%';
+	                    compatStyle(state.el2, 'BoxSizing', 'content-box');
+	                    state.el2.style.paddingRight = '20px';
+	                }
+	
+	                // hide original browser scrollbar behind element edges and hidden overflow
+	                else {
+	                    state.el2.style.width = 'calc(100% + ' + elNativeScrollbarWidth + 'px)';
+	                }
+	
+	            }
+	
+	            // add events
+	            // - wheel event is only needed when preventParentScroll option is enabled
+	            // - resize event is only needed when resizeRefresh option is enabled
+	            state.el2.addEventListener('scroll', state.scrollHandler, 0);
+	            state.dragger.addEventListener('mousedown', state.barMousedown, 0);
+	            state.config.preventParentScroll ? state.el2.addEventListener('wheel', state.wheelHandler, 0) : null;
+	            state.config.resizeRefresh ? window.addEventListener('resize', state.windowResize, 0) : null;
+	
+	            // initial calculations using refresh scrollbar
+	            refreshScrollbar(el, {immediate: true});
+	
+	        }
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Destroy Scrollbar
+	        \*------------------------------------*/
+	        function destroyScrollbar(el, options){
+	            var options = options ? options : {};
+	            var state = getState(el);
+	
+	            // clear events
+	            state.dragger.removeEventListener('mousedown', state.barMousedown, 0);
+	            state.el2.removeEventListener('scroll', state.scrollHandler, 0);
+	            state.el2.removeEventListener('wheel', state.scrollHandler, 0);
+	            window.removeEventListener('resize', state.windowResize, 0);
+	
+	            // disconnect mutation observer
+	            state.mutationObserver ? state.mutationObserver.disconnect() : null;
+	
+	            // clear el1 classes
+	            removeClass(state.el1, state.config.el1Class);
+	            removeClass(state.el1, state.config.el1ScrollVisibleClass);
+	            removeClass(state.el1, state.config.el1ScrollInvisibleClass);
+	            removeClass(state.el1, state.config.el1ScrollingClass);
+	            removeClass(state.el1, state.config.el1ScrollingPhantomClass);
+	            removeClass(state.el1, state.config.el1DraggingClass);
+	
+	            // clear el1 styles
+	            if (options.clearStyles) {
+	                state.el1.style.position = '';
+	                state.el1.style.overflow = '';
+	            }
+	
+	            // clear el2 classes
+	            removeClass(state.el2, state.config.el2Class);
+	
+	            // clear el2 styles
+	            if (options.clearStyles) {
+	                state.el2.style.display = '';
+	                state.el2.style.overflowX = '';
+	                state.el2.style.overflowY = '';
+	                state.el2.style.msOverflowStyle = '';
+	                state.el2.style.height = '';
+	                state.el2.style.width = '';
+	            }
+	
+	            // clear dragger
+	            state.dragger.removeChild(state.dragger.firstChild);
+	            state.el1.removeChild(state.dragger);
+	
+	            // clear timeouts that may be still running
+	            state.scrollingPhantomClassTimeout ?
+	                clearTimeout(state.scrollingPhantomClassTimeout) : null;
+	            state.draggingPhantomClassTimeout ?
+	                clearTimeout(state.draggingPhantomClassTimeout) : null;
+	
+	            // delete state object from element
+	            delete el._vuebarState;
+	
+	        }
+	
+	
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Public Methods Install
+	        \*------------------------------------*/
+	        function publicMethods(){
+	            return {
+	                getState: getState,
+	                initScrollbar: initScrollbar,
+	                destroyScrollbar: destroyScrollbar,
+	                refreshScrollbar: refreshScrollbar,
+	            };
+	        }
+	        Vue.vuebar = publicMethods();
+	        Vue.prototype.$vuebar = publicMethods();
+	
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Directive Install
+	        \*------------------------------------*/
+	        Vue.directive('bar', {
+	
+	            inserted: function(el, binding, vnode){
+	                initScrollbar.call(this, el, binding);
+	            },
+	
+	            componentUpdated: function(el, binding, vnode, oldVnode){
+	                refreshScrollbar.call(this, el);
+	            },
+	
+	            unbind: function(el, binding, vnode, oldVnode){
+	                // we shouldn't clearStyles because it actually doesn't matter that much
+	                // the element will be always deleted on unbind and its styles also
+	                // and if we do clear styles then it looks bad on transitions
+	                destroyScrollbar.call(this, el, {clearStyles: false});
+	            },
+	
+	        });
+	
+	
+	
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Debounce Helper
+	            https://remysharp.com/2010/07/21/throttling-function-calls
+	        \*------------------------------------*/
+	        function debounce(fn, delay) {
+	            var timer = null;
+	            return function () {
+	                var context = this, args = arguments;
+	                clearTimeout(timer);
+	                timer = setTimeout(function () {
+	                    fn.apply(context, args);
+	                }, delay);
+	            };
+	        };
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Throttle Helper
+	            https://remysharp.com/2010/07/21/throttling-function-calls
+	        \*------------------------------------*/
+	        function throttle(fn, threshhold, scope) {
+	            threshhold || (threshhold = 250);
+	            var last,
+	                deferTimer;
+	            return function () {
+	                var context = scope || this;
+	
+	                var now = +new Date,
+	                    args = arguments;
+	                if (last && now < last + threshhold) {
+	                    // hold on to it
+	                    clearTimeout(deferTimer);
+	                    deferTimer = setTimeout(function () {
+	                        last = now;
+	                        fn.apply(context, args);
+	                    }, threshhold);
+	                } else {
+	                    last = now;
+	                    fn.apply(context, args);
+	                }
+	            }
+	        }
+	
+	
+	
+	        /*------------------------------------*\
+	            Style Vendor Prefixes Helper
+	        \*------------------------------------*/
+	        function compatStyle(element, property, value) {
+	            element.style['webkit' + property] = value;
+	            element.style['moz' + property] = value;
+	            element.style['ms' + property] = value;
+	            element.style['o' + property] = value;
+	            element.style[ property.slice(0,1).toLowerCase() + property.substring(1) ] = value;
+	        }
+	
+	
+	
+	        /*------------------------------------*\
+	            Class Manipulation Helpers
+	            https://plainjs.com/javascript/attributes/adding-removing-and-testing-for-classes-9/
+	        \*------------------------------------*/
+	        function hasClass(el, className) {
+	            return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className);
+	        }
+	
+	        function addClass(el, className) {
+	            if (el.classList) el.classList.add(className);
+	            else if (!hasClass(el, className)) el.className += ' ' + className;
+	        }
+	
+	        function removeClass(el, className) {
+	            if (el.classList) el.classList.remove(className);
+	            else el.className = el.className.replace(new RegExp('\\b'+ className+'\\b', 'g'), '');
+	        }
+	
+	
+	
+	
+	
+	        /*------------------------------------*\
+	            Browser Detection Helper
+	        \*------------------------------------*/
+	        function detectBrowser(){
+	
+	            // get ie version helper
+	            function getIEVersion() {
+	                var match = window.navigator.userAgent.match(/(?:MSIE |Trident\/.*; rv:)(\d+)/);
+	                return match ? parseInt(match[1]) : void 0;
+	            }
+	
+	            // user agent & vendor
+	            var ua = window.navigator.userAgent;
+	            var vendor = window.navigator.vendor;
+	
+	            // chrome
+	            var chrome = (
+	                (ua.toLowerCase().indexOf('chrome') > -1) && (vendor.toLowerCase().indexOf('google') > -1)
+	            );
+	
+	            // edge
+	            var edge = ua.indexOf('Edge') > -1;
+	
+	            // safari
+	            var safari = !!window.safari || ((ua.toLowerCase().indexOf('safari') > -1) && (vendor.toLowerCase().indexOf('apple') > -1));
+	
+	            // internet explorer
+	            var ie8 = getIEVersion() == 8;
+	            var ie9 = getIEVersion() == 9;
+	            var ie10 = getIEVersion() == 10;
+	            var ie11 = getIEVersion() == 11;
+	            var ie = ie8 || ie9 || ie10 || ie11;
+	
+	            // is it mobile browser?
+	            // regex below thanks to http://detectmobilebrowsers.com/
+	            var uaOrVendor = ua || vendor || window.opera;
+	            var mobile = (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(uaOrVendor)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(uaOrVendor.substr(0,4)));
+	
+	            // construct return object
+	            return {
+	                edge: edge,
+	                chrome: chrome,
+	                safari: safari,
+	                mobile: mobile,
+	                ie: ie,
+	                ie8: ie8,
+	                ie9: ie9,
+	                ie10: ie10,
+	                ie11: ie11,
+	            };
+	
+	        }
+	
+	
+	        /*------------------------------------*\
+	            Calculate scrollbar width in element
+	            - if the width is 0 it means the scrollbar is floated/overlayed
+	            - accepts "container" paremeter because ie & edge can have different
+	              scrollbar behaviors for different elements using '-ms-overflow-style'
+	        \*------------------------------------*/
+	        function getNativeScrollbarWidth(container) {
+	            var container = container ? container : document.body;
+	
+	            var fullWidth = 0;
+	            var barWidth = 0;
+	
+	            var wrapper = document.createElement('div');
+	            var child = document.createElement('div');
+	
+	            wrapper.style.position = 'absolute';
+	            wrapper.style.pointerEvents = 'none';
+	            wrapper.style.bottom = '0';
+	            wrapper.style.right = '0';
+	            wrapper.style.width = '100px';
+	            wrapper.style.overflow = 'hidden';
+	
+	            wrapper.appendChild(child);
+	            container.appendChild(wrapper);
+	
+	            fullWidth = child.offsetWidth;
+	            child.style.width = '100%';
+	            wrapper.style.overflowY = 'scroll';
+	            barWidth = fullWidth - child.offsetWidth;
+	
+	            container.removeChild(wrapper);
+	
+	            return barWidth;
+	        }
+	
+	
+	
+	
+	    };
+	
+	
+	
+	    /*------------------------------------*\
+	        Expose / Autoinstall
+	    \*------------------------------------*/
+	    if (true) {
+	        module.exports = Vuebar;
+	    } else if (typeof define === 'function' && define.amd) {
+	        define(function () { return Vuebar });
+	    } else if (typeof window !== typeof void 0) {
+	        window.Vuebar = Vuebar;
+	    }
+	
+	    if (typeof Vue !== typeof void 0) {
+	        Vue.use(Vuebar);
+	    }
+	
+	
+	
+	
+	})();
+
+
+/***/ }),
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -28380,19 +29272,19 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var utils = __webpack_require__(31);
-	var settle = __webpack_require__(228);
-	var cookies = __webpack_require__(231);
-	var buildURL = __webpack_require__(152);
-	var buildFullPath = __webpack_require__(226);
-	var parseHeaders = __webpack_require__(236);
-	var isURLSameOrigin = __webpack_require__(234);
-	var createError = __webpack_require__(147);
+	var settle = __webpack_require__(229);
+	var cookies = __webpack_require__(232);
+	var buildURL = __webpack_require__(153);
+	var buildFullPath = __webpack_require__(227);
+	var parseHeaders = __webpack_require__(237);
+	var isURLSameOrigin = __webpack_require__(235);
+	var createError = __webpack_require__(148);
 	var defaults = __webpack_require__(88);
 	var Cancel = __webpack_require__(87);
 	
@@ -28598,7 +29490,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -28609,12 +29501,12 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var enhanceError = __webpack_require__(148);
+	var enhanceError = __webpack_require__(149);
 	
 	/**
 	 * Create an Error with the specified message, config, error code, request and response.
@@ -28633,7 +29525,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -28682,7 +29574,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28787,7 +29679,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -28795,7 +29687,7 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -28812,7 +29704,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28888,7 +29780,6 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 153 */,
 /* 154 */,
 /* 155 */,
 /* 156 */,
@@ -28907,7 +29798,8 @@ webpackJsonp([38,36],[
 /* 169 */,
 /* 170 */,
 /* 171 */,
-/* 172 */
+/* 172 */,
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28935,13 +29827,13 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(34).document && document.documentElement;
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = !__webpack_require__(48) && !__webpack_require__(63)(function(){
@@ -28949,7 +29841,7 @@ webpackJsonp([38,36],[
 	});
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// fallback for non-array-like ES3 and non-enumerable old V8 strings
@@ -28959,13 +29851,13 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var LIBRARY        = __webpack_require__(91)
 	  , $export        = __webpack_require__(49)
-	  , redefine       = __webpack_require__(181)
+	  , redefine       = __webpack_require__(182)
 	  , hide           = __webpack_require__(58)
 	  , has            = __webpack_require__(57)
 	  , Iterators      = __webpack_require__(64)
@@ -29034,7 +29926,7 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
@@ -29054,7 +29946,7 @@ webpackJsonp([38,36],[
 	    , gt     = '>'
 	    , iframeDocument;
 	  iframe.style.display = 'none';
-	  __webpack_require__(173).appendChild(iframe);
+	  __webpack_require__(174).appendChild(iframe);
 	  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
 	  // createDict = iframe.contentWindow.Object;
 	  // html.removeChild(iframe);
@@ -29081,11 +29973,11 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-	var $keys      = __webpack_require__(179)
+	var $keys      = __webpack_require__(180)
 	  , hiddenKeys = __webpack_require__(118).concat('length', 'prototype');
 	
 	exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
@@ -29093,7 +29985,7 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var has          = __webpack_require__(57)
@@ -29115,7 +30007,7 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var getKeys   = __webpack_require__(59)
@@ -29136,18 +30028,18 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(58);
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var ctx                = __webpack_require__(90)
 	  , invoke             = __webpack_require__(415)
-	  , html               = __webpack_require__(173)
+	  , html               = __webpack_require__(174)
 	  , cel                = __webpack_require__(117)
 	  , global             = __webpack_require__(34)
 	  , process            = global.process
@@ -29222,7 +30114,7 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 7.1.15 ToLength
@@ -29233,26 +30125,26 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var classof   = __webpack_require__(115)
 	  , ITERATOR  = __webpack_require__(28)('iterator')
 	  , Iterators = __webpack_require__(64);
-	module.exports = __webpack_require__(23).getIteratorMethod = function(it){
+	module.exports = __webpack_require__(26).getIteratorMethod = function(it){
 	  if(it != undefined)return it[ITERATOR]
 	    || it['@@iterator']
 	    || Iterators[classof(it)];
 	};
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports =
@@ -29948,14 +30840,14 @@ webpackJsonp([38,36],[
 	/***/ 2:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(24);
+	module.exports = __webpack_require__(25);
 	
 	/***/ }),
 	
 	/***/ 22:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(187);
+	module.exports = __webpack_require__(188);
 	
 	/***/ }),
 	
@@ -29997,7 +30889,7 @@ webpackJsonp([38,36],[
 	/******/ });
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30017,7 +30909,7 @@ webpackJsonp([38,36],[
 	;
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports =
@@ -30214,7 +31106,7 @@ webpackJsonp([38,36],[
 	/***/ 2:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(24);
+	module.exports = __webpack_require__(25);
 	
 	/***/ }),
 	
@@ -30638,7 +31530,7 @@ webpackJsonp([38,36],[
 	/******/ });
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports =
@@ -30849,7 +31741,7 @@ webpackJsonp([38,36],[
 	/***/ 49:
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(186);
+	module.exports = __webpack_require__(187);
 	
 	/***/ }),
 	
@@ -31844,7 +32736,7 @@ webpackJsonp([38,36],[
 	/******/ });
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -31861,10 +32753,10 @@ webpackJsonp([38,36],[
 	}
 
 /***/ }),
-/* 191 */,
 /* 192 */,
 /* 193 */,
-/* 194 */
+/* 194 */,
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -32116,11 +33008,11 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 195 */,
 /* 196 */,
 /* 197 */,
 /* 198 */,
-/* 199 */
+/* 199 */,
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var toGeoJSON = (function() {
@@ -32210,7 +33102,7 @@ webpackJsonp([38,36],[
 	        serializer = new XMLSerializer();
 	    // only require xmldom in a node environment
 	    } else if (typeof exports === 'object' && typeof process === 'object' && !process.browser) {
-	        serializer = new (__webpack_require__(858).XMLSerializer)();
+	        serializer = new (__webpack_require__(864).XMLSerializer)();
 	    }
 	    function xml2str(str) {
 	        // IE9 will create a new XMLSerializer but it'll crash immediately.
@@ -32552,7 +33444,7 @@ webpackJsonp([38,36],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(86)))
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32561,7 +33453,7 @@ webpackJsonp([38,36],[
 	  value: true
 	});
 	
-	var _extends2 = __webpack_require__(172);
+	var _extends2 = __webpack_require__(173);
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
@@ -32571,11 +33463,11 @@ webpackJsonp([38,36],[
 	
 	var _util = __webpack_require__(21);
 	
-	var _validator = __webpack_require__(212);
+	var _validator = __webpack_require__(213);
 	
 	var _validator2 = _interopRequireDefault(_validator);
 	
-	var _messages2 = __webpack_require__(201);
+	var _messages2 = __webpack_require__(202);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
@@ -32838,7 +33730,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -32905,7 +33797,7 @@ webpackJsonp([38,36],[
 	var messages = exports.messages = newMessages();
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32944,7 +33836,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32993,7 +33885,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33067,7 +33959,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33084,7 +33976,7 @@ webpackJsonp([38,36],[
 	
 	var util = _interopRequireWildcard(_util);
 	
-	var _required = __webpack_require__(144);
+	var _required = __webpack_require__(145);
 	
 	var _required2 = _interopRequireDefault(_required);
 	
@@ -33179,7 +34071,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33215,7 +34107,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33262,7 +34154,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33308,7 +34200,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33357,7 +34249,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33405,7 +34297,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33452,7 +34344,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33461,59 +34353,59 @@ webpackJsonp([38,36],[
 	  value: true
 	});
 	
-	var _string = __webpack_require__(220);
+	var _string = __webpack_require__(221);
 	
 	var _string2 = _interopRequireDefault(_string);
 	
-	var _method = __webpack_require__(214);
+	var _method = __webpack_require__(215);
 	
 	var _method2 = _interopRequireDefault(_method);
 	
-	var _number = __webpack_require__(215);
+	var _number = __webpack_require__(216);
 	
 	var _number2 = _interopRequireDefault(_number);
 	
-	var _boolean = __webpack_require__(208);
+	var _boolean = __webpack_require__(209);
 	
 	var _boolean2 = _interopRequireDefault(_boolean);
 	
-	var _regexp = __webpack_require__(218);
+	var _regexp = __webpack_require__(219);
 	
 	var _regexp2 = _interopRequireDefault(_regexp);
 	
-	var _integer = __webpack_require__(213);
+	var _integer = __webpack_require__(214);
 	
 	var _integer2 = _interopRequireDefault(_integer);
 	
-	var _float = __webpack_require__(211);
+	var _float = __webpack_require__(212);
 	
 	var _float2 = _interopRequireDefault(_float);
 	
-	var _array = __webpack_require__(207);
+	var _array = __webpack_require__(208);
 	
 	var _array2 = _interopRequireDefault(_array);
 	
-	var _object = __webpack_require__(216);
+	var _object = __webpack_require__(217);
 	
 	var _object2 = _interopRequireDefault(_object);
 	
-	var _enum = __webpack_require__(210);
+	var _enum = __webpack_require__(211);
 	
 	var _enum2 = _interopRequireDefault(_enum);
 	
-	var _pattern = __webpack_require__(217);
+	var _pattern = __webpack_require__(218);
 	
 	var _pattern2 = _interopRequireDefault(_pattern);
 	
-	var _date = __webpack_require__(209);
+	var _date = __webpack_require__(210);
 	
 	var _date2 = _interopRequireDefault(_date);
 	
-	var _required = __webpack_require__(219);
+	var _required = __webpack_require__(220);
 	
 	var _required2 = _interopRequireDefault(_required);
 	
-	var _type = __webpack_require__(221);
+	var _type = __webpack_require__(222);
 	
 	var _type2 = _interopRequireDefault(_type);
 	
@@ -33540,7 +34432,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33587,7 +34479,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33633,7 +34525,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33680,7 +34572,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33726,7 +34618,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33775,7 +34667,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33821,7 +34713,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33851,7 +34743,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33902,7 +34794,7 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33939,15 +34831,15 @@ webpackJsonp([38,36],[
 	module.exports = exports['default'];
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var utils = __webpack_require__(31);
-	var bind = __webpack_require__(151);
-	var Axios = __webpack_require__(224);
-	var mergeConfig = __webpack_require__(149);
+	var bind = __webpack_require__(152);
+	var Axios = __webpack_require__(225);
+	var mergeConfig = __webpack_require__(150);
 	var defaults = __webpack_require__(88);
 	
 	/**
@@ -33982,18 +34874,18 @@ webpackJsonp([38,36],[
 	
 	// Expose Cancel & CancelToken
 	axios.Cancel = __webpack_require__(87);
-	axios.CancelToken = __webpack_require__(223);
-	axios.isCancel = __webpack_require__(146);
-	axios.VERSION = __webpack_require__(150).version;
+	axios.CancelToken = __webpack_require__(224);
+	axios.isCancel = __webpack_require__(147);
+	axios.VERSION = __webpack_require__(151).version;
 	
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(237);
+	axios.spread = __webpack_require__(238);
 	
 	// Expose isAxiosError
-	axios.isAxiosError = __webpack_require__(233);
+	axios.isAxiosError = __webpack_require__(234);
 	
 	module.exports = axios;
 	
@@ -34002,7 +34894,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34127,17 +35019,17 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var utils = __webpack_require__(31);
-	var buildURL = __webpack_require__(152);
-	var InterceptorManager = __webpack_require__(225);
-	var dispatchRequest = __webpack_require__(227);
-	var mergeConfig = __webpack_require__(149);
-	var validator = __webpack_require__(238);
+	var buildURL = __webpack_require__(153);
+	var InterceptorManager = __webpack_require__(226);
+	var dispatchRequest = __webpack_require__(228);
+	var mergeConfig = __webpack_require__(150);
+	var validator = __webpack_require__(239);
 	
 	var validators = validator.validators;
 	/**
@@ -34281,7 +35173,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34341,13 +35233,13 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var isAbsoluteURL = __webpack_require__(232);
-	var combineURLs = __webpack_require__(230);
+	var isAbsoluteURL = __webpack_require__(233);
+	var combineURLs = __webpack_require__(231);
 	
 	/**
 	 * Creates a new URL by combining the baseURL with the requestedURL,
@@ -34367,14 +35259,14 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var utils = __webpack_require__(31);
-	var transformData = __webpack_require__(229);
-	var isCancel = __webpack_require__(146);
+	var transformData = __webpack_require__(230);
+	var isCancel = __webpack_require__(147);
 	var defaults = __webpack_require__(88);
 	var Cancel = __webpack_require__(87);
 	
@@ -34460,12 +35352,12 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var createError = __webpack_require__(147);
+	var createError = __webpack_require__(148);
 	
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -34491,7 +35383,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34519,7 +35411,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -34539,7 +35431,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34598,7 +35490,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -34618,7 +35510,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -34635,7 +35527,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34709,7 +35601,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34727,7 +35619,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34786,7 +35678,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -34819,12 +35711,12 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var VERSION = __webpack_require__(150).version;
+	var VERSION = __webpack_require__(151).version;
 	
 	var validators = {};
 	
@@ -34907,7 +35799,6 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 239 */,
 /* 240 */,
 /* 241 */,
 /* 242 */,
@@ -35062,27 +35953,28 @@ webpackJsonp([38,36],[
 /* 391 */,
 /* 392 */,
 /* 393 */,
-/* 394 */
+/* 394 */,
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = { "default": __webpack_require__(406), __esModule: true };
 
 /***/ }),
-/* 395 */
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = { "default": __webpack_require__(408), __esModule: true };
 
 /***/ }),
-/* 396 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = { "default": __webpack_require__(409), __esModule: true };
 
 /***/ }),
-/* 397 */,
 /* 398 */,
-/* 399 */
+/* 399 */,
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(96);
@@ -35090,13 +35982,12 @@ webpackJsonp([38,36],[
 	module.exports = __webpack_require__(436);
 
 /***/ }),
-/* 400 */,
 /* 401 */,
 /* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(439);
-	module.exports = __webpack_require__(23).Object.assign;
+	module.exports = __webpack_require__(26).Object.assign;
 
 /***/ }),
 /* 403 */,
@@ -35105,34 +35996,34 @@ webpackJsonp([38,36],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(441);
-	module.exports = __webpack_require__(23).Object.keys;
+	module.exports = __webpack_require__(26).Object.keys;
 
 /***/ }),
 /* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(445);
-	module.exports = __webpack_require__(23).Object.values;
+	module.exports = __webpack_require__(26).Object.values;
 
 /***/ }),
 /* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(185);
+	__webpack_require__(186);
 	__webpack_require__(95);
 	__webpack_require__(96);
 	__webpack_require__(442);
-	module.exports = __webpack_require__(23).Promise;
+	module.exports = __webpack_require__(26).Promise;
 
 /***/ }),
 /* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(443);
-	__webpack_require__(185);
+	__webpack_require__(186);
 	__webpack_require__(446);
 	__webpack_require__(447);
-	module.exports = __webpack_require__(23).Symbol;
+	module.exports = __webpack_require__(26).Symbol;
 
 /***/ }),
 /* 409 */
@@ -35165,7 +36056,7 @@ webpackJsonp([38,36],[
 	// false -> Array#indexOf
 	// true  -> Array#includes
 	var toIObject = __webpack_require__(51)
-	  , toLength  = __webpack_require__(183)
+	  , toLength  = __webpack_require__(184)
 	  , toIndex   = __webpack_require__(435);
 	module.exports = function(IS_INCLUDES){
 	  return function($this, el, fromIndex){
@@ -35212,8 +36103,8 @@ webpackJsonp([38,36],[
 	  , call        = __webpack_require__(418)
 	  , isArrayIter = __webpack_require__(416)
 	  , anObject    = __webpack_require__(47)
-	  , toLength    = __webpack_require__(183)
-	  , getIterFn   = __webpack_require__(184)
+	  , toLength    = __webpack_require__(184)
+	  , getIterFn   = __webpack_require__(185)
 	  , BREAK       = {}
 	  , RETURN      = {};
 	var exports = module.exports = function(iterable, entries, fn, that, ITERATOR){
@@ -35300,7 +36191,7 @@ webpackJsonp([38,36],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var create         = __webpack_require__(177)
+	var create         = __webpack_require__(178)
 	  , descriptor     = __webpack_require__(92)
 	  , setToStringTag = __webpack_require__(93)
 	  , IteratorPrototype = {};
@@ -35425,7 +36316,7 @@ webpackJsonp([38,36],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	var global    = __webpack_require__(34)
-	  , macrotask = __webpack_require__(182).set
+	  , macrotask = __webpack_require__(183).set
 	  , Observer  = global.MutationObserver || global.WebKitMutationObserver
 	  , process   = global.process
 	  , Promise   = global.Promise
@@ -35503,7 +36394,7 @@ webpackJsonp([38,36],[
 	  , gOPS     = __webpack_require__(119)
 	  , pIE      = __webpack_require__(74)
 	  , toObject = __webpack_require__(123)
-	  , IObject  = __webpack_require__(175)
+	  , IObject  = __webpack_require__(176)
 	  , $assign  = Object.assign;
 	
 	// should work with symbols and should have deterministic property order (V8 bug)
@@ -35558,7 +36449,7 @@ webpackJsonp([38,36],[
 	  , toIObject      = __webpack_require__(51)
 	  , toPrimitive    = __webpack_require__(124)
 	  , has            = __webpack_require__(57)
-	  , IE8_DOM_DEFINE = __webpack_require__(174)
+	  , IE8_DOM_DEFINE = __webpack_require__(175)
 	  , gOPD           = Object.getOwnPropertyDescriptor;
 	
 	exports.f = __webpack_require__(48) ? gOPD : function getOwnPropertyDescriptor(O, P){
@@ -35576,7 +36467,7 @@ webpackJsonp([38,36],[
 
 	// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 	var toIObject = __webpack_require__(51)
-	  , gOPN      = __webpack_require__(178).f
+	  , gOPN      = __webpack_require__(179).f
 	  , toString  = {}.toString;
 	
 	var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
@@ -35619,7 +36510,7 @@ webpackJsonp([38,36],[
 
 	// most Object methods by ES6 should accept primitives
 	var $export = __webpack_require__(49)
-	  , core    = __webpack_require__(23)
+	  , core    = __webpack_require__(26)
 	  , fails   = __webpack_require__(63);
 	module.exports = function(KEY, exec){
 	  var fn  = (core.Object || {})[KEY] || Object[KEY]
@@ -35646,7 +36537,7 @@ webpackJsonp([38,36],[
 
 	'use strict';
 	var global      = __webpack_require__(34)
-	  , core        = __webpack_require__(23)
+	  , core        = __webpack_require__(26)
 	  , dP          = __webpack_require__(50)
 	  , DESCRIPTORS = __webpack_require__(48)
 	  , SPECIES     = __webpack_require__(28)('species');
@@ -35711,8 +36602,8 @@ webpackJsonp([38,36],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	var anObject = __webpack_require__(47)
-	  , get      = __webpack_require__(184);
-	module.exports = __webpack_require__(23).getIterator = function(it){
+	  , get      = __webpack_require__(185);
+	module.exports = __webpack_require__(26).getIterator = function(it){
 	  var iterFn = get(it);
 	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
 	  return anObject(iterFn.call(it));
@@ -35733,7 +36624,7 @@ webpackJsonp([38,36],[
 	// 22.1.3.13 Array.prototype.keys()
 	// 22.1.3.29 Array.prototype.values()
 	// 22.1.3.30 Array.prototype[@@iterator]()
-	module.exports = __webpack_require__(176)(Array, 'Array', function(iterated, kind){
+	module.exports = __webpack_require__(177)(Array, 'Array', function(iterated, kind){
 	  this._t = toIObject(iterated); // target
 	  this._i = 0;                   // next index
 	  this._k = kind;                // kind
@@ -35797,7 +36688,7 @@ webpackJsonp([38,36],[
 	  , anInstance         = __webpack_require__(411)
 	  , forOf              = __webpack_require__(414)
 	  , speciesConstructor = __webpack_require__(433)
-	  , task               = __webpack_require__(182).set
+	  , task               = __webpack_require__(183).set
 	  , microtask          = __webpack_require__(424)()
 	  , PROMISE            = 'Promise'
 	  , TypeError          = global.TypeError
@@ -36018,7 +36909,7 @@ webpackJsonp([38,36],[
 	$export($export.G + $export.W + $export.F * !USE_NATIVE, {Promise: $Promise});
 	__webpack_require__(93)($Promise, PROMISE);
 	__webpack_require__(432)(PROMISE);
-	Wrapper = __webpack_require__(23)[PROMISE];
+	Wrapper = __webpack_require__(26)[PROMISE];
 	
 	// statics
 	$export($export.S + $export.F * !USE_NATIVE, PROMISE, {
@@ -36096,7 +36987,7 @@ webpackJsonp([38,36],[
 	  , has            = __webpack_require__(57)
 	  , DESCRIPTORS    = __webpack_require__(48)
 	  , $export        = __webpack_require__(49)
-	  , redefine       = __webpack_require__(181)
+	  , redefine       = __webpack_require__(182)
 	  , META           = __webpack_require__(423).KEY
 	  , $fails         = __webpack_require__(63)
 	  , shared         = __webpack_require__(121)
@@ -36112,7 +37003,7 @@ webpackJsonp([38,36],[
 	  , toIObject      = __webpack_require__(51)
 	  , toPrimitive    = __webpack_require__(124)
 	  , createDesc     = __webpack_require__(92)
-	  , _create        = __webpack_require__(177)
+	  , _create        = __webpack_require__(178)
 	  , gOPNExt        = __webpack_require__(428)
 	  , $GOPD          = __webpack_require__(427)
 	  , $DP            = __webpack_require__(50)
@@ -36239,7 +37130,7 @@ webpackJsonp([38,36],[
 	
 	  $GOPD.f = $getOwnPropertyDescriptor;
 	  $DP.f   = $defineProperty;
-	  __webpack_require__(178).f = gOPNExt.f = $getOwnPropertyNames;
+	  __webpack_require__(179).f = gOPNExt.f = $getOwnPropertyNames;
 	  __webpack_require__(74).f  = $propertyIsEnumerable;
 	  __webpack_require__(119).f = $getOwnPropertySymbols;
 	
@@ -36333,7 +37224,7 @@ webpackJsonp([38,36],[
 
 	// https://github.com/tc39/proposal-object-values-entries
 	var $export = __webpack_require__(49)
-	  , $values = __webpack_require__(180)(false);
+	  , $values = __webpack_require__(181)(false);
 	
 	$export($export.S, 'Object', {
 	  values: function values(it){
@@ -36417,7 +37308,9 @@ webpackJsonp([38,36],[
 /* 508 */,
 /* 509 */,
 /* 510 */,
-/* 511 */
+/* 511 */,
+/* 512 */,
+/* 513 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -36520,7 +37413,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 512 */
+/* 514 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports =
@@ -36957,7 +37850,7 @@ webpackJsonp([38,36],[
 	/******/ });
 
 /***/ }),
-/* 513 */
+/* 515 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports =
@@ -37659,7 +38552,7 @@ webpackJsonp([38,36],[
 	/******/ });
 
 /***/ }),
-/* 514 */
+/* 516 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports =
@@ -37976,7 +38869,7 @@ webpackJsonp([38,36],[
 	/******/ });
 
 /***/ }),
-/* 515 */
+/* 517 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports =
@@ -38171,13 +39064,13 @@ webpackJsonp([38,36],[
 	/* 1 */
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(523);
+	module.exports = __webpack_require__(525);
 	
 	/***/ }),
 	/* 2 */
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(24);
+	module.exports = __webpack_require__(25);
 	
 	/***/ }),
 	/* 3 */
@@ -38214,7 +39107,7 @@ webpackJsonp([38,36],[
 	/* 9 */
 	/***/ (function(module, exports) {
 	
-	module.exports = __webpack_require__(42);
+	module.exports = __webpack_require__(43);
 	
 	/***/ }),
 	/* 10 */
@@ -44251,7 +45144,7 @@ webpackJsonp([38,36],[
 	/******/ ]);
 
 /***/ }),
-/* 516 */
+/* 518 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports =
@@ -44853,7 +45746,7 @@ webpackJsonp([38,36],[
 	/******/ });
 
 /***/ }),
-/* 517 */
+/* 519 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44914,7 +45807,7 @@ webpackJsonp([38,36],[
 	 */
 
 /***/ }),
-/* 518 */
+/* 520 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -45042,8 +45935,8 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 519 */,
-/* 520 */
+/* 521 */,
+/* 522 */
 /***/ (function(module, exports) {
 
 	module.exports =
@@ -45351,8 +46244,8 @@ webpackJsonp([38,36],[
 	/******/ });
 
 /***/ }),
-/* 521 */,
-/* 522 */
+/* 523 */,
+/* 524 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -45392,7 +46285,7 @@ webpackJsonp([38,36],[
 	   */
 
 /***/ }),
-/* 523 */
+/* 525 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45400,7 +46293,7 @@ webpackJsonp([38,36],[
 	exports.__esModule = true;
 	exports.validateRangeInOneMonth = exports.extractTimeFormat = exports.extractDateFormat = exports.nextYear = exports.prevYear = exports.nextMonth = exports.prevMonth = exports.changeYearMonthAndClampDate = exports.timeWithinRange = exports.limitTimeRange = exports.clearMilliseconds = exports.clearTime = exports.modifyWithTimeString = exports.modifyTime = exports.modifyDate = exports.range = exports.getRangeMinutes = exports.getMonthDays = exports.getPrevMonthLastDays = exports.getRangeHours = exports.getWeekNumber = exports.getStartDateOfMonth = exports.nextDate = exports.prevDate = exports.getFirstDayOfMonth = exports.getDayCountOfYear = exports.getDayCountOfMonth = exports.parseDate = exports.formatDate = exports.isDateObject = exports.isDate = exports.toDate = exports.getI18nSettings = undefined;
 	
-	var _date = __webpack_require__(524);
+	var _date = __webpack_require__(526);
 	
 	var _date2 = _interopRequireDefault(_date);
 	
@@ -45717,7 +46610,7 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 524 */
+/* 526 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -46091,7 +46984,7 @@ webpackJsonp([38,36],[
 	})(undefined);
 
 /***/ }),
-/* 525 */
+/* 527 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -47357,7 +48250,7 @@ webpackJsonp([38,36],[
 	});
 
 /***/ }),
-/* 526 */
+/* 528 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47368,7 +48261,7 @@ webpackJsonp([38,36],[
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _dom = __webpack_require__(24);
+	var _dom = __webpack_require__(25);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -47567,7 +48460,7 @@ webpackJsonp([38,36],[
 	exports.default = PopupManager;
 
 /***/ }),
-/* 527 */
+/* 529 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47610,7 +48503,7 @@ webpackJsonp([38,36],[
 	}
 
 /***/ }),
-/* 528 */
+/* 530 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47645,7 +48538,7 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 529 */
+/* 531 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47663,7 +48556,7 @@ webpackJsonp([38,36],[
 	};
 
 /***/ }),
-/* 530 */
+/* 532 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var require;/* WEBPACK VAR INJECTION */(function(process, global) {/*!
@@ -47802,7 +48695,7 @@ webpackJsonp([38,36],[
 	function attemptVertx() {
 	  try {
 	    var r = require;
-	    var vertx = __webpack_require__(859);
+	    var vertx = __webpack_require__(865);
 	    vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	    return useVertxTimer();
 	  } catch (e) {
@@ -48826,8 +49719,6 @@ webpackJsonp([38,36],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(86), (function() { return this; }())))
 
 /***/ }),
-/* 531 */,
-/* 532 */,
 /* 533 */,
 /* 534 */,
 /* 535 */,
@@ -48950,7 +49841,12 @@ webpackJsonp([38,36],[
 /* 652 */,
 /* 653 */,
 /* 654 */,
-/* 655 */
+/* 655 */,
+/* 656 */,
+/* 657 */,
+/* 658 */,
+/* 659 */,
+/* 660 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	(function (global, factory) {
@@ -49026,7 +49922,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 656 */
+/* 661 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -59252,14 +60148,14 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 657 */
+/* 662 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(661);
+	module.exports = __webpack_require__(666);
 
 
 /***/ }),
-/* 658 */
+/* 663 */
 /***/ (function(module, exports) {
 
 	/**
@@ -59308,7 +60204,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 659 */
+/* 664 */
 /***/ (function(module, exports) {
 
 	/**
@@ -59596,7 +60492,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 660 */
+/* 665 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -59612,7 +60508,7 @@ webpackJsonp([38,36],[
 	
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(658);
+	var ExecutionEnvironment = __webpack_require__(663);
 	
 	var useHasFeature;
 	if (ExecutionEnvironment.canUseDOM) {
@@ -59665,7 +60561,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 661 */
+/* 666 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -59682,9 +60578,9 @@ webpackJsonp([38,36],[
 	
 	'use strict';
 	
-	var UserAgent_DEPRECATED = __webpack_require__(659);
+	var UserAgent_DEPRECATED = __webpack_require__(664);
 	
-	var isEventSupported = __webpack_require__(660);
+	var isEventSupported = __webpack_require__(665);
 	
 	
 	// Reasonable defaults
@@ -59852,10 +60748,10 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 662 */,
-/* 663 */,
-/* 664 */,
-/* 665 */
+/* 667 */,
+/* 668 */,
+/* 669 */,
+/* 670 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {// This method of obtaining a reference to the global object needs to be
@@ -59876,7 +60772,7 @@ webpackJsonp([38,36],[
 	// Force reevalutation of runtime.js.
 	g.regeneratorRuntime = undefined;
 	
-	module.exports = __webpack_require__(666);
+	module.exports = __webpack_require__(671);
 	
 	if (hadRuntime) {
 	  // Restore the original runtime.
@@ -59893,7 +60789,7 @@ webpackJsonp([38,36],[
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 666 */
+/* 671 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {/**
@@ -60569,7 +61465,7 @@ webpackJsonp([38,36],[
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(86)))
 
 /***/ }),
-/* 667 */
+/* 672 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {(function (global, factory) {
@@ -61512,7 +62408,7 @@ webpackJsonp([38,36],[
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 668 */
+/* 673 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -61705,8 +62601,8 @@ webpackJsonp([38,36],[
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(86)))
 
 /***/ }),
-/* 669 */,
-/* 670 */
+/* 674 */,
+/* 675 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var throttle = __webpack_require__(138);
@@ -61719,7 +62615,7 @@ webpackJsonp([38,36],[
 
 
 /***/ }),
-/* 671 */
+/* 676 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var apply = Function.prototype.apply;
@@ -61772,13 +62668,13 @@ webpackJsonp([38,36],[
 	};
 	
 	// setimmediate attaches itself to the global object
-	__webpack_require__(668);
+	__webpack_require__(673);
 	exports.setImmediate = setImmediate;
 	exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 672 */
+/* 677 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -61933,1081 +62829,6 @@ webpackJsonp([38,36],[
 	  return Cookie;
 	
 	}));
-
-
-/***/ }),
-/* 673 */,
-/* 674 */,
-/* 675 */,
-/* 676 */,
-/* 677 */,
-/* 678 */,
-/* 679 */,
-/* 680 */,
-/* 681 */,
-/* 682 */,
-/* 683 */,
-/* 684 */,
-/* 685 */,
-/* 686 */,
-/* 687 */,
-/* 688 */,
-/* 689 */,
-/* 690 */,
-/* 691 */,
-/* 692 */,
-/* 693 */,
-/* 694 */,
-/* 695 */,
-/* 696 */,
-/* 697 */,
-/* 698 */,
-/* 699 */,
-/* 700 */,
-/* 701 */,
-/* 702 */,
-/* 703 */,
-/* 704 */,
-/* 705 */,
-/* 706 */,
-/* 707 */,
-/* 708 */,
-/* 709 */,
-/* 710 */,
-/* 711 */,
-/* 712 */,
-/* 713 */,
-/* 714 */,
-/* 715 */,
-/* 716 */,
-/* 717 */,
-/* 718 */,
-/* 719 */,
-/* 720 */,
-/* 721 */,
-/* 722 */,
-/* 723 */,
-/* 724 */,
-/* 725 */,
-/* 726 */,
-/* 727 */,
-/* 728 */,
-/* 729 */,
-/* 730 */,
-/* 731 */,
-/* 732 */,
-/* 733 */,
-/* 734 */,
-/* 735 */,
-/* 736 */,
-/* 737 */,
-/* 738 */,
-/* 739 */,
-/* 740 */,
-/* 741 */,
-/* 742 */,
-/* 743 */,
-/* 744 */,
-/* 745 */,
-/* 746 */,
-/* 747 */,
-/* 748 */,
-/* 749 */,
-/* 750 */,
-/* 751 */,
-/* 752 */,
-/* 753 */,
-/* 754 */,
-/* 755 */,
-/* 756 */,
-/* 757 */,
-/* 758 */,
-/* 759 */,
-/* 760 */,
-/* 761 */,
-/* 762 */,
-/* 763 */,
-/* 764 */,
-/* 765 */,
-/* 766 */,
-/* 767 */,
-/* 768 */,
-/* 769 */,
-/* 770 */,
-/* 771 */,
-/* 772 */,
-/* 773 */,
-/* 774 */,
-/* 775 */,
-/* 776 */,
-/* 777 */,
-/* 778 */,
-/* 779 */,
-/* 780 */,
-/* 781 */,
-/* 782 */,
-/* 783 */,
-/* 784 */,
-/* 785 */,
-/* 786 */,
-/* 787 */,
-/* 788 */,
-/* 789 */,
-/* 790 */,
-/* 791 */,
-/* 792 */,
-/* 793 */,
-/* 794 */,
-/* 795 */,
-/* 796 */,
-/* 797 */,
-/* 798 */,
-/* 799 */,
-/* 800 */,
-/* 801 */,
-/* 802 */,
-/* 803 */,
-/* 804 */,
-/* 805 */,
-/* 806 */,
-/* 807 */,
-/* 808 */,
-/* 809 */,
-/* 810 */,
-/* 811 */,
-/* 812 */,
-/* 813 */,
-/* 814 */,
-/* 815 */,
-/* 816 */,
-/* 817 */,
-/* 818 */,
-/* 819 */,
-/* 820 */,
-/* 821 */,
-/* 822 */,
-/* 823 */,
-/* 824 */,
-/* 825 */,
-/* 826 */,
-/* 827 */,
-/* 828 */,
-/* 829 */,
-/* 830 */,
-/* 831 */,
-/* 832 */,
-/* 833 */,
-/* 834 */,
-/* 835 */,
-/* 836 */,
-/* 837 */,
-/* 838 */,
-/* 839 */,
-/* 840 */,
-/* 841 */,
-/* 842 */,
-/* 843 */,
-/* 844 */,
-/* 845 */,
-/* 846 */,
-/* 847 */,
-/* 848 */,
-/* 849 */,
-/* 850 */,
-/* 851 */,
-/* 852 */,
-/* 853 */,
-/* 854 */,
-/* 855 */,
-/* 856 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/*----------------------------------------*\
-	    Vuebar
-	\*----------------------------------------*/
-	;(function(){
-	    'use strict';
-	
-	
-	
-	    /*------------------------------------*\
-	        Vuebar
-	    \*------------------------------------*/
-	    var Vuebar = {};
-	    Vuebar.install = function(Vue, options){
-	
-	
-	
-	        /*------------------------------------*\
-	            Create State
-	            - contains default values
-	        \*------------------------------------*/
-	        function createState(el){
-	            el._vuebarState = {
-	
-	                // config with default values that may be overwritten on directive intialization
-	                config: {
-	                    scrollThrottle: 10,
-	                    draggerThrottle: 10,
-	                    resizeRefresh: true,
-	                    observerThrottle: 100,
-	                    resizeDebounce: 100,
-	                    unselectableBody: true,
-	                    overrideFloatingScrollbar: true,
-	                    scrollingPhantomDelay: 1000,
-	                    draggingPhantomDelay: 1000,
-	                    preventParentScroll: false,
-	                    useScrollbarPseudo: false, // experimental
-	
-	                    el1Class: 'vb',
-	                    el1ScrollVisibleClass: 'vb-visible',
-	                    el1ScrollInvisibleClass: 'vb-invisible',
-	                    el1ScrollingClass: 'vb-scrolling',
-	                    el1ScrollingPhantomClass: 'vb-scrolling-phantom',
-	                    el1DraggingClass: 'vb-dragging',
-	                    el1DraggingPhantomClass: 'vb-dragging-phantom',
-	
-	                    el2Class: 'vb-content',
-	
-	                    draggerClass: 'vb-dragger',
-	                    draggerStylerClass: 'vb-dragger-styler',
-	                },
-	
-	                // reference to binding
-	                binding: null,
-	
-	                // references to directive DOM elements
-	                el1: null,
-	                el2: null,
-	                dragger: null,
-	
-	                // show dragger
-	                draggerEnabled: null,
-	
-	                // properties computed for internal directive logic & DOM manipulations
-	                visibleArea: 0, // ratio between container height and scrollable content height
-	                scrollTop: 0, // position of content scrollTop in px
-	                barTop: 0, // position of dragger in px
-	                barHeight: 0, // height of dragger in px
-	                mouseBarOffsetY: 0, // relative position of mouse at the time of clicking on dragger
-	                barDragging: false, // when the dragger is used
-	
-	                // reference to MutationObserver
-	                mutationObserver: null,
-	
-	                // references to timeouts for DOM class manipulation
-	                scrollingClassTimeout: null,
-	                draggingClassTimeout: null,
-	                scrollingPhantomClassTimeout: null,
-	                draggingPhantomClassTimeout: null,
-	
-	                // references to a functions we'll need when removing events
-	                barMousedown: null,
-	                documentMousemove: null,
-	                documentMouseup: null,
-	                windowResize: null,
-	                scrollHandler: null,
-	                wheelHandler: null,
-	
-	            };
-	            return el._vuebarState;
-	        }
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Get State
-	        \*------------------------------------*/
-	        function getState(el){
-	            return el._vuebarState;
-	        }
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Mount Validation
-	        \*------------------------------------*/
-	        function markupValidation(el){
-	            if (!el.firstChild) {
-	                Vue.util.warn('(Vuebar) Element 1 with v-bar directive doesn\'t have required child element 2.');
-	                return false;
-	            }
-	            return true;
-	        }
-	
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Computing Properties
-	        \*------------------------------------*/
-	        function computeVisibleArea(el){
-	            var state = getState(el);
-	            state.visibleArea = (state.el2.clientHeight / state.el2.scrollHeight);
-	        }
-	
-	        function computeScrollTop(el){
-	            var state = getState(el);
-	            state.scrollTop = state.barTop * (state.el2.scrollHeight / state.el2.clientHeight);
-	        }
-	
-	        function computeBarTop(el, event){
-	            var state = getState(el);
-	
-	            // if the function gets called on scroll event
-	            if (!event) {
-	                state.barTop = state.el2.scrollTop * state.visibleArea;
-	                return false;
-	            } // else the function gets called when moving dragger with mouse
-	
-	
-	            var relativeMouseY = (event.clientY - state.el1.getBoundingClientRect().top);
-	            if (relativeMouseY <= state.mouseBarOffsetY) { // if bar is trying to go over top
-	                state.barTop = 0;
-	            }
-	
-	            if (relativeMouseY > state.mouseBarOffsetY) { // if bar is moving between top and bottom
-	                state.barTop = relativeMouseY - state.mouseBarOffsetY;
-	            }
-	
-	
-	            if ( (state.barTop + state.barHeight ) >= state.el2.clientHeight ) { // if bar is trying to go over bottom
-	                state.barTop = state.el2.clientHeight - state.barHeight;
-	            }
-	
-	        }
-	
-	        function computeBarHeight(el){
-	            var state = getState(el);
-	            if (state.visibleArea >= 1) {
-	                state.barHeight = 0;
-	            } else {
-	                state.barHeight = state.el2.clientHeight * state.visibleArea;
-	            }
-	        }
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Styles & DOM
-	        \*------------------------------------*/
-	        function createDragger(el){
-	            var state = getState(el);
-	
-	            var dragger = document.createElement('div');
-	            var draggerStyler = document.createElement('div');
-	
-	            dragger.className = state.config.draggerClass;
-	
-	            dragger.style.position = 'absolute';
-	
-	            if (!state.draggerEnabled) {
-	                dragger.style.display = 'none';
-	            }
-	
-	            draggerStyler.className = state.config.draggerStylerClass;
-	
-	            dragger.appendChild(draggerStyler);
-	            state.el1.appendChild(dragger);
-	
-	            return dragger;
-	        }
-	
-	
-	        function updateDragger(el, options){
-	            var options = options ? options : {};
-	            var state = getState(el);
-	
-	            // setting dragger styles
-	            state.dragger.style.height = parseInt( Math.round( state.barHeight)  ) + 'px';
-	            state.dragger.style.top = parseInt( Math.round( state.barTop ) ) + 'px';
-	            //state.dragger.style.height = Math.ceil( state.barHeight ) + 'px';
-	            //state.dragger.style.top = Math.ceil( state.barTop ) + 'px';
-	
-	            // scrollbar visible / invisible classes
-	            if (state.draggerEnabled && (state.visibleArea<1)) {
-	                removeClass(state.el1, state.config.el1ScrollInvisibleClass);
-	                addClass(state.el1, state.config.el1ScrollVisibleClass);
-	            } else {
-	                removeClass(state.el1, state.config.el1ScrollVisibleClass);
-	                addClass(state.el1, state.config.el1ScrollInvisibleClass);
-	            }
-	
-	
-	
-	            if (options.withScrollingClasses) {
-	
-	                // add scrolling class
-	                addClass(state.el1, state.config.el1ScrollingClass);
-	
-	                // remove scrolling class
-	                state.scrollingClassTimeout ?
-	                    clearTimeout(state.scrollingClassTimeout) : null;
-	                state.scrollingClassTimeout = setTimeout(function() {
-	                    removeClass(state.el1, state.config.el1ScrollingClass);
-	                }, state.config.scrollThrottle + 5);
-	
-	
-	
-	                // add phantom scrolling class
-	                addClass(state.el1, state.config.el1ScrollingPhantomClass);
-	
-	                // remove phantom scrolling class
-	                state.scrollingPhantomClassTimeout ?
-	                    clearTimeout(state.scrollingPhantomClassTimeout) : null;
-	                state.scrollingPhantomClassTimeout = setTimeout(function() {
-	                    removeClass(state.el1, state.config.el1ScrollingPhantomClass);
-	                }, state.config.scrollThrottle + state.config.scrollingPhantomDelay);
-	
-	            }
-	
-	        }
-	
-	
-	
-	        // this is an experimental feature
-	        // - it works only on chrome and safari
-	        // - instead of hiding scrollbar by overflowing it with its parent set to overflow:hidden
-	        //   we hide scrollbar using pseudo-element selector ::-webkit-scrollbar
-	        function hideScrollbarUsingPseudoElement(el){
-	            var state = getState(el);
-	            var idName = 'vuebar-pseudo-element-styles';
-	            var selector = '.' + state.config.el2Class + '::-webkit-scrollbar';
-	            var styleElm = document.getElementById(idName);
-	            var sheet = null;
-	
-	            if (styleElm) {
-	                sheet = styleElm.sheet;
-	            } else {
-	                styleElm = document.createElement('style');
-	                styleElm.id = idName;
-	                document.head.appendChild(styleElm);
-	                sheet = styleElm.sheet;
-	            }
-	
-	            // detect if there is a rule already added to the selector
-	            var ruleExists = false;
-	            for(var i=0, l=sheet.rules.length; i<l; i++){
-	                var rule = sheet.rules[i];
-	                if (rule.selectorText == selector) {
-	                    ruleExists = true;
-	                }
-	            }
-	
-	            // if there is rule added already then don't continue
-	            if ( ruleExists ) { return false }
-	
-	            // insert rule
-	            // - we only need to use insertRule and don't need to use addRule at all
-	            //   because we're only targeting chrome & safari browsers
-	            if (sheet.insertRule) {
-	                sheet.insertRule(selector + '{display:none}', 0);
-	            }
-	
-	        }
-	
-	
-	
-	
-	        function preventParentScroll(el, event){
-	            var state = getState(el);
-	
-	            if (state.visibleArea >= 1) {
-	                return false;
-	            }
-	
-	            var scrollDist = state.el2.scrollHeight - state.el2.clientHeight;
-	            var scrollTop = state.el2.scrollTop;
-	
-	            var wheelingUp = event.deltaY < 0;
-	            var wheelingDown = event.deltaY > 0;
-	
-	            if ( (scrollTop <= 0) && wheelingUp) {
-	                event.preventDefault();
-	                return false;
-	            }
-	
-	            if ( (scrollTop >= scrollDist) && wheelingDown) {
-	                event.preventDefault();
-	                return false;
-	            }
-	
-	        }
-	
-	
-	
-	        function updateScroll(el){
-	            var state = getState(el);
-	            state.el2.scrollTop = state.scrollTop;
-	        }
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Refresh
-	        \*------------------------------------*/
-	
-	        function refreshScrollbar(el, options){
-	            var options = options ? options : {};
-	
-	            if (options.immediate) {
-	                computeVisibleArea(el);
-	                computeBarTop(el);
-	                computeBarHeight(el);
-	                updateDragger(el);
-	            }
-	
-	            Vue.nextTick(function(){
-	                if ( !getState(el) ) { return false }
-	                computeVisibleArea(el);
-	                computeBarTop(el);
-	                computeBarHeight(el);
-	                updateDragger(el);
-	            }.bind(this));
-	        }
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Events & Handlers
-	        \*------------------------------------*/
-	
-	        function scrollHandler(el){
-	            var state = getState(el);
-	            return throttle(function(event){
-	                computeVisibleArea(el);
-	                computeBarHeight(el); // fallback for an undetected content change
-	                if (!state.barDragging) {
-	                    computeBarTop(el);
-	                    updateDragger(el, {withScrollingClasses: true});
-	                }
-	            }.bind(this), state.config.scrollThrottle);
-	        }
-	
-	
-	        function wheelHandler(el){
-	            return function(event){
-	                preventParentScroll(el, event);
-	            }.bind(this);
-	        }
-	
-	
-	        function documentMousemove(el){
-	            var state = getState(el);
-	            return throttle(function(event){
-	                computeBarTop(el, event);
-	                updateDragger(el);
-	                computeScrollTop(el);
-	                updateScroll(el);
-	            }.bind(this), state.config.draggerThrottle);
-	        }
-	
-	
-	        function documentMouseup(el){
-	            var state = getState(el);
-	            return function(event){
-	
-	                //
-	                state.barDragging = false;
-	
-	                // enable user select
-	                state.el1.style.userSelect = '';
-	                state.config.unselectableBody ? compatStyle(document.body, 'UserSelect', '') : null;
-	
-	                // remove dragging class
-	                removeClass(state.el1, state.config.el1DraggingClass);
-	                state.draggingPhantomClassTimeout = setTimeout(function() {
-	                    removeClass(state.el1, state.config.el1DraggingPhantomClass);
-	                }, state.config.draggingPhantomDelay);
-	
-	
-	                // remove events
-	                document.removeEventListener('mousemove', state.documentMousemove, 0);
-	                document.removeEventListener('mouseup', state.documentMouseup, 0);
-	
-	            }.bind(this);
-	
-	        }
-	
-	
-	        function barMousedown(el){
-	            var state = getState(el);
-	            return function(event){
-	
-	                // don't do nothing if it's not left mouse button
-	                if ( event.which!==1 ) { return false }
-	
-	                state.barDragging = true;
-	                state.mouseBarOffsetY = event.offsetY;
-	
-	                // disable user select
-	                state.el1.style.userSelect = 'none';
-	                state.config.unselectableBody ? compatStyle(document.body, 'UserSelect', 'none') : null;
-	
-	                // add dragging class
-	                addClass(state.el1, state.config.el1DraggingClass);
-	                state.draggingPhantomClassTimeout ?
-	                    clearTimeout(state.draggingPhantomClassTimeout) : null;
-	                addClass(state.el1, state.config.el1DraggingPhantomClass);
-	
-	                // add events
-	                document.addEventListener('mousemove', state.documentMousemove, 0);
-	                document.addEventListener('mouseup', state.documentMouseup, 0);
-	
-	
-	            }.bind(this);
-	        }
-	
-	
-	        function windowResize(el){
-	            var state = getState(el);
-	            return debounce(function(event){
-	                refreshScrollbar(el);
-	            }.bind(this), state.config.resizeDebounce);
-	        }
-	
-	
-	
-	
-	        function initMutationObserver(el){
-	            if (typeof MutationObserver === typeof void 0) { return null }
-	
-	            var state = getState(el);
-	
-	            var observer = new MutationObserver(throttle(function(mutations) {
-	                refreshScrollbar(el);
-	            }, state.config.observerThrottle));
-	
-	            observer.observe(state.el2, {
-	                childList: true,
-	                characterData: true,
-	                subtree: true,
-	            });
-	
-	            return observer;
-	        }
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Initialize Scrollbar
-	        \*------------------------------------*/
-	        function initScrollbar(el, kwargs){
-	
-	            // validate on directive bind if the markup is OK
-	            if ( !markupValidation.call(this, el) ) { return false }
-	
-	            // safeguard to not initialize vuebar when it's already initialized
-	            if (el._vuebarState) {
-	                // and I'm actually curious if that can happen
-	                Vue.util.warn('(Vuebar) Tried to initialize second time. If you see this please create an issue on https://github.com/DominikSerafin/vuebar with all relevent debug information. Thank you!');
-	                return false;
-	            }
-	
-	            // create state
-	            var state = createState(el);
-	
-	            // get options object
-	            // - it will come from directive binding (there is a 'value' property)
-	            // - or it will come from public method direct options object
-	            var options = kwargs.value ? kwargs.value : (kwargs ? kwargs : {});
-	
-	            // overwrite defaults with provided options
-	            for (var key in options){
-	                state.config[key] = options[key];
-	            }
-	
-	            // detect browser
-	            var browser = detectBrowser();
-	
-	            // dragger enabled?
-	            var elNativeScrollbarWidth = getNativeScrollbarWidth(el.firstElementChild);
-	            var overlayScrollbar = elNativeScrollbarWidth == 0;
-	            state.draggerEnabled = ( (!overlayScrollbar) || state.config.overrideFloatingScrollbar ) ? 1 : 0;
-	
-	            // setup scrollbar "state"
-	            state.binding = kwargs.value ? kwargs : null;
-	            state.el1 = el;
-	            state.el2 = el.firstElementChild;
-	            state.dragger = createDragger(el);
-	
-	            // create and reference event listeners
-	            state.barMousedown = barMousedown(el);
-	            state.documentMousemove = documentMousemove(el);
-	            state.documentMouseup = documentMouseup(el);
-	            state.windowResize = windowResize(el);
-	            state.scrollHandler = scrollHandler(el);
-	            state.wheelHandler = wheelHandler(el);
-	
-	            // initialize and reference mutation observer
-	            state.mutationObserver = initMutationObserver(el);
-	
-	            // el1 styles and class
-	            addClass(state.el1, state.config.el1Class);
-	            state.el1.style.position = 'relative';
-	            state.el1.style.overflow = 'hidden';
-	
-	            // el2 styles and class
-	            addClass(state.el2, state.config.el2Class);
-	            state.el2.style.display = 'block';
-	            state.el2.style.overflowX = 'hidden';
-	            state.el2.style.overflowY = 'scroll';
-	            state.el2.style.height = '100%';
-	
-	            // do the magic
-	            if (state.draggerEnabled) {
-	
-	                // hide original browser scrollbar using pseudo css selectors (only chrome & safari)
-	                if ( state.config.useScrollbarPseudo && (browser.chrome || browser.safari) ) {
-	                    state.el2.style.width = '100%';
-	                    hideScrollbarUsingPseudoElement(el);
-	                }
-	
-	                // hide original browser overlay scrollbar and add padding to compensate for that
-	                else if (overlayScrollbar) {
-	                    /* state.el2.style.width = 'calc(100% + ' + 20 + 'px)';
-	                    compatStyle(state.el2, 'BoxSizing', 'border-box'); */
-	                    state.el2.style.width = '100%';
-	                    compatStyle(state.el2, 'BoxSizing', 'content-box');
-	                    state.el2.style.paddingRight = '20px';
-	                }
-	
-	                // hide original browser scrollbar behind element edges and hidden overflow
-	                else {
-	                    state.el2.style.width = 'calc(100% + ' + elNativeScrollbarWidth + 'px)';
-	                }
-	
-	            }
-	
-	            // add events
-	            // - wheel event is only needed when preventParentScroll option is enabled
-	            // - resize event is only needed when resizeRefresh option is enabled
-	            state.el2.addEventListener('scroll', state.scrollHandler, 0);
-	            state.dragger.addEventListener('mousedown', state.barMousedown, 0);
-	            state.config.preventParentScroll ? state.el2.addEventListener('wheel', state.wheelHandler, 0) : null;
-	            state.config.resizeRefresh ? window.addEventListener('resize', state.windowResize, 0) : null;
-	
-	            // initial calculations using refresh scrollbar
-	            refreshScrollbar(el, {immediate: true});
-	
-	        }
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Destroy Scrollbar
-	        \*------------------------------------*/
-	        function destroyScrollbar(el, options){
-	            var options = options ? options : {};
-	            var state = getState(el);
-	
-	            // clear events
-	            state.dragger.removeEventListener('mousedown', state.barMousedown, 0);
-	            state.el2.removeEventListener('scroll', state.scrollHandler, 0);
-	            state.el2.removeEventListener('wheel', state.scrollHandler, 0);
-	            window.removeEventListener('resize', state.windowResize, 0);
-	
-	            // disconnect mutation observer
-	            state.mutationObserver ? state.mutationObserver.disconnect() : null;
-	
-	            // clear el1 classes
-	            removeClass(state.el1, state.config.el1Class);
-	            removeClass(state.el1, state.config.el1ScrollVisibleClass);
-	            removeClass(state.el1, state.config.el1ScrollInvisibleClass);
-	            removeClass(state.el1, state.config.el1ScrollingClass);
-	            removeClass(state.el1, state.config.el1ScrollingPhantomClass);
-	            removeClass(state.el1, state.config.el1DraggingClass);
-	
-	            // clear el1 styles
-	            if (options.clearStyles) {
-	                state.el1.style.position = '';
-	                state.el1.style.overflow = '';
-	            }
-	
-	            // clear el2 classes
-	            removeClass(state.el2, state.config.el2Class);
-	
-	            // clear el2 styles
-	            if (options.clearStyles) {
-	                state.el2.style.display = '';
-	                state.el2.style.overflowX = '';
-	                state.el2.style.overflowY = '';
-	                state.el2.style.msOverflowStyle = '';
-	                state.el2.style.height = '';
-	                state.el2.style.width = '';
-	            }
-	
-	            // clear dragger
-	            state.dragger.removeChild(state.dragger.firstChild);
-	            state.el1.removeChild(state.dragger);
-	
-	            // clear timeouts that may be still running
-	            state.scrollingPhantomClassTimeout ?
-	                clearTimeout(state.scrollingPhantomClassTimeout) : null;
-	            state.draggingPhantomClassTimeout ?
-	                clearTimeout(state.draggingPhantomClassTimeout) : null;
-	
-	            // delete state object from element
-	            delete el._vuebarState;
-	
-	        }
-	
-	
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Public Methods Install
-	        \*------------------------------------*/
-	        function publicMethods(){
-	            return {
-	                getState: getState,
-	                initScrollbar: initScrollbar,
-	                destroyScrollbar: destroyScrollbar,
-	                refreshScrollbar: refreshScrollbar,
-	            };
-	        }
-	        Vue.vuebar = publicMethods();
-	        Vue.prototype.$vuebar = publicMethods();
-	
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Directive Install
-	        \*------------------------------------*/
-	        Vue.directive('bar', {
-	
-	            inserted: function(el, binding, vnode){
-	                initScrollbar.call(this, el, binding);
-	            },
-	
-	            componentUpdated: function(el, binding, vnode, oldVnode){
-	                refreshScrollbar.call(this, el);
-	            },
-	
-	            unbind: function(el, binding, vnode, oldVnode){
-	                // we shouldn't clearStyles because it actually doesn't matter that much
-	                // the element will be always deleted on unbind and its styles also
-	                // and if we do clear styles then it looks bad on transitions
-	                destroyScrollbar.call(this, el, {clearStyles: false});
-	            },
-	
-	        });
-	
-	
-	
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Debounce Helper
-	            https://remysharp.com/2010/07/21/throttling-function-calls
-	        \*------------------------------------*/
-	        function debounce(fn, delay) {
-	            var timer = null;
-	            return function () {
-	                var context = this, args = arguments;
-	                clearTimeout(timer);
-	                timer = setTimeout(function () {
-	                    fn.apply(context, args);
-	                }, delay);
-	            };
-	        };
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Throttle Helper
-	            https://remysharp.com/2010/07/21/throttling-function-calls
-	        \*------------------------------------*/
-	        function throttle(fn, threshhold, scope) {
-	            threshhold || (threshhold = 250);
-	            var last,
-	                deferTimer;
-	            return function () {
-	                var context = scope || this;
-	
-	                var now = +new Date,
-	                    args = arguments;
-	                if (last && now < last + threshhold) {
-	                    // hold on to it
-	                    clearTimeout(deferTimer);
-	                    deferTimer = setTimeout(function () {
-	                        last = now;
-	                        fn.apply(context, args);
-	                    }, threshhold);
-	                } else {
-	                    last = now;
-	                    fn.apply(context, args);
-	                }
-	            }
-	        }
-	
-	
-	
-	        /*------------------------------------*\
-	            Style Vendor Prefixes Helper
-	        \*------------------------------------*/
-	        function compatStyle(element, property, value) {
-	            element.style['webkit' + property] = value;
-	            element.style['moz' + property] = value;
-	            element.style['ms' + property] = value;
-	            element.style['o' + property] = value;
-	            element.style[ property.slice(0,1).toLowerCase() + property.substring(1) ] = value;
-	        }
-	
-	
-	
-	        /*------------------------------------*\
-	            Class Manipulation Helpers
-	            https://plainjs.com/javascript/attributes/adding-removing-and-testing-for-classes-9/
-	        \*------------------------------------*/
-	        function hasClass(el, className) {
-	            return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className);
-	        }
-	
-	        function addClass(el, className) {
-	            if (el.classList) el.classList.add(className);
-	            else if (!hasClass(el, className)) el.className += ' ' + className;
-	        }
-	
-	        function removeClass(el, className) {
-	            if (el.classList) el.classList.remove(className);
-	            else el.className = el.className.replace(new RegExp('\\b'+ className+'\\b', 'g'), '');
-	        }
-	
-	
-	
-	
-	
-	        /*------------------------------------*\
-	            Browser Detection Helper
-	        \*------------------------------------*/
-	        function detectBrowser(){
-	
-	            // get ie version helper
-	            function getIEVersion() {
-	                var match = window.navigator.userAgent.match(/(?:MSIE |Trident\/.*; rv:)(\d+)/);
-	                return match ? parseInt(match[1]) : void 0;
-	            }
-	
-	            // user agent & vendor
-	            var ua = window.navigator.userAgent;
-	            var vendor = window.navigator.vendor;
-	
-	            // chrome
-	            var chrome = (
-	                (ua.toLowerCase().indexOf('chrome') > -1) && (vendor.toLowerCase().indexOf('google') > -1)
-	            );
-	
-	            // edge
-	            var edge = ua.indexOf('Edge') > -1;
-	
-	            // safari
-	            var safari = !!window.safari || ((ua.toLowerCase().indexOf('safari') > -1) && (vendor.toLowerCase().indexOf('apple') > -1));
-	
-	            // internet explorer
-	            var ie8 = getIEVersion() == 8;
-	            var ie9 = getIEVersion() == 9;
-	            var ie10 = getIEVersion() == 10;
-	            var ie11 = getIEVersion() == 11;
-	            var ie = ie8 || ie9 || ie10 || ie11;
-	
-	            // is it mobile browser?
-	            // regex below thanks to http://detectmobilebrowsers.com/
-	            var uaOrVendor = ua || vendor || window.opera;
-	            var mobile = (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(uaOrVendor)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(uaOrVendor.substr(0,4)));
-	
-	            // construct return object
-	            return {
-	                edge: edge,
-	                chrome: chrome,
-	                safari: safari,
-	                mobile: mobile,
-	                ie: ie,
-	                ie8: ie8,
-	                ie9: ie9,
-	                ie10: ie10,
-	                ie11: ie11,
-	            };
-	
-	        }
-	
-	
-	        /*------------------------------------*\
-	            Calculate scrollbar width in element
-	            - if the width is 0 it means the scrollbar is floated/overlayed
-	            - accepts "container" paremeter because ie & edge can have different
-	              scrollbar behaviors for different elements using '-ms-overflow-style'
-	        \*------------------------------------*/
-	        function getNativeScrollbarWidth(container) {
-	            var container = container ? container : document.body;
-	
-	            var fullWidth = 0;
-	            var barWidth = 0;
-	
-	            var wrapper = document.createElement('div');
-	            var child = document.createElement('div');
-	
-	            wrapper.style.position = 'absolute';
-	            wrapper.style.pointerEvents = 'none';
-	            wrapper.style.bottom = '0';
-	            wrapper.style.right = '0';
-	            wrapper.style.width = '100px';
-	            wrapper.style.overflow = 'hidden';
-	
-	            wrapper.appendChild(child);
-	            container.appendChild(wrapper);
-	
-	            fullWidth = child.offsetWidth;
-	            child.style.width = '100%';
-	            wrapper.style.overflowY = 'scroll';
-	            barWidth = fullWidth - child.offsetWidth;
-	
-	            container.removeChild(wrapper);
-	
-	            return barWidth;
-	        }
-	
-	
-	
-	
-	    };
-	
-	
-	
-	    /*------------------------------------*\
-	        Expose / Autoinstall
-	    \*------------------------------------*/
-	    if (true) {
-	        module.exports = Vuebar;
-	    } else if (typeof define === 'function' && define.amd) {
-	        define(function () { return Vuebar });
-	    } else if (typeof window !== typeof void 0) {
-	        window.Vuebar = Vuebar;
-	    }
-	
-	    if (typeof Vue !== typeof void 0) {
-	        Vue.use(Vuebar);
-	    }
-	
-	
-	
-	
-	})();
 
 
 /***/ })

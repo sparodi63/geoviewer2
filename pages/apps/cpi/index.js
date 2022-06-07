@@ -1,4 +1,14 @@
-const id = GV.utils.getUrlParam('id');
+let id = GV.utils.getUrlParam('id');
+id = parseInt(id)
+
+if (id === 25) id = 5
+if (id === 26) id = 3
+if (id === 38) id = 36
+if (id === 39) id = 35
+if (id === 40) id = 37
+if (id === 42) id = 33
+if (id === 43) id = 34
+if (id === 44) id = 30
 
 const templateOLD = `
   <div class="div-popup">
@@ -26,9 +36,12 @@ const popup = (id) ? null : template
 
 const filter = (id) ? {
         key: 'ID',
-        value: 1,
+        value: id,
+        // value: id,
       }: null
 
+
+      
 const layers = [{
     type: 'JSON', 
     dataType: 'json',
@@ -49,6 +62,7 @@ const layers = [{
     visible: true,
     geomSubType: 'POINT',
     url: `/geoservices/data/centri-impiego/cpi2.json`,
+    // tooltip: (id) ? null : '{DENOMINAZIONE}',
     tooltip: '{DENOMINAZIONE}',
     onEachFeature: (id) ? null : function(feature, layer) {
       layer.bindPopup(interpolateString(popup, feature.properties));
@@ -102,6 +116,15 @@ GV.init({
       title: ' ',
       legend: null,
       tools: null,
+    },
+    callback: function () {
+      GV.eventBus.$on('layer-loaded-json', e => {
+        const markers = document.querySelectorAll('.leaflet-interactive');
+        // console.log('LAYER CARICATO', markers); 
+        if (id && markers) {
+          markers[0].style.cursor = 'auto'
+        }
+      })
     },
   },
   baseLayers: [

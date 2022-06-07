@@ -804,7 +804,7 @@ var layerFactory = {
           layer.geoJson = geoJson;
           layer.addData(geoJson);
           if (cluster) {
-            clusterLayer.geoJson = layer.geoJson;
+            clusterLayer.geoJson = layer.geoJson; 
             clusterLayer.addLayer(layer);
           }
           layer.fire('ready');
@@ -841,7 +841,6 @@ var layerFactory = {
 function create(layerConfig) {
   if (layerFactory[layerConfig.type]) {
     let layer = layerFactory[layerConfig.type](layerConfig);
-    // console.log(layer);
     layer.legend = layerConfig.legend;
     layer.config = layerConfig;
     return layer;

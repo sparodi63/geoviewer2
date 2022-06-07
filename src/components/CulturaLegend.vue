@@ -12,7 +12,7 @@
     <div id="gv-cultura-legend-wrapper" class="gv-cultura-legend-wrapper">
       <div>
         <div id="gv-cultura-legend-body" class="gv-inverted-color-scheme">
-          <gv-legend-maps :options="options"></gv-legend-maps>
+          <gv-cultura-legend-maps :options="options"></gv-cultura-legend-maps>
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@
 import Vue from 'vue';
 
 import LegendMaps from './LegendMaps.vue';
-Vue.component('gv-legend-maps', LegendMaps);
+Vue.component('gv-cultura-legend-maps', LegendMaps);
 
 import { Select, Option, Button, Table, TableColumn } from 'element-ui';
 Vue.use(Select);
@@ -56,7 +56,7 @@ export default {
     GV.legend = this;
     GV.config.addMapConfig(this.options.maps[0]);
     this.show = false;
-    // this.hideLegend();
+    this.hideLegend();
     mountComponent({
       elId: 'gv-cultura-ricerca',
       containerId: GV.config.containerId,
@@ -67,28 +67,21 @@ export default {
     });
   },
   methods: {
-    // showSearch() {
-    //   mountComponent({
-    //     elId: 'gv-cultura-ricerca',
-    //     containerId: GV.config.containerId,
-    //     toggleEl: true,
-    //     vm: new Vue({
-    //       template: `<gv-cultura-ricerca></gv-cultura-ricerca>`,
-    //     }),
-    //   });
-    // },
     hideLegend: function(event) {
       if (this.show) {
+        // document.getElementById('gv-cultura-legend-title').style.display = 'block';
+        // document.getElementById('gv-cultura-legend-title-collapsed').style.display = 'none';
         document.getElementById('gv-cultura-legend-wrapper').style.display = 'block';
         document.getElementById('gv-cultura-legend').style.width = '260px';
       } else {
+        // document.getElementById('gv-cultura-legend-title').style.display = 'none';
+        // document.getElementById('gv-cultura-legend-title-collapsed').style.display = 'block';
         document.getElementById('gv-cultura-legend-wrapper').style.display = 'none';
-        document.getElementById('gv-cultura-legend').style.width = '160px';
+        document.getElementById('gv-cultura-legend').style.width = '100px';
       }
       this.show = !this.show;
-    },
+    },    
     toggleCollapseClass() {
-      console.log('legend', this.show);
       return this.show
         ? 'gv-cultura-legend-collapse gv-color-scheme el-icon-arrow-down'
         : 'gv-cultura-legend-collapse gv-color-scheme el-icon-arrow-up';

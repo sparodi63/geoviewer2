@@ -14,13 +14,26 @@
         title="Chiudi Panello"
       ></el-button>
     </div>
-    <div class="gv-cultura-info-body" id="gv-cultura-info-body">
-      <div class="gv-cultura-info-gallery">
-        <gv-carousel 
-          :url="carouselConfig.galleryUrl"
-        >
-        </gv-carousel>        
-      </div>
+    <div class="gv-cultura-info-gallery-body" id="gv-cultura-info-gallery-body">
+      <el-carousel 
+        type="card" 
+        :interval="interval" 
+        :autoplay="autoplay"
+        indicator-position="none"
+        arrow="never"
+      >
+        <el-carousel-item v-for="item in gallery" :key="item.id">
+          <div>
+            <div class="item">
+              <div :title="item.text" class="item__content">
+                  {{item.text}}
+              </div>
+              <img style="width: 100%; height:auto;" :src="item.imgUrl" :title="item.text" />
+            </div>
+          </div>
+        </el-carousel-item>
+      </el-carousel>        
+
     </div>
   </div>
 </template>
@@ -28,8 +41,13 @@
 <script>
 import Vue from 'vue';
 
-import Carousel from './Carousel.vue';
-Vue.component('gv-carousel', Carousel);
+// import Carousel from './Carousel.vue';
+// Vue.component('gv-carousel', Carousel);
+
+import axios from 'axios';
+import { Carousel, CarouselItem } from 'element-ui';
+Vue.component(Carousel.name, Carousel);
+Vue.component(CarouselItem.name, CarouselItem);
 
 import lang from 'element-ui/lib/locale/lang/it';
 import locale from 'element-ui/lib/locale';
@@ -41,24 +59,39 @@ export default {
     id: String,
   },
   data() {
-    // const galleryUrl = 
+    // DIMENSIONI DA IMPOSTARE
+    // HEIGHT
+
     return {
       show: false,
+      galleryUrl: `/geoservices/REST/cultura/getConfigGallery/${this.id}`,
       title: "Gallery Immagini",
-      carouselConfig: {
-        galleryUrl: `/geoservices/REST/cultura/getConfigGallery/${this.id}`,
-        // height: "400px",
-        // interval: 4000,
-        // autoplay: true,
-        // imgWidth: "600px",
-        // openImgLink: false,
-      }
+      gallery: null,
+      autoplay: false,
+      interval: 4000
     };
   },
   async mounted() {
-    // console.log(this.properties)
+    const result = await axios.get(this.galleryUrl);
+    if (result.data.gallery) {
+      this.gallery = result.data.gallery
+      this.resizePanel()
+    }
+    // window.addEventListener('resize', this.resizePanel());
   },
   methods: {
+    resizePanel: function() {
+      const carousel = document.getElementsByClassName("el-carousel")[0]
+      const width= carousel.offsetWidth
+      carousel.setAttribute("style",`height:${width/2.7}px !important; min-height:300px !important`);
+      
+      // console.log('resize')
+      
+      // NON FUNZIONA
+      // const carousel_container = document.getElementsByClassName("el-carousel__container")[0]
+      // carousel_container.setAttribute("style",`height:${width/2.5}px !important`);
+      // console.log(carousel_container.offsetHeight)
+    },
     closePanel: function() {
       let div = document.getElementById('gv-cultura-info-gallery');
       if (!div) return;
@@ -89,16 +122,63 @@ export default {
 };
 </script>
 
+<style>
+
+/* Definire qui css custom per carousel */
+
+  /* .el-carousel {
+    padding-bottom: 5%;
+  } */
+
+  /* .el-carousel__container {
+  } */
+
+  .el-carousel__item {
+    height: auto !important;
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+
+  .el-carousel__item:nth-child(2n + 1) {
+    background-color: #d3dce6;
+  }
+
+  .item__content {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 3px;
+  }
+
+  /* .item__image {
+    width: 300px;
+    object-fit: cover;
+  } */
+</style>
+
 <style scoped>
+
 .gv-cultura-info-gallery {
-  position: absolute;
+  /* position: absolute;
   left: 0;
   top: 0;
-  width: 90%;
-  height: 90%;
   margin-left: 10px;
-  margin-top: 20px;
+  margin-top: 20px; */
+  top: 15%;
+  display: block;
+  margin: 5%;
+  position: absolute;
+  width: 90%;
+  height: auto;
   z-index: 800;
+  /* background-color: white; */
 }
 
 .gv-cultura-info-title {
@@ -109,7 +189,7 @@ export default {
   padding-right: 0rem;
   padding-left: 0.5rem;
   margin-bottom: -1px;
-  color: black;
+  /* color: black; */
   cursor: default;
   font-weight: 800;
   font-family: 'Raleway', Arial, sans-serif !important;
@@ -119,7 +199,7 @@ export default {
 .gv-cultura-info-title a {
   margin-left: 420px;
   font-size: 15px;
-  color: black;
+  /* color: black; */
   font-weight: 900;
 }
 
@@ -127,13 +207,10 @@ export default {
   outline: -webkit-focus-ring-color auto 0px;
 }
 
-.gv-cultura-info-body {
-  margin: 10px;
+.gv-cultura-info-gallery-body {
+  margin: 20px;
 }
 
-.gv-cultura-info-scuola {
-  margin: 10px;
-}
 
 .gv-cultura-info-scheda {
   margin-top: 10px;
@@ -156,12 +233,12 @@ export default {
   background: transparent;
   border: 0;
   -webkit-appearance: none;
-  background-color: #e94e1b !important;
+  background-color: #5B565C !important;
+  color: #ddd;
   float: right;
   font-size: 1rem;
   line-height: 1;
   font-weight: 800;
-  color: black;
   margin-left: 5px;
   margin-right: 5px;
   margin-top: 3px;
@@ -172,8 +249,4 @@ span {
 }
 </style>
 
-<style>
 
-/* Definire qui css custom per carousel */
-
-</style>

@@ -20,29 +20,34 @@
         title="Nascondi Pannello"
       ></button> -->
     </div>
-    <div class="gv-cultura-info-body" id="gv-cultura-info-body">
-      <div class="gv-cultura-info-scheda">
-        <div>{{ title }}</div>
-        <br>
-        <div>Livello: {{ properties.RAGGRUPPAMENTO }}</div>
-        <div>Categoria: {{ properties.CATNAME }}</div>
-        <div>Indirizzo: {{ indirizzo }}</div>
-        <div v-if="properties.EMAIL">
-          <!-- Email: {{ properties.EMAIL }} -->
-          <br><a :href="`mailto://${properties.EMAIL}`" target=_blank>EMAIL</a>
+
+    <div v-bar>
+      <div class="gv-cultura-info-body" id="gv-cultura-info-body">
+        <div class="gv-cultura-info-scheda">
+          <div style="font-size: 20px;"><strong>{{ properties.NOME.toUpperCase() }}</strong></div>
+          <br>
+          <div>{{ properties.INDIRIZZO_FORMAT }}</div>
+          <br>
+          <div>{{ properties.RAGGRUPPAMENTO }} / <strong>{{ properties.CATNAME }}</strong></div>
+          <div class="gv-cultura-info-descrizione" v-if="properties.DESCRIZIONE_BREVE"><pre><em>{{ properties.DESCRIZIONE_BREVE }}</em></pre></div>
+          <div class="gv-cultura-info-descrizione" v-if="properties.DESCRIZIONE"><pre>{{ properties.DESCRIZIONE }}</pre></div>
+
+          <div v-if="properties.SITO || properties.EMAIL">
+            <div><strong>Per approfondire</strong></div>
+            <ul>
+            <li v-if="properties.SITO">
+              <a :href="`http://${properties.SITO}`" target=_blank>SITO</a>
+            </li>
+            <li v-if="properties.EMAIL">
+              <a :href="`mailto://${properties.EMAIL}`" target=_blank>EMAIL</a>
+            </li>
+            </ul>
+
+          </div>
         </div>
-        <div v-if="properties.SITO">
-          <!-- Sito: {{ `http://${properties.SITO}` }} -->
-          <br><a :href="`http://${properties.SITO}`" target=_blank>SITO</a>
+        <div class="gv-cultura-info-button" >
+          <el-button size="mini" @click="showGallery">Galleria Immagini</el-button>
         </div>
-        <br>
-        <div v-if="properties.DESCRIZIONE_BREVE">Descrizione breve: {{ properties.DESCRIZIONE_BREVE }}</div>
-        <br>
-        <div v-if="properties.DESCRIZIONE">Descrizione: {{ properties.DESCRIZIONE }}</div>
-      </div>
-      <div class="gv-cultura-info-button" >
-        <el-button size="mini" @click="showGallery">Galleria Immagini</el-button>
-      </div>
       </div>
     </div>
   </div>
@@ -50,6 +55,9 @@
 
 <script>
 import Vue from 'vue';
+
+import Vuebar from 'vuebar';
+Vue.use(Vuebar);
 
 import mountComponent from '../util/mountComponent';
 
@@ -66,23 +74,31 @@ export default {
     properties: Object,
   },
   data() {
-    let indirizzo = ''
-    if (this.properties.INDIRIZZO) indirizzo += this.properties.INDIRIZZO + ' '  
-    if (this.properties.NUMCIVICO) indirizzo += this.properties.NUMCIVICO + ' '
-    if (this.properties.LOCALITA) indirizzo += this.properties.LOCALITA + ' '
-    if (indirizzo !== '') indirizzo += ' - '
-    indirizzo += this.properties.NOMECOMUNE
-
     return {
       show: false,
-      title: this.properties.NOME.toUpperCase(),
-      indirizzo: indirizzo
+      title: 'SCHEDA LUOGO',
     };
   },
   async mounted() {
     console.log(this.properties)
   },
   methods: {
+  //   componiIndirizzo() {
+  //     const province = {
+  //       "008": "IM",
+  //       "009": "SV",
+  //       "010": "GE",
+  //       "011": "SP"
+  //     }
+  //     let indirizzo = ''
+  //     if (this.properties.INDIRIZZO) indirizzo += this.properties.INDIRIZZO + ' '  
+  //     if (this.properties.NUMCIVICO) indirizzo += this.properties.NUMCIVICO + ' '
+  //     if (this.properties.LOCALITA) indirizzo += this.properties.LOCALITA + ' '
+  //     if (indirizzo !== '') indirizzo += ' - '
+  //     indirizzo += this.properties.NOMECOMUNE
+  //     indirizzo += ' (' + province[this.properties.COD_PROV] + ')'
+  //     return indirizzo
+  //   },
     showGallery() {
       mountComponent({
         elId: 'gv-cultura-info-gallery',
@@ -128,11 +144,17 @@ export default {
 <style scoped>
 .gv-cultura-info {
   position: absolute;
-  left: 0;
+  float: right;
+  right: 0;
   top: 0;
-  width: 600px;
+  margin-right: 20px;
+  margin-top:   20px;
+
+  /* left: 0;
+  top: 0;
   margin-left: 10px;
-  margin-top: 270px;
+  margin-top: 270px; */
+  width: 600px;
   z-index: 800;
     /* overflow: auto;
   max-height: 300px; */
@@ -146,7 +168,7 @@ export default {
   padding-right: 0rem;
   padding-left: 0.5rem;
   margin-bottom: -1px;
-  color: black;
+  /* color: black; */
   cursor: default;
   font-weight: 800;
   font-family: 'Raleway', Arial, sans-serif !important;
@@ -167,9 +189,13 @@ export default {
 .gv-cultura-info-body {
   margin: 10px;
   overflow: auto;
+  /* overflow: hidden; */
   max-height: 300px;
 }
 
+.gv-cultura-info-descrizione {
+ width: 550px;
+}
 
 .gv-cultura-info-button {
   margin-top: 10px;
@@ -197,12 +223,13 @@ export default {
   background: transparent;
   border: 0;
   -webkit-appearance: none;
-  background-color: #e94e1b !important;
+  /* background-color: #e94e1b !important; */
+  background-color: #5B565C !important;
+  color: #ddd;
   float: right;
   font-size: 1rem;
   line-height: 1;
   font-weight: 800;
-  color: black;
   margin-left: 5px;
   margin-right: 5px;
   margin-top: 3px;
@@ -215,6 +242,12 @@ span {
 
 <style>
 
+pre {
+  /* white-space: pre-wrap;  */
+  white-space: pre-line;
+  word-wrap: break-word;
+  font-family: inherit;
+}
 /* Definire qui css custom per carousel */
 
 </style>

@@ -5,7 +5,7 @@
       id="gv-cultura-ricerca-title"
       class="gv-cultura-ricerca-title gv-color-scheme"
     >
-      <b>LUOGHI DELLA CULTURA IN LIGURIA</b>
+      <b>RICERCHE</b>
       <button
         :class="toggleCollapseClass()"
         size="mini"
@@ -189,9 +189,10 @@ Vue.use(Loading);
 import mountComponent from '../util/mountComponent';
 import notification from '../util/notification';
 
-// Vue.component('gv-cultura-ricerca-results', () =>
-//   import(/* webpackChunkName: "ScuolaDigitaleRicercaResults" */ './ScuolaDigitaleRicercaResults')
-// );
+Vue.component('gv-cultura-ricerca-results', () =>
+  import(/* webpackChunkName: "CulturaRicercaResults" */ './CulturaRicercaResults')
+);
+
 // Vue.component('gv-cultura-info', () =>
 //   import(/* webpackChunkName: "ScuolaDigitaleRicercaResults" */ './ScuolaDigitaleInfo')
 // );
@@ -199,7 +200,6 @@ import notification from '../util/notification';
 export default {
   name: 'gv-cultura-ricerca',
   data() {
-
     let raggruppamenti = GV.globals.CULTURA_CONFIG.raggruppamenti
     for (const rg of raggruppamenti) {
       rg.categorie.unshift({
@@ -214,7 +214,7 @@ export default {
       id: 0,
       categoria: 'Tutte',
     })
-     
+
     raggruppamenti.unshift({
       id: 0,
       raggruppamento: 'Tutti',
@@ -258,6 +258,7 @@ export default {
       propertyName: 'NOME',
       luoghi: null,
       filterResult: [],
+      listaLuoghi: [],
       loading: false,
       show: false,
       // showRicercaResult: true,
@@ -275,7 +276,7 @@ export default {
       this.categoria = 0
     },
     onChangeProvincia(value) {
-      console.log(value)
+      // console.log(value)
       this.comuni = this.province.filter(r => r.id === value)[0].comuni
       this.comune = 0
     },
@@ -302,63 +303,104 @@ export default {
         });
     },
     onSelectSearch(value) {
-      console.log('onSelectSearch', value)
+      // console.log('onSelectSearch', value)
       // this.luoghi = value;
       // TODO find + zoom su luogo trovato
     },
-    async filterLuoghi() {
-      const data = {
-        raggruppamento: this.raggruppamento,
-        categoria: this.categoria,
-        provincia: this.provincia,
-        comune: this.comune,
-        itinerario: this.itinerario,
-      }
-
+    filterLuoghi() {
       if (this.raggruppamento===0 && this.categoria===0 && this.provincia===0 && this.comune===0 && this.itinerario===0){
         return
       }
 
-      fetch(`/geoservices/REST/cultura/filtraLuoghi`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      }).then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            // console.log('fetch')
-            this.filterResult = data.results
-            this.filtraMappa();
-            // console.log('filtro mappa')
-          } else {
-            throw data.message;
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert(error);
-        });
+      this.listaLuoghi = GV.globals.CULTURA_CONFIG.luoghi.filter(luogo => {
+        if (this.raggruppamento && this.raggruppamento !== luogo.properties.ID_RAGGRUPPAMENTO) return false
+        // if (this.categoria && this.categoria !== luogo.properties.CATOID) return false
+        if (this.categoria && !this.ricercaCategoria(luogo.properties.OID)) return false
+        if (this.provincia && this.provincia !== luogo.properties.COD_PROV) return false
+        if (this.comune && this.comune !== luogo.properties.COD_PROV+luogo.properties.COD_COM) return false
+        return true
+      }).sort((a, b) => { 
+          const res = (a.properties.NOME < b.properties.NOME)? -1 : 1
+          return res
+      })
+
+      if (this.listaLuoghi.length === 0) {
+        notification('Nessun risultato trovato');
+        // console.log('vuoto')
+      } else {
+        this.showResults()
+        this.filtraMappa()
+        this.zoomExtentsMap()
+      }
+    },
+    ricercaCategoria(oid) {
+      const filter = GV.globals.CULTURA_CONFIG.categorieRicerca.filter(cat => {
+        if (cat.id == oid && cat.catoid === this.categoria) return true
+      })
+      if (filter.length > 0) return true 
+      return false
+    },
+    // async filterLuoghiOLD() {
+    //   const data = {
+    //     raggruppamento: this.raggruppamento,
+    //     categoria: this.categoria,
+    //     provincia: this.provincia,
+    //     comune: this.comune,
+    //     itinerario: this.itinerario,
+    //   }
+
+    //   if (this.raggruppamento===0 && this.categoria===0 && this.provincia===0 && this.comune===0 && this.itinerario===0){
+    //     return
+    //   }
+
+    //   fetch(`/geoservices/REST/cultura/filtraLuoghi`, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(data)
+    //   }).then(response => response.json())
+    //     .then(data => {
+    //       if (data.success) {
+    //         // console.log('fetch')
+    //         this.filterResult = data.results
+    //         console.log(this.filterResult)
+    //         this.showResults();
+    //         this.filtraMappa();
+    //         // console.log('filtro mappa')
+    //       } else {
+    //         throw data.message;
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.error('Error:', error);
+    //       alert(error);
+    //     });
+    // },
+    zoomExtentsMap() {
+      var bounds = L.latLngBounds([]);
+      GV.globals.CULTURA_LAYERS.forEach(fl => {
+        const layer = GV.app.map.getLayerByName(fl.name)
+        const layerBounds = layer.getBounds()
+        bounds.extend(layerBounds);
+      });
+      GV.app.map.fitBounds(bounds);
     },
     filtraMappa() {
       GV.globals.CULTURA_LAYERS.forEach(layer => {
         GV.config.removeLayer(layer.name);
         layer.filter = feature => {
-          if (this.luogoInFiltro(feature)) return true;
+          let found = false;
+          for (let luogo of this.listaLuoghi) {
+            if (feature.properties.OID == luogo.properties.OID) {
+              found = true;
+              break;
+            }
+          }
+          return found;
         };
         GV.config.addLayerToMap(layer, 0);
       });
-    },
-    luogoInFiltro(feature) {
-      let found = false;
-      for (let luogo of this.filterResult) {
-        if (feature.properties.OID == luogo) {
-          found = true;
-          break;
-        }
-      }
-      return found;
     },
     reset() {
       this.raggruppamento = 0
@@ -367,19 +409,33 @@ export default {
       this.comune=0
       this.onChangeRaggruppamento(0) 
       this.onChangeProvincia(0)     
+      const div = document.getElementById('gv-cultura-ricerca-results')
+      if (div) div.remove()
       GV.globals.CULTURA_LAYERS.forEach(layer => {
         GV.config.removeLayer(layer.name);
         layer.filter = () => {
           return true;
         };
         GV.config.addLayerToMap(layer, 0);
-      });      
+      });
+      this.zoomExtentsMap()      
     },
     closeResultPanels() {
     },
     showInfo() {
     },
     showResults() {
+      // console.log(this.listaLuoghi)
+      mountComponent({
+        elId: 'gv-cultura-ricerca-results',
+        clear: true,
+        vm: new Vue({
+          template: `<gv-cultura-ricerca-results :listaLuoghi="listaLuoghi"></gv-cultura-ricerca-results>`,
+          data: {
+            listaLuoghi: this.listaLuoghi,
+          },
+        }),
+      });     
     },
     handleLink(index, link) {
       window.open(link);
@@ -390,7 +446,7 @@ export default {
         document.getElementById('gv-cultura-ricerca').style.width = '480px';
       } else {
         document.getElementById('gv-cultura-ricerca-body').style.display = 'none';
-        document.getElementById('gv-cultura-ricerca').style.width = '190px';
+        document.getElementById('gv-cultura-ricerca').style.width = '110px';
       }
       this.show = !this.show;
     },
@@ -426,7 +482,7 @@ export default {
   padding-right: 0rem;
   padding-left: 0.5rem;
   margin-bottom: -1px;
-  color: black;
+  /* color: black; */
   cursor: default;
   font-weight: 800;
   font-family: 'Raleway', Arial, sans-serif !important;

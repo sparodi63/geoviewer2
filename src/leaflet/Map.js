@@ -60,7 +60,7 @@ const llMap = {
     return this;
   },
 
-  // FUNZIONE PROXY SU MAP
+  // FUNZIONI PROXY SU OGGETTO MAP
 
   on(event, fn) {
     this.map.on(event, fn);
@@ -252,7 +252,7 @@ const llMap = {
   loadBaseLayers() {
     this.baseLayers = [];
     GV.config.baseLayers.forEach(layerConfig => {
-      var layer = LayerFactory.create(layerConfig, this); 
+      var layer = LayerFactory.create(layerConfig); 
       this.baseLayers[layer.config.type] = layer;
       if (layer && layerConfig.visible) {
         layer.on('loading', () => {

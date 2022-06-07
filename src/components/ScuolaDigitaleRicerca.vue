@@ -301,7 +301,7 @@ export default {
             listaProgetti: this.listaProgetti,
           },
         }),
-      });
+      }); 
     },
     filtraMappa(zoom) {
       this.markerArray = [];

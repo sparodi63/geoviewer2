@@ -7,13 +7,13 @@
 body {
   /* font-family: Helvetica, Arial, sans-serif; */
   /* background-color: #fff; */
-  font-weight: 800 !important;
+  /* font-weight: 800 !important; */
   color: black;
 }
 
 .gv-color-scheme {
-  background-color: #e94e1b;
-  color: black;
+  background-color: #5B565C;
+  color: #ddd;
 }
 
 .gv-inverted-color-scheme {
@@ -192,14 +192,14 @@ body {
 }
 
 .el-button {
-  background-color: #f9b233 !important ;
-  color: black;
+  background-color: #8D6795 !important ;
+  color: #ddd;
   font-weight: 800;
 }
 
-.el-button--info {
+/* .el-button--info {
   color: black !important;
-}
+} */
 
 .el-input__inner {
   color: black;

@@ -113,6 +113,7 @@ export default {
     listaProgetti: Array,
   },
   data() {
+
     return {
       flagRicerca: true,
       show: false,

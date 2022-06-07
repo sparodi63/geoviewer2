@@ -113,6 +113,10 @@
   display: none;
 }
 
+/* .leaflet-interactive {
+	cursor: auto !important;
+} */
+
 .popup-nome {
   background-color: #277baa;
   text-align: center;
