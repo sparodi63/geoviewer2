@@ -1,6 +1,7 @@
 import globals from '../globals';
 import getZoomFromScaleDenom from '../util/getZoomFromScaleDenom';
 import getWmsError from '../services/getWmsError';
+// import olms from './olms';
 
 const esriLink = '<a href="https://www.esri.com/">Esri</a>';
 
@@ -71,13 +72,19 @@ const layerFactory = {
   TILESERVER_GL(style) {
     const layer = new ol.layer.Tile({
       source: new ol.source.XYZ({
-        url: `https://geoservizi.regione.liguria.it/styles/${style}/{z}/{x}/{y}.png`,
+        url: `https://tileserver-gl.regione.liguria.it/styles/${style}/{z}/{x}/{y}.png`,
       }),
     });
     return layer;
   },
   TS_STREETS(layerConfig) {
     const layer = this.TILESERVER_GL('streets');
+    layer.config = layerConfig;
+    layer.name = layerConfig.name;
+    return layer;
+  },
+  TS_BASIC(layerConfig) {
+    const layer = this.TILESERVER_GL('basic-preview');
     layer.config = layerConfig;
     layer.name = layerConfig.name;
     return layer;
@@ -524,26 +531,27 @@ const layerFactory = {
     layer.name = name;
     return layer;
   },
-  // MBS(layerConfig, map) {
-  //   console.log(map);
-  //   console.log(layerConfig);
-  //   olms(map, layerConfig.url).then(map => {
-  //     let layers = map.getLayers();
-  //     layers.getArray().forEach(layer => {
-  //       if (layer.get('mapbox-source')) {
-  //         console.log('TileServerGL', layer);
-  //         layer.config = layerConfig;
-  //         layer.name = layerConfig.name;
-  //       }
-  //     });
-  //   });
-  // },
-  // MBS_STREETS(layerConfig, map) {
-  //   const style = 'streets';
-  //   const url = `https://geoservizi.regione.liguria.it/tileserver-gl/styles/${style}/style.json`;
-  //   this.MBS(url, map.map);
-  //   return null;
-  // },
+  MVT(layerConfig, map) {
+    console.log(map);
+    console.log(layerConfig);
+    olms(map, layerConfig.url).then(map => {
+      let layers = map.getLayers();
+      layers.getArray().forEach(layer => {
+        if (layer.get('mapbox-source')) {
+          console.log('TileServerGL', layer);
+          layer.config = layerConfig;
+          layer.name = layerConfig.name;
+        }
+      });
+    });
+  },
+  MVT_STREETS(layerConfig, map) {
+    console.log('MVT');
+    const style = 'streets';
+    const url = `https://tileserver-gl.regione.liguria.it/styles/${style}/style.json`;
+    this.MVT(url, map.map);
+    return null;
+  },
 };
 
 function create(layerConfig, map) {

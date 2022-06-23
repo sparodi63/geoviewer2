@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="visible"
     class="gv-cultura-ricerca-results gv-inverted-color-scheme"
     id="gv-cultura-ricerca-results"
   >
@@ -15,49 +16,66 @@
         type="button"
         @click="closePanel"
         title="Chiudi Panello"
+        alt="Chiudi Panello"
       ></el-button>
       <button
         :class="toggleCollapseClass()"
         size="mini"
         @click="hidePanel"
         title="Nascondi Pannello"
+        alt="Nascondi Pannello"
       ></button>
-        <el-button id="gv-cultura-ricerca-results-pdf-button" type="info" size="mini" @click="stampaPDF"
-          >Stampa PDF</el-button
-        >      
+      <el-button
+        id="gv-cultura-ricerca-results-pdf-button"
+        type="info"
+        size="mini"
+        alt="Stampa PDF"
+        @click="stampaPDF"
+        >Stampa PDF</el-button
+      >
     </div>
     <!-- <div v-bar> -->
-      <div class="gv-cultura-ricerca-results-body" id="gv-cultura-ricerca-results-body">
-        <div class="gv-cultura-ricerca-results-result">
-          <div class="gv-cultura-ricerca-results-table">
-            <el-table
-              :data="listaLuoghi"
-              empty-text="Nessuna luogo trovato"
-              style="font-size: 12px !important;"
-              class="gv-inverted-color-scheme"
-              :row-style="tableRowClassName"
-              :show-header="false"
-              height="300"
-              size="mini"
-              @current-change="selectRiga"
-            >
-              <el-table-column type="expand">
-                <template slot-scope="props">
-                  <strong>{{ props.row.properties.CATNAME }}</strong><br><br>
-                  <em>{{ props.row.properties.DESCRIZIONE_BREVE }}</em>
-                </template>
-              </el-table-column>
-              <el-table-column prop="properties.NOME" align="left" width="200">
-                <template slot-scope="props">
-                  <strong>{{ props.row.properties.NOME }}</strong>
-                </template>
-              </el-table-column>
-              <el-table-column prop="properties.INDIRIZZO_FORMAT" align="left" width="200">
-              </el-table-column>
-            </el-table>
-          </div>
+    <div class="gv-cultura-ricerca-results-body" id="gv-cultura-ricerca-results-body">
+      <div class="gv-cultura-ricerca-results-result">
+        <div class="gv-cultura-ricerca-results-table">
+          <el-table
+            :data="listaLuoghi"
+            empty-text="Nessuna luogo trovato"
+            style="font-size: 12px !important"
+            class="gv-inverted-color-scheme"
+            :row-style="tableRowClassName"
+            :show-header="false"
+            height="300"
+            size="mini"
+            @current-change="selectRiga"
+          >
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <strong>{{ props.row.properties.CATNAME }}</strong
+                ><br /><br />
+                <em>{{ props.row.properties.DESCRIZIONE_BREVE }}</em>
+              </template>
+            </el-table-column>
+            <el-table-column prop="properties.NOME" align="left" width="200">
+              <template slot-scope="props">
+                <strong>{{ props.row.properties.NOME }}</strong>
+              </template>
+            </el-table-column>
+            <!-- <el-table-column prop="properties.INDIRIZZO_FORMAT" align="left" width="200"> -->
+            <el-table-column prop="properties.NOMECOMUNE" align="left" width="200">
+              <template slot-scope="props">
+                <span v-if="!filtro.comune"
+                  >{{ props.row.properties.NOMECOMUNE }}
+                  <span v-if="!filtro.provincia"
+                    >( {{ props.row.properties.SIGLA_PROVINCIA }} )
+                  </span>
+                </span>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </div>
+    </div>
     <!-- </div> -->
   </div>
 </template>
@@ -76,44 +94,50 @@ Vue.use(Vuebar);
 
 import mountComponent from '../util/mountComponent';
 
-// Vue.component('gv-cultura-info', () =>
-//   import(/* webpackChunkName: "culturaRicercaResults" */ './culturaInfo')
-// );
-
 export default {
   name: 'gv-cultura-ricerca-results',
   props: {
     listaLuoghi: Array,
+    filtro: Object,
   },
   data() {
+    const visible = !GV.globals.CULTURA_CONFIG.embed;
     return {
       flagRicerca: true,
       show: false,
       numProgetti: this.listaLuoghi.length,
       title: `RISULTATO RICERCA`,
+      visible: visible,
+      showComune: true,
       // indirizzo: this.componiIndirizzo(),
     };
   },
-  async mounted() {
-  },
+  async mounted() {},
   methods: {
     stampaPDF() {
-
+      let url = `${location.protocol}//${location.hostname}/geoservices/apps/cultura-print/?TYPE=PRINT`;
+      if (this.filtro.raggruppamento) url += `&RAGGRUPPAMENTO=${this.filtro.raggruppamento}`;
+      if (this.filtro.categoria) url += `&CATEGORIA=${this.filtro.categoria}`;
+      if (this.filtro.provincia) url += `&CATEGORIA=${this.filtro.provincia}`;
+      if (this.filtro.comune) url += `&CATEGORIA=${this.filtro.comune}`;
+      if (this.filtro.itinerario) url += `&CATEGORIA=${this.filtro.itinerario}`;
+      // console.log(url);
+      window.open(url, '_blank');
     },
     tableRowClassName() {
-      return {'cursor': 'pointer', 'background-color': '#c9c8c8'}
+      return { cursor: 'pointer', 'background-color': '#c9c8c8' };
     },
     selectRiga(row) {
       // console.log(row);
-      GV.app.map.setView([row.geometry.coordinates[1], row.geometry.coordinates[0]], 19)
-      const div = document.getElementById('gv-cultura-info')
-      if (div) div.remove()
+      GV.app.map.setView([row.geometry.coordinates[1], row.geometry.coordinates[0]], 19);
+      const div = document.getElementById('gv-cultura-info');
+      if (div) div.remove();
       GV.mount({
         elId: 'gv-cultura-info',
         toggleEl: true,
         template: `<gv-cultura-info :properties="properties" ></gv-cultura-info>`,
         data: {
-          properties: row.properties
+          properties: row.properties,
         },
       });
     },
@@ -134,7 +158,7 @@ export default {
         }),
       });
     },
-    closePanel: function() {
+    closePanel: function () {
       let div = document.getElementById('gv-cultura-ricerca-results');
       if (!div) return;
       div.parentNode.removeChild(div);
@@ -142,13 +166,17 @@ export default {
         flagRicerca: this.flagRicerca,
       });
     },
-    hidePanel: function(event) {
+    hidePanel: function (event) {
       if (this.show) {
         document.getElementById('gv-cultura-ricerca-results-body').style.display = 'block';
         document.getElementById('gv-cultura-ricerca-results').style.width = '480px';
+        document.getElementById('gv-cultura-ricerca-results-pdf-button').style.display = 'block';
       } else {
         document.getElementById('gv-cultura-ricerca-results-body').style.display = 'none';
-        document.getElementById('gv-cultura-ricerca-results').style.width = '190px';
+        document.getElementById('gv-cultura-ricerca-results').style.width = '200px';
+        // const button = document.getElementById('gv-cultura-ricerca-results-pdf-button');
+        // console.log(button);
+        document.getElementById('gv-cultura-ricerca-results-pdf-button').style.display = 'none';
       }
       this.show = !this.show;
     },
@@ -229,7 +257,7 @@ export default {
   background: transparent;
   border: 0;
   -webkit-appearance: none;
-  background-color: #5B565C !important;
+  background-color: #5b565c !important;
   color: #ddd;
   float: right;
   font-size: 1rem;
@@ -246,7 +274,7 @@ export default {
   vertical-align: top !important;
 }
 .el-table__expanded-cell {
-    background-color: #ccc;
-    padding-left: 70px !important;
+  background-color: #ccc;
+  padding-left: 70px !important;
 }
 </style>

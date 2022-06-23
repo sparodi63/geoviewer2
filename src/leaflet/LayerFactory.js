@@ -48,7 +48,7 @@ function buildGeoJson(data, esParams) {
     geoJson = typeof data === 'string' ? JSON.parse(data) : data;
   }
   return geoJson;
-} 
+}
 
 var layerFactory = {
   BLANK(layerConfig) {
@@ -72,24 +72,22 @@ var layerFactory = {
   },
 
   TILESERVER_GL(style) {
-    const STYLE = style;
-    return L.tileLayer(
-      // `http://master-node.regione.liguria.it:8080/styles/${STYLE}/{z}/{x}/{y}.png`,
-      `https://geoservizi{s}.regione.liguria.it/styles/${STYLE}/{z}/{x}/{y}.png`,
-      {
-        attribution:
-          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        minZoom: 0,
-        maxZoom: 20,
-        subdomains: ['1', '2'],
-      }
-    );
+    return L.tileLayer(`https://tileserver-gl.regione.liguria.it/styles/${style}/{z}/{x}/{y}.png`, {
+      attribution:
+        'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      minZoom: 0,
+      maxZoom: 20,
+      subdomains: ['1', '2'],
+    });
   },
 
   TS_STREETS() {
     return this.TILESERVER_GL('streets');
   },
 
+  TS_BASIC() {
+    return this.TILESERVER_GL('basic-preview');
+  },
   TS_DARK_MATTER() {
     return this.TILESERVER_GL('dark-matter');
   },
@@ -587,7 +585,7 @@ var layerFactory = {
     } = layerConfig;
     let clusterLayer = null;
     let options = {};
-    
+
     if (classes && classes.length > 0) {
       if (layerConfig.geomSubType === 'POINT') {
         options.pointToLayer = function(feature, latlng) {
@@ -666,7 +664,6 @@ var layerFactory = {
         return visible;
       };
     }
-
 
     if (style) {
       options.style = style;
@@ -804,15 +801,15 @@ var layerFactory = {
           layer.geoJson = geoJson;
           layer.addData(geoJson);
           if (cluster) {
-            clusterLayer.geoJson = layer.geoJson; 
+            clusterLayer.geoJson = layer.geoJson;
             clusterLayer.addLayer(layer);
           }
           layer.fire('ready');
           GV.eventBus.$emit('layer-loaded-json', layer);
           if (autoZoom) {
-            GV.app.map.fitBounds(layer.getBounds(),{
+            GV.app.map.fitBounds(layer.getBounds(), {
               maxZoom: 17,
-            })
+            });
           }
         })
         .catch(error => console.error(error));
@@ -828,9 +825,9 @@ var layerFactory = {
       layer.fire('ready');
       GV.eventBus.$emit('layer-loaded-json', layer);
       if (autoZoom) {
-        GV.app.map.fitBounds(layer.getBounds(),{
+        GV.app.map.fitBounds(layer.getBounds(), {
           maxZoom: 17,
-        })
+        });
       }
     }
 

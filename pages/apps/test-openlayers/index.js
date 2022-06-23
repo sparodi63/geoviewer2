@@ -15,7 +15,7 @@ GV.init({
       //   '1039849.332791538,5465171.085361816,1139523.2176754079,5534499.470016474',
       //   '3003',
       //   null
-      // ); 
+      // );
     },
     layout: {
       legend: {
@@ -123,13 +123,17 @@ GV.init({
   },
   baseLayers: [
     // {
-    //   type: 'MBS_STREETS',
+    //   type: 'TS_STREETS',
     //   visible: true,
     // },
     {
-      type: 'ESRI_IMAGERY',
+      type: 'TS_POSITRON',
       visible: true,
     },
+    // {
+    //   type: 'ESRI_IMAGERY',
+    //   visible: true,
+    // },
     {
       type: 'RL_ORTOFOTO_2016',
     },

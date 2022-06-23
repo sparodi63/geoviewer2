@@ -1,4 +1,4 @@
-var id = GV.utils.getUrlParam('id')
+var id = GV.utils.getUrlParam('id');
 
 GV.init({
   debug: true,
@@ -52,6 +52,9 @@ GV.init({
       visible: true,
     },
     {
+      type: 'TS_BASIC',
+    },
+    {
       type: 'TS_MONOCHROME',
     },
     {
@@ -68,4 +71,4 @@ GV.init({
     },
   ],
   maps: [],
-})
+});

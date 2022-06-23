@@ -12,7 +12,7 @@ export default {
   RL_DYN_MAP_CONFIG_SERVICE: '/geoservices/REST/config/map/',
   RL_XSL_INFO_SERVICE: '/geoservices/REST/config/info_xsl?',
   RL_CATALOG_SERVICE: '/geoservices/REST/geoportale/catalogo/',
-  RL_CANALI_SERVICE: '/geoservices/REST/config/ag_app_canali_tree/', 
+  RL_CANALI_SERVICE: '/geoservices/REST/config/ag_app_canali_tree/',
   RL_CANALE_CARTE_SERVICE: '/geoservices/REST/config/ag_canale_tree/',
   RL_DOWNLOAD_CONFIG_SERVICE: '/geoservices/REST/download/map/',
   RL_DOWNLOAD_INSERT_SERVICE: '/geoservices/REST/download/insert_richiesta/',
@@ -112,14 +112,18 @@ export default {
       label: 'Carte Regionali 2007 -2013',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
     },
+    MVT_STREETS: {
+      label: 'Stradario',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+    },
     TS_STREETS: {
       label: 'Stradario',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
     },
-    // MBS_STREETS: {
-    //   label: 'Stradario',
-    //   icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
-    // },
+    TS_BASIC: {
+      label: 'Basic',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+    },
     TS_DARK_MATTER: {
       label: 'Dark',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',

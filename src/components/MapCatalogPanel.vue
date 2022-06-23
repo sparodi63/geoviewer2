@@ -1,6 +1,6 @@
 <template>
 <div>
-  <!-- <div v-if="screenWidth > maxScreenWidth" class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
+  <div v-if="screenWidth > maxScreenWidth" class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
     <gv-title v-draggable :title="title" :hide="true" :divId="'gv-map-catalog-panel'"></gv-title>
     <div class="gv-map-catalog-panel-body">
       <el-tabs v-model="activeTab" type="border-card">
@@ -24,8 +24,8 @@
       </el-tabs>
     </div>
   </div>
-  <div v-if="screenWidth < maxScreenWidth" class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel"> -->
-  <div class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
+  <div v-if="screenWidth < maxScreenWidth" class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel">
+  <!-- <div class="gv-map-catalog-panel gv-inverted-color-scheme" id="gv-map-catalog-panel"> -->
     <gv-title v-draggable :title="title" :hide="true" :divId="'gv-map-catalog-panel'"></gv-title>
     <div class="gv-map-catalog-panels-list-div">
       <el-select

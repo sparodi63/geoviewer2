@@ -10,7 +10,7 @@ var tools = [
   },
   {
     name: 'gv-measure-button',
-  }, 
+  },
   {
     name: 'gv-layer-search-button',
   },
@@ -21,16 +21,20 @@ var tools = [
     name: 'gv-print-button',
   },
   {
-    name: 'gv-insert-point-button',
+    name: 'gv-scalebar',
+    position: 'bottomleft',
   },
+  // {
+  //   name: 'gv-insert-point-button',
+  // },
 ];
 
 GV.init({
   debug: true,
-  idMap: "2317",
+  idMap: '2317',
   application: {
     name: 'carta-regionale-aib-gv2',
-    auth: null,    
+    auth: null,
     mapOptions: {
       click: 'info',
     },
@@ -62,7 +66,6 @@ GV.init({
               kml: {
                 label: 'KML / GPX / JSON',
               },
-
             },
             activePanel: 'canali',
           },

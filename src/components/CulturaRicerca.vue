@@ -1,10 +1,6 @@
 <template>
-  <div class="gv-cultura-ricerca gv-inverted-color-scheme" id="gv-cultura-ricerca">
-    <div
-      v-draggable
-      id="gv-cultura-ricerca-title"
-      class="gv-cultura-ricerca-title gv-color-scheme"
-    >
+  <div v-if="visible" class="gv-cultura-ricerca gv-inverted-color-scheme" id="gv-cultura-ricerca">
+    <div v-draggable id="gv-cultura-ricerca-title" class="gv-cultura-ricerca-title gv-color-scheme">
       <b>RICERCHE</b>
       <button
         :class="toggleCollapseClass()"
@@ -41,7 +37,7 @@
           >
           </el-option>
         </el-select> -->
-      
+
         <!-- <div class="gv-cultura-ricerca-filtri-title"> FILTRI </div> -->
         <table>
           <tr>
@@ -53,7 +49,7 @@
                 v-model="raggruppamento"
                 size="small"
                 placeholder="Raggruppamento"
-                style="width: 270px !important;"
+                style="width: 270px !important"
                 @change="onChangeRaggruppamento"
               >
                 <el-option
@@ -77,7 +73,7 @@
                 filterable
                 collapse-tags
                 placeholder="Categoria"
-                style="width: 270px !important;"
+                style="width: 270px !important"
               >
                 <el-option
                   v-for="item in categorie"
@@ -98,7 +94,7 @@
                 v-model="provincia"
                 size="small"
                 placeholder="Provincia"
-                style="width: 270px !important;"
+                style="width: 270px !important"
                 @change="onChangeProvincia"
               >
                 <el-option
@@ -115,24 +111,23 @@
             <td>
               <span>COMUNE </span>
             </td>
-              <el-select
-                v-model="comune"
-                size="small"
-                filterable
-                collapse-tags
-                placeholder="Comune"
-                style="width: 270px !important;"
+            <el-select
+              v-model="comune"
+              size="small"
+              filterable
+              collapse-tags
+              placeholder="Comune"
+              style="width: 270px !important"
+            >
+              <el-option
+                v-for="item in comuni"
+                :key="item.id"
+                :value="item.id"
+                :label="item.comune"
               >
-                <el-option
-                  v-for="item in comuni"
-                  :key="item.id"
-                  :value="item.id"
-                  :label="item.comune"
-                >
-                </el-option>
-              </el-select> 
-            <td>
-            </td>
+              </el-option>
+            </el-select>
+            <td></td>
           </tr>
           <!-- <tr>
             <td>
@@ -160,10 +155,20 @@
         </table>
       </div>
       <div class="gv-cultura-ricerca-buttons">
-        <el-button id="gv-cultura-ricerca-submit" type="info" size="mini" @click="filterLuoghi"
+        <el-button
+          alt="Applica"
+          id="gv-cultura-ricerca-submit"
+          type="info"
+          size="mini"
+          @click="filterLuoghi"
           >Applica</el-button
         >
-        <el-button id="gv-cultura-ricerca-reset" type="info" size="mini" @click="reset"
+        <el-button
+          alt="Annulla Filtro"
+          id="gv-cultura-ricerca-reset"
+          type="info"
+          size="mini"
+          @click="reset"
           >Annulla Filtro</el-button
         >
       </div>
@@ -200,49 +205,50 @@ Vue.component('gv-cultura-ricerca-results', () =>
 export default {
   name: 'gv-cultura-ricerca',
   data() {
-    let raggruppamenti = GV.globals.CULTURA_CONFIG.raggruppamenti
+    let raggruppamenti = GV.globals.CULTURA_CONFIG.raggruppamenti;
     for (const rg of raggruppamenti) {
       rg.categorie.unshift({
         id: 0,
         categoria: 'Tutte',
-      })
+      });
     }
-    raggruppamenti = raggruppamenti.sort((a,b) => a.id - b.id)
+    raggruppamenti = raggruppamenti.sort((a, b) => a.id - b.id);
 
-    let categorie = GV.globals.CULTURA_CONFIG.categorie
+    let categorie = GV.globals.CULTURA_CONFIG.categorie;
     categorie.unshift({
       id: 0,
       categoria: 'Tutte',
-    })
+    });
 
     raggruppamenti.unshift({
       id: 0,
       raggruppamento: 'Tutti',
-      categorie: categorie
-    }) 
+      categorie: categorie,
+    });
 
-    let province = GV.globals.CULTURA_CONFIG.province
+    let province = GV.globals.CULTURA_CONFIG.province;
     for (const pr of province) {
       pr.comuni.unshift({
         id: 0,
         comune: 'Tutti',
-      })
-      pr.comuni = pr.comuni.sort((a,b) => a.id - b.id)
+      });
+      pr.comuni = pr.comuni.sort((a, b) => a.id - b.id);
     }
-    let comuni = GV.globals.CULTURA_CONFIG.comuni
+    let comuni = GV.globals.CULTURA_CONFIG.comuni;
     comuni.push({
       id: 0,
       comune: 'Tutti',
-    }) 
-    comuni = comuni.sort((a,b) => a.id - b.id)
+    });
+    comuni = comuni.sort((a, b) => a.id - b.id);
     province.push({
       id: 0,
       provincia: 'Tutte',
-      comuni: comuni
-    }) 
-    province = province.sort((a,b) => a.id - b.id)
+      comuni: comuni,
+    });
+    province = province.sort((a, b) => a.id - b.id);
 
-    const filter = GV.globals.CULTURA_CONFIG.filter
+    const filter = GV.globals.CULTURA_CONFIG.filter;
+    const visible = !GV.globals.CULTURA_CONFIG.embed;
 
     return {
       raggruppamenti: raggruppamenti,
@@ -250,95 +256,100 @@ export default {
       categorie: categorie,
       categoria: filter.categoria,
       province: province,
-      provincia: filter.raggruppamento,
+      provincia: filter.provincia,
       comuni: comuni,
       comune: filter.comune,
-      itinerari: GV.globals.CULTURA_CONFIG.itinerari,
-      itinerario: filter.itinerario,
+      // itinerari: GV.globals.CULTURA_CONFIG.itinerari,
+      // itinerario: filter.itinerario,
       propertyName: 'NOME',
       luoghi: null,
       filterResult: [],
       listaLuoghi: [],
       loading: false,
       show: false,
-      // showRicercaResult: true,
+      visible: visible,
     };
   },
   async mounted() {
-    this.filterLuoghi()
-    // console.log('CONFIG', GV.globals.CULTURA_CONFIG)
-    // this.raggruppamenti = GV.globals.CULTURA_CONFIG.raggruppamenti.sort((a,b) => a.id - b.id)
+    if (this.raggruppamento) this.onChangeRaggruppamento(this.raggruppamento);
+    if (this.provincia) this.onChangeProvincia(this.provincia);
+    this.filterLuoghi();
   },
   methods: {
     onChangeRaggruppamento(value) {
-      // console.log(value)
-      this.categorie = this.raggruppamenti.filter(r => r.id === value)[0].categorie
-      this.categoria = 0
+      this.categorie = this.raggruppamenti.filter((r) => r.id === value)[0].categorie;
+      this.categoria = 0;
     },
     onChangeProvincia(value) {
-      // console.log(value)
-      this.comuni = this.province.filter(r => r.id === value)[0].comuni
-      this.comune = 0
+      this.comuni = this.province.filter((r) => r.id === value)[0].comuni;
+      this.comune = 0;
     },
-    search(query) {
-      this.searchResults = [];
-      // console.log(query)
-      if (query.length < 3) {
+    // search(query) {
+    //   this.searchResults = [];
+    //   if (query.length < 3) {
+    //     return;
+    //   }
+    //   fetch(`/geoservices/REST/cultura/ricercaLuoghi?q=${query}`)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       if (data.success) {
+    //         this.searchResults = data.results;
+    //       } else {
+    //         throw data.message;
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error:', error);
+    //       alert(error);
+    //     });
+    // },
+    // onSelectSearch(value) {
+    //   console.log('onSelectSearch', value);
+    //   this.luoghi = value;
+    // },
+    filterLuoghi() {
+      if (
+        !GV.globals.CULTURA_CONFIG.flagItinerario &&
+        this.raggruppamento === 0 &&
+        this.categoria === 0 &&
+        this.provincia === 0 &&
+        this.comune === 0
+        // && this.itinerario === 0
+      ) {
         return;
       }
-      fetch(`/geoservices/REST/cultura/ricercaLuoghi?q=${query}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            // console.log(data.results)
-            this.searchResults = data.results;
-            // TODO: find e evidenziazione luogo 
-          } else {
-            throw data.message;
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert(error);
-        });
-    },
-    onSelectSearch(value) {
-      // console.log('onSelectSearch', value)
-      // this.luoghi = value;
-      // TODO find + zoom su luogo trovato
-    },
-    filterLuoghi() {
-      if (this.raggruppamento===0 && this.categoria===0 && this.provincia===0 && this.comune===0 && this.itinerario===0){
-        return
-      }
 
-      this.listaLuoghi = GV.globals.CULTURA_CONFIG.luoghi.filter(luogo => {
-        if (this.raggruppamento && this.raggruppamento !== luogo.properties.ID_RAGGRUPPAMENTO) return false
-        // if (this.categoria && this.categoria !== luogo.properties.CATOID) return false
-        if (this.categoria && !this.ricercaCategoria(luogo.properties.OID)) return false
-        if (this.provincia && this.provincia !== luogo.properties.COD_PROV) return false
-        if (this.comune && this.comune !== luogo.properties.COD_PROV+luogo.properties.COD_COM) return false
-        return true
-      }).sort((a, b) => { 
-          const res = (a.properties.NOME < b.properties.NOME)? -1 : 1
-          return res
-      })
+      this.listaLuoghi = GV.globals.CULTURA_CONFIG.luoghi
+        .filter((luogo) => {
+          if (this.raggruppamento && this.raggruppamento !== luogo.properties.ID_RAGGRUPPAMENTO)
+            return false;
+          // if (this.categoria && this.categoria !== luogo.properties.CATOID) return false
+          if (this.categoria && !this.ricercaCategoria(luogo.properties.OID)) return false;
+          if (this.provincia && this.provincia !== luogo.properties.COD_PROV) return false;
+          if (this.comune && this.comune !== luogo.properties.COD_PROV + luogo.properties.COD_COM)
+            return false;
+          return true;
+        })
+        .sort((a, b) => {
+          const res = a.properties.NOME < b.properties.NOME ? -1 : 1;
+          return res;
+        });
 
       if (this.listaLuoghi.length === 0) {
         notification('Nessun risultato trovato');
         // console.log('vuoto')
       } else {
-        this.showResults()
-        this.filtraMappa()
-        this.zoomExtentsMap()
+        this.showResults();
+        this.filtraMappa();
+        this.zoomExtentsMap();
       }
     },
     ricercaCategoria(oid) {
-      const filter = GV.globals.CULTURA_CONFIG.categorieRicerca.filter(cat => {
-        if (cat.id == oid && cat.catoid === this.categoria) return true
-      })
-      if (filter.length > 0) return true 
-      return false
+      const filter = GV.globals.CULTURA_CONFIG.categorieRicerca.filter((cat) => {
+        if (cat.id == oid && cat.catoid === this.categoria) return true;
+      });
+      if (filter.length > 0) return true;
+      return false;
     },
     // async filterLuoghiOLD() {
     //   const data = {
@@ -379,17 +390,17 @@ export default {
     // },
     zoomExtentsMap() {
       var bounds = L.latLngBounds([]);
-      GV.globals.CULTURA_LAYERS.forEach(fl => {
-        const layer = GV.app.map.getLayerByName(fl.name)
-        const layerBounds = layer.getBounds()
+      GV.globals.CULTURA_LAYERS.forEach((fl) => {
+        const layer = GV.app.map.getLayerByName(fl.name);
+        const layerBounds = layer.getBounds();
         bounds.extend(layerBounds);
       });
       GV.app.map.fitBounds(bounds);
     },
     filtraMappa() {
-      GV.globals.CULTURA_LAYERS.forEach(layer => {
+      GV.globals.CULTURA_LAYERS.forEach((layer) => {
         GV.config.removeLayer(layer.name);
-        layer.filter = feature => {
+        layer.filter = (feature) => {
           let found = false;
           for (let luogo of this.listaLuoghi) {
             if (feature.properties.OID == luogo.properties.OID) {
@@ -399,48 +410,54 @@ export default {
           }
           return found;
         };
+        // debugger;
         GV.config.addLayerToMap(layer, 0);
       });
     },
     reset() {
-      this.raggruppamento = 0
-      this.categoria = 0
-      this.provincia=0
-      this.comune=0
-      this.onChangeRaggruppamento(0) 
-      this.onChangeProvincia(0)     
-      const div = document.getElementById('gv-cultura-ricerca-results')
-      if (div) div.remove()
-      GV.globals.CULTURA_LAYERS.forEach(layer => {
+      this.raggruppamento = 0;
+      this.categoria = 0;
+      this.provincia = 0;
+      this.comune = 0;
+      this.onChangeRaggruppamento(0);
+      this.onChangeProvincia(0);
+      const div = document.getElementById('gv-cultura-ricerca-results');
+      if (div) div.remove();
+      GV.globals.CULTURA_LAYERS.forEach((layer) => {
         GV.config.removeLayer(layer.name);
         layer.filter = () => {
           return true;
         };
         GV.config.addLayerToMap(layer, 0);
       });
-      this.zoomExtentsMap()      
+      this.zoomExtentsMap();
     },
-    closeResultPanels() {
-    },
-    showInfo() {
-    },
+    closeResultPanels() {},
+    showInfo() {},
     showResults() {
-      // console.log(this.listaLuoghi)
+      const filtro = {
+        comune: this.comune ? this.comune : null,
+        provincia: this.provincia ? this.provincia : null,
+        raggruppamento: this.raggruppamento ? this.raggruppamento : null,
+        categoria: this.categoria ? this.categoria : null,
+        // itinerario: this.itinerario ? this.itinerario : null,
+      };
       mountComponent({
         elId: 'gv-cultura-ricerca-results',
         clear: true,
         vm: new Vue({
-          template: `<gv-cultura-ricerca-results :listaLuoghi="listaLuoghi"></gv-cultura-ricerca-results>`,
+          template: `<gv-cultura-ricerca-results :listaLuoghi="listaLuoghi" :filtro="filtro"></gv-cultura-ricerca-results>`,
           data: {
             listaLuoghi: this.listaLuoghi,
+            filtro: filtro,
           },
         }),
-      });     
+      });
     },
     handleLink(index, link) {
       window.open(link);
     },
-    hidePanel: function(event) {
+    hidePanel: function (event) {
       if (this.show) {
         document.getElementById('gv-cultura-ricerca-body').style.display = 'block';
         document.getElementById('gv-cultura-ricerca').style.width = '480px';

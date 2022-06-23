@@ -6,11 +6,16 @@
       size="mini"
       empty-text=" "
       :row-class-name="layerClassName"
-      style="width: 100%;line-height: 23px; font-weight: 400;"
+      style="width: 100%; line-height: 23px; font-weight: 400"
     >
       <el-table-column align="center" width="30">
         <template slot-scope="scope">
-          <img :src="iconUrl(scope.row)" width="20" @click="showLegendPanel(scope.row)" />
+          <img
+            :alt="scope.row.legend.label"
+            :src="iconUrl(scope.row)"
+            width="20"
+            @click="showLegendPanel(scope.row)"
+          />
         </template>
       </el-table-column>
       <el-table-column align="center" width="25">
@@ -31,7 +36,7 @@
         property="legend.label"
       >
       </el-table-column> -->
-      <el-table-column class-name="gv-inverted-color-scheme-light" style="word-break: normal;">
+      <el-table-column class-name="gv-inverted-color-scheme-light" style="word-break: normal">
         <template slot-scope="scope">
           <el-popover
             trigger="hover"

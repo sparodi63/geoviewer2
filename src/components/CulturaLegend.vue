@@ -1,5 +1,5 @@
 <template>
-  <div id="gv-cultura-legend" class="gv-inverted-color-scheme">
+  <div v-if="visible" id="gv-cultura-legend" class="gv-inverted-color-scheme">
     <div id="gv-cultura-legend-title" class="gv-cultura-legend-title gv-color-scheme">
       {{ title }}
       <button
@@ -41,12 +41,13 @@ Vue.component('gv-cultura-ricerca', () => import('./CulturaRicerca.vue'));
 export default {
   name: 'gv-cultura-legend',
   data() {
-    const options = GV.config.getToolOptions('gv-cultura-legend')
-
+    const options = GV.config.getToolOptions('gv-cultura-legend');
+    const visible = !GV.globals.CULTURA_CONFIG.embed && !GV.globals.CULTURA_CONFIG.flagItinerario;
     return {
       options: options,
       maps: GV.config.maps,
       show: true,
+      visible: visible,
       tema: 0,
       title: 'LEGENDA',
     };
@@ -67,20 +68,20 @@ export default {
     });
   },
   methods: {
-    hideLegend: function(event) {
+    hideLegend: function (event) {
       if (this.show) {
         // document.getElementById('gv-cultura-legend-title').style.display = 'block';
         // document.getElementById('gv-cultura-legend-title-collapsed').style.display = 'none';
         document.getElementById('gv-cultura-legend-wrapper').style.display = 'block';
         document.getElementById('gv-cultura-legend').style.width = '260px';
       } else {
-        // document.getElementById('gv-cultura-legend-title').style.display = 'none';
-        // document.getElementById('gv-cultura-legend-title-collapsed').style.display = 'block';
-        document.getElementById('gv-cultura-legend-wrapper').style.display = 'none';
-        document.getElementById('gv-cultura-legend').style.width = '100px';
+        const wrap = document.getElementById('gv-cultura-legend-wrapper');
+        if (wrap) wrap.style.display = 'none';
+        const legend = document.getElementById('gv-cultura-legend');
+        if (legend) legend.style.width = '100px';
       }
       this.show = !this.show;
-    },    
+    },
     toggleCollapseClass() {
       return this.show
         ? 'gv-cultura-legend-collapse gv-color-scheme el-icon-arrow-down'

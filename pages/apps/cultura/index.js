@@ -1,133 +1,63 @@
-
 fetch(`/geoservices/data/cultura/config.json`)
   .then(response => response.json())
   .then(data => {
-    GV.globals.CULTURA_CONFIG = data
-    GV.globals.CULTURA_CONFIG.luoghi = []
-    for (const rg of data.raggruppamenti) {
-      GV.globals.CULTURA_CONFIG.luoghi.push(rg.data.features)
-    }
-    GV.globals.CULTURA_CONFIG.luoghi = GV.globals.CULTURA_CONFIG.luoghi.flat()
-    GV.globals.CULTURA_CONFIG.filter = getFilter()
-    GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN=GV.globals.CULTURA_CONFIG.domains[parseInt(GV.utils.getUrlParam('CURRENT_DOMAIN'))]
-    init(getMapConfig(data.raggruppamenti))
+    setConfig(data);
   })
   .catch(error => {
     console.error('Error:', error);
     alert(error);
   });
 
+function setConfig(data) {
+  GV.globals.CULTURA_CONFIG = data;
+  GV.globals.CULTURA_CONFIG.luoghi = [];
+  for (const rg of data.raggruppamenti) {
+    GV.globals.CULTURA_CONFIG.luoghi.push(rg.data.features);
+  }
+  GV.globals.CULTURA_CONFIG.luoghi = GV.globals.CULTURA_CONFIG.luoghi.flat();
+  GV.globals.CULTURA_CONFIG.filter = getFilter();
+  GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN =
+    GV.globals.CULTURA_CONFIG.domains[parseInt(GV.utils.getUrlParam('CURRENT_DOMAIN'))];
+  GV.globals.CULTURA_CONFIG.embed = GV.utils.getUrlParam('TYPE') === 'EMBED' ? true : false;
+  GV.globals.CULTURA_CONFIG.flagItinerario = GV.utils.getUrlParam('ITINERARIO') ? true : false;
+  init(getMapConfig());
+}
+
 function getFilter() {
   return {
-    raggruppamento: (GV.utils.getUrlParam('RAGGRUPPAMENTO')) ? parseInt(GV.utils.getUrlParam('RAGGRUPPAMENTO')): 0,
-    categoria: (GV.utils.getUrlParam('CATEGORIA')) ? parseInt(GV.utils.getUrlParam('CATEGORIA')): 0,
-    provincia: (GV.utils.getUrlParam('PROVINCIA')) ? parseInt(GV.utils.getUrlParam('PROVINCIA')): 0,
-    comune: (GV.utils.getUrlParam('COMUNE')) ? parseInt(GV.utils.getUrlParam('COMUNE')): 0,
-    itinerario: (GV.utils.getUrlParam('ITINERARIO')) ? parseInt(GV.utils.getUrlParam('ITINERARIO')) : 0,
-    luogo: (GV.utils.getUrlParam('LUOGO')) ? GV.utils.getUrlParam('LUOGO') : 0,
-  }
+    raggruppamento: GV.utils.getUrlParam('RAGGRUPPAMENTO')
+      ? parseInt(GV.utils.getUrlParam('RAGGRUPPAMENTO'))
+      : 0,
+    categoria: GV.utils.getUrlParam('CATEGORIA') ? parseInt(GV.utils.getUrlParam('CATEGORIA')) : 0,
+    provincia: GV.utils.getUrlParam('PROVINCIA') ? parseInt(GV.utils.getUrlParam('PROVINCIA')) : 0,
+    comune: GV.utils.getUrlParam('COMUNE') ? parseInt(GV.utils.getUrlParam('COMUNE')) : 0,
+    itinerario: GV.utils.getUrlParam('ITINERARIO')
+      ? parseInt(GV.utils.getUrlParam('ITINERARIO'))
+      : 0,
+    luogo: GV.utils.getUrlParam('LUOGO') ? GV.utils.getUrlParam('LUOGO') : 0,
+  };
 }
 
 function onFeatureSelect(feature) {
-  const div = document.getElementById('gv-cultura-info')
-  if (div) div.remove()
+  const div = document.getElementById('gv-cultura-info');
+  if (div) div.remove();
   GV.mount({
     elId: 'gv-cultura-info',
     toggleEl: true,
     template: `<gv-cultura-info :properties="properties" ></gv-cultura-info>`,
     data: {
-      properties: feature.properties
+      properties: feature.properties,
     },
   });
   GV.app.map.setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 19);
 }
 
-// function getClassesCat(rg) {
-//   return rg.categorie.map(cat => {
-//     return {
-//       name: `${cat.id}`,
-//       filter: {
-//         key: 'CATOID',
-//         value: cat.id,
-//       },
-//       style: {
-//         // TODO: ripristinare icone di dettaglio
-//         iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
-//         // iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${cat.id}.png`,
-//         iconSize: [32, 37],
-//         iconAnchor: [16, 37],
-//         popupAnchor: [0, -37],
-//       },
-//     }
-//   })
-// }
-
-// function getClasses(rg) {
-//   return [
-//     {
-//       name: rg.id,
-//       filter: {
-//         key: "RAGGRUPPAMENTO",
-//         value: rg.id,
-//       },
-//       style: {
-//         iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
-//         iconSize: [32, 37],
-//         iconAnchor: [16, 37],
-//         popupAnchor: [0, -37],
-//       },
-//     },
-//   ]
-// } 
-
-function getMapConfig(config) {
-  // console.log('config',config)
-  GV.globals.CULTURA_LAYERS = config.map(rg => {
-    // const classes = getClasses(rg)
-    // const classes = getClassesCat(rg)
-    return {
-      type: 'JSON',
-      dataType: 'json',
-      cluster: {
-        options: {
-          iconCreateFunction: function(cluster) {
-            return new L.DivIcon({
-              html: '<div><span>' + cluster.getChildCount() + '</span></div>',
-              className: 'marker-cluster marker-cluster-1',
-              iconSize: new L.Point(40, 40),
-            });
-          },
-          maxClusterRadius: 80,
-          spiderfyOnMaxZoom: true,
-          zoomToBoundsOnClick: true
-        },
-      },
-      name: `${rg.id}`,
-      visible: true,
-      geomSubType: 'POINT',
-      // url: `/geoservices/data/cultura/${rg.id}.json`,
-      data: rg.data,
-      legend: {
-        label: rg.raggruppamento,
-        icon: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
-      },
-      tooltip: '{NOME}',
-      onFeatureSelect: onFeatureSelect,
-      // classes: classes,
-      pointToLayer: function(feature, latlng) {
-        const icon = L.icon({
-          // iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${feature.properties.CATOID}.png`,
-          iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
-          iconSize: [32, 37],
-          iconAnchor: [16, 37],
-          popupAnchor: [0, -37],
-        })
-        return L.marker(latlng, {
-          icon: icon,
-        });
-      }
-    }
-  })
+function getMapConfig() {
+  if (GV.globals.CULTURA_CONFIG.flagItinerario) {
+    GV.globals.CULTURA_LAYERS = getLayersItinerario();
+  } else {
+    GV.globals.CULTURA_LAYERS = getLayersRaggruppamenti();
+  }
 
   const maps = [
     {
@@ -136,7 +66,124 @@ function getMapConfig(config) {
       layers: GV.globals.CULTURA_LAYERS,
     },
   ];
-  return maps
+  return maps;
+}
+
+function zoomExtentsMap() {
+  var bounds = L.latLngBounds([]);
+  GV.globals.CULTURA_LAYERS.forEach(fl => {
+    const layer = GV.app.map.getLayerByName(fl.name);
+    const layerBounds = layer.getBounds();
+    bounds.extend(layerBounds);
+  });
+  GV.app.map.fitBounds(bounds);
+}
+
+function getLuoghiItineario(idItinerario) {
+  const luoghi = GV.globals.CULTURA_CONFIG.luoghi.filter(luogo => {
+    const itinerari = luogo.properties.itinerari;
+    let found = false;
+    if (itinerari.length > 0) {
+      for (const itinerario of itinerari) {
+        if (itinerario == idItinerario) {
+          found = true;
+        }
+      }
+    }
+    return found;
+  });
+  return luoghi;
+}
+
+function getLayersItinerario() {
+  const idItinerario = GV.globals.CULTURA_CONFIG.filter.itinerario;
+  const luoghi = getLuoghiItineario(idItinerario);
+  GV.globals.CULTURA_CONFIG.luoghi = luoghi;
+  const label = GV.globals.CULTURA_CONFIG.itinerari.filter(it => {
+    return (it.id = idItinerario);
+  })[0].itinerario;
+
+  return [
+    {
+      type: 'JSON',
+      dataType: 'json',
+      cluster: {
+        options: {
+          iconCreateFunction: function(cluster) {
+            return new L.DivIcon({
+              html: '<div><span>' + cluster.getChildCount() + '</span></div>',
+              className: `marker-cluster marker-cluster-${idItinerario}`,
+              iconSize: new L.Point(40, 40),
+            });
+          },
+          maxClusterRadius: 1,
+          spiderfyOnMaxZoom: true,
+          zoomToBoundsOnClick: true,
+        },
+      },
+      name: `${idItinerario}`,
+      visible: true,
+      geomSubType: 'POINT',
+      data: luoghi,
+      legend: {
+        label: label,
+        icon: `/geoservices/apps/viewer/static/img/cultura/legend/${idItinerario}.png`,
+      },
+      tooltip: '{NOME}',
+      onFeatureSelect: onFeatureSelect,
+      pointToLayer: function(feature, latlng) {
+        const icon = L.icon({
+          iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${idItinerario}.png`,
+          iconSize: [32, 32],
+        });
+        return L.marker(latlng, {
+          icon: icon,
+        });
+      },
+    },
+  ];
+}
+
+function getLayersRaggruppamenti() {
+  return GV.globals.CULTURA_CONFIG.raggruppamenti.map(rg => {
+    return {
+      type: 'JSON',
+      dataType: 'json',
+      cluster: {
+        options: {
+          iconCreateFunction: function(cluster) {
+            return new L.DivIcon({
+              html: '<div><span>' + cluster.getChildCount() + '</span></div>',
+              className: `marker-cluster marker-cluster-${rg.id}`,
+              iconSize: new L.Point(40, 40),
+            });
+          },
+          maxClusterRadius: 80,
+          spiderfyOnMaxZoom: true,
+          zoomToBoundsOnClick: true,
+        },
+      },
+      name: `${rg.id}`,
+      visible: true,
+      geomSubType: 'POINT',
+      data: rg.data,
+      legend: {
+        label: rg.raggruppamento,
+        icon: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
+      },
+      tooltip: '{NOME}',
+      onFeatureSelect: onFeatureSelect,
+      pointToLayer: function(feature, latlng) {
+        const icon = L.icon({
+          iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
+          iconSize: [32, 32],
+        });
+        return L.marker(latlng, {
+          icon: icon,
+        });
+      },
+    };
+  });
 }
 
 function init(maps) {
@@ -147,17 +194,20 @@ function init(maps) {
         type: 'leaflet',
         maxZoom: 19,
       },
-      callback: function () {
+      callback: function() {
         //  console.log(GV.globals.CULTURA_CONFIG.filter.luogo)
+        console.log('MAP!!!!', GV.app.map.map);
+        new L.Control.Zoom({ position: 'bottomright' }).addTo(GV.app.map.map);
         if (GV.globals.CULTURA_CONFIG.filter.luogo) {
-          const oid = GV.globals.CULTURA_CONFIG.filter.luogo
+          const oid = GV.globals.CULTURA_CONFIG.filter.luogo;
           const features = GV.globals.CULTURA_CONFIG.luoghi.filter(luogo => {
-            if (luogo.properties.OID === oid) return true
-          })
+            if (luogo.properties.OID === oid) return true;
+          });
           if (features[0]) {
-             onFeatureSelect(features[0])
+            onFeatureSelect(features[0]);
           }
         }
+        zoomExtentsMap();
       },
       layout: {
         title: ' ',
@@ -182,6 +232,3 @@ function init(maps) {
     maps: [],
   });
 }
-
-
-

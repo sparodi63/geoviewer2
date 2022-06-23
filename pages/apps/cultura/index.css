@@ -32,17 +32,49 @@ body {
 
 /* ----------------------------------------------- */
 
-.marker-cluster-1 {
-  background-color: rgba(35, 111, 193, 0.6);
-  /* background-color: #236FC1;
-  opacity:0.2; */
+.marker-cluster-2 {
+  background-color: rgba(190, 24, 21, 0.6);
+}
+.marker-cluster-2 div {
+  background-color: rgba(190, 24, 21, 0.6);
+}
+.marker-cluster-3 {
+  background-color: rgba(188, 95, 7, 0.6);
+}
+.marker-cluster-3 div {
+  background-color: rgba(188, 95, 7, 0.6);
+}
+.marker-cluster-5 {
+  background-color: rgba(80, 23, 26, 0.6);
+}
+.marker-cluster-5 div {
+  background-color: rgba(80, 23, 26, 0.6);
+}
+.marker-cluster-6 {
+  background-color: rgba(59, 96, 41, 0.6);
+}
+.marker-cluster-6 div {
+  background-color: rgba(59, 96, 41, 0.6);
+}
+.marker-cluster-7 {
+  background-color: rgba(223, 78, 38, 0.6);
+}
+.marker-cluster-7 div {
+  background-color: rgba(223, 78, 38, 0.6);
+}
+.marker-cluster-8 {
+  background-color: rgba(232, 134, 92, 0.6);
+}
+.marker-cluster-8 div {
+  background-color: rgba(232, 134, 92, 0.6);
+}
+.marker-cluster-9 {
+  background-color: rgba(241, 200, 37, 0.6);
+}
+.marker-cluster-9 div {
+  background-color: rgba(241, 200, 37, 0.6);
 }
 
-.marker-cluster-1 div {
-  background-color: rgba(35, 111, 193, 0.6);
-  /* background-color: #236FC1;
-  opacity:0.6; */
-}
 
 /* .cluster_1 {
   background-image: url(/geoservices/apps/viewer/static/img/cultura/legend/1-nq.png);
@@ -193,7 +225,7 @@ body {
 
 .el-button {
   background-color: #8D6795 !important ;
-  color: #ddd;
+  color: #fff;
   font-weight: 800;
 }
 
@@ -201,10 +233,15 @@ body {
   color: black !important;
 } */
 
-.el-input__inner {
+/* .el-input__inner {
   color: black;
-}
+} */
 
 .el-table thead {
   color: #e94e1b;
+}
+
+button:hover
+{
+  color: #000 !important;
 }
