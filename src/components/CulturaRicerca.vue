@@ -1,5 +1,10 @@
 <template>
-  <div v-if="visible" class="gv-cultura-ricerca gv-inverted-color-scheme" id="gv-cultura-ricerca">
+  <div
+    v-if="visible"
+    class="gv-cultura-ricerca gv-inverted-color-scheme"
+    id="gv-cultura-ricerca"
+    ref="gv-cultura-ricerca"
+  >
     <div v-draggable id="gv-cultura-ricerca-title" class="gv-cultura-ricerca-title gv-color-scheme">
       <b>RICERCHE</b>
       <button
@@ -260,7 +265,7 @@ export default {
       comuni: comuni,
       comune: filter.comune,
       // itinerari: GV.globals.CULTURA_CONFIG.itinerari,
-      // itinerario: filter.itinerario,
+      itinerario: filter.itinerario,
       propertyName: 'NOME',
       luoghi: null,
       filterResult: [],
@@ -304,20 +309,15 @@ export default {
     //     });
     // },
     // onSelectSearch(value) {
-    //   console.log('onSelectSearch', value);
     //   this.luoghi = value;
     // },
     filterLuoghi() {
-      if (
-        !GV.globals.CULTURA_CONFIG.flagItinerario &&
-        this.raggruppamento === 0 &&
-        this.categoria === 0 &&
-        this.provincia === 0 &&
-        this.comune === 0
-        // && this.itinerario === 0
-      ) {
+      if (!GV.globals.CULTURA_CONFIG.flagItinerario && this.noFilter()) {
         return;
       }
+
+      const divInfo = document.getElementById('gv-cultura-info');
+      if (divInfo) divInfo.remove();
 
       this.listaLuoghi = GV.globals.CULTURA_CONFIG.luoghi
         .filter((luogo) => {
@@ -325,8 +325,8 @@ export default {
             return false;
           // if (this.categoria && this.categoria !== luogo.properties.CATOID) return false
           if (this.categoria && !this.ricercaCategoria(luogo.properties.OID)) return false;
-          if (this.provincia && this.provincia !== luogo.properties.COD_PROV) return false;
-          if (this.comune && this.comune !== luogo.properties.COD_PROV + luogo.properties.COD_COM)
+          if (this.provincia && this.provincia != luogo.properties.COD_PROV) return false;
+          if (this.comune && this.comune != luogo.properties.COD_PROV + luogo.properties.COD_COM)
             return false;
           return true;
         })
@@ -337,7 +337,6 @@ export default {
 
       if (this.listaLuoghi.length === 0) {
         notification('Nessun risultato trovato');
-        // console.log('vuoto')
       } else {
         this.showResults();
         this.filtraMappa();
@@ -373,12 +372,9 @@ export default {
     //   }).then(response => response.json())
     //     .then(data => {
     //       if (data.success) {
-    //         // console.log('fetch')
     //         this.filterResult = data.results
-    //         console.log(this.filterResult)
     //         this.showResults();
     //         this.filtraMappa();
-    //         // console.log('filtro mappa')
     //       } else {
     //         throw data.message;
     //       }
@@ -414,15 +410,44 @@ export default {
         GV.config.addLayerToMap(layer, 0);
       });
     },
+    noFilter() {
+      if (
+        this.raggruppamento === 0 &&
+        this.categoria === 0 &&
+        this.provincia === 0 &&
+        this.comune === 0
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     reset() {
+      if (GV.globals.CULTURA_CONFIG.flagItinerario) {
+        if (this.noFilter()) {
+          return;
+        } else {
+          this.raggruppamento = 0;
+          this.categoria = 0;
+          this.provincia = 0;
+          this.comune = 0;
+          this.filterLuoghi();
+          return;
+        }
+      }
+
       this.raggruppamento = 0;
       this.categoria = 0;
       this.provincia = 0;
       this.comune = 0;
       this.onChangeRaggruppamento(0);
       this.onChangeProvincia(0);
+
       const div = document.getElementById('gv-cultura-ricerca-results');
       if (div) div.remove();
+      const divInfo = document.getElementById('gv-cultura-info');
+      if (divInfo) divInfo.remove();
+
       GV.globals.CULTURA_LAYERS.forEach((layer) => {
         GV.config.removeLayer(layer.name);
         layer.filter = () => {
@@ -432,6 +457,7 @@ export default {
       });
       this.zoomExtentsMap();
     },
+
     closeResultPanels() {},
     showInfo() {},
     showResults() {
@@ -440,7 +466,7 @@ export default {
         provincia: this.provincia ? this.provincia : null,
         raggruppamento: this.raggruppamento ? this.raggruppamento : null,
         categoria: this.categoria ? this.categoria : null,
-        // itinerario: this.itinerario ? this.itinerario : null,
+        itinerario: this.itinerario ? this.itinerario : null,
       };
       mountComponent({
         elId: 'gv-cultura-ricerca-results',

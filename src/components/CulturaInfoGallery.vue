@@ -64,7 +64,7 @@ export default {
 
     return {
       show: false,
-      galleryUrl: `/geoservices/REST/cultura/getConfigGallery/${this.id}`,
+      // galleryUrl: `/geoservices/REST/cultura/getConfigGallery/${this.id}`,
       title: 'Gallery Immagini',
       // gallery: null,
       autoplay: false,
@@ -166,7 +166,7 @@ export default {
   /* top: 5%; */
   display: block;
   margin: 5%;
-  margin-top: 20px;
+  margin-top: 50px;
   position: absolute;
   width: 90%;
   height: auto;

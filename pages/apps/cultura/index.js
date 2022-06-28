@@ -16,13 +16,17 @@ function setConfig(data) {
   }
   GV.globals.CULTURA_CONFIG.luoghi = GV.globals.CULTURA_CONFIG.luoghi.flat();
   GV.globals.CULTURA_CONFIG.filter = getFilter();
-  GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN =
-    GV.globals.CULTURA_CONFIG.domains[parseInt(GV.utils.getUrlParam('CURRENT_DOMAIN'))];
+  GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN = getCurrentDomain();
   GV.globals.CULTURA_CONFIG.embed = GV.utils.getUrlParam('TYPE') === 'EMBED' ? true : false;
   GV.globals.CULTURA_CONFIG.flagItinerario = GV.utils.getUrlParam('ITINERARIO') ? true : false;
   init(getMapConfig());
 }
 
+function getCurrentDomain() {
+  let domain = GV.globals.CULTURA_CONFIG.domains[parseInt(GV.utils.getUrlParam('CURRENT_DOMAIN'))];
+  if (!domain) domain = 'https://luoghidellacultura.regione.liguria.it/';
+  return domain;
+}
 function getFilter() {
   return {
     raggruppamento: GV.utils.getUrlParam('RAGGRUPPAMENTO')
@@ -49,14 +53,19 @@ function onFeatureSelect(feature) {
       properties: feature.properties,
     },
   });
-  GV.app.map.setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 19);
+  GV.app.map.setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 18);
 }
 
 function getMapConfig() {
   if (GV.globals.CULTURA_CONFIG.flagItinerario) {
     GV.globals.CULTURA_LAYERS = getLayersItinerario();
   } else {
-    GV.globals.CULTURA_LAYERS = getLayersRaggruppamenti();
+    if (GV.globals.CULTURA_CONFIG.filter.luogo) {
+      GV.globals.CULTURA_LAYERS = getLayersLuogo();
+      GV.globals.CULTURA_CONFIG.embed = true;
+    } else {
+      GV.globals.CULTURA_LAYERS = getLayersRaggruppamenti();
+    }
   }
 
   const maps = [
@@ -77,6 +86,56 @@ function zoomExtentsMap() {
     bounds.extend(layerBounds);
   });
   GV.app.map.fitBounds(bounds);
+}
+
+function getLayersLuogo() {
+  const oid = GV.globals.CULTURA_CONFIG.filter.luogo;
+  const luoghi = GV.globals.CULTURA_CONFIG.luoghi.filter(luogo => {
+    if (luogo.properties.OID === oid) return true;
+  });
+  if (!luoghi[0]) {
+    return;
+  }
+  const idRaggruppamento = luoghi[0].properties.ID_RAGGRUPPAMENTO;
+  return [
+    {
+      type: 'JSON',
+      dataType: 'json',
+      cluster: {
+        options: {
+          iconCreateFunction: function(cluster) {
+            return new L.DivIcon({
+              html: '<div><span>' + cluster.getChildCount() + '</span></div>',
+              className: `marker-cluster marker-cluster-${idRaggruppamento}`,
+              iconSize: new L.Point(40, 40),
+            });
+          },
+          maxClusterRadius: 1,
+          spiderfyOnMaxZoom: true,
+          zoomToBoundsOnClick: true,
+        },
+      },
+      name: `${idRaggruppamento}`,
+      visible: true,
+      geomSubType: 'POINT',
+      data: luoghi,
+      legend: {
+        label: `${idRaggruppamento}`,
+        icon: `/geoservices/apps/viewer/static/img/cultura/legend/${idRaggruppamento}.png`,
+      },
+      tooltip: '{NOME}',
+      onFeatureSelect: onFeatureSelect,
+      pointToLayer: function(feature, latlng) {
+        const icon = L.icon({
+          iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${idRaggruppamento}.png`,
+          iconSize: [32, 32],
+        });
+        return L.marker(latlng, {
+          icon: icon,
+        });
+      },
+    },
+  ];
 }
 
 function getLuoghiItineario(idItinerario) {
@@ -116,7 +175,7 @@ function getLayersItinerario() {
               iconSize: new L.Point(40, 40),
             });
           },
-          maxClusterRadius: 1,
+          maxClusterRadius: 20,
           spiderfyOnMaxZoom: true,
           zoomToBoundsOnClick: true,
         },
@@ -187,6 +246,8 @@ function getLayersRaggruppamenti() {
 }
 
 function init(maps) {
+  const banner = `<div id="titolo"> <div id="loghi_sx"><a href="${GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN}"><img src="/geoservices/apps/viewer/static/img/cultura/logo2.png"></a></div> <div id="loghi_dx"></div> </div>`;
+
   GV.init({
     debug: true,
     application: {
@@ -195,8 +256,6 @@ function init(maps) {
         maxZoom: 19,
       },
       callback: function() {
-        //  console.log(GV.globals.CULTURA_CONFIG.filter.luogo)
-        console.log('MAP!!!!', GV.app.map.map);
         new L.Control.Zoom({ position: 'bottomright' }).addTo(GV.app.map.map);
         if (GV.globals.CULTURA_CONFIG.filter.luogo) {
           const oid = GV.globals.CULTURA_CONFIG.filter.luogo;
@@ -218,6 +277,17 @@ function init(maps) {
             options: {
               maps: maps,
               version: 2,
+            },
+          },
+          {
+            name: 'gv-inner-html',
+            position: 'bottomleft',
+            options: {
+              props: [
+                {
+                  html: banner,
+                },
+              ],
             },
           },
         ],

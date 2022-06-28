@@ -26,6 +26,24 @@ body {
   font-weight: 800;
 }
 
+#titolo {
+  /* position: absolute; */
+  left: 0px;
+  bottom: 0px;
+  height: 80px;
+  /* width: 220px; */
+  background: #CBCDCB;
+  opacity: 0.9;
+  padding: 10px;
+}
+
+#loghi_sx {
+  float: left;
+  margin: 0px;
+  height: 70px;
+  width: 270px;
+}
+
 /* ----------------------------------------------- */
 
 /* Cluster */
@@ -75,68 +93,93 @@ body {
   background-color: rgba(241, 200, 37, 0.6);
 }
 
-
-/* .cluster_1 {
-  background-image: url(/geoservices/apps/viewer/static/img/cultura/legend/1-nq.png);
-  text-align: center;
-  font-size: 20px;
-  color: white;
+/* CLUSTER ITINERARI */
+.marker-cluster-10709 {
+  background-color: rgba(104, 36, 95, 0.6);
+}
+.marker-cluster-10709 div {
+  background-color: rgba(104, 36, 95, 0.6);
+}
+.marker-cluster-10710 {
+  background-color: rgba(104, 36, 95, 0.6);
+}
+.marker-cluster-10710 div {
+  background-color: rgba(104, 36, 95, 0.6);
+}
+.marker-cluster-11221 {
+  background-color: rgba(153, 167, 170, 0.6);
+}
+.marker-cluster-11221 div {
+  background-color: rgba(153, 167, 170, 0.6);
+}
+.marker-cluster-11421 {
+  background-color: rgba(69, 180, 183, 0.6);
+}
+.marker-cluster-11421 div {
+  background-color: rgba(69, 180, 183, 0.6);
+}
+.marker-cluster-11461 {
+  background-color: rgba(42, 100, 102, 0.6);
+}
+.marker-cluster-11461 div {
+  background-color: rgba(42, 100, 102, 0.6);
+}
+.marker-cluster-11481 {
+  background-color: rgba(193, 140, 77, 0.6);
+}
+.marker-cluster-11481 div {
+  background-color: rgba(193, 140, 77, 0.6);
+}
+.marker-cluster-11801 {
+  background-color: rgba(188, 70, 47, 0.6);
+}
+.marker-cluster-11801 div {
+  background-color: rgba(188, 70, 47, 0.6);
+}
+.marker-cluster-11921 {
+  background-color: rgba(178, 150, 34, 0.6);
+}
+.marker-cluster-11921 div {
+  background-color: rgba(178, 150, 34, 0.6);
+}
+.marker-cluster-11981 {
+  background-color: rgba(196, 99, 34, 0.6);
+}
+.marker-cluster-11981 div {
+  background-color: rgba(196, 99, 34, 0.6);
+}
+.marker-cluster-12021 {
+  background-color: rgba(87, 196, 146, 0.6);
+}
+.marker-cluster-12021 div {
+  background-color: rgba(87, 196, 146, 0.6);
+}
+.marker-cluster-12321 {
+  background-color: rgba(3, 42, 0, 0.6);
+}
+.marker-cluster-12321 div {
+  background-color: rgba(3, 42, 0, 0.6);
+}
+.marker-cluster-13000 {
+  background-color: rgba(255, 213, 39, 0.6);
+}
+.marker-cluster-13000 div {
+  background-color: rgba(255, 213, 39, 0.6);
+}
+.marker-cluster-13001 {
+  background-color: rgba(101, 94, 150, 0.6);
+}
+.marker-cluster-13001 div {
+  background-color: rgba(101, 94, 150, 0.6);
+}
+.marker-cluster-13002 {
+  background-color: rgba(43, 69, 216, 0.6);
+}
+.marker-cluster-13002 div {
+  background-color: rgba(43, 69, 216, 0.6);
 }
 
-.cluster_2 {
-  background-image: url(/geoservices/apps/viewer/static/img/cultura/legend/2-nq.png);
-  text-align: center;
-  font-size: 14px;
-  color: white;
-  padding-top: 2px;
-}
 
-.cluster_3 {
-  background-image: url(/geoservices/apps/viewer/static/img/cultura/legend/3-nq.png);
-  text-align: center;
-  font-size: 20px;
-  color: white;
-}
-
-.cluster_4 {
-  background-image: url(/geoservices/apps/viewer/static/img/cultura/legend/4-nq.png);
-  text-align: center;
-  font-size: 20px;
-  color: white;
-}
-
-.cluster_5 {
-  background-image: url(/geoservices/apps/viewer/static/img/cultura/legend/5-nq.png);
-  text-align: center;
-  font-size: 20px;
-  color: white;
-}
-
-.cluster_6 {
-  background-image: url(/geoservices/apps/viewer/static/img/cultura/legend/6-nq.png);
-  text-align: center;
-  font-size: 20px;
-  color: white;
-}
-
-.cluster_7 {
-  background-image: url(/geoservices/apps/viewer/static/img/cultura/legend/7-nq.png);
-  text-align: center;
-  font-size: 20px;
-  color: white;
-}
-.cluster_8 {
-  background-image: url(/geoservices/apps/viewer/static/img/cultura/legend/8-nq.png);
-  text-align: center;
-  font-size: 20px;
-  color: white;
-}
-.cluster_9 {
-  background-image: url(/geoservices/apps/viewer/static/img/cultura/legend/9-nq.png);
-  text-align: center;
-  font-size: 20px;
-  color: white;
-} */
 
 
 /* ----------------------------------------------- */

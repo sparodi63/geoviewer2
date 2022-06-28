@@ -112,23 +112,23 @@ export default {
       // indirizzo: this.componiIndirizzo(),
     };
   },
-  async mounted() {},
+  async mounted() {
+    console.log('filtro', this.filtro);
+  },
   methods: {
     stampaPDF() {
       let url = `${location.protocol}//${location.hostname}/geoservices/apps/cultura-print/?TYPE=PRINT`;
       if (this.filtro.raggruppamento) url += `&RAGGRUPPAMENTO=${this.filtro.raggruppamento}`;
       if (this.filtro.categoria) url += `&CATEGORIA=${this.filtro.categoria}`;
-      if (this.filtro.provincia) url += `&CATEGORIA=${this.filtro.provincia}`;
-      if (this.filtro.comune) url += `&CATEGORIA=${this.filtro.comune}`;
-      if (this.filtro.itinerario) url += `&CATEGORIA=${this.filtro.itinerario}`;
-      // console.log(url);
+      if (this.filtro.provincia) url += `&PROVINCIA=${this.filtro.provincia}`;
+      if (this.filtro.comune) url += `&COMUNE=${this.filtro.comune}`;
+      if (this.filtro.itinerario) url += `&ITINERARIO=${this.filtro.itinerario}`;
       window.open(url, '_blank');
     },
     tableRowClassName() {
       return { cursor: 'pointer', 'background-color': '#c9c8c8' };
     },
     selectRiga(row) {
-      // console.log(row);
       GV.app.map.setView([row.geometry.coordinates[1], row.geometry.coordinates[0]], 19);
       const div = document.getElementById('gv-cultura-info');
       if (div) div.remove();
@@ -145,7 +145,6 @@ export default {
       window.open(link_documentazione);
     },
     handleClickScuola(index, codice_scuola) {
-      // console.log(codice_scuola);
       mountComponent({
         elId: 'gv-cultura-info',
         clear: true,
@@ -174,8 +173,6 @@ export default {
       } else {
         document.getElementById('gv-cultura-ricerca-results-body').style.display = 'none';
         document.getElementById('gv-cultura-ricerca-results').style.width = '200px';
-        // const button = document.getElementById('gv-cultura-ricerca-results-pdf-button');
-        // console.log(button);
         document.getElementById('gv-cultura-ricerca-results-pdf-button').style.display = 'none';
       }
       this.show = !this.show;

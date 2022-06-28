@@ -41,23 +41,17 @@
             <div><strong>Alcune opere correlate</strong></div>
             <ul v-for="item in properties.opere" :key="item.id">
               <li>{{ item.nome }}</li>
-              <!-- <li v-if="properties.EMAIL">
-              <a :href="`mailto://${properties.EMAIL}`" target=_blank>EMAIL</a>
-            </li> -->
             </ul>
           </div>
 
-          <div v-if="properties.SITO">
+          <!-- <div v-if="properties.SITO">
             <div><strong>Per approfondire</strong></div>
             <ul>
               <li v-if="properties.SITO">
                 <a :href="`${properties.SITO}`" target="_blank">SITO</a>
               </li>
-              <!-- <li v-if="properties.EMAIL">
-              <a :href="`mailto://${properties.EMAIL}`" target=_blank>EMAIL</a>
-            </li> -->
             </ul>
-          </div>
+          </div> -->
         </div>
         <div v-if="properties.GALLERY.length > 0" class="gv-cultura-info-button">
           <el-button alt="Galleria Immagini" size="mini" type="info" @click="showGallery"
