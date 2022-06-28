@@ -90,7 +90,7 @@ export default {
     };
   },
   async mounted() {
-    console.log(this.properties);
+    // console.log(this.properties);
   },
   methods: {
     //   componiIndirizzo() {

@@ -246,8 +246,30 @@ function getLayersRaggruppamenti() {
 }
 
 function init(maps) {
-  const banner = `<div id="titolo"> <div id="loghi_sx"><a href="${GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN}"><img src="/geoservices/apps/viewer/static/img/cultura/logo2.png"></a></div> <div id="loghi_dx"></div> </div>`;
-
+  let tools = [
+    {
+      name: 'gv-cultura-legend',
+      position: 'topright',
+      options: {
+        maps: maps,
+        version: 2,
+      },
+    },
+  ];
+  if (!GV.globals.CULTURA_CONFIG.embed) {
+    const banner = `<div id="titolo"> <div id="loghi_sx"><a href="${GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN}"><img src="/geoservices/apps/viewer/static/img/cultura/logo2.png"></a></div> <div id="loghi_dx"></div> </div>`;
+    tools.push({
+      name: 'gv-inner-html',
+      position: 'bottomleft',
+      options: {
+        props: [
+          {
+            html: banner,
+          },
+        ],
+      },
+    });
+  }
   GV.init({
     debug: true,
     application: {
@@ -270,27 +292,7 @@ function init(maps) {
       },
       layout: {
         title: ' ',
-        tools: [
-          {
-            name: 'gv-cultura-legend',
-            position: 'topright',
-            options: {
-              maps: maps,
-              version: 2,
-            },
-          },
-          {
-            name: 'gv-inner-html',
-            position: 'bottomleft',
-            options: {
-              props: [
-                {
-                  html: banner,
-                },
-              ],
-            },
-          },
-        ],
+        tools: tools,
       },
     },
     baseLayers: [

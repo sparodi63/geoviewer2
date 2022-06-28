@@ -113,7 +113,7 @@ export default {
     };
   },
   async mounted() {
-    console.log('filtro', this.filtro);
+    // console.log('filtro', this.filtro);
   },
   methods: {
     stampaPDF() {
