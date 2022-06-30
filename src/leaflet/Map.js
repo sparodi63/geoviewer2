@@ -26,7 +26,7 @@ const llMap = {
   },
   initialize() {
     Object.assign(this.mapOptions, GV.config.application.mapOptions);
-    
+
     console.log('MAP OPTIONS', this.mapOptions);
 
     this.map = L.map('gv-map', this.mapOptions);
@@ -48,7 +48,7 @@ const llMap = {
     this.eventMngr();
 
     if (this.options.static) {
-      this.map.dragging.disable()      
+      this.map.dragging.disable();
       this.map.touchZoom.disable();
       this.map.doubleClickZoom.disable();
       this.map.scrollWheelZoom.disable();
@@ -56,7 +56,7 @@ const llMap = {
       this.map.keyboard.disable();
       if (this.map.tap) this.map.tap.disable();
     }
-    
+
     return this;
   },
 
@@ -96,6 +96,9 @@ const llMap = {
   },
   getZoom() {
     return this.map.getZoom();
+  },
+  getBoundsZoom(bounds, inside, padding) {
+    return this.map.getBoundsZoom(bounds, inside, padding);
   },
   setZoom(zoom, opt) {
     this.map.setZoom(zoom, opt);
@@ -180,12 +183,16 @@ const llMap = {
     }
   },
 
-  setRestrictedExtent() {
-    if (this.mapOptions.restrictedExtent) {
-      this.restrictedExtent = this.projToGeoBounds(this.mapOptions.restrictedExtent);
+  setRestrictedExtent(extent, zoom) {
+    const restrictedExtent = extent || this.mapOptions.restrictedExtent;
+    if (restrictedExtent) {
+      this.restrictedExtent = this.projToGeoBounds(restrictedExtent);
       this.setMaxBounds(this.restrictedExtent);
-      if (this.mapOptions.restrictedExtent === this.mapOptions.initialExtent) {
-        this.setMinZoom(this.zoom)
+      if (zoom) {
+        GV.app.map.map.options.minZoom = zoom;
+      }
+      if (extent === this.mapOptions.initialExtent) {
+        this.setMinZoom(this.zoom);
       }
       GV.log('setRestrictedExtent', this.restrictedExtent);
     }
@@ -199,9 +206,9 @@ const llMap = {
     return L.bounds(swPrj, nePrj);
   },
 
-  getExtentAsString() {
-    var swPoint = this.getBounds().getSouthWest();
-    var nePoint = this.getBounds().getNorthEast();
+  getExtentAsString(bounds) {
+    var swPoint = bounds ? bounds.getSouthWest() : this.getBounds().getSouthWest();
+    var nePoint = bounds ? bounds.getNorthEast() : this.getBounds().getNorthEast();
     var swPrj = L.Projection.SphericalMercator.project(swPoint);
     var nePrj = L.Projection.SphericalMercator.project(nePoint);
     return swPrj.x + ',' + swPrj.y + ',' + nePrj.x + ',' + nePrj.y;
@@ -252,7 +259,7 @@ const llMap = {
   loadBaseLayers() {
     this.baseLayers = [];
     GV.config.baseLayers.forEach(layerConfig => {
-      var layer = LayerFactory.create(layerConfig); 
+      var layer = LayerFactory.create(layerConfig);
       this.baseLayers[layer.config.type] = layer;
       if (layer && layerConfig.visible) {
         layer.on('loading', () => {
@@ -401,9 +408,12 @@ const llMap = {
       icon: icon,
       title: markerConfig.label,
     };
-    let marker = (markerConfig.type === 'circle') ? L.circleMarker(markerConfig.location, opts).addTo(this.map) : L.marker(markerConfig.location, opts).addTo(this.map)
+    let marker =
+      markerConfig.type === 'circle'
+        ? L.circleMarker(markerConfig.location, opts).addTo(this.map)
+        : L.marker(markerConfig.location, opts).addTo(this.map);
     this.flyTo(markerConfig.location, markerConfig.zoomLevel || 14);
-    return marker
+    return marker;
   },
   find(findOptions) {
     if (findOptions.bbox) {
@@ -485,7 +495,7 @@ const llMap = {
           this.fitBounds(layer.getBounds(), {
             maxZoom: maxZoom,
           });
-        }        
+        }
       }
       if (layers) GV.config.hilitedLayer = layers;
     } else {

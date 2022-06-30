@@ -85,7 +85,12 @@ function zoomExtentsMap() {
     const layerBounds = layer.getBounds();
     bounds.extend(layerBounds);
   });
+  bounds = bounds.pad(0.2);
   GV.app.map.fitBounds(bounds);
+  GV.app.map.setRestrictedExtent(
+    GV.app.map.getExtentAsString(bounds),
+    GV.app.map.getBoundsZoom(bounds, false)
+  );
 }
 
 function getLayersLuogo() {
@@ -274,6 +279,9 @@ function init(maps) {
     debug: true,
     application: {
       mapOptions: {
+        zoomSnap: 0.1,
+        // initialExtent: '830036,5402959,1123018,5597635',
+        // restrictedExtent: '830036,5402959,1123018,5597635',
         type: 'leaflet',
         maxZoom: 19,
       },
