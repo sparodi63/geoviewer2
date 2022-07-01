@@ -37,7 +37,11 @@
   // Moltiplicatore da usare sui valori `deltaX` e `deltaY` degli eventi di scorrimento della rotellina del mouse
   "editor.mouseWheelScrollSensitivity": 1,
   // Controlla se durante la digitazione verranno o meno visualizzati i suggerimenti rapidi
-  "editor.quickSuggestions": true,
+  "editor.quickSuggestions": {
+    "comments": "on",
+    "strings": "on",
+    "other": "on"
+  },
   // Controlla il ritardo in ms dopo il quale verranno visualizzati i suggerimenti rapidi
   "editor.quickSuggestionsDelay": 10,
   // Abilita i suggerimenti per i parametri
