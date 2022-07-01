@@ -391,6 +391,7 @@ export default {
         const layerBounds = layer.getBounds();
         bounds.extend(layerBounds);
       });
+      bounds = bounds.pad(0.2);
       GV.app.map.fitBounds(bounds);
     },
     filtraMappa() {
