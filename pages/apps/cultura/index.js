@@ -27,6 +27,7 @@ function getCurrentDomain() {
   if (!domain) domain = 'https://luoghidellacultura.regione.liguria.it/';
   return domain;
 }
+
 function getFilter() {
   return {
     raggruppamento: GV.utils.getUrlParam('RAGGRUPPAMENTO')
@@ -79,7 +80,7 @@ function getMapConfig() {
 }
 
 function zoomExtentsMap() {
-  const zoomInside = !GV.globals.CULTURA_CONFIG.flagItinerario;
+  // const zoomInside = !GV.globals.CULTURA_CONFIG.flagItinerario;
   var bounds = L.latLngBounds([]);
   GV.globals.CULTURA_LAYERS.forEach(fl => {
     const layer = GV.app.map.getLayerByName(fl.name);
@@ -90,7 +91,7 @@ function zoomExtentsMap() {
   GV.app.map.fitBounds(bounds);
   GV.app.map.setRestrictedExtent(
     GV.app.map.getExtentAsString(bounds),
-    GV.app.map.getBoundsZoom(bounds, zoomInside)
+    GV.app.map.getBoundsZoom(bounds, false)
   );
 }
 
@@ -266,7 +267,7 @@ function init(maps) {
     const banner = `<div id="titolo"> <div id="loghi_sx"><a href="${GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN}"><img src="/geoservices/apps/viewer/static/img/cultura/logo2.png"></a></div> <div id="loghi_dx"></div> </div>`;
     tools.push({
       name: 'gv-inner-html',
-      position: 'bottomleft',
+      position: 'bottomright',
       options: {
         props: [
           {
@@ -287,7 +288,7 @@ function init(maps) {
         maxZoom: 19,
       },
       callback: function() {
-        new L.Control.Zoom({ position: 'bottomright' }).addTo(GV.app.map.map);
+        new L.Control.Zoom({ position: 'bottomleft' }).addTo(GV.app.map.map);
         if (GV.globals.CULTURA_CONFIG.filter.luogo) {
           const oid = GV.globals.CULTURA_CONFIG.filter.luogo;
           const features = GV.globals.CULTURA_CONFIG.luoghi.filter(luogo => {

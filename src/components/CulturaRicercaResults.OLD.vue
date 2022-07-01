@@ -141,22 +141,7 @@ export default {
         },
       });
     },
-    handleLink(index, link_documentazione) {
-      window.open(link_documentazione);
-    },
-    handleClickScuola(index, codice_scuola) {
-      mountComponent({
-        elId: 'gv-cultura-info',
-        clear: true,
-        vm: new Vue({
-          template: `<gv-cultura-info :id="id" title="INFO SCUOLA" :flagRicerca="flagRicerca"></gv-cultura-info>`,
-          data: {
-            id: codice_scuola,
-            flagRicerca: false,
-          },
-        }),
-      });
-    },
+
     closePanel: function () {
       let div = document.getElementById('gv-cultura-ricerca-results');
       if (!div) return;
