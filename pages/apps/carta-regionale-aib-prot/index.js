@@ -10,7 +10,7 @@ var tools = [
   },
   {
     name: 'gv-measure-button',
-  }, 
+  },
   {
     name: 'gv-layer-search-button',
   },
@@ -27,19 +27,28 @@ var tools = [
     name: 'gv-scalebar',
     position: 'bottomleft',
   },
-
 ];
+
+const screenWidth = document.documentElement.clientWidth;
+const maxScreenWidth = 420;
+const largeScreen = screenWidth > maxScreenWidth;
+
+if (largeScreen) {
+  tools.push({
+    name: 'gv-help-aib-button',
+  });
+}
 
 var auth = {
   type: 'NAM',
   options: {
     ruolo: 'AIB',
   },
-}
+};
 
 GV.init({
   debug: true,
-  idMap: "2317",
+  idMap: '2317',
   application: {
     name: 'carta-regionale-aib-prot-gv2',
     auth: auth,
@@ -74,7 +83,6 @@ GV.init({
               kml: {
                 label: 'KML / GPX / JSON',
               },
-
             },
             activePanel: 'canali',
           },

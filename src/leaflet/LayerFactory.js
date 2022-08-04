@@ -66,7 +66,8 @@ var layerFactory = {
       label: 'OpenStreetMap',
     };
     return L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+      attribution:
+        'Map data © <a href="https://www.openstreetmap.org/copyright" target="blank">OpenStreetMap</a> contributors',
       maxZoom: 21,
     });
   },

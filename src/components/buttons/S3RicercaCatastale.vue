@@ -45,12 +45,12 @@ export default {
       return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
     },
   },
-  mounted: function() {},
+  mounted: function () {},
 };
 </script>
 
 <style>
-.gv-ricerca-catastale-button {
+/* .gv-ricerca-catastale-button {
   font-size: 12px;
-}
+} */
 </style>

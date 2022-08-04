@@ -200,15 +200,20 @@ tools.push({ name: 'gv-help3D-button' });
 import Help3D from './components/buttons/Help3D.vue';
 Vue.component('gv-help3D-button', Help3D);
 
+// Bottone Help AIB
+tools.push({ name: 'gv-help-aib-button' });
+import HelpAib from './components/buttons/HelpAib.vue';
+Vue.component('gv-help-aib-button', HelpAib);
+
 // Bottone InsertPoint
-tools.push({name: "gv-insert-point-button"});
-import InsertPoint from "./components/buttons/InsertPoint.vue";
-Vue.component("gv-insert-point-button", InsertPoint);
+tools.push({ name: 'gv-insert-point-button' });
+import InsertPoint from './components/buttons/InsertPoint.vue';
+Vue.component('gv-insert-point-button', InsertPoint);
 
 // Bottone GeocoderBtn
-tools.push({name: "gv-geocoder-btn-button"});
-import GeocoderBtn from "./components/buttons/GeocoderBtn.vue";
-Vue.component("gv-geocoder-btn-button", GeocoderBtn);
+tools.push({ name: 'gv-geocoder-btn-button' });
+import GeocoderBtn from './components/buttons/GeocoderBtn.vue';
+Vue.component('gv-geocoder-btn-button', GeocoderBtn);
 
 //
 tools.push({
@@ -225,6 +230,3 @@ Vue.component('gv-cultura-info', CulturaInfo);
 // -------------------------------------------------------------------------------- //
 
 export default tools;
-
-
-

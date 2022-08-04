@@ -91,7 +91,7 @@ function scriviComponente(type, linesIn) {
 function elaboraTools() {
   var linesIn = [];
   var stream = byline(
-    fs.createReadStream('../src/tools.js', {
+    fs.createReadStream('D:/node-prj/geoviewer2/src/tools.js', {
       encoding: 'utf8',
     }),
     {

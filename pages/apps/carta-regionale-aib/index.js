@@ -21,13 +21,23 @@ var tools = [
     name: 'gv-print-button',
   },
   {
+    name: 'gv-insert-point-button',
+  },
+  {
     name: 'gv-scalebar',
     position: 'bottomleft',
   },
-  // {
-  //   name: 'gv-insert-point-button',
-  // },
 ];
+
+const screenWidth = document.documentElement.clientWidth;
+const maxScreenWidth = 420;
+const largeScreen = screenWidth > maxScreenWidth;
+
+if (largeScreen) {
+  tools.push({
+    name: 'gv-help-aib-button',
+  });
+}
 
 GV.init({
   debug: true,
@@ -60,6 +70,7 @@ GV.init({
                 label: 'Cartografia regionale A.I.B.',
                 options: {
                   canale: '165',
+                  // pub: true,
                 },
                 tree: null,
               },

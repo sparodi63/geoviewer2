@@ -44,7 +44,7 @@ export default {
       return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
     },
   },
-  mounted: function() {},
+  mounted: function () {},
 };
 
 /* export default {
@@ -77,7 +77,4 @@ export default {
 </script>
 
 <style>
-.gv-layer-search-topo-button {
-  font-size: 12px;
-}
 </style>

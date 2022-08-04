@@ -14,7 +14,7 @@
           <span class="gv-map-download-label">Email</span>
           <el-input
             id="gv-map-download-email"
-            style="width: 250px;"
+            style="width: 250px"
             size="mini"
             placeholder="Email"
             type="email"
@@ -148,7 +148,7 @@
           <img
             src="../../static/img/cc-by.png"
             align="bottom"
-            onclick="window.open('https://creativecommons.org/licenses/by/3.0/')"
+            onclick="window.open('https://creativecommons.org/licenses/by/4.0/')"
           />
           <el-button id="gv-map-download-submit" type="primary" size="mini" @click="submit"
             >Conferma</el-button
@@ -267,7 +267,7 @@ export default {
       return;
     }
     // Leggo le richieste in cache
-    getDownloadRichiesteCache().then(response => {
+    getDownloadRichiesteCache().then((response) => {
       this.cachedRequests = response;
     });
     // imposto la configurazione
@@ -283,19 +283,19 @@ export default {
     this.addLayerComuni();
     // Imposto combo livelli
     if (this.config.flagDownloadLivello) {
-      this.livelli = GV.config.getMapConfig(this.idMap).layers.map(layer => {
+      this.livelli = GV.config.getMapConfig(this.idMap).layers.map((layer) => {
         return {
           codice: layer.id,
           nome: layer.legend.label,
         };
-      })
-      this.livelli.sort((a,b) => {
+      });
+      this.livelli.sort((a, b) => {
         if (a.nome < b.nome) {
           return -1;
         }
         if (a.nome > b.nome) {
           return 1;
-        }        
+        }
       });
       if (this.livelli.length === 1) {
         this.livello = this.livelli[0].codice;
@@ -329,10 +329,10 @@ export default {
           }
         }
       } else {
-        layerComuni.eachLayer(layer => {
+        layerComuni.eachLayer((layer) => {
           layer.setStyle(this.style);
         });
-        layerComuni.eachLayer(layer => {
+        layerComuni.eachLayer((layer) => {
           const codice =
             layer.feature.properties.CODICE_COMUNE || layer.feature.properties.codice_comune;
           if (codice === comune) {
@@ -361,11 +361,11 @@ export default {
           }
         }
       } else {
-        layerFogli.eachLayer(layer => {
+        layerFogli.eachLayer((layer) => {
           layer.setStyle(this.style);
         });
-        layerFogli.eachLayer(layer => {
-          fogliSel.forEach(foglio => {
+        layerFogli.eachLayer((layer) => {
+          fogliSel.forEach((foglio) => {
             const codice =
               layer.feature.properties.COD_SQUADRO || layer.feature.properties.cod_squadro;
             if (codice === foglio) {
@@ -439,14 +439,14 @@ export default {
 
     setDefaultFormat(formati) {
       const cachedFormat =
-        formati.filter(formato => {
+        formati.filter((formato) => {
           return formato.cod_formato === this.$cookie.get('formato');
         }).length > 0
           ? this.$cookie.get('formato')
           : null;
 
       const defaultFormat =
-        formati.filter(formato => {
+        formati.filter((formato) => {
           return formato.cod_formato === 'SHP';
         }).length > 0
           ? 'SHP'
@@ -459,8 +459,8 @@ export default {
     addLayerSquadri() {
       let selFogli = false;
       if (!this.config.formati) return;
-      this.config.formati.forEach(formato => {
-        formato.selezioneTerritoriale.forEach(selTerr => {
+      this.config.formati.forEach((formato) => {
+        formato.selezioneTerritoriale.forEach((selTerr) => {
           if (selTerr.codice === 3) {
             selFogli = true;
           }
@@ -469,7 +469,7 @@ export default {
       if (selFogli) {
         const baseUrl = `${globals.DEFAULT_PROXY}https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`;
         const url = `${baseUrl}${this.config.livelloSquadri}`;
-        getGeoJSON(url).then(response => {
+        getGeoJSON(url).then((response) => {
           this.loadDataSquadri(response.data);
         });
       }
@@ -479,8 +479,8 @@ export default {
         GV.app.map.removeLayer(GV.app.map.getLayerByName('SelezioneSquadri'));
       }
 
-      const filteredFeatures = data.features.filter(feature => {
-        const filter = this.config.fogli.filter(foglio => {
+      const filteredFeatures = data.features.filter((feature) => {
+        const filter = this.config.fogli.filter((foglio) => {
           const codice = feature.properties.COD_SQUADRO || feature.properties.cod_squadro;
           return foglio.codice === codice;
         });
@@ -496,8 +496,8 @@ export default {
     addLayerComuni() {
       let selComune = false;
       if (!this.config.formati) return;
-      this.config.formati.forEach(formato => {
-        formato.selezioneTerritoriale.forEach(selTerr => {
+      this.config.formati.forEach((formato) => {
+        formato.selezioneTerritoriale.forEach((selTerr) => {
           if (selTerr.codice === 2) {
             selComune = true;
           }
@@ -506,7 +506,7 @@ export default {
       if (selComune) {
         const baseUrl = `${globals.DEFAULT_PROXY}https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`;
         const url = `${baseUrl}${this.config.livelloComuni}`;
-        getGeoJSON(url).then(response => {
+        getGeoJSON(url).then((response) => {
           this.loadDataComuni(response.data);
         });
       }
@@ -521,13 +521,13 @@ export default {
         return;
       }
       this.comuni = data.features
-        .map(feature => {
+        .map((feature) => {
           return {
             codice: feature.properties.CODICE_COMUNE || feature.properties.codice_comune,
             nome: feature.properties.NOME_COMUNE || feature.properties.nome_comune,
           };
         })
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           if (a.nome < b.nome) {
             return -1;
           }
@@ -549,13 +549,14 @@ export default {
       link.click();
     },
     validateEmail(email) {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      var re =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
     submit() {
       // CONTROLLI
       if (!this.config.flagDownloadStatico && !this.codCliente) {
-        notification('Indicare Indirizzo Email'); 
+        notification('Indicare Indirizzo Email');
         return;
       }
       if (!this.config.flagDownloadStatico && !this.validateEmail(this.codCliente)) {
@@ -597,7 +598,7 @@ export default {
         flagDownloadSincrono: this.isSyncDownload() ? 'S' : 'N',
         test: false,
       };
-      insertRichiestaDownload(data).then(resp => {
+      insertRichiestaDownload(data).then((resp) => {
         this.isSyncDownload() ? this.showSyncPanel(resp) : this.sendNotification(resp);
       });
     },
@@ -605,7 +606,7 @@ export default {
       if (this.config.flagDownloadSincrono) return true;
 
       if (!this.bbox && !this.codTema) {
-        const cached = this.cachedRequests.filter(cache => {
+        const cached = this.cachedRequests.filter((cache) => {
           return (
             cache.codiceCatalogo.toString() === this.idMap &&
             cache.crsOut.toString() === this.sistemaCoordinate &&
@@ -636,7 +637,7 @@ export default {
           'info'
         );
         const me = this;
-        setTimeout(function() {
+        setTimeout(function () {
           me.cleanUp();
         }, 5000);
       } else {
@@ -702,16 +703,16 @@ export default {
     },
     changeFormat(codFormato) {
       const selTerr = this.config.formati
-        .filter(formato => {
+        .filter((formato) => {
           return formato.cod_formato === codFormato;
         })[0]
-        .selezioneTerritoriale.filter(sel => {
+        .selezioneTerritoriale.filter((sel) => {
           return sel.codice !== 4;
         });
 
       this.config.selezioneTerritoriale = selTerr;
 
-      const selTerrCached = selTerr.filter(sel => {
+      const selTerrCached = selTerr.filter((sel) => {
         return sel.codice == this.$cookie.get('selezioneTerritoriale');
       });
 
@@ -755,7 +756,7 @@ export default {
         .getFeatures()[0]
         .getGeometry()
         .getCoordinates();
-      this.bbox = coords.map(coord => {
+      this.bbox = coords.map((coord) => {
         return coord.join(',');
       })[0];
       // console.log(coords, this.bbox);
@@ -838,7 +839,7 @@ export default {
                 ? feature.get('COD_SQUADRO') || feature.get('cod_squadro')
                 : feature.properties.COD_SQUADRO || feature.properties.cod_squadro;
               if (this.fogli.indexOf(codice) > -1) {
-                this.fogli = this.fogli.filter(item => item !== codice);
+                this.fogli = this.fogli.filter((item) => item !== codice);
               } else {
                 this.fogli.push(codice);
               }
@@ -853,7 +854,7 @@ export default {
         }
       }
     },
-    collapse: function(event) {
+    collapse: function (event) {
       if (this.show) {
         document.getElementById('gv-map-download-body').style.display = 'none';
       } else {

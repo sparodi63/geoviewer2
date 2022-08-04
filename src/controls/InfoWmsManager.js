@@ -82,7 +82,7 @@ function getGetFeatureInfoUrl(layerConfig, event) {
     const layers = layerConfig.infoOptions.infoQueryLayers || layerConfig.wmsParams.name;
     const cqlFilter = layerConfig.wmsParams.cql_filter;
     const infoFormat = layerConfig.wmsParams.infoFormat;
-    console.log(url)
+    console.log(url);
     return buildWMSOptions(
       url,
       layers,
@@ -287,7 +287,6 @@ function showGvInfo(feature) {
   } else {
     openPopup(url, feature.infoOptions);
   }
-
 }
 
 function showHtml(feature) {
@@ -423,7 +422,7 @@ function hiliteFeature(feature) {
       cqlFilter += ` AND ${feature.layer.config.wmsParams.cql_filter}`;
     }
     getWFSFeature(layerConfig.wfsParams, cqlFilter, null).then(features => {
-      const findOptions = { noZoom: true}
+      const findOptions = { noZoom: true };
       GV.app.map.hiliteFeatures(features, findOptions);
     });
   }
@@ -451,19 +450,15 @@ function openPopup(url, options) {
   var width = options.infoWidth || 400;
   var height = options.infoHeight || 500;
   var target = '';
-  var opts = ''
+  var opts = '';
   if (options.infoTarget !== 'tab') {
     target = options.infoTarget;
-    opts = `status=yes, toolbar=yes, menubar=no, width=${width}, height=${height}, resizable=yes, scrollbars=yes`
+    opts = `status=yes, toolbar=yes, menubar=no, width=${width}, height=${height}, resizable=yes, scrollbars=yes`;
   }
 
-  var popup = window.open(
-    url,
-    target,
-    opts
-  );
+  var popup = window.open(url, target, opts);
 
-  var timer = setInterval(function () {
+  var timer = setInterval(function() {
     if (popup.closed) {
       clearInterval(timer);
       GV.app.map.clearLayer('InfoWmsHilite');

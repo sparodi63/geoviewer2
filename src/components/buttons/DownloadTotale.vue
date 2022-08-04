@@ -3,17 +3,15 @@
 </template>
 
 <script>
-import mountComponent from "../../util/mountComponent";
+import mountComponent from '../../util/mountComponent';
 
-import Vue from "vue";
-import { Button } from "element-ui";
+import Vue from 'vue';
+import { Button } from 'element-ui';
 Vue.use(Button);
 
-Vue.component("gv-download-totale-panel", () =>
-  import("../DownloadTotale.vue")
-);
+Vue.component('gv-download-totale-panel', () => import('../DownloadTotale.vue'));
 
-const name = "gv-download-totale-button";
+const name = 'gv-download-totale-button';
 
 export default {
   name: name,
@@ -23,34 +21,29 @@ export default {
     return {
       active: false,
       options: options,
-      cssClass: "gv-download-totale-button gv-button el-icon-download",
-      cssActiveClass: "gv-button-selected"
+      cssClass: 'gv-download-totale-button gv-button el-icon-download',
+      cssActiveClass: 'gv-button-selected',
     };
   },
 
   methods: {
     onClick() {
       mountComponent({
-        elId: "gv-download-totale-panel",
+        elId: 'gv-download-totale-panel',
         containerId: GV.config.containerId,
         toggleEl: true,
         vm: new Vue({
-          template: `<gv-download-totale-panel></gv-download-totale-panel>`
-        })
+          template: `<gv-download-totale-panel></gv-download-totale-panel>`,
+        }),
       });
     },
     setClass() {
-      return this.active
-        ? this.cssClass + " " + this.cssActiveClass
-        : this.cssClass;
-    }
+      return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
+    },
   },
-  mounted: function() {}
+  mounted: function () {},
 };
 </script>
 
 <style>
-.gv-download-totale-button {
-  font-size: 12px;
-}
 </style>

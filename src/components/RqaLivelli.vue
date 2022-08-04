@@ -53,6 +53,7 @@
           v-model="giorno"
           type="date"
           placeholder="Giorno"
+          :picker-options="datePickerOptions"
           value-format="yyyy-MM-dd"
         >
         </el-date-picker>
@@ -123,6 +124,9 @@ export default {
       buttonDisabled: true,
       showLegend: false,
       legendUrl: null,
+      datePickerOptions: {
+        disabledDate: this.checkDate,
+      },
     };
   },
   watch: {
@@ -135,6 +139,12 @@ export default {
     },
   },
   methods: {
+    checkDate(date) {
+      const today = new Date();
+      const startYear = today.getFullYear() - 4;
+      const startDate = new Date(`${startYear}-01-01`);
+      return date > today || date < startDate;
+    },
     onChangeTipo(value) {
       this.tipo = value;
       this.indicatore = null;
@@ -159,12 +169,12 @@ export default {
       if (this.tipo === 'G') {
         layer.wmsParams.styles = `RQA_${this.indicatore}`;
         layer.wmsParams.cql_filter = `cod_indicatore='${this.indicatore}' AND giorno='${this.data}'`;
-        const indicatore = this.indicatoriGiorno.find(ind => ind.id === this.indicatore).nome;
+        const indicatore = this.indicatoriGiorno.find((ind) => ind.id === this.indicatore).nome;
         layer.legend.label = `${indicatore} (${this.data})`;
       } else {
         layer.wmsParams.styles = `RQA_${this.indicatore}`;
         layer.wmsParams.cql_filter = `cod_indicatore='${this.indicatore}' AND anno=${this.data}`;
-        const indicatore = this.indicatoriAnno.find(ind => ind.id === this.indicatore).nome;
+        const indicatore = this.indicatoriAnno.find((ind) => ind.id === this.indicatore).nome;
         layer.legend.label = `${indicatore} (${this.data})`;
       }
       return layer;
@@ -174,7 +184,7 @@ export default {
         ? 'gv-panel-collapse gv-color-scheme el-icon-arrow-up'
         : 'gv-panel-collapse gv-color-scheme el-icon-arrow-down';
     },
-    hidePanel: function() {
+    hidePanel: function () {
       if (this.show) {
         document.getElementById('rqa-wrapper').style.display = 'none';
       } else {
@@ -189,10 +199,10 @@ export default {
       this.anni = data.anni;
       this.mapConfig = data.mapConfig;
       this.idMap = data.mapConfig.id;
-      this.baseLayerGG = data.mapConfig.layers.filter(layer => {
+      this.baseLayerGG = data.mapConfig.layers.filter((layer) => {
         return layer.id === data.idLayerGG;
       })[0];
-      this.baseLayerAA = data.mapConfig.layers.filter(layer => {
+      this.baseLayerAA = data.mapConfig.layers.filter((layer) => {
         return layer.id === data.idLayerAA;
       })[0];
     },
@@ -217,11 +227,11 @@ export default {
       return this.tipo == 'A';
     },
   },
-  mounted: function() {
+  mounted: function () {
     axios
       .get('/geoservices/REST/rqa/app-config/')
-      .then(response => response.data.data)
-      .then(data => {
+      .then((response) => response.data.data)
+      .then((data) => {
         this.setData(data);
       });
   },

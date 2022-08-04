@@ -41,7 +41,7 @@ export default {
       return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
     },
   },
-  mounted: function() {
+  mounted: function () {
     if (this.options.showOnStart) {
       mountComponent({
         elId: 'gv-help3D-panel',
@@ -57,7 +57,4 @@ export default {
 </script>
 
 <style>
-.gv-help3D-button {
-  font-size: 12px;
-}
 </style>

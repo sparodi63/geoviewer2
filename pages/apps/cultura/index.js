@@ -264,7 +264,7 @@ function init(maps) {
     },
   ];
   if (!GV.globals.CULTURA_CONFIG.embed) {
-    const banner = `<div id="titolo"> <div id="loghi_sx"><a href="${GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN}"><img src="/geoservices/apps/viewer/static/img/cultura/logo2.png"></a></div> <div id="loghi_dx"></div> </div>`;
+    const banner = `<h1><div id="titolo"> <div id="loghi_sx"><a href="${GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN}" title="Luoghi della Cultura"><img alt="Luoghi della Cultura" src="/geoservices/apps/viewer/static/img/cultura/logo2.png"></a></div> <div id="loghi_dx"></div> </div></h1>`;
     tools.push({
       name: 'gv-inner-html',
       position: 'bottomright',

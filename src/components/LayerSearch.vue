@@ -202,10 +202,10 @@ export default {
   computed: {
     layers() {
       let layers = [];
-      this.maps.forEach(map => {
-        map.layers.forEach(layer => {
+      this.maps.forEach((map) => {
+        map.layers.forEach((layer) => {
           if (layer.dbSchema && layer.dbSchema.columns && layer.dbSchema.columns.length > 0) {
-            const columns = layer.dbSchema.columns.map(column => {
+            const columns = layer.dbSchema.columns.map((column) => {
               return {
                 codice: column.name,
                 label: capitalize(column.name.replace(/_/g, ' ')),
@@ -261,10 +261,10 @@ export default {
       const cqlFilter = `${idAttr}='${item.id}'`;
 
       getWFSFeature(layerConfig.wfsParams, cqlFilter)
-        .then(features => {
+        .then((features) => {
           GV.app.map.hiliteFeatures(features);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
     },
@@ -274,7 +274,7 @@ export default {
       this.showValueList = false;
       this.showResults = false;
 
-      this.layers.forEach(layer => {
+      this.layers.forEach((layer) => {
         if (layer.codice === id) {
           this.columns = layer.columns;
         }
@@ -286,10 +286,10 @@ export default {
     },
     queryValueList(offset) {
       const column = this.column;
-      const dataType = this.columns.filter(col => {
+      const dataType = this.columns.filter((col) => {
         return col.codice == column;
       })[0].type;
-      getQueryLayerValueList(this.layer, column, dataType, offset, this.limit).then(res => {
+      getQueryLayerValueList(this.layer, column, dataType, offset, this.limit).then((res) => {
         this.valueList = res.data.data;
         this.total = res.data.count;
         this.showValueList = true;
@@ -308,22 +308,24 @@ export default {
     },
     queryResults(offset) {
       const column = this.column;
-      const dataType = this.columns.filter(col => {
+      const dataType = this.columns.filter((col) => {
         return col.codice == column;
       })[0].type;
       const operator = this.operatore;
       const value = this.valore;
-      getQueryLayer(this.layer, offset, this.limit, column, dataType, value, operator).then(res => {
-        this.results = res.data.data;
-        this.total = res.data.count;
-        this.showValueList = false;
-        this.showResults = true;
-        if (this.total > this.limit) {
-          this.showPagination = true;
-        } else {
-          this.showPagination = false;
+      getQueryLayer(this.layer, offset, this.limit, column, dataType, value, operator).then(
+        (res) => {
+          this.results = res.data.data;
+          this.total = res.data.count;
+          this.showValueList = false;
+          this.showResults = true;
+          if (this.total > this.limit) {
+            this.showPagination = true;
+          } else {
+            this.showPagination = false;
+          }
         }
-      });
+      );
     },
     cancel() {
       this.cleanUp();
@@ -337,7 +339,7 @@ export default {
           .parentNode.removeChild(document.getElementById('gv-layer-search'));
       }
     },
-    collapse: function(event) {
+    collapse: function (event) {
       if (this.show) {
         document.getElementById('gv-layer-search-body').style.display = 'none';
       } else {
@@ -392,5 +394,11 @@ export default {
 <style>
 #gv-layer-search-value {
   width: 250px;
+}
+
+@media only screen and (max-width: 420px) {
+  .el-select-dropdown {
+    width: 350px;
+  }
 }
 </style>

@@ -13,6 +13,10 @@
             <th class="gv-map-info-panel-th gv-color-scheme">{{ item.label }}</th>
             <td>{{ item.value }}</td>
           </tr>
+          <tr>
+            <th class="gv-map-info-panel-th gv-color-scheme">Note</th>
+            <td><div v-html="note"></div></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -42,13 +46,13 @@
       </el-col>
       <el-col>
         <el-button-group v-if="showMetadata" class="gv-button-group">
-          <el-button type="primary" disabled size="mini">
+          <el-button v-if="showWMS" type="primary" disabled size="mini">
             <span>Scheda Metadati:</span>
           </el-button>
-          <el-button type="primary" @click="openMetadataPanel('DATA')" size="mini">
+          <el-button v-if="showWMS" type="primary" @click="openMetadataPanel('DATA')" size="mini">
             <span>Dataset</span>
           </el-button>
-          <el-button type="primary" @click="openMetadataPanel('VS')" size="mini">
+          <el-button v-if="showWMS" type="primary" @click="openMetadataPanel('VS')" size="mini">
             <span>WMS</span>
           </el-button>
           <el-button
@@ -101,16 +105,18 @@ export default {
         value: metaData.elissoide_datum,
       });
       items.push({ label: 'Copertura', value: metaData.copertura });
-      items.push({ label: 'Note', value: metaData.note });
+      // items.push({ label: 'Note', value: metaData.note });
     }
     return {
       items: items,
+      note: metaData.note,
       idMap: metaData.id.toString(),
       name: metaData.descrizione,
       title: window.matchMedia('(max-width: 600px)').matches
         ? metaData.descrizione.substr(0, 52)
         : metaData.descrizione.substr(0, 68),
       showMetadata: !window.matchMedia('(max-width: 600px)').matches,
+      showWMS: metaData.flag_wms,
       width: window.matchMedia('(max-width: 600px)').matches ? 350 : 500,
       fullTitle: metaData.descrizione,
       linkWms: metaData.link_wms,
@@ -204,7 +210,7 @@ export default {
   margin-top: 100px;
   background-color: #fff;
   z-index: 800;
-  max-width: 600px;
+  max-width: 670px;
 }
 
 .gv-map-info-panel table {

@@ -36,7 +36,7 @@
       <el-row type="flex" class="row-bg" justify="left">
         <div class="gv-fototeca-carrello-licenza">
           I dati sono ceduti con licenza d’uso
-          <a href="http://creativecommons.org/licenses/by/3.0/deed.it" target="_blank">CC BY 3.0</a>
+          <a href="http://creativecommons.org/licenses/by/4.0/deed.it" target="_blank">CC BY 4.0</a>
           <!-- <a href="http://creativecommons.org/licenses/by/3.0/deed.it" target="_blank"
             ><img alt="Creative Commons BY" src="http://i.creativecommons.org/l/by/3.0/80x15.png"
           /></a> -->
@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     expandedNodes() {
-      return this.data.map(volo => {
+      return this.data.map((volo) => {
         return volo.id;
       });
     },
@@ -80,15 +80,15 @@ export default {
   },
   methods: {
     download() {
-      const data = this.data.map(volo => {
+      const data = this.data.map((volo) => {
         return {
           dir: volo.dir,
-          foto: volo.children.map(foto => {
+          foto: volo.children.map((foto) => {
             return foto.file;
           }),
         };
       });
-      getFototecaZipFiles(data).then(response => {
+      getFototecaZipFiles(data).then((response) => {
         // var window = window.open(response.url, '_blank');
         if (response.success) {
           notification(`File disponibile a questa <a href=${response.url}>URL</a> `, 'info', 0);

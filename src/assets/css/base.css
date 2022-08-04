@@ -166,8 +166,8 @@ body {
 
 @media only screen and (max-width: 420px) {
   .gv-button {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     margin-right: 0px;
     border-radius: 0px;
     padding: 6px 4px;
@@ -193,6 +193,10 @@ body {
   background-color: #fff;
 }
 
+.leaflet-control-attribution a {
+    text-decoration: underline !important; 
+}
+
 /* FINE LEAFLET MODIFICHE CUSTOM */
 
 /* CLUSTER MARKER */
@@ -212,6 +216,7 @@ body {
   -o-transition: -o-stroke-dashoffset 0.3s ease-out, -o-stroke-opacity 0.3s ease-in;
   transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
 }
+
 
 .marker-cluster-small {
   background-color: rgba(181, 226, 140, 0.6);

@@ -6,7 +6,7 @@
     ref="gv-cultura-ricerca"
   >
     <div v-draggable id="gv-cultura-ricerca-title" class="gv-cultura-ricerca-title gv-color-scheme">
-      <b>RICERCHE</b>
+      <strong>RICERCHE</strong>
       <button
         :class="toggleCollapseClass()"
         size="mini"

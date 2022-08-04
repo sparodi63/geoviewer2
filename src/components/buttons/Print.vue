@@ -3,15 +3,15 @@
 </template>
 
 <script>
-import mountComponent from "../../util/mountComponent";
+import mountComponent from '../../util/mountComponent';
 
-import Vue from "vue";
-import { Button } from "element-ui";
+import Vue from 'vue';
+import { Button } from 'element-ui';
 Vue.use(Button);
 
-Vue.component("gv-print-panel", () => import("../Print.vue"));
+Vue.component('gv-print-panel', () => import('../Print.vue'));
 
-const name = "gv-print-button";
+const name = 'gv-print-button';
 
 export default {
   name: name,
@@ -21,34 +21,29 @@ export default {
     return {
       active: false,
       options: options,
-      cssClass: "gv-print-button gv-button fa fa-print",
-      cssActiveClass: "gv-button-selected"
+      cssClass: 'gv-print-button gv-button fa fa-print',
+      cssActiveClass: 'gv-button-selected',
     };
   },
 
   methods: {
     onClick() {
       mountComponent({
-        elId: "gv-print-panel",
+        elId: 'gv-print-panel',
         containerId: GV.config.containerId,
         toggleEl: true,
         vm: new Vue({
-          template: `<gv-print-panel></gv-print-panel>`
-        })
+          template: `<gv-print-panel></gv-print-panel>`,
+        }),
       });
     },
     setClass() {
-      return this.active
-        ? this.cssClass + " " + this.cssActiveClass
-        : this.cssClass;
-    }
+      return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
+    },
   },
-  mounted: function() {}
+  mounted: function () {},
 };
 </script>
 
 <style>
-.gv-print-button {
-  font-size: 12px;
-}
 </style>

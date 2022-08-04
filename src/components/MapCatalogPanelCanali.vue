@@ -1,7 +1,7 @@
 <template>
-  <div id="gv-map-catalog-panel-canali"> 
-    <div v-if="largeScreen" >
-      <div class="gv-map-catalog-tree" >
+  <div id="gv-map-catalog-panel-canali">
+    <div v-if="largeScreen">
+      <div class="gv-map-catalog-tree">
         <el-tree
           :data="panel.tree"
           show-checkbox
@@ -14,19 +14,17 @@
         <span>Carica</span>
       </el-button>
     </div>
-    <div class="gv-map-catalog-table" v-if="!largeScreen" >
+    <div class="gv-map-catalog-table" v-if="!largeScreen">
       <el-table
         :data="list"
         @current-change="handleTableRowSelect"
         highlight-current-row
-        :show-header=false
-        :stripe=true
+        :show-header="false"
+        :stripe="true"
         :cell-style="{ padding: '2px' }"
-        style="width: 100%">
-        <el-table-column
-          prop="text"
-          width="340">
-        </el-table-column>
+        style="width: 100%"
+      >
+        <el-table-column prop="text" width="340"> </el-table-column>
       </el-table>
     </div>
   </div>
@@ -73,7 +71,7 @@ export default {
     // Carico i tree per i pannelli di tipo tree
     this.loadTree();
   },
-  mixins: [handleSelectionChange, submitMultiSel, handleNodeClick,TestScreenWidth],
+  mixins: [handleSelectionChange, submitMultiSel, handleNodeClick, TestScreenWidth],
   methods: {
     loadTree() {
       if (this.panel.options.multiCanale) {
@@ -81,68 +79,68 @@ export default {
         this.panel.tree = [];
         if (this.panel.options.canale) {
           const canali = this.panel.options.canale.toString().split(',');
-          canali.forEach(canale => {
+          canali.forEach((canale) => {
             const params = {
               tematici: this.panel.options.tematici,
               canale: canale,
               pub: this.panel.options.pub,
             };
-            getCanali(params).then(data => {
+            getCanali(params).then((data) => {
               if (data) {
                 this.panel.tree.push(data);
-                this.loadList()
+                this.loadList();
               }
             });
           });
         }
         if (this.panel.options.applicazione) {
           const applicazioni = this.panel.options.applicazione.split(',');
-          applicazioni.forEach(applicazione => {
+          applicazioni.forEach((applicazione) => {
             const params = {
               applicazione: applicazione,
               tematici: this.panel.options.tematici,
               pub: this.panel.options.pub,
             };
-            getCanali(params).then(data => {
+            getCanali(params).then((data) => {
               if (data) {
                 this.panel.tree.push(data);
-                this.loadList()
+                this.loadList();
               }
             });
           });
         }
       } else {
-        getCanali(this.panel.options).then(data => {
+        getCanali(this.panel.options).then((data) => {
           if (data) {
             this.panel.tree = data.children;
             this.panel.label = `Canali Tematici: ${data.text}`;
-            this.loadList()
+            this.loadList();
           }
         });
       }
     },
     loadList() {
-      const list = []
-      console.log("TREE ", this.panel.tree)
+      const list = [];
+      // console.log('TREE ', this.panel.tree);
       for (const el of this.panel.tree) {
         if (el.leaf) {
           list.push({
             id: el.id,
-            text: el.text
-          })
+            text: el.text,
+          });
         } else {
           for (const el2 of el.children) {
             if (el2.leaf) {
               list.push({
                 id: el2.id,
-                text: el2.text
-              })
+                text: el2.text,
+              });
             } else {
               for (const el3 of el2.children) {
                 list.push({
                   id: el3.id,
-                  text: el3.text
-                })
+                  text: el3.text,
+                });
               }
             }
           }
@@ -156,22 +154,22 @@ export default {
         //   }
         // }
       }
-      this.list = list.sort((a, b) => { 
+      this.list = list.sort((a, b) => {
         if (a.text < b.text) {
-            return -1;
-          }
-          if (a.text > b.text) {
-            return 1;
-          }
-          return 0;        
-      })
-    },    
+          return -1;
+        }
+        if (a.text > b.text) {
+          return 1;
+        }
+        return 0;
+      });
+    },
     handleTableRowSelect(val) {
       var r = confirm('Sei sicuro?');
       if (r == true) {
         GV.config.addRlMap(`${val.id}`, false, false);
       }
-    },    
+    },
   },
 };
 </script>
@@ -190,7 +188,6 @@ export default {
   width: 340px;
   overflow: auto;
 }
-
 </style>
 
 <style>

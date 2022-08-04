@@ -45,12 +45,9 @@ export default {
       return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
     },
   },
-  mounted: function() {},
+  mounted: function () {},
 };
 </script>
 
 <style>
-.gv-ricerca-particella-button {
-  font-size: 12px;
-}
 </style>

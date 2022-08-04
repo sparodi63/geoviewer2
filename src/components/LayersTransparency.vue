@@ -43,7 +43,7 @@ export default {
     GV.log('gv-layers-transparency: mounted');
   },
   methods: {
-    getClass: function(layer) {
+    getClass: function (layer) {
       return layer.inRange
         ? 'gv-list-transparency-layer-item'
         : 'gv-list-transparency-layer-item gv-list-transparency-layer-disabled-item';
@@ -64,7 +64,7 @@ export default {
   padding-left: 0;
   margin-top: 0;
   margin-bottom: 0;
-  width: 440px;
+  /* width: 440px; */
 }
 
 .gv-list-transparency-layer-item {
@@ -113,14 +113,14 @@ export default {
   font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 180px;
+  max-width: 200px;
 }
 
 .gv-transparency-layer-slider {
   position: absolute;
   top: 16%;
-  left: 190px;
-  width: 160px;
+  left: 210px;
+  width: 120px;
 }
 
 .gv-layers-transparency-footer {
@@ -144,15 +144,15 @@ export default {
 }
 
 #gv-layers-transparency-body {
-  width: 380px;
+  width: 360px;
   max-height: 400px;
   cursor: default;
   overflow: hidden;
 }
 
-#gv-layers-transparency-body:hover {
+/* #gv-layers-transparency-body:hover {
   overflow-y: scroll;
-}
+} */
 
 @media (max-height: 500px) {
   #gv-layers-transparency-body {
