@@ -1,7 +1,7 @@
 <template>
   <div class="gv-cultura-info gv-inverted-color-scheme" id="gv-cultura-info">
     <div v-draggable id="gv-cultura-info-title" class="gv-cultura-info-title gv-color-scheme">
-      <b style="margin-left: 10px">{{ title }}</b>
+      <strong style="margin-left: 10px">{{ title }}</strong>
       <el-button
         class="gv-close gv-color-scheme"
         icon="el-icon-close"
@@ -10,24 +10,18 @@
         title="Chiudi Panello"
         alt="Chiudi Panello"
       ></el-button>
-      <!-- <button
-        :class="toggleCollapseClass()"
-        size="mini"
-        @click="hidePanel"
-        title="Nascondi Pannello"
-      ></button> -->
     </div>
 
     <div v-bar>
       <div class="gv-cultura-info-body" id="gv-cultura-info-body">
         <div class="gv-cultura-info-scheda">
-          <div style="font-size: 20px">
+          <div style="font-size: 20px; width: 90%">
             <strong>{{ properties.NOME.toUpperCase() }}</strong>
           </div>
           <br />
-          <div>{{ properties.INDIRIZZO_FORMAT }}</div>
+          <div style="width: 90%">{{ properties.INDIRIZZO_FORMAT }}</div>
           <br />
-          <div>
+          <div style="width: 90%">
             {{ properties.RAGGRUPPAMENTO }} / <strong>{{ properties.CATNAME }}</strong>
           </div>
           <div class="gv-cultura-info-descrizione" v-if="properties.DESCRIZIONE_BREVE">
@@ -89,26 +83,8 @@ export default {
       title: 'SCHEDA LUOGO',
     };
   },
-  async mounted() {
-    // console.log(this.properties);
-  },
+  async mounted() {},
   methods: {
-    //   componiIndirizzo() {
-    //     const province = {
-    //       "008": "IM",
-    //       "009": "SV",
-    //       "010": "GE",
-    //       "011": "SP"
-    //     }
-    //     let indirizzo = ''
-    //     if (this.properties.INDIRIZZO) indirizzo += this.properties.INDIRIZZO + ' '
-    //     if (this.properties.NUMCIVICO) indirizzo += this.properties.NUMCIVICO + ' '
-    //     if (this.properties.LOCALITA) indirizzo += this.properties.LOCALITA + ' '
-    //     if (indirizzo !== '') indirizzo += ' - '
-    //     indirizzo += this.properties.NOMECOMUNE
-    //     indirizzo += ' (' + province[this.properties.COD_PROV] + ')'
-    //     return indirizzo
-    //   },
     showGallery() {
       mountComponent({
         elId: 'gv-cultura-info-gallery',
@@ -128,21 +104,6 @@ export default {
       GV.eventBus.$emit('cultura-close-panel', {
         flagRicerca: this.flagRicerca,
       });
-    },
-    hidePanel: function (event) {
-      if (this.show) {
-        document.getElementById('gv-cultura-info-body').style.display = 'block';
-        document.getElementById('gv-cultura-info').style.width = '800px';
-      } else {
-        document.getElementById('gv-cultura-info-body').style.display = 'none';
-        document.getElementById('gv-cultura-info').style.width = '200px';
-      }
-      this.show = !this.show;
-    },
-    toggleCollapseClass() {
-      return this.show
-        ? 'gv-cultura-info-collapse gv-color-scheme el-icon-arrow-down'
-        : 'gv-cultura-info-collapse gv-color-scheme el-icon-arrow-up';
     },
     handleLink(index, link_documentazione) {
       window.open(link_documentazione);
@@ -164,7 +125,7 @@ export default {
   top: 0;
   margin-left: 10px;
   margin-top: 270px; */
-  width: 600px;
+  width: 350px;
   z-index: 800;
   /* overflow: auto;
   max-height: 300px; */
@@ -204,7 +165,7 @@ export default {
 }
 
 .gv-cultura-info-descrizione {
-  width: 550px;
+  width: 300px;
 }
 
 .gv-cultura-info-button {

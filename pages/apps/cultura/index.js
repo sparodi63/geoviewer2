@@ -137,8 +137,10 @@ function getLayersLuogo() {
           iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${idRaggruppamento}.png`,
           iconSize: [32, 32],
         });
+        const alt = feature.properties.NOME;
         return L.marker(latlng, {
           icon: icon,
+          alt: alt,
         });
       },
     },
@@ -166,8 +168,9 @@ function getLayersItinerario() {
   const luoghi = getLuoghiItineario(idItinerario);
   GV.globals.CULTURA_CONFIG.luoghi = luoghi;
   const label = GV.globals.CULTURA_CONFIG.itinerari.filter(it => {
-    return (it.id = idItinerario);
+    return it.id == idItinerario;
   })[0].itinerario;
+  // console.log(label);
 
   return [
     {
@@ -202,8 +205,10 @@ function getLayersItinerario() {
           iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${idItinerario}.png`,
           iconSize: [32, 32],
         });
+        const alt = feature.properties.NOME;
         return L.marker(latlng, {
           icon: icon,
+          alt: alt,
         });
       },
     },
@@ -244,8 +249,10 @@ function getLayersRaggruppamenti() {
           iconUrl: `/geoservices/apps/viewer/static/img/cultura/legend/${rg.id}.png`,
           iconSize: [32, 32],
         });
+        const alt = feature.properties.NOME;
         return L.marker(latlng, {
           icon: icon,
+          alt: alt,
         });
       },
     };
@@ -259,11 +266,16 @@ function init(maps) {
       position: 'topright',
       options: {
         maps: maps,
+        hideLayerVisibilityCheck: true,
         version: 2,
       },
     },
   ];
-  if (!GV.globals.CULTURA_CONFIG.embed) {
+  const screenWidth = document.documentElement.clientWidth;
+  const maxScreenWidth = 420;
+  const largeScreen = screenWidth > maxScreenWidth;
+  console.log(largeScreen);
+  if (!GV.globals.CULTURA_CONFIG.embed && largeScreen) {
     const banner = `<h1><div id="titolo"> <div id="loghi_sx"><a href="${GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN}" title="Luoghi della Cultura"><img alt="Luoghi della Cultura" src="/geoservices/apps/viewer/static/img/cultura/logo2.png"></a></div> <div id="loghi_dx"></div> </div></h1>`;
     tools.push({
       name: 'gv-inner-html',

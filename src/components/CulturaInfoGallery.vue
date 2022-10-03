@@ -5,7 +5,7 @@
       id="gv-cultura-info-gallery-title"
       class="gv-cultura-info-title gv-color-scheme"
     >
-      <b>{{ title }}</b>
+      <strong>{{ title }}</strong>
       <el-button
         class="gv-close gv-color-scheme"
         icon="el-icon-close"
@@ -28,7 +28,12 @@
               <div :title="item.text" class="item__content">
                 {{ item.label }}
               </div>
-              <img style="width: 100%; height: auto" :src="item.imgUrl" :title="item.text" />
+              <img
+                style="width: 100%; height: auto"
+                :src="item.imgUrl"
+                :title="item.text"
+                :alt="item.text"
+              />
             </div>
           </div>
         </el-carousel-item>

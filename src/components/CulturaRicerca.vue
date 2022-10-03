@@ -17,34 +17,18 @@
 
     <div class="gv-cultura-ricerca-body" id="gv-cultura-ricerca-body">
       <div id="gv-cultura-ricerca-filtri">
-        <!-- <span class="gv-cultura-ricerca-luoghi">RICERCA</span> 
-        <el-select
-          id="gv-seach-input"
-          v-model="luoghi"
-          filterable
-          clearable
-          remote
-          size="small"
-          placeholder="Ricerca un luogo per nome o indirizzo..."
-          :remote-method="search"
-          @change="onSelectSearch"
-          :loading="loading"
-          loading-text="Caricamento... "
-          no-match-text="Nessun elemento trovato"
-          no-data-text="Nessun elemento trovato"
-          style="width: 370px !important;"
-        >
-          <el-option
-            v-for="item in searchResults"
-            :key="item.id"
-            :label="item.label"
-            :value="item.id"
-          >
-          </el-option>
-        </el-select> -->
-
         <table>
-          <tr>
+          <tr v-if="itinerario">
+            <td>
+              <span><strong>ITINERARIO</strong></span>
+            </td>
+            <td>
+              <span
+                ><strong>&nbsp;&nbsp;{{ nomeItinerario }}</strong></span
+              >
+            </td>
+          </tr>
+          <tr v-if="flagRaggruppamento">
             <td>
               <span>LIVELLO </span>
             </td>
@@ -64,6 +48,16 @@
                 >
                 </el-option>
               </el-select>
+            </td>
+          </tr>
+          <tr v-if="!flagRaggruppamento">
+            <td>
+              <span><strong>LIVELLO</strong></span>
+            </td>
+            <td>
+              <span
+                ><strong>&nbsp;&nbsp;{{ nomeRaggruppamento }}</strong></span
+              >
             </td>
           </tr>
           <tr>
@@ -196,7 +190,7 @@
           <div class="gv-cultura-ricerca-results-table">
             <el-table
               :data="listaLuoghi"
-              empty-text="Nessuna luogo trovato"
+              empty-text="Nessun luogo trovato"
               style="font-size: 12px !important"
               class="gv-inverted-color-scheme"
               :row-style="tableRowClassName"
@@ -217,14 +211,11 @@
                   <strong>{{ props.row.properties.NOME }}</strong>
                 </template>
               </el-table-column>
-              <!-- <el-table-column prop="properties.INDIRIZZO_FORMAT" align="left" width="200"> -->
               <el-table-column prop="properties.NOMECOMUNE" align="left" width="200">
                 <template slot-scope="props">
-                  <span v-if="!filtro.comune"
+                  <span
                     >{{ props.row.properties.NOMECOMUNE }}
-                    <span v-if="!filtro.provincia"
-                      >( {{ props.row.properties.SIGLA_PROVINCIA }} )
-                    </span>
+                    <span>( {{ props.row.properties.SIGLA_PROVINCIA }} ) </span>
                   </span>
                 </template>
               </el-table-column>
@@ -237,7 +228,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import Vue from 'vue';
 
 import { Button, Select, Option } from 'element-ui';
@@ -252,14 +242,11 @@ import { Loading } from 'element-ui';
 Vue.use(Loading);
 
 import notification from '../util/notification';
-
-// import mountComponent from '../util/mountComponent';
-// Vue.component('gv-cultura-ricerca-results', () =>
-//   import(/* webpackChunkName: "CulturaRicercaResults" */ './CulturaRicercaResults')
-// );
+import TestScreenWidth from '../mixins/TestScreenWidth';
 
 export default {
   name: 'gv-cultura-ricerca',
+  mixins: [TestScreenWidth],
   data() {
     let raggruppamenti = GV.globals.CULTURA_CONFIG.raggruppamenti;
     for (const rg of raggruppamenti) {
@@ -304,11 +291,30 @@ export default {
     province = province.sort((a, b) => a.id - b.id);
 
     const filter = GV.globals.CULTURA_CONFIG.filter;
-    const visible = !GV.globals.CULTURA_CONFIG.embed;
+    const visible = !GV.globals.CULTURA_CONFIG.embed || !this.largeScreen;
+
+    let nomeItinerario = '';
+    if (filter.itinerario) {
+      nomeItinerario = GV.globals.CULTURA_CONFIG.itinerari.filter((it) => {
+        return it.id == filter.itinerario;
+      })[0].itinerario;
+      // console.log(nomeItinerario);
+    }
+
+    const flagRaggruppamento = GV.globals.CULTURA_CONFIG.filter.raggruppamento ? false : true;
+    let nomeRaggruppamento = '';
+    if (!flagRaggruppamento) {
+      nomeRaggruppamento = GV.globals.CULTURA_CONFIG.raggruppamenti.filter((it) => {
+        return it.id == GV.globals.CULTURA_CONFIG.filter.raggruppamento;
+      })[0].raggruppamento;
+      console.log(nomeRaggruppamento);
+    }
 
     return {
       raggruppamenti: raggruppamenti,
       raggruppamento: filter.raggruppamento,
+      flagRaggruppamento: flagRaggruppamento,
+      nomeRaggruppamento: nomeRaggruppamento,
       categorie: categorie,
       categoria: filter.categoria,
       province: province,
@@ -317,6 +323,7 @@ export default {
       comune: filter.comune,
       // itinerari: GV.globals.CULTURA_CONFIG.itinerari,
       itinerario: filter.itinerario,
+      nomeItinerario: nomeItinerario,
       propertyName: 'NOME',
       luoghi: null,
       filterResult: [],
@@ -332,6 +339,13 @@ export default {
     if (this.raggruppamento) this.onChangeRaggruppamento(this.raggruppamento);
     if (this.provincia) this.onChangeProvincia(this.provincia);
     this.filterLuoghi();
+    const el = document.getElementById('gv-cultura-ricerca-filtri');
+    if (el) el.focus();
+    // console.log('screenWidth', this.screenWidth);
+    // console.log('largeScreen', this.largeScreen);
+    if (!this.largeScreen) {
+      this.visible = false;
+    }
   },
   methods: {
     onChangeRaggruppamento(value) {
@@ -365,13 +379,8 @@ export default {
     //   this.luoghi = value;
     // },
     filterLuoghi() {
-      if (!GV.globals.CULTURA_CONFIG.flagItinerario && this.noFilter()) {
-        return;
-      }
-
       const divInfo = document.getElementById('gv-cultura-info');
       if (divInfo) divInfo.remove();
-
       this.listaLuoghi = GV.globals.CULTURA_CONFIG.luoghi
         .filter((luogo) => {
           if (this.raggruppamento && this.raggruppamento !== luogo.properties.ID_RAGGRUPPAMENTO)
@@ -456,32 +465,39 @@ export default {
         }
       }
 
-      this.raggruppamento = 0;
+      const raggruppamento = GV.globals.CULTURA_CONFIG.filter.raggruppamento
+        ? GV.globals.CULTURA_CONFIG.filter.raggruppamento
+        : 0;
+      console.log(raggruppamento);
+      this.raggruppamento = raggruppamento;
       this.categoria = 0;
       this.provincia = 0;
       this.comune = 0;
-      this.onChangeRaggruppamento(0);
+      this.onChangeRaggruppamento(raggruppamento);
       this.onChangeProvincia(0);
 
-      // const div = document.getElementById('gv-cultura-ricerca-results');
-      // if (div) div.remove();
-      this.showResultsPanel = false;
+      this.filterLuoghi();
+
+      if (this.flagRaggruppamento) this.showResultsPanel = false;
       const divInfo = document.getElementById('gv-cultura-info');
       if (divInfo) divInfo.remove();
 
-      GV.globals.CULTURA_LAYERS.forEach((layer) => {
-        GV.config.removeLayer(layer.name);
-        layer.filter = () => {
-          return true;
-        };
-        GV.config.addLayerToMap(layer, 0);
-      });
-      this.zoomExtentsMap();
+      // GV.globals.CULTURA_LAYERS.forEach((layer) => {
+      //   GV.config.removeLayer(layer.name);
+      //   layer.filter = () => {
+      //     return true;
+      //   };
+      //   GV.config.addLayerToMap(layer, 0);
+      // });
+      // this.zoomExtentsMap();
     },
 
     closeResultPanels() {},
     showInfo() {},
     showResults() {
+      if (!GV.globals.CULTURA_CONFIG.flagItinerario && this.noFilter()) {
+        return;
+      }
       this.filtro = {
         comune: this.comune ? this.comune : null,
         provincia: this.provincia ? this.provincia : null,
@@ -490,17 +506,6 @@ export default {
         itinerario: this.itinerario ? this.itinerario : null,
       };
       this.showResultsPanel = true;
-      // mountComponent({
-      //   elId: 'gv-cultura-ricerca-results',
-      //   clear: true,
-      //   vm: new Vue({
-      //     template: `<gv-cultura-ricerca-results :listaLuoghi="listaLuoghi" :filtro="filtro"></gv-cultura-ricerca-results>`,
-      //     data: {
-      //       listaLuoghi: this.listaLuoghi,
-      //       filtro: this.filtro,
-      //     },
-      //   }),
-      // });
     },
     hidePanel: function (event) {
       if (this.show) {
@@ -519,13 +524,38 @@ export default {
     },
 
     stampaPDF() {
-      let url = `${location.protocol}//${location.hostname}/geoservices/apps/cultura-print/?TYPE=PRINT`;
+      let loading = Loading.service({
+        fullscreen: true,
+        text: 'Preparazione Stampa',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)',
+      });
+
+      // let url = `${location.protocol}//${location.hostname}/geoservices/apps/cultura-print/?TYPE=PRINT`;
+      let url = `/geoservices/REST/print/cultura/?TYPE=PRINT`;
       if (this.filtro.raggruppamento) url += `&RAGGRUPPAMENTO=${this.filtro.raggruppamento}`;
       if (this.filtro.categoria) url += `&CATEGORIA=${this.filtro.categoria}`;
       if (this.filtro.provincia) url += `&PROVINCIA=${this.filtro.provincia}`;
       if (this.filtro.comune) url += `&COMUNE=${this.filtro.comune}`;
       if (this.filtro.itinerario) url += `&ITINERARIO=${this.filtro.itinerario}`;
-      window.open(url, '_blank');
+      // window.open(url, '_blank');
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          loading.close();
+          console.log(data);
+          var popup = window.open(
+            data.url
+            // '',
+            // 'menubar=yes,location=no,resizable=no,scrollbars=no,status=no'
+          );
+          popup.focus();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          alert(error);
+        });
     },
     tableRowClassName() {
       return { cursor: 'pointer', 'background-color': '#c9c8c8' };
@@ -559,7 +589,7 @@ export default {
 }
 
 .gv-cultura-ricerca-luoghi {
-  margin-left: 10px;
+  margin-left: 3px;
 }
 
 .gv-cultura-ricerca-title {

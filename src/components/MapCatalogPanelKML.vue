@@ -3,13 +3,13 @@
     <el-form :model="kmlForm" ref="kml-form">
       <el-form-item>
         <el-input
-          style="width: 340px;"
+          style="width: 340px"
           size="mini"
           placeholder="Inserisci la URL di un file KML o GPX o JSON"
           v-model="kmlForm.URL"
         >
           <i
-            style="cursor:default;"
+            style="cursor: default"
             slot="suffix"
             class="el-input__icon el-icon-circle-close"
             @click="handleKmlIconClick"
@@ -64,7 +64,7 @@ export default {
       kmlForm: {
         URL: '',
         fileList: [],
-        inputStyle: "width: 350px;",
+        inputStyle: 'width: 350px;',
       },
     };
   },
@@ -73,7 +73,7 @@ export default {
     submitKml() {
       const url = this.kmlForm.URL;
       if (url) {
-        getKmlUrl(url).then(data => {
+        getKmlUrl(url).then((data) => {
           const url = data.file;
           const fileName = data.name;
           const type = data.type;
@@ -96,10 +96,7 @@ export default {
           console.log('Tipo File non ammesso: I file devono avere estensione kml o gpx o json');
           return;
         }
-        const fileName = file
-          .replace('.kml', '')
-          .replace('.gpx', '')
-          .replace('.json', '');
+        const fileName = file.replace('.kml', '').replace('.gpx', '').replace('.json', '');
         this.loadKml(url, fileName, type);
       }
     },
@@ -125,7 +122,7 @@ export default {
               infoHeight: 300,
             },
             inRange: true,
-            pointToLayer: function(feature, latlng) {
+            pointToLayer: function (feature, latlng) {
               return L.marker(latlng, {
                 icon: L.icon({
                   iconUrl: '/geoservices/apps/viewer/dist/static/img/marker-icon.png',
@@ -133,6 +130,7 @@ export default {
                   iconAnchor: [6, 10],
                   popupAnchor: [0, -20],
                 }),
+                alt: '',
               });
             },
             zoomToLayerExtent: true,
@@ -162,10 +160,10 @@ export default {
   font-family: 'Raleway', Arial, sans-serif;
 }
 
-  #gv-map-catalog-panel-kml {
-    width: 360px;
-    padding: 10px;
-  }
+#gv-map-catalog-panel-kml {
+  width: 360px;
+  padding: 10px;
+}
 
 @media only screen and (min-width: 420px) {
   #gv-map-catalog-panel-kml {
@@ -176,5 +174,4 @@ export default {
   #gv-map-catalog-panel-kml {
   }
 }
-
 </style>

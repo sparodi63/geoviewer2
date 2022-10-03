@@ -627,8 +627,10 @@ var layerFactory = {
                   popupAnchor: style.popupAnchor,
                 });
             }
+            const alt = tooltip ? interpolateString(tooltip, feature.properties) : '';
             return L.marker(latlng, {
               icon: icon,
+              alt: alt,
             });
           } else {
             return L.circleMarker(latlng, style);

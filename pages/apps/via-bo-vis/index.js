@@ -11,7 +11,7 @@ const geoserverUrl =
     : 'https://geoservizi.regione.liguria.it/';
 const idMap = env === 'TEST' ? 2292 : 2327;
 const idLayer = env === 'TEST' ? 'L8480,L8482,L8485' : 'L8699,L8698,L8700';
-const layers = idLayer.split(',')
+const layers = idLayer.split(',');
 const idLayerComune = 'L6422';
 
 if (id) {
@@ -47,28 +47,28 @@ function loadConfig(data) {
   if (countGeom > 0) {
     findOptions = {
       layers: layers,
-      cqlFilter: "ID_PROGETTO=" + id,
+      cqlFilter: 'ID_PROGETTO=' + id,
     };
   }
 
   // console.log('FINDOPTIONS', findOptions)
-  
+
   let tools = [
-      { name: 'gv-geocoder' },
-      { name: 'gv-info-button', active: true },
-      { name: 'gv-measure-button' },
-      { name: 'gv-layer-search-topo-button' },
-      { name: 'gv-ricerca-catastale-button' },
-      { name: 'gv-print-button' },
-      { name: 'gv-scalebar', position: 'bottomleft' },
-  ] ;
+    { name: 'gv-geocoder' },
+    { name: 'gv-info-button', active: true },
+    { name: 'gv-measure-button' },
+    { name: 'gv-layer-search-topo-button' },
+    { name: 'gv-ricerca-catastale-button' },
+    { name: 'gv-print-button' },
+    { name: 'gv-scalebar', position: 'bottomleft' },
+  ];
 
   const auth = {
     type: 'NAM',
     options: {
-      ruolo: 'VIA_VIS',
+      ruolo: 'VIA_VIS,VIA_GEST',
     },
-  }
+  };
 
   let conf = {
     debug: true,
@@ -131,7 +131,7 @@ function getDrawTool() {
     },
   ];
 
-  console.log('INITWFSREQUEST',initWfsRequest)
+  console.log('INITWFSREQUEST', initWfsRequest);
 
   return {
     name: 'gv-draw-button',

@@ -42,6 +42,7 @@ export default {
   name: 'gv-cultura-legend',
   data() {
     const options = GV.config.getToolOptions('gv-cultura-legend');
+
     const visible = !GV.globals.CULTURA_CONFIG.embed && !GV.globals.CULTURA_CONFIG.flagItinerario;
     return {
       options: options,

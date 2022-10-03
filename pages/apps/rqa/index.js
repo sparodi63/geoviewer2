@@ -33,10 +33,11 @@ GV.init({
         },
       },
       tools: [
+        // { name: 'gv-measure-button' },
+        // { name: 'gv-print-button' },
         {
           name: 'rqa-livelli',
         },
-        // { name: 'gv-geocoder', position: 'bottomleft' },
       ],
     },
   },

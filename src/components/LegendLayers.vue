@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="gv-legend-layer-table">
     <el-table
       :data="map.layers"
       :show-header="false"
@@ -8,6 +8,7 @@
       :row-class-name="layerClassName"
       style="width: 100%; line-height: 23px; font-weight: 400"
     >
+      <!-- style="width: 100%; line-height: 23px; font-weight: 400" -->
       <el-table-column align="center" width="30">
         <template slot-scope="scope">
           <img
@@ -18,7 +19,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="center" width="25">
+      <el-table-column align="center" v-if="layerVisibilityCheck" width="25">
         <template slot-scope="scope">
           <span>
             <el-checkbox
@@ -26,7 +27,8 @@
               v-model="scope.row.visible"
               @change="setLayerVisible(scope.row)"
               :disabled="!scope.row.inRange"
-            ></el-checkbox>
+              >layer-visibility</el-checkbox
+            >
           </span>
         </template>
       </el-table-column>
@@ -64,7 +66,7 @@
             trigger="hover"
             popper-class="popover-scala"
             placement="left-start"
-            v-show="options.layerPopover && scope.row.inRange"
+            v-if="options.layerPopover && scope.row.inRange"
             width="150"
             offset="15"
           >
@@ -90,7 +92,8 @@
                   class="gv-layer-visibility-cb"
                   v-model="scope.row.visible"
                   @change="setLayerVisible(scope.row)"
-                ></el-checkbox>
+                  >layer-visibility</el-checkbox
+                >
               </div>
             </el-row>
             <div slot="reference" class="name-wrapper">
@@ -134,7 +137,11 @@ export default {
   name: 'gv-legend-layers',
   props: ['map', 'options'],
   data() {
+    const layerVisibilityCheck = this.options.hideLayerVisibilityCheck ? false : true;
+    // console.log(this.options);
+    // if (this.options.hideLayerVisibilityCheck) layerVisibilityCheck = false;
     return {
+      layerVisibilityCheck: layerVisibilityCheck,
       // options: GV.config.application.layout.legend.options,
     };
   },
@@ -253,13 +260,6 @@ export default {
   height: 24px;
 }
 
-.gv-legend-map-tools {
-  position: relative;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  width: 260px;
-}
-
 .gv-legend-map-tools-button {
   position: relative;
   right: 0;
@@ -271,12 +271,19 @@ export default {
   padding: 2px 2px;
 }
 
+/* .gv-legend-map-tools {
+  position: relative;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  width: 260px;
+}
+
 .gv-legend-map-tools span {
   font-family: 'Raleway', Arial, sans-serif !important;
   font-size: 12px;
   font-weight: bold;
 }
-
+ */
 .gv-layer-visibility-span {
   position: absolute;
   top: 16%;

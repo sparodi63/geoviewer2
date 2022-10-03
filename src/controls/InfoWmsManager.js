@@ -559,6 +559,7 @@ function addHiliteLayerLL() {
           fillOpacity: 0.6,
           weight: 6,
           opacity: 0.6,
+          alt: '',
         });
       },
       visible: true,

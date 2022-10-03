@@ -118,7 +118,7 @@ export default {
     submitRisknat() {
       const selectedDataset = this.getSelectedDatasetRisknat();
       if (!selectedDataset) return;
-      const layersConfig = this.risknatForm.livelli.filter(livello => {
+      const layersConfig = this.risknatForm.livelli.filter((livello) => {
         return livello.id == selectedDataset.livello;
       });
       // console.log('submitRisknat risknatFrom', this.risknatForm);
@@ -141,16 +141,47 @@ export default {
       if (!this.risknatForm.selectedTarget && !this.risknatForm.selectedArea) return null;
       const selectedDatasetId = this.risknatForm.selectedTarget || this.risknatForm.selectedArea;
       const selectedDataset = this.risknatForm.selectedTarget
-        ? this.risknatForm.targetList.filter(item => item.codice == selectedDatasetId)
-        : this.risknatForm.areaList.filter(item => item.codice == selectedDatasetId);
+        ? this.risknatForm.targetList.filter((item) => item.codice == selectedDatasetId)
+        : this.risknatForm.areaList.filter((item) => item.codice == selectedDatasetId);
       return selectedDataset[0];
     },
     infoDatasetRisknat() {
       const selectedDataset = this.getSelectedDatasetRisknat();
       if (!selectedDataset) return;
       const label = selectedDataset.label;
-      const pdfUrl = `/RiskNat/pdf/${label}.pdf`;
+      const pdfUrl = 'https://srvcarto.regione.liguria.it' + this.getPdfUrl(label);
       window.open(pdfUrl);
+    },
+    getPdfUrl(label) {
+      if (label === 'DS_CSKS1_A_2A-C1_F27_SANREMO')
+        return `/RiskNat/xml/PST2013_CSK_F_27_SANREMO_A_CL001_Sanremo.xml`;
+      if (label === 'DS_CSKS1_A_3A-C1_F32_BEDONIA')
+        return `/RiskNat/xml/PST2013_CSK_F_32_CHIAVARI_A_CL102_Bedonia.xml`;
+      if (label === 'DS_CSKS1_A_3A-C1_F32_CHIAVARI')
+        return `/RiskNat/xml/PST2013_CSK_F_32_CHIAVARI_A_CL101_Chiavari.xml`;
+      if (label === 'DS_CSKS1_A_3A-C1_F33_BETTOLA')
+        return `/RiskNat/xml/PST2013_CSK_F_33_BETTOLA_A_CL001_Bettola.xml`;
+      if (label === 'DS_CSKS1_D_7D-C1_F30_CHIAVARI')
+        return `/RiskNat/xml/PST2013_CSK_F_30_CHIAVARI_D_CL001_Chiavari.xml`;
+      if (label === 'DS_CSKS1_D_7D-C1_F30_GOTRA')
+        return `/RiskNat/xml/PST2013_CSK_F_30_CHIAVARI_D_CL002_Gotra.xml`;
+      if (label === 'DS_CSKS1_D_7D-C1_F30_REZZOAGLIO')
+        return `/RiskNat/xml/PST2013_CSK_F_30_CHIAVARI_D_CL003_Rezzoaglio.xml`;
+      if (label === 'DS_CSKS1_D_7D-C1_F31_BETTOLA')
+        return `/RiskNat/xml/PST2013_CSK_F_31_BETTOLA_D_CL001_Bettola.xml`;
+      if (label === 'DS_CSKS1_D_8D-C2_F28_IMPERIA')
+        return `/RiskNat/xml/PST2013_CSK_F_28_IMPERIA_D_CL001_Imperia.xml`;
+      if (label === 'DS_CSKS1_D_8D-C4_F29_SANREMO')
+        return `/RiskNat/xml/PST2013_CSK_F_29_SANREMO_D_CL001_Sanremo.xml`;
+      if (label === 'PS_ENVI_A_T215_F885_SARZANA')
+        return `/RiskNat/xml/PST2009_ENVISAT_T215_F885_CL003_SARZANA.xml`;
+      if (label === 'PS_ENVI_D_T208_F2709_RAPALLO')
+        return `/RiskNat/xml/PST2009_ENVISAT_T208_F2709_CL002_RAPALLO.xml`;
+      if (label === 'PS_ENVI_D_T437_F2709_SARZANA')
+        return `/RiskNat/xml/PST2009_ENVISAT_T437_F2709_CL003_SARZANA.xml`;
+      // if (label === 'PS_ENVI_A_T487_F873_LEVANTO')
+      //   return `/RiskNat/xml/PST2013_CSK_F_30_CHIAVARI_D_CL002_Gotra.xml`;
+      return `/RiskNat/pdf/${label}.pdf`;
     },
     onChangeRisknatType(value) {
       if (value === 'target') {
@@ -166,7 +197,7 @@ export default {
     onChangeRisknatCombo(value) {
       const layer = GV.app.map.getLayerByName('RisknatDataset');
       const features = this.risknatForm.layerDataset.features.filter(
-        item => item.properties.ID == value || item.properties.id == value
+        (item) => item.properties.ID == value || item.properties.id == value
       );
       if (layer && features && features[0] && features[0].geometry) {
         GV.app.map.clearLayer('RisknatDataset');
@@ -191,7 +222,7 @@ export default {
       }
     },
     loadRisknatConfig(panel) {
-      getRiskNatConfig().then(data => {
+      getRiskNatConfig().then((data) => {
         this.risknatForm.targetList = data.target;
         this.risknatForm.areaList = data.aree;
       });
@@ -200,11 +231,11 @@ export default {
         GV.globals.DEFAULT_PROXY +
         `https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`;
       const url = `${baseUrl}M1324:L3449`;
-      getGeoJSON(url).then(response => {
+      getGeoJSON(url).then((response) => {
         this.loadRisknatDataset(response.data);
         this.risknatForm.showForm = true;
       });
-      getConfig(this.risknatForm.idMap).then(data => {
+      getConfig(this.risknatForm.idMap).then((data) => {
         // console.log('getConfig', data.data.data);
         this.risknatForm.livelli = data.data.data.layers;
         this.risknatForm.downloadConfig = data.data.data.downloadConfig;
@@ -226,7 +257,7 @@ export default {
             color: 'blue',
             width: 3,
           }),
-        })
+        });
       } else {
         style = {
           color: '#ffcc00',

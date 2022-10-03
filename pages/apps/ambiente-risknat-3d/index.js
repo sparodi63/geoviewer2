@@ -50,8 +50,8 @@ GV.init({
           name: 'gv-help3D-button',
           position: 'topleft',
           options: {
-            showOnStart: true
-          }
+            showOnStart: true,
+          },
         },
       ],
     },
@@ -62,13 +62,7 @@ GV.init({
       visible: true,
     },
     {
-      type: 'OSM',
-    },
-    {
       type: 'RL_ORTOFOTO_2019',
-    },
-    {
-      type: 'RL_CARTE_BASE',
     },
     {
       type: 'BLANK',

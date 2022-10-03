@@ -1,17 +1,18 @@
-
 // http://localhost:8081?ID_SESSION=12345&CODICE_COMUNE=010058&ID_PUNTO=2631
-
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.ENV || 'TEST';
 
-const auth = (env === 'PROD') ? {
-  type: 'NAM',
-  options: {
-    ruolo: 'IR_VIS,IR_AMM,IR_GES_ALL',
-  },
-} : null;
+const auth =
+  env === 'PROD'
+    ? {
+        type: 'NAM',
+        options: {
+          ruolo: 'IR_VIS,IR_AMM,IR_GES_ALL',
+        },
+      }
+    : null;
 
 var geoserverUrl =
   env === 'TEST'
@@ -58,9 +59,7 @@ function setZoomTo() {
   return null;
 }
 
-
 //------------------------------------------
-
 
 GV.init({
   debug: true,
@@ -95,7 +94,7 @@ GV.init({
       },
       tools: [
         {
-          name: 'gv-geocoder', 
+          name: 'gv-geocoder',
           position: 'topleft',
         },
         {
