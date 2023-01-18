@@ -6,6 +6,7 @@ GV.globals.ATLANTE_GEOCHIMICO_CONFIG_URL = '/geoservices/data/atlante_geochimico
 GV.init({
   debug: true,
   idMap: idMap,
+  // geoserverUrl: 'https://geoservizi.regione.liguria.it:8081/',
   application: {
     name: 'atlante-geochimico-gv2',
     mapOptions: {

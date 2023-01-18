@@ -1,10 +1,28 @@
 import axios from 'axios';
 import isBrowserIE from '../util/isBrowserIE';
 
-export default function(idSession, coord_x, coord_y, esito, coord_z) {
+export default function(
+  idSession,
+  coord_x,
+  coord_y,
+  esito,
+  coord_z,
+  coord_2_x,
+  coord_2_y,
+  coord_2_z
+) {
   let url = `/geoservices/REST/config/ag_insert_coordinate?idSession=${idSession}&coord_x=${coord_x}&coord_y=${coord_y}&esito=${esito}`;
   if (coord_z) {
     url += '&coord_z=' + coord_z;
+  }
+  if (coord_2_x) {
+    url += '&coord_2_x=' + coord_2_x;
+  }
+  if (coord_2_y) {
+    url += '&coord_2_y=' + coord_2_y;
+  }
+  if (coord_2_z) {
+    url += '&coord_2_z=' + coord_2_z;
   }
   axios.get(url).then(response => {
     GV.globals.flagInsert = true;

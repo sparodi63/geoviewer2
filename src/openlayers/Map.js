@@ -16,7 +16,7 @@ const olMap = {
   map: null,
   zoom: null,
   loading: 0,
-  loaded: 0, 
+  loaded: 0,
   buttons: [],
   ol3dEnabled: false,
   options: {
@@ -56,12 +56,12 @@ const olMap = {
     return this;
   },
   loadCesium() {
-    const GeoserverTerrainProvider = require('../cesium/GeoserverTerrainProvider');
+    require('../cesium/GeoserverTerrainProvider');
 
     const ol3d = new olcs.OLCesium({ map: this.map });
     this.scene = ol3d.getCesiumScene();
     var terrainProvider = new Cesium.GeoserverTerrainProvider({
-      url: 'https://geoservizi.regione.liguria.it/geoserver/DTM/ows', 
+      url: 'https://geoservizi.regione.liguria.it/geoserver/DTM/ows',
       layerName: 'DTM_dbtopo_5m_wgs84',
     });
     this.scene.terrainProvider = terrainProvider;
@@ -71,14 +71,14 @@ const olMap = {
     // this.ol3d.setEnabled(this.ol3dEnabled);
     if (this.options.enable3d) {
       ol3d.setEnabled(true);
-      this.ol3dEnabled = true
-    } 
+      this.ol3dEnabled = true;
+    }
     this.ol3d = ol3d;
   },
   switch3d() {
-    console.log('SWITCH 3D')
-    this.ol3dEnabled = !this.ol3dEnabled
-    this.ol3d.setEnabled(this.ol3dEnabled);    
+    console.log('SWITCH 3D');
+    this.ol3dEnabled = !this.ol3dEnabled;
+    this.ol3d.setEnabled(this.ol3dEnabled);
   },
   setLoading() {
     GV.eventBus.$on('layer-load', event => {
@@ -276,16 +276,21 @@ const olMap = {
   },
   loadLayers(layers) {
     // console.log('ol3dEnabled', this.ol3dEnabled)
-    let switch3d = false
+    let switch3d = false;
     layers.forEach(layerConfig => {
       if (this.getLayerByName(layerConfig.name)) {
         return;
       }
       var layer = LayerFactory.create(layerConfig, this);
       if (layer) {
-        if (this.ol3dEnabled && layerConfig.type === 'JSON' && layerConfig.name !== 'InfoWmsHilite' && layerConfig.name !== 'RisknatDataset') {
-          switch3d = true
-          this.switch3d()
+        if (
+          this.ol3dEnabled &&
+          layerConfig.type === 'JSON' &&
+          layerConfig.name !== 'InfoWmsHilite' &&
+          layerConfig.name !== 'RisknatDataset'
+        ) {
+          switch3d = true;
+          this.switch3d();
           // console.log('SONO QUI PRIMA', layerConfig.name)
           // console.log('ol3dEnabled', this.ol3dEnabled)
         }
@@ -293,18 +298,18 @@ const olMap = {
 
         GV.config.setLayerAttribute(layerConfig.name, 'inRange', this.layerInRange(layerConfig));
         const visible = layerConfig.visible && this.layerInRange(layerConfig);
-        layer.setVisible(visible);        
-        
+        layer.setVisible(visible);
+
         if (layerConfig.type === 'JSON') {
           const vectorSource = layer.getSource();
           vectorSource.once('change', () => {
             if (vectorSource.getState() === 'ready') {
               if (layerConfig.zoomToLayerExtent && layer.getSource().getFeatures().length > 0) {
                 this.fit(vectorSource.getExtent(), { maxZoom: 15 });
-                console.log('ready', vectorSource.getFeatures())
+                console.log('ready', vectorSource.getFeatures());
               }
               if (switch3d) {
-                this.switch3d()
+                this.switch3d();
                 // console.log('SONO QUI DOPO', layerConfig.name)
                 // console.log('ol3dEnabled', this.ol3dEnabled)
               }
@@ -367,7 +372,7 @@ const olMap = {
     this.fit(feature.getGeometry().getExtent(), {
       maxZoom: markerConfig.zoomLevel || 15,
     });
-    return vectorLayer
+    return vectorLayer;
   },
   find(findOptions) {
     if (findOptions.bbox) {
@@ -426,14 +431,14 @@ const olMap = {
   forEachFeatureAtPixel(pixel, callback, options) {
     this.map.forEachFeatureAtPixel(pixel, callback, options);
   },
-  hiliteFeatures(features, findOptions, layers, loading) { 
+  hiliteFeatures(features, findOptions, layers, loading) {
     InfoWmsManager.addHiliteLayer();
     const layer = this.getLayerByName('InfoWmsHilite');
     if (features && features.length > 0) {
       const source = layer.getSource();
       source.clear();
       for (const feature of features) {
-        const olFeature = new ol.format.GeoJSON().readFeature(feature, { 
+        const olFeature = new ol.format.GeoJSON().readFeature(feature, {
           featureProjection: 'EPSG:3857',
         });
         source.addFeature(olFeature);
@@ -445,7 +450,7 @@ const olMap = {
         });
       }
       // console.log('layer', layer)
-      // console.log('zIndex', layer.getZIndex()) 
+      // console.log('zIndex', layer.getZIndex())
       // console.log('features', source.getFeatures())
       // console.log('state', source.getState())
       if (layers) GV.config.hilitedLayer = layers;

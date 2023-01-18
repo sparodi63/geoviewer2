@@ -10,8 +10,8 @@ const geoserverUrl =
     ? 'http://geoservizi.datasiel.net:8080/'
     : 'https://geoservizi.regione.liguria.it/';
 const idMap = env === 'TEST' ? 2292 : 2327;
-const idLayer = env === 'TEST' ? 'L8480,L8482,L8485' : 'L8699,L8698,L8700';
-const layers = idLayer.split(',')
+const idLayer = env === 'TEST' ? 'L8480,L8482,L8485' : 'L8699,L8698,L8700,L9122';
+const layers = idLayer.split(',');
 const idLayerComune = 'L6422';
 
 if (id) {
@@ -39,31 +39,35 @@ function loadConfig(data) {
   var findOptions = null;
 
   if (comune) {
-    const listaComuni = comune.replaceAll("%2C", ",").split(",").map(com => `'${com}'`).join(',')
-    console.log(listaComuni)
+    const listaComuni = comune
+      .replaceAll('%2C', ',')
+      .split(',')
+      .map(com => `'${com}'`)
+      .join(',');
+    console.log(listaComuni);
     findOptions = {
       layers: [idLayerComune],
-      cqlFilter: "CODICE_COMUNE IN (" + listaComuni + ")",
+      cqlFilter: 'CODICE_COMUNE IN (' + listaComuni + ')',
     };
   }
   if (countGeom > 0) {
     findOptions = {
       layers: layers,
-      cqlFilter: "ID_PROGETTO=" + id,
+      cqlFilter: 'ID_PROGETTO=' + id,
     };
   }
 
   // console.log('FINDOPTIONS', findOptions)
-  
+
   let tools = [
-      { name: 'gv-geocoder' },
-      { name: 'gv-info-button', active: true },
-      { name: 'gv-measure-button' },
-      { name: 'gv-layer-search-topo-button' },
-      { name: 'gv-ricerca-catastale-button' },
-      { name: 'gv-print-button' },
-      { name: 'gv-scalebar', position: 'bottomleft' },
-  ] ;
+    { name: 'gv-geocoder' },
+    { name: 'gv-info-button', active: true },
+    { name: 'gv-measure-button' },
+    { name: 'gv-layer-search-topo-button' },
+    { name: 'gv-ricerca-catastale-button' },
+    { name: 'gv-print-button' },
+    { name: 'gv-scalebar', position: 'bottomleft' },
+  ];
 
   if (id) tools.push(getDrawTool());
 
@@ -72,7 +76,7 @@ function loadConfig(data) {
     options: {
       ruolo: 'VIA_GEST',
     },
-  }
+  };
 
   let conf = {
     debug: true,
@@ -135,7 +139,7 @@ function getDrawTool() {
     },
   ];
 
-  console.log('INITWFSREQUEST',initWfsRequest)
+  console.log('INITWFSREQUEST', initWfsRequest);
 
   return {
     name: 'gv-draw-button',

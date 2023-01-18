@@ -7,9 +7,12 @@ export default function(query) {
   };
 
   return axios
-    .get('https://srvcarto.regione.liguria.it/geoservices/REST/proxy/pelias_geocode', {
-      params: params,
-    })
+    .get(
+      'https://srvcarto.regione.liguria.it/geoservices/REST/geocoder/proxy/pelias_geocode/v1/autocomplete/search',
+      {
+        params: params,
+      }
+    )
     .then(response => {
       return response.data;
     });

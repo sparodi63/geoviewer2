@@ -10,7 +10,7 @@ const geoserverUrl =
     ? 'http://geoservizi.datasiel.net:8080/'
     : 'https://geoservizi.regione.liguria.it/';
 const idMap = env === 'TEST' ? 2292 : 2327;
-const idLayer = env === 'TEST' ? 'L8480,L8482,L8485' : 'L8699,L8698,L8700';
+const idLayer = env === 'TEST' ? 'L8480,L8482,L8485' : 'L8699,L8698,L8700,L9122';
 const layers = idLayer.split(',');
 const idLayerComune = 'L6422';
 

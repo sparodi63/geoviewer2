@@ -205,7 +205,7 @@ export default {
 }
 
 .el-input__suffix {
-  right: 25px;
+  right: 5px;
   transition: all 0.3s;
   pointer-events: none;
   color: #24386c;

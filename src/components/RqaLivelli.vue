@@ -1,7 +1,7 @@
 <template>
   <div class="rqa gv-color-scheme">
     <div class="rqa-title gv-color-scheme">
-      RQA: Indicatori
+      Rete Qualità Aria - Indicatori annuali e giornalieri
       <button
         :class="toggleCollapseClass()"
         size="mini"
@@ -19,7 +19,7 @@
     <div id="rqa-wrapper" class="rqa-wrapper gv-color-scheme">
       <div class="combo">
         <el-select
-          placeholder="Tipologia Indicatori"
+          placeholder="Seleziona Annuali/Giornalieri"
           v-model="tipo"
           size="mini"
           @change="onChangeTipo"
@@ -32,7 +32,7 @@
       <div v-show="showIndicatoriGiorno" class="combo">
         <el-select
           filterable
-          placeholder="Indicatori Giornalieri"
+          placeholder="Seleziona Inquinante e Indicatore"
           v-model="indicatore"
           size="mini"
           @change="onChangeIndicatore"
@@ -52,7 +52,7 @@
           size="mini"
           v-model="giorno"
           type="date"
-          placeholder="Giorno"
+          placeholder="Seleziona Giorno"
           :picker-options="datePickerOptions"
           value-format="yyyy-MM-dd"
         >
@@ -62,7 +62,7 @@
       <div v-show="showIndicatoriAnno" class="combo">
         <el-select
           filterable
-          placeholder="Indicatori Annuali"
+          placeholder="Seleziona Inquinante e Indicatore"
           v-model="indicatore"
           size="mini"
           @change="onChangeIndicatore"
@@ -78,7 +78,7 @@
       </div>
 
       <div v-show="showIndicatoriAnno" class="combo">
-        <el-select filterable placeholder="Anno" v-model="data" size="mini">
+        <el-select filterable placeholder="Seleziona Anno" v-model="data" size="mini">
           <el-option v-for="item in anni" :key="item.id" :value="item.id" :label="item.label">
           </el-option>
         </el-select>

@@ -42,7 +42,7 @@ Vue.component('gv-scuoladigitale-ricerca-conn', () => import('./ScuolaDigitaleRi
 export default {
   name: 'gv-scuoladigitale-legend',
   data() {
-    const options = GV.config.getToolOptions('gv-scuoladigitale-legend')
+    const options = GV.config.getToolOptions('gv-scuoladigitale-legend');
 
     return {
       options: options,
@@ -56,7 +56,7 @@ export default {
     GV.log('gv-scuoladigitale-legend: mounted');
     GV.legend = this;
     if (this.options.version === 3) {
-      const mapConfig = await GV.config.addRlMap("2223", true, false)
+      const mapConfig = await GV.config.addRlMap('2223', true, false);
       mountComponent({
         elId: 'gv-scuoladigitale-ricerca',
         containerId: GV.config.containerId,
@@ -79,7 +79,6 @@ export default {
         }),
       });
     }
-
   },
   methods: {
     showSearch() {
@@ -92,7 +91,7 @@ export default {
         }),
       });
     },
-    hideLegend: function(event) {
+    hideLegend: function (event) {
       if (this.show) {
         document.getElementById('gv-scuoladigitale-legend-wrapper').style.display = 'block';
         document.getElementById('gv-scuoladigitale-legend').style.width = '260px';
@@ -225,7 +224,7 @@ export default {
 }
 
 .el-input__suffix {
-  right: 25px;
+  right: 5px;
   transition: all 0.3s;
   pointer-events: none;
   color: #24386c;

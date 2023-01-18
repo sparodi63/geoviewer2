@@ -6,7 +6,18 @@ tools.push({
   name: 'gv-geocoder',
 });
 import Geocoder from './components/Geocoder.vue';
-Vue.component('gv-geocoder', Geocoder);
+Vue.component('gv-geocoder-here', Geocoder);
+
+tools.push({
+  name: 'gv-geocoder-pelias',
+});
+import GeocoderPelias from './components/GeocoderPelias.vue';
+Vue.component('gv-geocoder', GeocoderPelias);
+
+// Bottone GeocoderBtn
+tools.push({ name: 'gv-geocoder-btn-button' });
+import GeocoderBtn from './components/buttons/GeocoderBtn.vue';
+Vue.component('gv-geocoder-btn-button', GeocoderBtn);
 
 tools.push({
   name: 'gv-search',
@@ -172,12 +183,6 @@ tools.push({ name: 'gv-genio-pratiche-collegate-button' });
 import GenioPraticheCollegate from './components/buttons/GenioPraticheCollegate.vue';
 Vue.component('gv-genio-pratiche-collegate-button', GenioPraticheCollegate);
 
-tools.push({
-  name: 'gv-geocoder-pelias',
-});
-import GeocoderPelias from './components/GeocoderPelias.vue';
-Vue.component('gv-geocoder-pelias', GeocoderPelias);
-
 // Form RQA
 tools.push({
   name: 'rqa-livelli',
@@ -209,11 +214,6 @@ Vue.component('gv-help-aib-button', HelpAib);
 tools.push({ name: 'gv-insert-point-button' });
 import InsertPoint from './components/buttons/InsertPoint.vue';
 Vue.component('gv-insert-point-button', InsertPoint);
-
-// Bottone GeocoderBtn
-tools.push({ name: 'gv-geocoder-btn-button' });
-import GeocoderBtn from './components/buttons/GeocoderBtn.vue';
-Vue.component('gv-geocoder-btn-button', GeocoderBtn);
 
 //
 tools.push({

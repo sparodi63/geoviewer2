@@ -1,28 +1,21 @@
-const idIstanza = GV.utils.getUrlParam('idistanza');
-const comune = GV.utils.getUrlParam('comune');
+const codice = GV.utils.getUrlParam('codice');
+const codice_comune = GV.utils.getUrlParam('codice_comune');
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
+console.log('env', env);
 const geoserverUrl =
   env === 'TEST'
     ? 'http://geoservizi.datasiel.net:8080/'
     : 'https://geoservizi.regione.liguria.it/';
-const idMap = env === 'TEST' ? 2290 : 2325;
-const idLayer = env === 'TEST' ? 'L8479' : 'L8693';
+const idMap = env === 'TEST' ? 2422 : 2426;
+const idLayer = env === 'TEST' ? 'L9138' : 'L9156';
 const idLayerComune = 'L6422';
 
-console.log(env);
-console.log(geoserverUrl);
-
-const srvUrl =
-  env === 'TEST'
-    ? 'http://srvcarto2svil.regione.liguria.it/geoservices/REST/via/istanza/'
-    : 'https://srvcarto.regione.liguria.it/geoservices/REST/via/istanza/';
-
-if (idIstanza) {
-  fetch(`${srvUrl}${idIstanza}`)
+if (codice) {
+  fetch(`/geoservices/REST/interventi_infra/domanda/${codice}`)
     .then(response => response.json())
     .then(data => {
       if (data.success) {
@@ -37,62 +30,54 @@ if (idIstanza) {
     });
 } else {
   loadConfig(null);
-  console.warn('IDISTANZA ASSENTE');
+  console.warn('CODICE PRATICA ASSENTE');
 }
 
 function loadConfig(data) {
   // console.log(data);
-  const countGeom = data ? data.countGeom : null;
+  const pratica = data ? data.pratica : null;
 
   var findOptions = null;
-  var filterWmsLayer = null;
 
-  if (comune) {
+  if (codice_comune) {
     findOptions = {
       layers: [idLayerComune],
-      cqlFilter: "CODICE_COMUNE='" + comune + "'",
+      cqlFilter: "CODICE_COMUNE='" + codice_comune + "'",
     };
   }
-  if (countGeom > 0) {
+  if (pratica && pratica.countGeom > 0) {
     findOptions = {
       layers: [idLayer],
-      cqlFilter: "IDISTANZA='" + idIstanza + "'",
-    };
-    filterWmsLayer = {
-      layers: [idLayer],
-      cqlFilter: "IDISTANZA='" + idIstanza + "'",
+      cqlFilter: "CODICE='" + pratica.codiceDomandaGeom + "'",
     };
   }
 
-  let tools =
-    comune && idIstanza
-      ? [
-          { name: 'gv-geocoder' },
-          getDrawTool(),
-          { name: 'gv-info-button', active: true },
-          { name: 'gv-measure-button' },
-          { name: 'gv-layer-search-topo-button' },
-          { name: 'gv-ricerca-catastale-button' },
-          { name: 'gv-print-button' },
-          { name: 'gv-scalebar', position: 'bottomleft' },
-        ]
-      : [
-          { name: 'gv-geocoder' },
-          getDrawTool(),
-          {
-            name: 'gv-scalebar',
-            position: 'bottomleft',
-          },
-        ];
+  let tools = [{ name: 'gv-geocoder' }, { name: 'gv-scalebar', position: 'bottomleft' }];
+
+  if (codice_comune && codice) {
+    tools = [
+      { name: 'gv-geocoder' },
+      { name: 'gv-info-button', active: true },
+      { name: 'gv-measure-button' },
+      { name: 'gv-layer-search-topo-button' },
+      { name: 'gv-ricerca-catastale-button' },
+      { name: 'gv-print-button' },
+      { name: 'gv-scalebar', position: 'bottomleft' },
+    ];
+  }
+
+  // TODO: ABILITARE CONTROLLO SU PROTOCOLLO
+  if (pratica && !pratica.PROTOCOLLO) {
+    tools.push(getDrawTool(pratica));
+  }
 
   let conf = {
     debug: true,
     idMap: idMap,
     geoserverUrl: geoserverUrl,
     findOptions: findOptions,
-    filterWmsLayer: filterWmsLayer,
     application: {
-      name: 'via-fo-gv2',
+      name: 'geoportale-tecnico-gv2',
       mapOptions: {
         type: 'openlayers',
         click: 'info',
@@ -101,7 +86,6 @@ function loadConfig(data) {
         legend: {
           options: {
             show: true,
-            collapsed: true,
             showAddMap: true,
             showInfoMap: true,
             showDownloadTotale: true,
@@ -140,10 +124,11 @@ function loadConfig(data) {
   GV.init(conf);
 }
 
-function getDrawTool() {
+function getDrawTool(pratica) {
+  const codiceDomandaGeom = pratica.CODICE_DOMANDA_REF || pratica.CODICE;
   const initWfsRequest = [
     {
-      wfsURL: `${geoserverUrl}geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${idLayer}&cql_filter=IDISTANZA='${idIstanza}'`,
+      wfsURL: `${geoserverUrl}geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${idLayer}&cql_filter=CODICE='${codiceDomandaGeom}'`,
     },
   ];
 
@@ -165,7 +150,7 @@ function getDrawTool() {
       },
       buttons: {
         submit: true,
-        cancel: true,
+        cancel: false,
         refresh: true,
       },
       color: '#FF9900',
@@ -174,7 +159,7 @@ function getDrawTool() {
       initWfsRequests: initWfsRequest,
       submit: function(data, deleted, loading, refresh) {
         console.log('submit', data, deleted);
-        fetch('/geoservices/REST/via/insertGeomFO', {
+        fetch('/geoservices/REST/interventi_infra/insertGeomDomanda', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -182,34 +167,22 @@ function getDrawTool() {
           body: JSON.stringify({
             geoJSON: data,
             deleted: deleted,
-            idIstanza: idIstanza,
+            codiceDomandaGeom: codiceDomandaGeom,
             srsIn: '3857',
             srsOut: '3003',
           }),
         })
           .then(response => response.json())
           .then(data => {
-            if (data.success) {
-              console.log('insert ok: ', data);
-              window.parent.postMessage({ messaggio: 'inserimento-geometrie', esito: 'OK' }, '*');
-              if (refresh) refresh();
-              if (loading) loading.close();
-            } else {
-              window.parent.postMessage(
-                { messaggio: 'inserimento-geometrie', esito: 'ERRORE' },
-                '*'
-              );
-            }
+            // console.log(data);
+            if (refresh) refresh();
+            if (loading) loading.close();
           })
           .catch(error => {
             console.error('Error:', error);
-            window.parent.postMessage({ messaggio: 'inserimento-geometrie', esito: 'ERRORE' }, '*');
           });
       },
-      cancel: function() {
-        console.log('CANCEL');
-        window.parent.postMessage({ messaggio: 'inserimento-geometrie', esito: 'CANCEL' }, '*');
-      },
+      cancel: function() {},
     },
   };
 }

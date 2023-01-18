@@ -19,6 +19,7 @@ export default {
   idMap: null,
   title: null,
   findOptions: null,
+  filterWmsLayer: null,
   zoomTo: null,
   geoserverUrl: null,
   application: {},
@@ -40,6 +41,7 @@ export default {
     this.debug = options.debug;
     this.idMap = options.idMap;
     this.findOptions = options.findOptions;
+    this.filterWmsLayer = options.filterWmsLayer;
     this.zoomTo = options.zoomTo;
     this.disableTMS = options.disableTMS;
     this.disableCache = options.disableCache;
@@ -353,7 +355,20 @@ export default {
     }
   },
 
+  setWmsFilter(mapConfig) {
+    GV.config.filterWmsLayer.layers.forEach(layerName => {
+      mapConfig.layers.forEach(layer => {
+        if (layerName.replace('L', '') == layer.id) {
+          layer.wmsParams.cql_filter = GV.config.filterWmsLayer.cqlFilter;
+        }
+      });
+    });
+  },
+
   loadConfig(mapConfig, setBaseLayer) {
+    // Applico cqlFilter per livelli WMS
+    if (GV.config.filterWmsLayer) this.setWmsFilter(mapConfig);
+
     // Gestione flag visible per ALFA_GIS_LISTA_MAPPE
     this.setFlagVisible(mapConfig);
 
@@ -437,8 +452,8 @@ export default {
   async loadCatalog(params) {
     const catalog = await getCatalog(params);
     if (!catalog) {
-      console.error("loadCatalog: Non sono riuscito a caricare il catalogo.")
-      return
+      console.error('loadCatalog: Non sono riuscito a caricare il catalogo.');
+      return;
     }
 
     this.catalog = this.catalogFull = catalog.children;

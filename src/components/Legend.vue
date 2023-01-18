@@ -89,7 +89,7 @@ export default {
     this.hideLegend();
   },
   methods: {
-    hideLegend: function(event) {
+    hideLegend: function (event) {
       if (this.show) {
         document.getElementById('gv-legend-title').style.display = 'block';
         document.getElementById('gv-legend-title-collapsed').style.display = 'none';
@@ -108,7 +108,7 @@ export default {
         ? 'gv-legend-collapse gv-color-scheme el-icon-arrow-down'
         : 'gv-legend-collapse gv-color-scheme el-icon-arrow-up';
     },
-    addMap: function() {
+    addMap: function () {
       mountComponent({
         elId: 'gv-map-catalog-panel',
         containerId: GV.config.containerId,
@@ -118,7 +118,7 @@ export default {
         }),
       });
     },
-    downloadMaps: function() {
+    downloadMaps: function () {
       mountComponent({
         elId: 'gv-download-totale-panel',
         containerId: GV.config.containerId,
@@ -259,7 +259,7 @@ export default {
 }
 
 .el-input__suffix {
-  right: 25px;
+  right: 5px;
   transition: all 0.3s;
   pointer-events: none;
   color: #24386c;

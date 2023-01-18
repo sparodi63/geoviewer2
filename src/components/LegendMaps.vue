@@ -91,7 +91,7 @@ export default {
   mounted() {
     GV.log('gv-legend-maps: mounted');
     if (this.options.showDownloadPanelOnLoad && GV.config.idMap) {
-      GV.eventBus.$on('gv-config-init', config => {
+      GV.eventBus.$on('gv-config-init', (config) => {
         this.openDownloadPanel(GV.config.idMap);
       });
     }
@@ -122,7 +122,7 @@ export default {
     checkDeleteMap(map) {
       return !this.options.hideDeleteButton;
     },
-    showMapInfoPanel: function(map) {
+    showMapInfoPanel: function (map) {
       const metaData = GV.config.getMapConfig(map.id).metaData;
       const downloadable = this.isDownloadable(map);
       mountComponent({
@@ -135,7 +135,7 @@ export default {
         }),
       });
     },
-    remove: function(map) {
+    remove: function (map) {
       GV.config.removeMap(map.id);
     },
     download(map) {
@@ -156,7 +156,7 @@ export default {
         }),
       });
     },
-    layerTransparency: function(map) {
+    layerTransparency: function (map) {
       mountComponent({
         elId: 'gv-layers-transparency',
         containerId: GV.config.containerId,
@@ -233,7 +233,7 @@ export default {
 }
 
 .el-input__suffix {
-  right: 25px;
+  right: 5px;
   transition: all 0.3s;
   pointer-events: none;
   color: #24386c;

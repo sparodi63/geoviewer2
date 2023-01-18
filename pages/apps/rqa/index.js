@@ -12,7 +12,7 @@ GV.init({
           show: true,
           showAddMap: true,
           dontShowMapCatalogPanelOnStart: true,
-          showInfoMap: false,
+          showInfoMap: true,
           showLayersTransparency: true,
           showBaseLayerSwitcher: true,
           addMapConfig: {

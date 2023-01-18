@@ -49,15 +49,15 @@ export default {
         return;
       }
       this.loading = true;
-      const timeOutTime = 1000;
+      const timeOutTime = 500;
       setTimeout(() => {
         geocoder(query)
-          .then(results => {
+          .then((results) => {
             this.loading = false;
             console.log(results);
             const features = results ? results.features : null;
             if (features && features.length > 0) {
-              this.results = features.map(feature => ({
+              this.results = features.map((feature) => ({
                 label: feature.properties.label,
                 value: feature.properties.id,
                 location: {
@@ -69,14 +69,14 @@ export default {
               this.results = [];
             }
           })
-          .catch(error => {
+          .catch((error) => {
             this.loading = false;
             console.error(error);
           });
       }, timeOutTime);
     },
     onChange(value) {
-      let result = this.results.find(item => item.value === value);
+      let result = this.results.find((item) => item.value === value);
       if (result) {
         result.type = 'circle';
         this.marker = GV.app.map.addMarker(result);
@@ -87,7 +87,7 @@ export default {
       }
     },
   },
-  mounted: function() {},
+  mounted: function () {},
 };
 </script>
 

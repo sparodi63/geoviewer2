@@ -335,18 +335,16 @@ const layerFactory = {
       styles: wmsParams.styles || '',
       client: 'GV2',
     };
+
     if (wmsParams.cql_filter) {
       params.cql_filter = wmsParams.cql_filter;
     }
+
     if (wmsParams.sld) {
       params.sld = wmsParams.sld;
     }
 
     let url = wmsParams.url;
-    console.log('URL', url);
-    // if (GV.app.map.options.ol3d) {
-    //   url = `${globals.DEFAULT_PROXY}${url}`;
-    // }
     if (isCached) {
       if (idMap) {
         url = url.replace(`M${idMap}`, 'gwc/service');

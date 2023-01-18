@@ -23,7 +23,7 @@ GV.init({
           position: 'topleft',
         },
         {
-          name: 'gv-geocoder-pelias',
+          name: 'gv-geocoder',
           position: 'topleft',
         },
         {
