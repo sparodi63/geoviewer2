@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+
+    <title>Terre Scavo TEST</title>
+
+    <script>
+      if (window.addEventListener) {
+        window.addEventListener('message', onMessage, false);
+      } else if (window.attachEvent) {
+        window.attachEvent('onmessage', onMessage, false);
+      }
+
+      function onMessage(event) {
+        console.log(event.data);
+        if (event.data.message == 'carto-ready') {
+        }
+        if (event.data.message == 'carto-response') {
+        }
+        return;
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="test">
+      <iframe
+        width="800"
+        height="600"
+        src="/geoservices/apps/viewer/pages/apps/cdp-carto/?codice=010001"
+      >
+      </iframe>
+      <br />
+    </div>
+  </body>
+</html>

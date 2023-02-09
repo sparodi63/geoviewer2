@@ -1,0 +1,268 @@
+/* ----------------------------------------------- */
+
+/* Gestione colori customizzabili */
+
+/* ----------------------------------------------- */
+
+.gv-color-scheme {
+  background-color: #31708f;
+  color: #ccc;
+}
+
+.gv-inverted-color-scheme {
+  color: #31708f;
+  background-color: #ccc;
+}
+
+/* .sovraffollatoIcon .uuid-55dc4e74-01b7-43c0-b13d-3f32a962e1d6 {
+    fill: #ff6529;
+    stroke: #3f7172;
+    stroke-width: 4.88px;
+}
+
+.affollatoIcon .uuid-393f1710-e427-4f98-8c4d-935d713c6847 {
+    fill: #ff6529;
+}
+.affollatoIcon .uuid-13a3a73a-d037-4366-b9b4-e8433c55dd7d {
+    fill: #fff;
+}
+.affollatoIcon .uuid-bb6c4c88-6868-44ab-aae5-3c8ff4874698 {
+    fill: none;
+    stroke: #3f7172;
+    stroke-width: 4.88px;
+}
+
+.pocoAffollatoIcon .uuid-d664618f-e102-4a4e-8475-753bd2148de8 {
+    fill: #fff;
+}
+.pocoAffollatoIcon .uuid-fec3ca61-cdd7-4af2-9b46-741cf11dac7b {
+    fill: #ff6529;
+}
+.pocoAffollatoIcon .uuid-307df6cc-5a7c-4ae1-a4c3-70419025a011 {
+    fill: none;
+    stroke: #3f7172;
+    stroke-width: 4.88px;
+} */
+
+/* ----------------------------------------------- */
+
+/* Cluster */
+
+/* ----------------------------------------------- */
+
+.cluster {
+  text-align: center;
+  font-size: 16px;
+  color: white;
+  background-repeat: no-repeat;
+  background-size: 23px 31px;
+  background-position: top center;
+}
+
+.cluster_cpi {
+  background-image: url(/geoservices/apps/viewer/static/img/centri-impiego/legend/cluster/cpi_nq2.png);
+}
+
+/* ----------------------------------------------- */
+
+/* GV */
+
+/* ----------------------------------------------- */
+
+#loghi {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  height: 40px;
+  width: 330px;
+  background: rgba(255, 255, 255, 1)
+    url(/geoservices/apps/viewer/static/img/centri-impiego/loghi.png) no-repeat center;
+  opacity: 1;
+}
+
+/* For desktop only: */
+#logo {
+  position: relative;
+  left: 0px;
+  height: 94px;
+  width: 232px;
+  padding-left: 18px;
+  z-index: 799;
+  background: #c5d361
+    url(/geoservices/apps/viewer/static/img/centri-impiego/logo-giovani-liguria-col.png) no-repeat
+    10% 50%;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.gv-color-scheme {
+  background-color: #c5d361;
+  color: rgb(61, 60, 60);
+}
+
+.gv-legend-footer {
+  padding: 0rem 0rem;
+}
+
+.gv-search {
+  height: 32px;
+  width: 250px;
+  z-index: 800;
+  margin-top: -4px !important;
+  background-color: #c5d361;
+}
+
+.el-select {
+  width: 240px !important;
+  margin-left: 5px;
+  margin-top: 4px;
+}
+
+.gv-legend-layer-icon {
+  width: 24px;
+  height: 27px;
+}
+
+.gv-legend-close {
+  background-color: #31708f !important;
+  border: none;
+}
+
+.gv-list-legend-map-item {
+  height: 0;
+  padding: 0;
+}
+
+.gv-layer-visibility-span {
+  position: absolute;
+  top: 25%;
+  left: 32px;
+}
+
+/* .leaflet-container a.leaflet-popup-close-button {
+  display: none;
+} */
+
+/* .leaflet-interactive {
+	cursor: auto !important;
+} */
+
+.popup-container {
+  /* width: 250px; */
+  /* height: 150px; */
+  display: flex;
+}
+
+.popup-icon {
+  margin-top: 10px;
+  width: 60px;
+  /* height: 110px; */
+}
+
+.popup-icon-legend {
+    color: #000;
+    display: flex;
+    font-size: .7em;
+    justify-content: center;
+    line-height: 1.25em;
+    text-align: center;
+    /* width: 6em; */
+}
+
+.popup-indirizzo{
+  font-size: 1em;
+  text-transform: none;
+  width: 170px;
+  margin-top: 10px;
+}
+
+.popup-nome{
+  font-size: 1.5em;
+  text-transform: capitalize;
+  width: 170px;
+}
+
+.popup-ospedale {
+  min-height: 1em;
+  padding-left: 1.5em;
+  padding-top: 0.5em;
+  font-family: Roboto, sans-serif;
+  font-weight: 600;
+  line-height: 1.235;
+  letter-spacing: 0.00735em;
+}
+
+.popup-bold {
+  font-weight: 700;
+}
+.popup-indirizzo {
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 1.5715;
+  display:inline-block;
+  font-weight: 300;
+  color: #4f4f4f;
+  font-family: Roboto, sans-serif;
+}
+
+.popup-prenota {
+  text-align: center;
+  width: 286px;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  line-height: 20px;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px !important;
+  width: 260px;
+}
+
+.leaflet-popup-tip-container { 
+  display: none;
+}
+
+/* .leaflet-popup-content {
+  autoPan: true
+} */
+
+.prenota-btn {
+  background-color: #277baa;
+  border: none;
+  color: #fff !important;
+  margin-top: 15px;
+  font-weight: 700;
+  height: 30px;
+  border-radius: 2px;
+  /* width:370px; */
+  font-size: 14px;
+  letter-spacing: normal;
+  font-family: "Titillium-Web",
+  Geneva,
+  Tahoma,
+  sans-serif;
+  letter-spacing: normal;
+  cursor: pointer;
+  padding: 4px 15px;
+}
+
+.leaflet-popup-content {
+  margin: 13px 19px;
+  line-height: 30px;
+}
+
+.v-align {
+  vertical-align: middle;
+}
+
+/* @font-face {
+  font-family: 'Roboto';
+  src: url('fonts/TitilliumWeb-Regular.woff2') format('woff');
+  font-weight: normal;
+  font-style: normal;
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');

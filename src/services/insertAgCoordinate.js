@@ -9,7 +9,8 @@ export default function(
   coord_z,
   coord_2_x,
   coord_2_y,
-  coord_2_z
+  coord_2_z,
+  epsg
 ) {
   let url = `/geoservices/REST/config/ag_insert_coordinate?idSession=${idSession}&coord_x=${coord_x}&coord_y=${coord_y}&esito=${esito}`;
   if (coord_z) {
@@ -23,6 +24,9 @@ export default function(
   }
   if (coord_2_z) {
     url += '&coord_2_z=' + coord_2_z;
+  }
+  if (epsg) {
+    url += '&epsg=' + epsg;
   }
   axios.get(url).then(response => {
     GV.globals.flagInsert = true;

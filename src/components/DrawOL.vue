@@ -118,6 +118,7 @@
 import Vue from 'vue';
 import getWFSFeature from '../services/getWFSFeature';
 import getCoordTransform from '../services/getCoordTransform';
+import axios from 'axios';
 
 import { Button, Row, Col, Loading, Notification } from 'element-ui';
 Vue.use(Button);
@@ -331,7 +332,7 @@ export default {
       this.setSnapInteraction();
 
       this.interaction.on('select', (evt) => {
-        console.log(evt.target.getFeatures().getArray());
+        // console.log(evt.target.getFeatures().getArray());
         const delFeature = evt.target.getFeatures().getArray()[0];
         this.layer.getSource().removeFeature(delFeature);
         this.deletedItems.push(delFeature);
@@ -351,45 +352,53 @@ export default {
       this.setSnapInteraction();
 
       this.interaction.on('drawstart', (evt) => {
-        console.log('drawstart');
+        // console.log('drawstart');
       });
 
       this.interaction.on('drawend', (evt) => {
         const newFeature = evt.feature;
-        console.log('drawend', newFeature);
+        // console.log('drawend', newFeature);
         if (!this.options.multiGeom) {
           for (const feature of this.layer.getSource().getFeatures()) {
-            console.log(feature);
+            // console.log(feature);
             this.layer.getSource().removeFeature(feature);
           }
         }
-        console.log('drawend 2', this.layer.getSource().getFeatures());
+        // console.log('drawend 2', this.layer.getSource().getFeatures());
       });
     },
-    addLayerFeatures(initWfsRequests) {
-      // console.log('initWfsRequests', initWfsRequests);
+    addLayerFeatures(initWfsRequests, geoJson) {
       this.layer.getSource().clear(true);
-      for (const request of initWfsRequests) {
-        getWFSFeature(null, null, request.wfsURL)
-          .then((features) => {
-            if (features && features.length > 0) {
-              const source = this.layer.getSource();
-              for (const feature of features) {
-                if (feature.geometry) {
-                  const olFeature = new ol.format.GeoJSON().readFeature(feature, {
-                    featureProjection: 'EPSG:3857',
-                  });
-                  source.addFeature(olFeature);
-                }
-              }
-              GV.app.map.fit(source.getExtent(), {
-                maxZoom: 17,
-              });
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+      const source = this.layer.getSource();
+      if (geoJson) {
+        if (typeof geoJson === 'string') geoJson = JSON.parse(geoJson);
+        this.addFeatures(geoJson.features, source);
+      }
+      if (initWfsRequests) {
+        for (const request of initWfsRequests) {
+          getWFSFeature(null, null, request.wfsURL)
+            .then((features) => {
+              this.addFeatures(features, source);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        }
+      }
+    },
+    addFeatures(features, source) {
+      if (features && features.length > 0) {
+        for (const feature of features) {
+          if (feature.geometry) {
+            const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+              featureProjection: 'EPSG:3857',
+            });
+            source.addFeature(olFeature);
+          }
+        }
+        GV.app.map.fit(source.getExtent(), {
+          maxZoom: 17,
+        });
       }
     },
     clear() {
@@ -414,6 +423,7 @@ export default {
       this.layer.getSource().clear();
       this.deletedItems = [];
       if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests);
+      if (this.options.geoJson) this.addLayerFeatures(null, this.options.geoJson);
       this.refreshWMS();
     },
     refreshWMS() {
@@ -433,13 +443,13 @@ export default {
         }
       });
     },
-    confirmSubmit() {
+    async confirmSubmit() {
       var r = confirm('Sei sicuro?');
       if (r == true) {
         this.submit();
       }
     },
-    submit() {
+    async submit() {
       this.loading = Loading.service({
         text: 'Salvataggio...',
         background: 'rgba(0, 0, 0, 0.8)',
@@ -447,20 +457,67 @@ export default {
       const geoJSON = new ol.format.GeoJSON().writeFeaturesObject(
         this.layer.getSource().getFeatures()
       );
+
+      if (this.options.coord3d) {
+        geoJSON.features = await this.setElevation(geoJSON.features);
+      }
+
       const deleted = new ol.format.GeoJSON().writeFeaturesObject(this.deletedItems);
-      // console.log('submit', this.layer.getSource().getFeatures());
-      // console.log('submit', geoJSON, deleted);
 
       this.options.submit(geoJSON, deleted, this.loading, this.refresh);
     },
+    async setElevation(features) {
+      for (var i = 0; i < features.length; i++) {
+        const feature = features[i];
+        let coords;
+        if (feature.geometry.type === 'Point') {
+          coords = `${feature.geometry.coordinates[0]},${feature.geometry.coordinates[1]}`;
+        } else {
+          let coordArray = feature.geometry.coordinates.map((coord) => {
+            return `${coord[0]},${coord[1]}`;
+          });
+          coords = coordArray.join('|');
+        }
+
+        const el = await axios.get(
+          `https://srvcarto.regione.liguria.it/geoservices/REST/coordinate/elevation/3857/${coords}`
+        );
+        if (el.data && el.data.status && el.data.status === 'OK') {
+          // console.log(el.data.elevation);
+          if (feature.geometry.type === 'Point') {
+            if (feature.geometry.coordinates[2]) {
+              feature.geometry.coordinates[2] = el.data.elevation[0];
+            } else {
+              feature.geometry.coordinates.push(el.data.elevation[0]);
+            }
+          } else {
+            let ind = 0;
+            feature.geometry.coordinates.forEach((coord) => {
+              if (coord[2]) {
+                coord[2] = el.data.elevation[ind];
+              } else {
+                coord.push(el.data.elevation[ind]);
+              }
+              // console.log('line', ind, coord);
+              ind++;
+            });
+            // console.log('line', feature.geometry.coordinates);
+          }
+        }
+      }
+      return features;
+    },
+  },
+  created() {
+    GV.app.tools.draw = this;
   },
   mounted: function () {
     GV.eventBus.$on('gv-control-draw-activate', (ev) => {
-      console.log('gv-control-draw-activate');
+      // console.log('gv-control-draw-activate');
       this.layer.setVisible(true);
     });
     GV.eventBus.$on('gv-control-draw-deactivate', (ev) => {
-      console.log('gv-control-draw-deactivate');
+      // console.log('gv-control-draw-deactivate');
       this.clear();
       this.layer.setVisible(false);
     });
@@ -472,7 +529,8 @@ export default {
     });
     GV.app.map.addLayer(this.layer);
 
-    if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests);
+    if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests, null);
+    if (this.options.geoJson) this.addLayerFeatures(null, this.options.geoJson);
 
     GV.app.map.clearLayer('InfoWmsHilite');
   },

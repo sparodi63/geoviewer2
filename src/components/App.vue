@@ -51,6 +51,7 @@ export default {
   created() {
     GV.log('gv-app: created');
     GV.app = this;
+    GV.app.tools = [];
   },
   mounted() {
     GV.log('gv-app: mounted');
@@ -63,7 +64,7 @@ export default {
     addTools() {
       if (GV.config.application.layout.tools) {
         var tools = GV.config.application.layout.tools;
-        tools.forEach(item => {
+        tools.forEach((item) => {
           const position = item.position || 'topleft';
           item.options = item.options || {};
           this.addTool(item, position);
@@ -72,7 +73,7 @@ export default {
     },
     addTool(item, position) {
       let found = false;
-      GV.tools.forEach(tool => {
+      GV.tools.forEach((tool) => {
         if (item.name === tool.name) {
           found = true;
           const itemId = item.name;
@@ -80,7 +81,7 @@ export default {
           if (item.active) item.options.active = true;
           const props = item.options.props
             ? item.options.props
-                .map(prop => {
+                .map((prop) => {
                   return `${Object.keys(prop)[0]}=${Object.values(prop)[0]}`;
                 })
                 .join(' ')

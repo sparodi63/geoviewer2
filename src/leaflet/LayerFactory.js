@@ -632,6 +632,18 @@ var layerFactory = {
               icon: icon,
               alt: alt,
             });
+          } else if (style.svgIconHtml) {
+            const svgIcon = L.divIcon({
+              html: style.svgIconHtml,
+              className: style.className,
+              iconSize: style.iconSize,
+              iconAnchor: style.iconAnchor,
+            });
+            const alt = tooltip ? interpolateString(tooltip, feature.properties) : '';
+            return L.marker(latlng, {
+              icon: svgIcon,
+              alt: alt,
+            });
           } else {
             return L.circleMarker(latlng, style);
           }

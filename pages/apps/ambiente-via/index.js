@@ -8,7 +8,7 @@ var baseLayers = [
   { type: 'RL_CARTE_BASE' },
   { type: 'BLANK' },
 ];
-var idMap = '692';
+var idMap = '2327';
 
 GV.init({
   debug: true,

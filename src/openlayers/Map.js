@@ -321,8 +321,10 @@ const olMap = {
   },
   clearLayer(layerName) {
     const layer = this.getLayerByName(layerName);
-    const source = layer.getSource();
-    source.clear();
+    if (layer) {
+      const source = layer.getSource();
+      source.clear();
+    }
   },
   addMarker(markerConfig) {
     if (markerConfig.epsg && markerConfig.epsg != '4326') {

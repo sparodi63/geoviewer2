@@ -1,9 +1,14 @@
+GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+
 const locate = GV.utils.getUrlParam('LOCATE');
 const codice = GV.utils.getUrlParam('CODICE');
 const codice_comune = GV.utils.getUrlParam('CODICE_COMUNE');
-const idSession = GV.utils.getUrlParam('ID_SESSION');
+const id_session = GV.utils.getUrlParam('ID_SESSION');
+const modo_sito = GV.utils.getUrlParam('MODOSITO');
+const flag_validato = GV.utils.getUrlParam('FLAG_VALIDATO');
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
+// const env = 'PROD';
 
 const geoserverUrl =
   env === 'TEST'
@@ -32,7 +37,7 @@ const findOptions = codice
     }
   : null;
 
-console.log(findOptions);
+// console.log(findOptions);
 
 let tools = [
   {
@@ -57,7 +62,7 @@ let tools = [
   },
 ];
 
-if (locate) {
+if (locate && locate === 'true' && flag_validato === 'NO') {
   tools.push(getDrawTool(codice));
 }
 
@@ -71,16 +76,24 @@ function getDrawTool(codice) {
     },
   ];
 
+  let draw = null;
+  if (modo_sito == 'P') {
+    draw = {
+      point: true,
+    };
+  } else {
+    draw = {
+      polyline: true,
+    };
+  }
+
   return {
     name: 'gv-draw-button',
     active: false,
     options: {
       idLayer: [layer_p, layer_l],
       tools: {
-        draw: {
-          point: true,
-          polyline: true,
-        },
+        draw: draw,
         edit: {
           edit: true,
           // remove: true,
@@ -89,70 +102,124 @@ function getDrawTool(codice) {
       buttons: {
         submit: true,
         cancel: true,
-        refresh: true,
+        refresh: false,
       },
       color: '#FF9900',
       multiGeom: false,
+      coord3d: true,
       epsg: '3003',
       initWfsRequests: initWfsRequest,
       cancel: () => {
-        insert(0, 0, 0, 0, 'NO');
+        // insert(0, 0, 0, 0, 'NO');
+        // console.log('cancel');
+        insert(null, null, 'NO');
       },
-      submit: (data, deleted, loading, refresh) => {
-        console.log('submit', data.features[0].geometry);
-        const geometry =
-          data && data.features[0] && data.features[0].geometry ? data.features[0].geometry : null;
-        if (geometry) {
-          let x, y, x2, y2;
-          // CALCOLO COORDINATE
-          if (geometry.type === 'LineString') {
-            x = geometry.coordinates[0][0].toFixed(0);
-            y = geometry.coordinates[0][1].toFixed(0);
-            x2 = geometry.coordinates[geometry.coordinates.length - 1][0].toFixed(0);
-            y2 = geometry.coordinates[geometry.coordinates.length - 1][1].toFixed(0);
-          } else {
-            x = geometry.coordinates[0].toFixed(0);
-            y = geometry.coordinates[1].toFixed(0);
-            x2 = null;
-            y2 = null;
-          }
-          // TRASFORMAZIONE COORDINATE IN UTM32
-          let x_t, y_t, x2_t, y2_t;
-          const trUrl =
-            'https://srvcarto.regione.liguria.it/geoservices/REST/coordinate/transform_point3/3857/32633/';
-          fetch(`${trUrl}${x},${y}`)
-            .then(response => response.json())
-            .then(data => {
-              // console.log(data);
-              x_t = data.points[0].toFixed(0);
-              y_t = data.points[1].toFixed(0);
-              if (geometry.type === 'LineString') {
-                fetch(`${trUrl}${x2},${y2}`)
-                  .then(response => response.json())
-                  .then(data => {
-                    // console.log(data);
-                    x2_t = data.points[0].toFixed(0);
-                    y2_t = data.points[1].toFixed(0);
-                    insert(x_t, y_t, x2_t, y2_t, 'SI');
-                  })
-                  .catch(error => {
-                    console.error('Error Fetch transform_point3 1:', error);
-                    alert(error);
-                  });
-              } else {
-                insert(x_t, y_t, x2_t, y2_t, 'SI');
-              }
-            })
-            .catch(error => {
-              console.error('Error Fetch transform_point3 2:', error);
-              alert(error);
-            });
-        }
-        if (refresh) refresh();
-        if (loading) loading.close();
-      },
+      submit: submit,
     },
   };
+}
+
+async function submit(data, deleted, loading, refresh) {
+  // console.log('submit', data.features[0].geometry);
+  let geojson = await transformGeoJSON(data);
+  const geometry =
+    geojson && geojson.features[0] && geojson.features[0].geometry
+      ? geojson.features[0].geometry
+      : null;
+  let coords;
+  if (geometry) {
+    if (geometry.type === 'LineString') {
+      coords = [
+        geometry.coordinates[0][0].toFixed(0),
+        geometry.coordinates[0][1].toFixed(0),
+        geometry.coordinates[0][2].toFixed(0),
+        geometry.coordinates[geometry.coordinates.length - 1][0].toFixed(0),
+        geometry.coordinates[geometry.coordinates.length - 1][1].toFixed(0),
+        geometry.coordinates[geometry.coordinates.length - 1][2].toFixed(0),
+      ];
+    } else {
+      coords = [
+        geometry.coordinates[0].toFixed(0),
+        geometry.coordinates[1].toFixed(0),
+        geometry.coordinates[2].toFixed(0),
+        null,
+        null,
+        null,
+      ];
+    }
+    // let cod_com = await getCodCom(coords);
+    // console.log('cod_com', cod_com);
+
+    insert(coords, 32633, 'SI');
+  }
+  if (refresh) refresh();
+  if (loading) loading.close();
+}
+
+async function getCodCom(coords) {
+  let x = coords[0],
+    y = coords[1];
+  const trUrl = '/geoservices/REST/utils/get_comune/32633/';
+  const response = await fetch(`${trUrl}${x},${y}`);
+  const data = await response.json();
+  if (data && data.success) {
+    return data.comune.codice_comune;
+  } else {
+    return null;
+  }
+}
+
+async function transformGeoJSON(geoJson) {
+  const response = await fetch('/geoservices/REST/coordinate/transform_geojson', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      geoJSON: geoJson,
+      srsIn: '3857',
+      srsOut: '32633',
+    }),
+  });
+  const data = await response.json();
+  return data.geoJSON;
+}
+
+async function transformCoords(geometry, coords) {
+  let x_t, y_t, x2_t, y2_t;
+  let x = coords[0],
+    y = coords[1],
+    z = coords[2],
+    x2 = coords[3],
+    y2 = coords[4],
+    z2 = coords[5];
+  const trUrl =
+    'https://srvcarto.regione.liguria.it/geoservices/REST/coordinate/transform_point3/3857/32633/';
+  const response1 = await fetch(`${trUrl}${x},${y}`);
+  const data1 = await response1.json();
+  x_t = data1.points[0].toFixed(0);
+  y_t = data1.points[1].toFixed(0);
+  if (geometry.type === 'LineString') {
+    const response2 = await fetch(`${trUrl}${x2},${y2}`);
+    const data2 = await response2.json();
+    x2_t = data2.points[0].toFixed(0);
+    y2_t = data2.points[1].toFixed(0);
+  }
+  return [x_t, y_t, z, x2_t, y2_t, z2];
+}
+
+function insert(coords, epsg, esito) {
+  if (esito === 'NO') {
+    GV.utils.insertAgCoordinate(id_session, 0, 0, esito, 0, 0, 0, 0, null);
+  } else {
+    let x = coords[0],
+      y = coords[1],
+      z = coords[2],
+      x2 = coords[3],
+      y2 = coords[4],
+      z2 = coords[5];
+    GV.utils.insertAgCoordinate(id_session, x, y, esito, z, x2, y2, z2, epsg);
+  }
 }
 
 window.addEventListener('beforeunload', function() {
@@ -165,13 +232,8 @@ function beforeUnload() {
   if (GV.globals.flagInsert) {
     return;
   }
-  insert(0, 0, 'NO');
-}
-
-function insert(x, y, x2, y2, esito) {
-  // console.log(idSession);
-  // console.log(x, y, x2, y2, esito);
-  GV.utils.insertAgCoordinate(idSession, x, y, esito, null, x2, y2, null);
+  // insert(0, 0, 'NO');
+  insert(null, null, 'NO');
 }
 
 // GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/'
