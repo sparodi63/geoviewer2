@@ -4,63 +4,121 @@ const affollamento = GV.utils.getUrlParam('affollamento');
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
-const url =
+const urlBase =
   env === 'TEST'
-    ? `https://pslive-dev.alisa.liguria.it/api/prontosoccorso/all`
-    : `https://pslive.alisa.liguria.it/api/prontosoccorso/all`;
+    ? `https://pslive-dev.alisa.liguria.it/api`
+    : `https://pslive.alisa.liguria.it/api`;
 
-fetch(url)
-  .then(response => response.json())
-  .then(data => {
-    setConfig(data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert(error);
-  });
+console.log('ENV', env);
+const url = `${urlBase}/prontosoccorso/all`;
+const urlConfig = `${urlBase}/config`;
+
+let pollingInterval = 50000;
+
+getConfig();
+// getData();
+// refresh();
+
+async function getConfig() {
+  fetch(urlConfig)
+    .then(response => response.json())
+    .then(async data => {
+      pollingInterval = data.pollingInterval;
+      console.log('getData');
+      await getData();
+      await refresh();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(error);
+    });
+}
+
+async function getData() {
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      setConfig(data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(error);
+    });
+}
+
+async function refresh() {
+  await refreshData();
+  setTimeout(refresh, pollingInterval);
+}
+
+async function refreshData() {
+  if (!GV.app) return;
+  console.log('REFRESH');
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const layer = GV.app.map.getLayerByName('ps');
+      layer.clearLayers();
+      let geojson = getGeoJson(data);
+      layer.addData(geojson);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(error);
+    });
+}
 
 function getAffollamentoClass(ind_gda) {
   let class_gda = 'N';
-  if (ind_gda && ind_gda > 90) class_gda = 'S';
-  if (ind_gda && ind_gda > 60 && ind_gda < 90) class_gda = 'A';
+  if (ind_gda && ind_gda >= 90) class_gda = 'S';
+  if (ind_gda && ind_gda >= 60 && ind_gda < 90) class_gda = 'A';
   if (ind_gda && ind_gda < 60) class_gda = 'P';
+  if (ind_gda === 0) class_gda = 'P';
   return class_gda;
 }
 
 function getGeoJson(data) {
+  // console.log('data', data);
   let filter = function(el) {
     return true;
   };
 
+  let filtered = data.filter(filter);
+
   if (ospedale) {
-    filter = function(el) {
+    filtered = filtered.filter(el => {
       return el.codOsp === ospedale;
-    };
+    });
   }
 
   if (provincia) {
     const listaProv = provincia.split(',');
-    filter = function(el) {
+    filtered = filtered.filter(el => {
       return listaProv.includes(el.provincia);
-    };
+    });
   }
 
   if (affollamento) {
     const listaIndGda = affollamento.split(',');
-    filter = function(el) {
+    filtered = filtered.filter(el => {
       const ind_gda = el.prontoSoccorsoAffollamento ? el.prontoSoccorsoAffollamento.indGda : null;
       const class_gda = getAffollamentoClass(ind_gda);
       const trovato = class_gda === 'N' || listaIndGda.includes(class_gda);
       return trovato;
-    };
+    });
   }
 
-  const filtered = data.filter(filter);
+  if (filtered.length === 0) {
+    // console.log('Nessun elemento trovato');
+    GV.utils.notification('Nessun elemento trovato', 'info');
+    filtered = data;
+  }
 
   const geojson = filtered.map(el => {
-    // console.log(el);
     const ind_gda = el.prontoSoccorsoAffollamento ? el.prontoSoccorsoAffollamento.indGda : null;
     const class_gda = getAffollamentoClass(ind_gda);
+
+    // console.log(el.breveOsp, ind_gda, class_gda);
 
     const feature = {
       type: 'Feature',
@@ -106,11 +164,10 @@ function zoomExtentsMap() {
 }
 
 function setConfig(data) {
-  console.log(data);
+  // console.log(data);
 
   const geojson = getGeoJson(data);
-
-  console.log(geojson);
+  // console.log(geojson);
 
   const S_ICON = `<svg id="uuid-909fbab5-fd0f-4350-8f1c-0d33df550ab9" xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 81.38 114.57">
@@ -178,20 +235,6 @@ function setConfig(data) {
         <g id="uuid-373d76cc-62f1-49ec-beb9-b0a5494a76dd">
             <path id="uuid-92a728f6-4120-4540-bae4-a02f97b54c0a"
                 class="nd-stroke-icon"
-                d="m78.19,33.99C74.59,13.28,54.88-.59,34.17,3.01c-4.75.83-9.29,2.54-13.4,5.06C8.64,15.65,2.78,26.91,2.44,41.98c.15,1.54.3,3.89.63,6.2,1.08,5.83,3.26,11.4,6.43,16.42,8.89,15.67,18.69,30.78,28.48,45.9.74,1.46,2.52,2.05,3.99,1.32.58-.29,1.05-.77,1.34-1.36,2.97-4.56,6-9.08,8.82-13.73,7.39-12.15,14.84-24.27,21.95-36.59,4.46-7.95,5.92-17.23,4.11-26.17" />
-        </g>
-    </g>
-  </svg>`;
-
-  const B_ICON = `<svg id="uuid-909fbab5-fd0f-4350-8f1c-0d33df550ab9" xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 81.38 114.57">
-    <defs>
-        <style>.uuid-55dc4e74-01b7-43c0-b13d-3f32a962e1d6{fill:#FFFFFF}</style>
-    </defs>
-    <g id="uuid-3c8323f8-3642-4915-9fb6-a1ccc6de0f40">
-        <g id="uuid-373d76cc-62f1-49ec-beb9-b0a5494a76dd">
-            <path id="uuid-92a728f6-4120-4540-bae4-a02f97b54c0a"
-                class="uuid-55dc4e74-01b7-43c0-b13d-3f32a962e1d6"
                 d="m78.19,33.99C74.59,13.28,54.88-.59,34.17,3.01c-4.75.83-9.29,2.54-13.4,5.06C8.64,15.65,2.78,26.91,2.44,41.98c.15,1.54.3,3.89.63,6.2,1.08,5.83,3.26,11.4,6.43,16.42,8.89,15.67,18.69,30.78,28.48,45.9.74,1.46,2.52,2.05,3.99,1.32.58-.29,1.05-.77,1.34-1.36,2.97-4.56,6-9.08,8.82-13.73,7.39-12.15,14.84-24.27,21.95-36.59,4.46-7.95,5.92-17.23,4.11-26.17" />
         </g>
     </g>
@@ -422,55 +465,47 @@ const popup_icon_n = `
     </div>
 `;
 
+const popup_link = `
+    <div class="popup-ospedale" >
+      <a href="javascript:GV.psDettaglio('{cod_osp}')">
+        <span class="popup-nome">{breve_osp}</span><br><br>
+      </a>
+      <span class="popup-indirizzo">{indirizzo} {civico}, {cap}, {comune}, {provincia}</span>
+    </div>
+`;
+
 const popup_s = `
   <div class="popup-container">
     ${popup_icon_s}
-    <div class="popup-ospedale" >
-      <span class="popup-nome">{breve_osp}</span>
-      <span class="popup-indirizzo">{indirizzo} {civico}, {cap}, {comune}, {provincia}</span>
-    </div>
+    ${popup_link}
   </div>
 `;
 
 const popup_a = `
   <div class="popup-container">
     ${popup_icon_a}
-    <div class="popup-ospedale" >
-      <span class="popup-nome">{breve_osp}</span>
-      <span class="popup-indirizzo">{indirizzo} {civico}, {cap}, {comune}, {provincia}</span>
-    </div>
+    ${popup_link}
   </div>
 `;
 
 const popup_p = `
   <div class="popup-container">
     ${popup_icon_p}
-    <div class="popup-ospedale" >
-      <span class="popup-nome">{breve_osp}</span>
-      <span class="popup-indirizzo">{indirizzo} {civico}, {cap}, {comune}, {provincia}</span>
-    </div>
+    ${popup_link}
   </div>
 `;
 
 const popup_n = `
   <div class="popup-container">
     ${popup_icon_n}
-    <div class="popup-ospedale" >
-      <span class="popup-nome">{breve_osp}</span>
-      <span class="popup-indirizzo">{indirizzo} {civico}, {cap}, {comune}, {provincia}</span>
-    </div>
+    ${popup_link}
   </div>
 `;
 
-// <div class="popup-indirizzo" >{INDIRIZZO} {PROVINCIA} ({PROV_SIGLA}) - {CAP}<br>
-// <span class="popup-bold">Tel.</span> {TELEFONO}<br>
-// <span class="popup-bold">Email</span> <a href="mailto:{EMAIL}">{EMAIL}</a><br>
-// <span class="popup-bold">Orario di apertura al pubblico</span> {ORARIO}</div>
-// <div class="popup-prenota"><a href="javascript:GV.psDettaglio({ID})"><button type="button" class="prenota-btn"><span>Prenota appuntamento </span></button></a></div>
-
 GV.psDettaglio = function(id) {
-  console.log(id);
-  window.parent.postMessage({ messaggio: 'prenota-cpi', id: id }, '*');
+  const msg = { messaggio: 'scheda-ospedale', ospedale: id };
+  // console.log(msg);
+  window.parent.postMessage(msg, '*');
 };
 
 const interpolateString = (str, data) => {

@@ -73,6 +73,7 @@
             v-model="formato"
             size="mini"
             @change="changeFormat"
+            :disabled="formatDisabled"
           >
             <el-option
               v-for="item in config.formati"
@@ -194,7 +195,7 @@ Vue.use(VueCookie);
 
 export default {
   name: 'gv-map-download',
-  props: ['idMap', 'closeWindow'],
+  props: ['idMap', 'closeWindow', 'inputFormat'],
   data() {
     return {
       title: 'DOWNLOAD',
@@ -237,6 +238,7 @@ export default {
       hlStyle: null,
       showRectReset: false,
       storageKey: 'download',
+      formatDisabled: false,
     };
   },
   computed: {
@@ -265,6 +267,9 @@ export default {
       notification('SISTEMA IN MANUTENZIONE: SERVIZIO TEMPORANEAMENTE SOSPESO');
       this.$el.hidden = true;
       return;
+    }
+    if (this.inputFormat) {
+      this.formatDisabled = true;
     }
     // Leggo le richieste in cache
     getDownloadRichiesteCache().then((response) => {
@@ -438,6 +443,13 @@ export default {
     },
 
     setDefaultFormat(formati) {
+      const inputFormat =
+        formati.filter((formato) => {
+          return formato.cod_formato === this.inputFormat;
+        }).length > 0
+          ? this.inputFormat
+          : null;
+
       const cachedFormat =
         formati.filter((formato) => {
           return formato.cod_formato === this.$cookie.get('formato');
@@ -452,7 +464,7 @@ export default {
           ? 'SHP'
           : formati[0].cod_formato;
 
-      const formato = cachedFormat || defaultFormat;
+      const formato = inputFormat || cachedFormat || defaultFormat;
       this.changeFormat(formato);
       this.formato = formato;
     },

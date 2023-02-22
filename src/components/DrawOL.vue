@@ -367,15 +367,11 @@ export default {
         // console.log('drawend 2', this.layer.getSource().getFeatures());
       });
     },
-    addLayerFeatures(initWfsRequests, geoJson) {
+    addLayerFeatures(data, type) {
       this.layer.getSource().clear(true);
-      const source = this.layer.getSource();
-      if (geoJson) {
-        if (typeof geoJson === 'string') geoJson = JSON.parse(geoJson);
-        this.addFeatures(geoJson.features, source);
-      }
-      if (initWfsRequests) {
-        for (const request of initWfsRequests) {
+      if (type === 'wfs') {
+        console.log('wfs');
+        for (const request of data) {
           getWFSFeature(null, null, request.wfsURL)
             .then((features) => {
               this.addFeatures(features, source);
@@ -384,6 +380,24 @@ export default {
               console.error(error);
             });
         }
+        return;
+      }
+      const source = this.layer.getSource();
+      if (type === 'geojson') {
+        if (typeof data === 'string') data = JSON.parse(data);
+        this.addFeatures(data.features, source);
+        return;
+      }
+      if (type === 'wkt') {
+        for (const wkt_geom of data) {
+          const wktFormat = new ol.format.WKT({});
+          const feature = wktFormat.readFeature(wkt_geom, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: 'EPSG:3857',
+          });
+          source.addFeature(feature);
+        }
+        return;
       }
     },
     addFeatures(features, source) {
@@ -422,8 +436,9 @@ export default {
     refresh() {
       this.layer.getSource().clear();
       this.deletedItems = [];
-      if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests);
-      if (this.options.geoJson) this.addLayerFeatures(null, this.options.geoJson);
+      if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests, 'wfs');
+      if (this.options.geoJson) this.addLayerFeatures(this.options.geoJson, 'geojson');
+      if (this.options.WKT) this.addLayerFeatures(this.options.WKT, 'wkt');
       this.refreshWMS();
     },
     refreshWMS() {
@@ -454,17 +469,52 @@ export default {
         text: 'Salvataggio...',
         background: 'rgba(0, 0, 0, 0.8)',
       });
-      const geoJSON = new ol.format.GeoJSON().writeFeaturesObject(
-        this.layer.getSource().getFeatures()
-      );
+      let data = new ol.format.GeoJSON().writeFeaturesObject(this.layer.getSource().getFeatures());
 
       if (this.options.coord3d) {
-        geoJSON.features = await this.setElevation(geoJSON.features);
+        data.features = await this.setElevation(data.features);
+      }
+
+      //Conversione coordinate
+      if (this.options.epsgOut && this.options.epsgOut !== '3857') {
+        const response = await fetch('/geoservices/REST/coordinate/transform_geojson', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            geoJSON: data,
+            srsIn: '3857',
+            srsOut: this.options.epsgOut,
+          }),
+        });
+        const data_tr = await response.json();
+        data = data_tr.geoJSON;
+      }
+
+      //Conversione formato: WKT
+      if (this.options.formatOut && this.options.formatOut === 'WKT') {
+        const featureProjection =
+          this.options.epsgOut && this.options.epsgOut !== '3857'
+            ? `EPSG:${this.options.epsgOut}`
+            : 'EPSG:3857';
+        const wktList = [];
+        data.features.forEach((feature) => {
+          const olFeature = new ol.format.GeoJSON().readFeature(feature, {
+            featureProjection: featureProjection,
+          });
+          const wktFormat = new ol.format.WKT({});
+          const wkt = wktFormat.writeFeature(olFeature);
+          wktList.push(wkt);
+        });
+        data = {
+          wkt_geom_list: wktList,
+        };
       }
 
       const deleted = new ol.format.GeoJSON().writeFeaturesObject(this.deletedItems);
 
-      this.options.submit(geoJSON, deleted, this.loading, this.refresh);
+      this.options.submit(data, deleted, this.loading, this.refresh);
     },
     async setElevation(features) {
       for (var i = 0; i < features.length; i++) {
@@ -529,8 +579,9 @@ export default {
     });
     GV.app.map.addLayer(this.layer);
 
-    if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests, null);
-    if (this.options.geoJson) this.addLayerFeatures(null, this.options.geoJson);
+    if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests, 'wfs');
+    if (this.options.geoJson) this.addLayerFeatures(this.options.geoJson, 'geojson');
+    if (this.options.wkt) this.addLayerFeatures(this.options.wkt, 'wkt');
 
     GV.app.map.clearLayer('InfoWmsHilite');
   },

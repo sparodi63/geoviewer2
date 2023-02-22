@@ -1,7 +1,7 @@
 import { Notification } from 'element-ui';
 
 export default function notification(message, type = 'info', duration = 5000) {
-  const title = type === 'info' ? 'Info' : 'Attenzione!!!';
+  const title = type === 'info' ? 'Info' : 'Attenzione!';
 
   if (message && type) {
     Notification({

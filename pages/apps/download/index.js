@@ -1,4 +1,5 @@
 var id = GV.utils.getUrlParam('id');
+var formato = GV.utils.getUrlParam('formato');
 
 var showAddMap = id ? false : true;
 var collapsed = id ? true : false;
@@ -13,7 +14,6 @@ if (id && customPageUrlList[id]) {
   window.location = customPageUrlList[id];
 }
 // GESTIONE PAGINE CUSTOM --------------------------------------------
-
 
 GV.init({
   debug: true,
@@ -41,6 +41,7 @@ GV.init({
           useDownloadPanel: true,
           noDeleteButton: true,
           showDownloadPanelOnLoad: true,
+          downloadFormat: formato,
           downloadPanelCloseMode: 'closeWindow',
           collapsed: collapsed,
         },

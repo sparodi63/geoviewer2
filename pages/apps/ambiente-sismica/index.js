@@ -108,10 +108,9 @@ function getDrawTool(codice) {
       multiGeom: false,
       coord3d: true,
       epsg: '3003',
+      epsgOut: '32633',
       initWfsRequests: initWfsRequest,
       cancel: () => {
-        // insert(0, 0, 0, 0, 'NO');
-        // console.log('cancel');
         insert(null, null, 'NO');
       },
       submit: submit,
@@ -119,9 +118,10 @@ function getDrawTool(codice) {
   };
 }
 
-async function submit(data, deleted, loading, refresh) {
-  // console.log('submit', data.features[0].geometry);
-  let geojson = await transformGeoJSON(data);
+function submit(data, deleted, loading, refresh) {
+  // let geojson = await transformGeoJSON(data);
+  let geojson = data;
+
   const geometry =
     geojson && geojson.features[0] && geojson.features[0].geometry
       ? geojson.features[0].geometry
@@ -147,8 +147,6 @@ async function submit(data, deleted, loading, refresh) {
         null,
       ];
     }
-    // let cod_com = await getCodCom(coords);
-    // console.log('cod_com', cod_com);
 
     insert(coords, 32633, 'SI');
   }
@@ -156,57 +154,21 @@ async function submit(data, deleted, loading, refresh) {
   if (loading) loading.close();
 }
 
-async function getCodCom(coords) {
-  let x = coords[0],
-    y = coords[1];
-  const trUrl = '/geoservices/REST/utils/get_comune/32633/';
-  const response = await fetch(`${trUrl}${x},${y}`);
-  const data = await response.json();
-  if (data && data.success) {
-    return data.comune.codice_comune;
-  } else {
-    return null;
-  }
-}
-
-async function transformGeoJSON(geoJson) {
-  const response = await fetch('/geoservices/REST/coordinate/transform_geojson', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      geoJSON: geoJson,
-      srsIn: '3857',
-      srsOut: '32633',
-    }),
-  });
-  const data = await response.json();
-  return data.geoJSON;
-}
-
-async function transformCoords(geometry, coords) {
-  let x_t, y_t, x2_t, y2_t;
-  let x = coords[0],
-    y = coords[1],
-    z = coords[2],
-    x2 = coords[3],
-    y2 = coords[4],
-    z2 = coords[5];
-  const trUrl =
-    'https://srvcarto.regione.liguria.it/geoservices/REST/coordinate/transform_point3/3857/32633/';
-  const response1 = await fetch(`${trUrl}${x},${y}`);
-  const data1 = await response1.json();
-  x_t = data1.points[0].toFixed(0);
-  y_t = data1.points[1].toFixed(0);
-  if (geometry.type === 'LineString') {
-    const response2 = await fetch(`${trUrl}${x2},${y2}`);
-    const data2 = await response2.json();
-    x2_t = data2.points[0].toFixed(0);
-    y2_t = data2.points[1].toFixed(0);
-  }
-  return [x_t, y_t, z, x2_t, y2_t, z2];
-}
+// async function transformGeoJSON(geoJson) {
+//   const response = await fetch('/geoservices/REST/coordinate/transform_geojson', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       geoJSON: geoJson,
+//       srsIn: '3857',
+//       srsOut: '32633',
+//     }),
+//   });
+//   const data = await response.json();
+//   return data.geoJSON;
+// }
 
 function insert(coords, epsg, esito) {
   if (esito === 'NO') {

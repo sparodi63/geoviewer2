@@ -1,59 +1,6 @@
 // -------------
 
-const id = GV.utils.getUrlParam('id');
-
-let baseUrl = '/geoservices/REST/cdp-carto/istanza/';
-if (id) {
-  const url = `${baseUrl}${id}`;
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      setConfig(data);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert(error);
-    });
-} else {
-  console.warn('ID ISTANZA NON PRESENTE');
-}
-
-function setConfig(data) {
-  console.log(data);
-  const lista_geom = data.data.lista_geom;
-  console.log(lista_geom);
-
-  init(lista_geom);
-}
-
-async function submit(data, loading) {
-  const url = `${baseUrl}${id}`;
-  const response = await fetch(url, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(data),
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Errore nel servizio di BE');
-      }
-      console.log('Dati salvati correttamente');
-    })
-    .catch(error => {
-      console.error(error);
-      if (loading) loading.close();
-    });
-  if (loading) loading.close();
-}
-
-function init(lista_geom) {
+function init() {
   const idMap = 'D66';
   const idLayer = 'L6422';
 
@@ -118,10 +65,11 @@ function init(lista_geom) {
               multiGeom: true,
               epsg: '4326',
               epsgOut: '4326',
-              wkt: lista_geom,
               formatOut: 'WKT',
+              vertexEditor: true,
               submit: function(data, deleted, loading, refresh) {
-                // console.log('submit', data);
+                console.log(data);
+                if (loading) loading.close();
                 submit(data, loading);
               },
               cancel: function() {
@@ -155,4 +103,23 @@ function init(lista_geom) {
   });
 }
 
+async function sumbit(data, loading) {
+  const response = await fetch(url, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
 // -------------
+
+init();

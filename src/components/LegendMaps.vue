@@ -92,10 +92,9 @@ export default {
     GV.log('gv-legend-maps: mounted');
     if (this.options.showDownloadPanelOnLoad && GV.config.idMap) {
       GV.eventBus.$on('gv-config-init', (config) => {
-        this.openDownloadPanel(GV.config.idMap);
+        this.openDownloadPanel(GV.config.idMap, this.options.downloadFormat);
       });
     }
-    // console.log('options', this.options)
   },
   methods: {
     showMapLayers(map) {
@@ -141,18 +140,23 @@ export default {
     download(map) {
       this.openDownloadPanel(map.id);
     },
-    openDownloadPanel(idMap) {
+    openDownloadPanel(idMap, inputFormat) {
+      // console.log('LEGEND', inputFormat);
+
       if (document.getElementById('gv-map-download')) {
         const element = document.getElementById('gv-map-download');
         element.parentNode.removeChild(element);
       }
       const closeWindow = this.options.downloadPanelCloseMode === 'closeWindow';
+      let template = `<gv-map-download idMap="${idMap}" closeWindow="${closeWindow}" `;
+      if (inputFormat) template += `inputFormat="${inputFormat}"`;
+      template += `></gv-map-download>`;
       mountComponent({
         elId: 'gv-map-download',
         containerId: GV.config.containerId,
         toggleEl: false,
         vm: new Vue({
-          template: `<gv-map-download idMap="${idMap}" closeWindow="${closeWindow}"></gv-map-download>`,
+          template: template,
         }),
       });
     },
