@@ -6,20 +6,21 @@
 </template>
 
 <script>
-import Vue from "vue";
+import Vue from 'vue';
 
-import { Loading, Notification } from "element-ui";
+import { Loading, Notification } from 'element-ui';
 
 export default {
-  name: "gv-help-aib-panel",
+  name: 'gv-help-aib-panel',
   data() {
+    console.log('gv-help-aib-panel data', GV.config.getToolOptions('gv-help-button'));
     return {
-      options: GV.config.getToolOptions("gv-help-aib-button"),
+      options: GV.config.getToolOptions('gv-help-button'),
     };
   },
   computed: {},
   methods: {},
-  mounted() {}
+  mounted() {},
 };
 </script>
 

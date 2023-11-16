@@ -16,8 +16,10 @@
       function onMessage(event) {
         console.log(event.data);
         if (event.data.message == 'carto-ready') {
+          console.log(event.data.message);
         }
         if (event.data.message == 'carto-response') {
+          console.log(event.data.message);
         }
         return;
       }
@@ -26,8 +28,9 @@
 
   <body>
     <div id="test">
-      <iframe width="800" height="600" src="/geoservices/apps/viewer/pages/apps/cdp-carto-old/">
-      </iframe>
+      <iframe width="800" height="600" src="http://localhost:8081"> </iframe>
+      <!-- <iframe width="800" height="600" src="/geoservices/apps/viewer/pages/apps/cdp-carto-old/">
+      </iframe> -->
       <br />
     </div>
   </body>

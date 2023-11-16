@@ -74,7 +74,7 @@ export default {
     };
   },
   mounted() {
-    console.log('COMPONENTE MAP', this);
+    // console.log('COMPONENTE MAP', this);
     this.type =
       (GV.config.application.mapOptions && GV.config.application.mapOptions.type) || 'leaflet';
 
@@ -127,10 +127,10 @@ export default {
     // },
     registerMapEvents() {
       const events = this.type === 'leaflet' ? llEvents : olEvents;
-      events.forEach(eventName => {
+      events.forEach((eventName) => {
         // const exposedName = eventName === 'preclick' ? 'map-click' : 'map-' + eventName;
         const exposedName = 'map-' + eventName;
-        GV.app.map.on(eventName, ev => {
+        GV.app.map.on(eventName, (ev) => {
           ev.mapType = this.mapType;
           GV.eventBus.$emit(exposedName, ev);
         });
@@ -138,7 +138,7 @@ export default {
     },
     subscribeConfigEvents() {
       // Ascolto evento config-add-map e aggiungo layer alla mappa
-      GV.eventBus.$on('config-add-map', ev => {
+      GV.eventBus.$on('config-add-map', (ev) => {
         const mapConfig = ev.config;
         // Aggiungo livelli alla mappa
         GV.app.map.loadLayers(mapConfig.layers);
@@ -148,7 +148,7 @@ export default {
         }
       });
       // Ascolto evento config-add-layer e aggiungo layer alla mappa
-      GV.eventBus.$on('config-add-layer', ev => {
+      GV.eventBus.$on('config-add-layer', (ev) => {
         const layerConfig = ev.config;
         // Aggiungo livello alla mappa
         GV.app.map.loadLayers([layerConfig]);
@@ -158,17 +158,17 @@ export default {
         }
       });
       // Ascolto evento config-add-layer e aggiungo layer alla mappa
-      GV.eventBus.$on('config-remove-layer', ev => {
+      GV.eventBus.$on('config-remove-layer', (ev) => {
         const idLayer = ev.config;
         const layer = GV.app.map.getLayerByName(idLayer);
         if (layer) GV.app.map.removeLayer(layer);
       });
 
       // Ascolto evento config-remove-map e levo layer alla mappa
-      GV.eventBus.$on('config-remove-map', ev => {
+      GV.eventBus.$on('config-remove-map', (ev) => {
         const mapConfig = ev.config;
         // Levo i livelli dalla mappa
-        mapConfig.layers.forEach(layerConfig => {
+        mapConfig.layers.forEach((layerConfig) => {
           const layer = GV.app.map.getLayerByName(layerConfig.name);
           if (layer) {
             GV.app.map.removeLayer(layer);

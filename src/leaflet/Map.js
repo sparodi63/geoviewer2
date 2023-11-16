@@ -27,7 +27,7 @@ const llMap = {
   initialize() {
     Object.assign(this.mapOptions, GV.config.application.mapOptions);
 
-    console.log('MAP OPTIONS', this.mapOptions);
+    // console.log('MAP OPTIONS', this.mapOptions);
 
     this.map = L.map('gv-map', this.mapOptions);
     this.type = 'leaflet';
@@ -171,6 +171,9 @@ const llMap = {
   setExtent(extent) {
     this.initialExtent = this.projToGeoBounds(extent);
     this.fitBounds(this.initialExtent);
+    // console.log('setExtent', extent);
+    // console.log(this.getBounds());
+    // console.log(this.getZoom());
   },
 
   setInitialExtent() {
@@ -194,6 +197,7 @@ const llMap = {
       if (extent === this.mapOptions.initialExtent) {
         this.setMinZoom(this.zoom);
       }
+      // console.log(extent, zoom);
       GV.log('setRestrictedExtent', this.restrictedExtent);
     }
   },

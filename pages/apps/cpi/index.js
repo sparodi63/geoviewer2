@@ -46,25 +46,24 @@ const layers = [
   {
     type: 'JSON',
     dataType: 'json',
-    cluster: {
-      options: {
-        iconCreateFunction: function(cluster) {
-          return L.divIcon({
-            html: cluster.getChildCount(),
-            className: `cluster cluster_cpi`,
-            iconSize: L.point(31, 31),
-          });
-        },
-        showCoverageOnHover: false,
-        maxClusterRadius: 80,
-      },
-    },
+    // cluster: {
+    //   options: {
+    //     iconCreateFunction: function(cluster) {
+    //       return L.divIcon({
+    //         html: cluster.getChildCount(),
+    //         className: `cluster cluster_cpi`,
+    //         iconSize: L.point(31, 31),
+    //       });
+    //     },
+    //     showCoverageOnHover: false,
+    //     maxClusterRadius: 80,
+    //   },
+    // },
     name: 'cpi',
     visible: true,
     geomSubType: 'POINT',
-    url: `/geoservices/data/centri-impiego/cpi2.json`,
-    // tooltip: (id) ? null : '{DENOMINAZIONE}',
-    tooltip: '{DENOMINAZIONE}',
+    url: `/geoservices/REST/cpi/get_data`,
+    // url: `/geoservices/REST/proxy/proxy?url=http://srvcarto2svil.regione.liguria.it/geoservices/REST/cpi/get_data`,
     onEachFeature: id
       ? null
       : function(feature, layer) {

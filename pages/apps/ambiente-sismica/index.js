@@ -9,6 +9,7 @@ const flag_validato = GV.utils.getUrlParam('FLAG_VALIDATO');
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 // const env = 'PROD';
+console.log('ENV', env);
 
 const geoserverUrl =
   env === 'TEST'
@@ -62,7 +63,7 @@ let tools = [
   },
 ];
 
-if (locate && locate === 'true' && flag_validato === 'NO') {
+if ((locate && locate === 'true' && flag_validato === 'NO') || env === 'TEST') {
   tools.push(getDrawTool(codice));
 }
 
@@ -148,27 +149,11 @@ function submit(data, deleted, loading, refresh) {
       ];
     }
 
-    insert(coords, 32633, 'SI');
+    // insert(coords, 32633, 'SI');
   }
   if (refresh) refresh();
   if (loading) loading.close();
 }
-
-// async function transformGeoJSON(geoJson) {
-//   const response = await fetch('/geoservices/REST/coordinate/transform_geojson', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({
-//       geoJSON: geoJson,
-//       srsIn: '3857',
-//       srsOut: '32633',
-//     }),
-//   });
-//   const data = await response.json();
-//   return data.geoJSON;
-// }
 
 function insert(coords, epsg, esito) {
   if (esito === 'NO') {

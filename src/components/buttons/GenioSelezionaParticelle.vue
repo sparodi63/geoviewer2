@@ -36,7 +36,7 @@ export default {
       return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;
     },
   },
-  mounted: function() {},
+  mounted: function () {},
 };
 </script>
 

@@ -8,7 +8,7 @@ import Vue from 'vue';
 
 // Vue.component('gv-help-aib-panel', () => import('../HelpAib.vue'));
 
-const name = 'gv-help-aib-button';
+const name = 'gv-help-button';
 
 export default {
   name: name,
@@ -25,17 +25,10 @@ export default {
   },
   methods: {
     onClick() {
-      const url =
-        'https://srvcarto.regione.liguria.it/geoservices/apps/viewer/static/img/aib/MANUALE_WEBGIS_CAIB.pdf';
-      window.open(url, '_blank');
-      // mountComponent({
-      //   elId: 'gv-help-aib-panel',
-      //   containerId: GV.config.containerId,
-      //   toggleEl: true,
-      //   vm: new Vue({
-      //     template: `<gv-help-aib-panel></gv-help-aib-panel>`,
-      //   }),
-      // });
+      const url = this.options.URL;
+      console.log('onClick', url);
+      if (!url) return;
+      if (url) window.open(url, '_blank');
     },
     setClass() {
       return this.active ? this.cssClass + ' ' + this.cssActiveClass : this.cssClass;

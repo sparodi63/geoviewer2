@@ -8,10 +8,14 @@ export default function getWFSFeature(wfsParams, cqlFilter, wfsUrl) {
     return;
   }
   let url = `${GV.globals.DEFAULT_PROXY}${wfsUrl}`;
+
   if (wfsParams) {
     const baseParams =
       'service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson';
-    url = `${GV.globals.DEFAULT_PROXY}${wfsParams.url}${baseParams}&typeName=${wfsParams.typeName}&cql_filter=${cqlFilter}`;
+    const wfsUrl = wfsParams.url.startsWith('/geoservices/REST/proxy/proxy?url=')
+      ? wfsParams.url
+      : globals.DEFAULT_PROXY + wfsParams.url;
+    url = `${wfsUrl}${baseParams}&typeName=${wfsParams.typeName}&cql_filter=${cqlFilter}`;
   }
   let loading = Loading.service({
     text: 'Attendere...',

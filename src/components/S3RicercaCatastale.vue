@@ -27,6 +27,8 @@
             placeholder="Comune"
             @change="changeComune"
             filterable
+            :disabled="comuneDisabled"
+            v-show="!comuneDisabled"
           >
             <el-option
               v-for="item in comuni"
@@ -91,6 +93,8 @@
             placeholder="Comune"
             @change="changeComune2"
             filterable
+            :disabled="comuneDisabled"
+            v-show="!comuneDisabled"
           >
             <el-option
               v-for="item in comuni"
@@ -228,6 +232,8 @@
             placeholder="Comune"
             @change="changeComune3"
             filterable
+            :disabled="comuneDisabled"
+            v-show="!comuneDisabled"
           >
             <el-option
               v-for="item in comuni"
@@ -406,6 +412,7 @@ export default {
       squadro: 5000,
       fogliSquadro: null,
       foglioSquadro: null,
+      comuneDisabled: false,
     };
   },
   computed: {
@@ -433,25 +440,34 @@ export default {
     },
   },
   mounted() {
-    getComuni(this.options.codIstatProv).then(resp => {
+    getComuni(this.options.codIstatProv).then((resp) => {
       this.comuni = resp;
-      this.comune = this.comuni[0].id;
+      if (this.options.codComBelfiore) {
+        this.comune = this.options.codComBelfiore;
+        this.comuneDisabled = true;
+      } else {
+        this.comune = this.comuni[0].id;
+      }
       this.changeComune(this.comune);
       this.changeComune2(this.comune);
       this.changeComune3(this.comune);
     });
-    getReticolo().then(resp => {
+    getReticolo().then((resp) => {
       this.bacini = resp;
       this.bacino = this.bacini[0].id;
       this.changeBacino(this.bacino);
     });
-    getFogliSquadro(5000, this.options.codIstatProv).then(resp => {
+    getFogliSquadro(5000, this.options.codIstatProv).then((resp) => {
       this.fogliSquadro = resp;
     });
   },
   methods: {
     changeTipo(id) {
-      this.comune = this.comuni[0].id;
+      if (this.options.codComBelfiore) {
+        this.comune = this.options.codComBelfiore;
+      } else {
+        this.comune = this.comuni[0].id;
+      }
       this.sezione = null;
       this.foglio = null;
       this.particella = null;
@@ -464,7 +480,7 @@ export default {
     },
     changeBacino(id) {
       this.affluente = null;
-      getReticolo(id.replace(/'/g, "''")).then(resp => {
+      getReticolo(id.replace(/'/g, "''")).then((resp) => {
         this.affluenti = resp;
       });
     },
@@ -475,7 +491,7 @@ export default {
       this.foglio = null;
       this.particelle = null;
       this.particella = null;
-      getSezioni(id).then(resp => {
+      getSezioni(id).then((resp) => {
         this.sezioni = resp;
       });
     },
@@ -484,14 +500,14 @@ export default {
       this.foglio = null;
       this.particelle = null;
       this.particella = null;
-      getFogli(this.comune, id).then(resp => {
+      getFogli(this.comune, id).then((resp) => {
         this.fogli = resp;
       });
     },
     changeFoglio(id) {
       this.particelle = null;
       this.particella = null;
-      getParticelle(this.comune, this.sezione, id).then(resp => {
+      getParticelle(this.comune, this.sezione, id).then((resp) => {
         this.particelle = resp;
       });
     },
@@ -506,7 +522,7 @@ export default {
     changeIndirizzo(id) {
       this.civico = null;
       const ids = id.split(',');
-      getCivici(ids[0], ids[1], ids[2]).then(resp => {
+      getCivici(ids[0], ids[1], ids[2]).then((resp) => {
         this.civici = resp;
       });
     },
@@ -516,7 +532,7 @@ export default {
         (this.comune === 'D969' && query.length > 1) ||
         (this.comune !== 'D969' && query.length > 0)
       ) {
-        getIndirizzi(this.comune, query).then(resp => {
+        getIndirizzi(this.comune, query).then((resp) => {
           this.indirizzi = resp;
         });
       }
@@ -524,7 +540,7 @@ export default {
     changeCivico(id) {
       this.particelleCensuario = null;
       const ids = this.indirizzo.split(',');
-      getParticelleCensuario(ids[0], ids[1], ids[2], id).then(resp => {
+      getParticelleCensuario(ids[0], ids[1], ids[2], id).then((resp) => {
         this.particelleCensuario = resp;
       });
     },
@@ -534,13 +550,13 @@ export default {
     },
     changeComune3(id) {
       this.strada = null;
-      getStrade(id).then(resp => {
+      getStrade(id).then((resp) => {
         this.strade = resp;
       });
     },
     changeSquadro(id) {
       this.foglioSquadro = null;
-      getFogliSquadro(id, this.options.codIstatProv).then(resp => {
+      getFogliSquadro(id, this.options.codIstatProv).then((resp) => {
         this.fogliSquadro = resp;
       });
     },
@@ -564,14 +580,14 @@ export default {
       }
     },
     submitSquadri() {
-      const typeName = this.squadri.filter(squadro => squadro.id === this.squadro)[0].layer;
+      const typeName = this.squadri.filter((squadro) => squadro.id === this.squadro)[0].layer;
       const cqlFilter = "id='" + this.foglioSquadro + "'";
       const url =
         'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=' +
         typeName +
         '&cql_filter=' +
         cqlFilter;
-      getWFSFeature(null, null, url).then(features => {
+      getWFSFeature(null, null, url).then((features) => {
         GV.app.map.hiliteFeatures(features);
       });
     },
@@ -584,7 +600,7 @@ export default {
         typeName +
         '&cql_filter=' +
         cqlFilter;
-      getWFSFeature(null, null, url).then(features => {
+      getWFSFeature(null, null, url).then((features) => {
         GV.app.map.hiliteFeatures(features, { maxZoom: 18 });
       });
     },
@@ -609,7 +625,7 @@ export default {
         typeName +
         '&cql_filter=' +
         cqlFilter;
-      getWFSFeature(null, null, url).then(features => {
+      getWFSFeature(null, null, url).then((features) => {
         GV.app.map.hiliteFeatures(features, { maxZoom: 18 });
       });
     },
@@ -621,7 +637,7 @@ export default {
         typeName +
         '&cql_filter=' +
         cqlFilter;
-      getWFSFeature(null, null, url).then(features => {
+      getWFSFeature(null, null, url).then((features) => {
         GV.app.map.hiliteFeatures(features, { maxZoom: 18 });
       });
     },
@@ -653,7 +669,7 @@ export default {
         typeName +
         '&cql_filter=' +
         cqlFilter;
-      getWFSFeature(null, null, url).then(features => {
+      getWFSFeature(null, null, url).then((features) => {
         GV.app.map.hiliteFeatures(features, { maxZoom: 18 });
       });
     },
@@ -669,7 +685,7 @@ export default {
           .parentNode.removeChild(document.getElementById('gv-ricerca-catastale'));
       }
     },
-    collapse: function(event) {
+    collapse: function (event) {
       if (this.show) {
         document.getElementById('gv-ricerca-catastale-body').style.display = 'none';
       } else {

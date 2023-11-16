@@ -71,11 +71,11 @@ Vue.component('gv-cem-scheda-panel', () => import('./CemScheda.vue'));
 export default {
   data() {
     const options = GV.config.getToolOptions('gv-cem-elaborazioni-button');
-    const idLayer = options.idLayer
-    const layerName = `L${idLayer}`
-    const idMap = `M${options.idMap}` 
-    const geoserverUrl = options.geoserverUrl
-    const url = `${geoserverUrl}geoserver/${idMap}/`
+    const idLayer = options.idLayer;
+    const layerName = `L${idLayer}`;
+    const idMap = `M${options.idMap}`;
+    const geoserverUrl = options.geoserverUrl;
+    const url = `${geoserverUrl}geoserver/${idMap}/`;
 
     return {
       buttonDisabled: true,
@@ -110,8 +110,7 @@ export default {
           popUpFlag: true,
           popUpWidth: 100,
           popUpHeight: 100,
-          popUpUrl:
-            `${url}wms?LAYER=${layerName}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&`,
+          popUpUrl: `${url}wms?LAYER=${layerName}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&`,
         },
         infoOptions: {
           infoUrl: 'http://srvcarto.regione.liguria.it/info/generico.xsl',
@@ -126,7 +125,7 @@ export default {
   },
   methods: {
     onChange(value) {
-      const elab = this.elaborazioni.filter(el => {
+      const elab = this.elaborazioni.filter((el) => {
         return el.id === value;
       });
       this.elaborazioneSelezionata = elab[0];
@@ -180,9 +179,9 @@ export default {
     },
   },
   computed: {},
-  mounted: function() {
+  mounted: function () {
     this.addMapConfig();
-    getCemElaborazioni().then(data => {
+    getCemElaborazioni().then((data) => {
       this.elaborazioni = data.elaborazioni;
       this.elaborazione = parseInt(this.options.idElab) || null;
       if (this.elaborazione) {

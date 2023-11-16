@@ -77,12 +77,15 @@ function getGetFeatureInfoUrl(layerConfig, event) {
   if (GV.app.map.type === 'openlayers') {
     return buildOLWMSOptions(layerConfig, event);
   } else {
-    const url =
-      layerConfig.infoOptions.infoQueryUrl || globals.DEFAULT_PROXY + layerConfig.wmsParams.url;
+    const wmsUrl = layerConfig.wmsParams.url.startsWith('/geoservices/REST/proxy/proxy?url=')
+      ? layerConfig.wmsParams.url
+      : globals.DEFAULT_PROXY + layerConfig.wmsParams.url;
+    const url = layerConfig.infoOptions.infoQueryUrl || wmsUrl;
+    console.log(url);
     const layers = layerConfig.infoOptions.infoQueryLayers || layerConfig.wmsParams.name;
     const cqlFilter = layerConfig.wmsParams.cql_filter;
     const infoFormat = layerConfig.wmsParams.infoFormat;
-    console.log(url);
+    // console.log(url);
     return buildWMSOptions(
       url,
       layers,
@@ -268,12 +271,22 @@ function _showFeatureInfo(feature) {
     case 'gvi':
       showGvInfo(feature);
       break;
+    case 'function':
+      showFunction(feature);
+      break;
     default:
       showHtml(feature);
       break;
   }
   // console.log(GV.app.map.options.noInfoHiliteFeature)
   if (!GV.app.map.options.noInfoHiliteFeature) hiliteFeature(feature);
+}
+
+function showFunction(feature) {
+  // console.log('showFunction', feature);
+  if (feature.infoOptions.infoFunction) {
+    feature.infoOptions.infoFunction(feature);
+  }
 }
 
 function showGvInfo(feature) {
@@ -405,6 +418,7 @@ function getType(feature) {
   const infoUrl = feature.infoOptions.infoUrl;
   if (feature.text) return 'text';
   if (infoUrl === 'gvi') return 'gvi';
+  if (infoUrl === 'function') return 'function';
   if (infoUrl.substr(infoUrl.length - 12) === 'generico.xsl') return 'generico';
   if (infoUrl.substr(infoUrl.length - 4) === '.xsl') return 'xsl';
 }

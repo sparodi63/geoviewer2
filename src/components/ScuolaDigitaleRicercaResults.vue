@@ -29,7 +29,7 @@
           <el-table
             :data="listaProgetti"
             empty-text="Nessuna progetto trovato"
-            style="font-size: 12px !important;"
+            style="font-size: 12px !important"
             class="gv-inverted-color-scheme"
             :default-sort="{ prop: 'anno', order: 'descending' }"
             height="300"
@@ -50,7 +50,7 @@
                 <span
                   title="link alla scuola"
                   @click="handleClickScuola(scope.$index, scope.row.codice_scuola)"
-                  style="color:#e94e1b; cursor: pointer;"
+                  style="color: #e94e1b; cursor: pointer"
                 >
                   {{ scope.row.nome_istituto }}
                 </span>
@@ -73,7 +73,12 @@
                 <span v-if="scope.row.link_documentazione" title="link alla documentazione">
                   <el-button
                     size="mini"
-                    style="width:20px; padding-left:5px; color:#e94e1b; background-color:#EEEEEE !important"
+                    style="
+                      width: 20px;
+                      padding-left: 5px;
+                      color: #e94e1b;
+                      background-color: #eeeeee !important;
+                    "
                     @click="handleLink(scope.$index, scope.row.link_documentazione)"
                     icon="el-icon-link"
                   ></el-button>
@@ -113,7 +118,6 @@ export default {
     listaProgetti: Array,
   },
   data() {
-
     return {
       flagRicerca: true,
       show: false,
@@ -145,7 +149,7 @@ export default {
         }),
       });
     },
-    closePanel: function() {
+    closePanel: function () {
       let div = document.getElementById('gv-scuoladigitale-ricerca-results');
       if (!div) return;
       div.parentNode.removeChild(div);
@@ -153,7 +157,7 @@ export default {
         flagRicerca: this.flagRicerca,
       });
     },
-    hidePanel: function(event) {
+    hidePanel: function (event) {
       if (this.show) {
         document.getElementById('gv-scuoladigitale-ricerca-results-body').style.display = 'block';
         document.getElementById('gv-scuoladigitale-ricerca-results').style.width = '900px';
@@ -194,7 +198,7 @@ export default {
   color: black;
   cursor: default;
   font-weight: 800;
-  font-family: 'Raleway', Arial, sans-serif !important;
+  font-family: 'Titillium Web', Arial, sans-serif !important;
   font-size: 14px;
 }
 

@@ -369,8 +369,9 @@ export default {
     },
     addLayerFeatures(data, type) {
       this.layer.getSource().clear(true);
+      console.log('Sono in addLayerFeatures');
       if (type === 'wfs') {
-        console.log('wfs');
+        // console.log('wfs');
         for (const request of data) {
           getWFSFeature(null, null, request.wfsURL)
             .then((features) => {
@@ -385,7 +386,9 @@ export default {
       const source = this.layer.getSource();
       if (type === 'geojson') {
         if (typeof data === 'string') data = JSON.parse(data);
+        console.log('geojson', data);
         this.addFeatures(data.features, source);
+        console.log('features', source.getFeatures());
         return;
       }
       if (type === 'wkt') {
@@ -459,9 +462,13 @@ export default {
       });
     },
     async confirmSubmit() {
-      var r = confirm('Sei sicuro?');
-      if (r == true) {
+      if (this.options.noConfirm) {
         this.submit();
+      } else {
+        const r = confirm('Sei sicuro?');
+        if (r == true) {
+          this.submit();
+        }
       }
     },
     async submit() {

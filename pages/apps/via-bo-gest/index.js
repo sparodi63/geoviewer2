@@ -96,7 +96,7 @@ function loadConfig(data) {
             show: true,
             showAddMap: true,
             showInfoMap: true,
-            showDownloadTotale: true,
+            showDownloadTotale: false,
             showLayersTransparency: true,
             showBaseLayerSwitcher: true,
             addMapConfig: {

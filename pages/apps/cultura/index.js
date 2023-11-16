@@ -10,15 +10,28 @@ fetch(`/geoservices/data/cultura/config.json`)
 
 function setConfig(data) {
   GV.globals.CULTURA_CONFIG = data;
-  GV.globals.CULTURA_CONFIG.luoghi = [];
-  for (const rg of data.raggruppamenti) {
-    GV.globals.CULTURA_CONFIG.luoghi.push(rg.data.features);
-  }
-  GV.globals.CULTURA_CONFIG.luoghi = GV.globals.CULTURA_CONFIG.luoghi.flat();
+
   GV.globals.CULTURA_CONFIG.filter = getFilter();
   GV.globals.CULTURA_CONFIG.CURRENT_DOMAIN = getCurrentDomain();
   GV.globals.CULTURA_CONFIG.embed = GV.utils.getUrlParam('TYPE') === 'EMBED' ? true : false;
   GV.globals.CULTURA_CONFIG.flagItinerario = GV.utils.getUrlParam('ITINERARIO') ? true : false;
+
+  // CARICAMENTO ARRAY LUOGHI
+  GV.globals.CULTURA_CONFIG.luoghi = [];
+  for (const rg of data.raggruppamenti) {
+    if (GV.globals.CULTURA_CONFIG.flagItinerario || GV.globals.CULTURA_CONFIG.filter.luogo) {
+      GV.globals.CULTURA_CONFIG.luoghi.push(rg.data.features);
+    } else {
+      const features = rg.data.features.filter(feature => {
+        // return true;
+        return feature.properties.FLGSOLOITINERARI === 'N';
+      });
+      // console.log(features);
+      GV.globals.CULTURA_CONFIG.luoghi.push(features);
+    }
+  }
+  GV.globals.CULTURA_CONFIG.luoghi = GV.globals.CULTURA_CONFIG.luoghi.flat();
+
   init(getMapConfig());
 }
 

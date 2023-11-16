@@ -135,6 +135,7 @@ export default {
     },
     data() {
       if (!this.data) this.showLegend = false;
+      console.log(this.data);
       if (this.data && this.indicatore) this.loadLayer();
     },
   },
@@ -146,6 +147,7 @@ export default {
       return date > today || date < startDate;
     },
     onChangeTipo(value) {
+      console.log(value);
       this.tipo = value;
       this.indicatore = null;
       this.data = null;
@@ -153,6 +155,7 @@ export default {
       this.showLegend = false;
     },
     onChangeIndicatore(value) {
+      console.log(value);
       this.indicatore = value;
       if (this.data) this.loadLayer();
     },
@@ -233,6 +236,9 @@ export default {
       .then((response) => response.data.data)
       .then((data) => {
         this.setData(data);
+        // this.data = 2022;
+        // this.tipo = 'A';
+        // this.indicatore = 'C6H6_001';
       });
   },
 };

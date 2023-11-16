@@ -1,14 +1,15 @@
 var id = GV.utils.getUrlParam('id');
 var formato = GV.utils.getUrlParam('formato');
+if (!formato) formato = GV.utils.getUrlParam('amp;formato');
 
 var showAddMap = id ? false : true;
 var collapsed = id ? true : false;
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
-
+console.log('formato', formato);
 // GESTIONE PAGINE CUSTOM --------------------------------------------
 var customPageUrlList = {
   1881: '/geoservices/apps/viewer/pages/apps/atlante-geochimico/',
+  2219: '/geoservices/apps/viewer/pages/apps/rqa/',
 };
 if (id && customPageUrlList[id]) {
   window.location = customPageUrlList[id];
@@ -26,24 +27,13 @@ GV.init({
     layout: {
       legend: {
         options: {
-          showAddMap: showAddMap,
-          addMapConfig: {
-            panels: {
-              repertorio: {
-                type: 'tree',
-                name: 'repertorio',
-                label: 'Repertorio Cartografico',
-              },
-            },
-          },
-          filterDownloadCatalog: true,
           showBaseLayerSwitcher: true,
           useDownloadPanel: true,
           noDeleteButton: true,
           showDownloadPanelOnLoad: true,
           downloadFormat: formato,
           downloadPanelCloseMode: 'closeWindow',
-          collapsed: collapsed,
+          collapsed: true,
         },
       },
       tools: [{ name: 'gv-geocoder' }],

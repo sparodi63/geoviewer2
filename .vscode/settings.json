@@ -114,7 +114,7 @@
   // Matrice di linguaggi in cui le abbreviazioni Emmet non devono essere espanse.
   "emmet.excludeLanguages": [],
   // Controlla se visualizzare o meno gli editor aperti in schede.
-  "workbench.editor.showTabs": true,
+  "workbench.editor.showTabs": "multiple",
   // Controlla se nelle schede dell'editor deve essere presente o meno un pulsante Chiudi visibile.
   // Controlla se visualizzare o meno un'icona per gli editor aperti. Richiede l'abilitazione anche di un tema dell'icona.
   "workbench.editor.showIcons": true,
@@ -132,8 +132,6 @@
   "workbench.sideBar.location": "left",
   // Controlla la visibilità della barra di stato nella parte inferiore del workbench.
   "workbench.statusBar.visible": true,
-  // Controlla la visibilità della barra attività nel workbench.
-  "workbench.activityBar.visible": true,
   // Se abilitata, apre i file in una nuova finestra invece di riutilizzare un'istanza esistente.
   "window.openFilesInNewWindow": "on",
   // Controlla la modalità di riapertura delle cartelle dopo un riavvio. Selezionare 'none' per non riaprire mai una cartella, 'one' per riaprire l'ultima cartella usata oppure 'all' per riaprire tutte le cartelle dell'ultima sessione.

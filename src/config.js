@@ -224,7 +224,7 @@ export default {
       this.maps.unshift(mapConfig);
     }
 
-    console.log('EMETTO config-add-map');
+    // console.log('EMETTO config-add-map');
     GV.eventBus.$emit('config-add-map', {
       config: mapConfig,
     });
@@ -330,7 +330,7 @@ export default {
 
       const mapConfig = response.data.data;
       if (mapConfig.fileDettaglio && !skipConferma) {
-        const label = 'Condizioni di utilizzo';
+        const label = 'Avvertenze';
         mountComponent({
           elId: 'gv-conferma-dettaglio',
           containerId: this.containerId,

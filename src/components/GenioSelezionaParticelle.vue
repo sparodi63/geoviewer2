@@ -137,7 +137,7 @@ export default {
       return;
     },
     saveData() {
-      const listaParticelle = this.particelleSelezionate.map(particella => {
+      const listaParticelle = this.particelleSelezionate.map((particella) => {
         particella.properties.id = particella.id;
         return particella.properties;
       });
@@ -151,7 +151,7 @@ export default {
         text: 'Salvataggio dati...',
         background: 'rgba(0, 0, 0, 0.8)',
       });
-      insertParticelleGenio(data).then(resp => {
+      insertParticelleGenio(data).then((resp) => {
         if (loading) loading.close();
         if (resp.success) {
           GV.utils.notification('Dati salvati correttamente', 'info');
@@ -216,8 +216,8 @@ export default {
         layer = this.options.idLayerPratica;
       }
       const wfsUrl = `https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${workSpace}:${layer}&cql_filter=${cqlFilter}`;
-      getWFSFeature(null, null, wfsUrl).then(features => {
-        features.forEach(feature => {
+      getWFSFeature(null, null, wfsUrl).then((features) => {
+        features.forEach((feature) => {
           const codCom = feature.properties.COD_COM || feature.properties.SV06_COD_COM;
           const sez = feature.properties.SEZ || feature.properties.SV06_SEZ;
           const foglio = feature.properties.FOGLIO || feature.properties.SV06_FOGLIO;
@@ -275,16 +275,16 @@ export default {
       return InfoWmsManager.getGetFeatureInfoUrl(this.layerConfig, event);
     },
     updateParticelleSelezionate(features) {
-      features.forEach(feature => {
+      features.forEach((feature) => {
         this.setFeatureProperties(feature);
         if (this.notEditable(feature)) {
           return;
         }
         if (this.alreadySelected(feature)) {
-          this.particelleSelezionate = this.particelleSelezionate.filter(particella => {
+          this.particelleSelezionate = this.particelleSelezionate.filter((particella) => {
             return particella.id !== feature.id;
           });
-          this.hiliteLayer.eachLayer(layer => {
+          this.hiliteLayer.eachLayer((layer) => {
             if (layer.feature.id == feature.id) {
               GV.app.map.removeLayer(layer);
             }
@@ -298,28 +298,31 @@ export default {
     setFeatureProperties(feature) {
       feature.properties.DATA_SEL = '';
       feature.properties.STATO = 'M';
-      feature.label = (feature.properties.CT24_COD_COM) ? `${feature.properties.CT24_COD_COM}/${feature.properties.CT24_SEZ}/${
-        feature.properties.CT24_FOGLIO
-      }/${feature.properties.CT24_NUMERO.trim()}/${feature.properties.CT24_ALLEGATO}/${
-        feature.properties.CT24_SVILUPPO
-      }` :
-      `${feature.properties.ct24_cod_com}/${feature.properties.ct24_sez}/${
-        feature.properties.ct24_foglio
-      }/${feature.properties.ct24_numero.trim()}/${feature.properties.ct24_allegato}/${
-        feature.properties.ct24_sviluppo
-      }` ;
+      feature.label = feature.properties.CT24_COD_COM
+        ? `${feature.properties.CT24_COD_COM}/${feature.properties.CT24_SEZ}/${
+            feature.properties.CT24_FOGLIO
+          }/${feature.properties.CT24_NUMERO.trim()}/${feature.properties.CT24_ALLEGATO}/${
+            feature.properties.CT24_SVILUPPO
+          }`
+        : `${feature.properties.ct24_cod_com}/${feature.properties.ct24_sez}/${
+            feature.properties.ct24_foglio
+          }/${feature.properties.ct24_numero.trim()}/${feature.properties.ct24_allegato}/${
+            feature.properties.ct24_sviluppo
+          }`;
       feature.id = feature.label;
       feature.properties.parziale = false;
       feature.properties.catalogo = true;
-      feature.properties.AREA = (feature.properties.CT24_AREA) ? feature.properties.CT24_AREA : feature.properties.ct24_area;
+      feature.properties.AREA = feature.properties.CT24_AREA
+        ? feature.properties.CT24_AREA
+        : feature.properties.ct24_area;
     },
     updateLayer(feature, type) {
       const cqlFilter = 'ct24_id = ' + feature.properties.CT24_ID;
       const wfsUrl =
         'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=M1047:L2624&cql_filter=' +
         cqlFilter;
-      getWFSFeature(null, null, wfsUrl).then(features => {
-        features.forEach(feature => {
+      getWFSFeature(null, null, wfsUrl).then((features) => {
+        features.forEach((feature) => {
           this.setFeatureProperties(feature);
           this.hiliteLayer.addData(feature);
         });
@@ -327,7 +330,7 @@ export default {
     },
     notEditable(feature) {
       let notEditable = false;
-      this.particelleSelezionate.forEach(particella => {
+      this.particelleSelezionate.forEach((particella) => {
         if (feature.id === particella.id && particella.properties.STATO !== 'M') {
           notEditable = true;
         }
@@ -336,7 +339,7 @@ export default {
     },
     alreadySelected(feature) {
       let selected = false;
-      this.particelleSelezionate.forEach(particella => {
+      this.particelleSelezionate.forEach((particella) => {
         if (feature.id === particella.id) {
           selected = true;
         }
@@ -344,10 +347,10 @@ export default {
       return selected;
     },
     handleDelete(index, row) {
-      this.particelleSelezionate = this.particelleSelezionate.filter(particella => {
+      this.particelleSelezionate = this.particelleSelezionate.filter((particella) => {
         return particella.id !== row.id;
       });
-      this.hiliteLayer.eachLayer(layer => {
+      this.hiliteLayer.eachLayer((layer) => {
         if (layer.feature.id == row.id) {
           GV.app.map.removeLayer(layer);
         }
@@ -355,7 +358,7 @@ export default {
     },
     selectRiga(row) {
       if (row) {
-        this.hiliteLayer.eachLayer(layer => {
+        this.hiliteLayer.eachLayer((layer) => {
           if (layer.feature.id == row.id) {
             layer.setStyle({ fillOpacity: 0.4 });
           } else {
@@ -366,7 +369,7 @@ export default {
     },
     deselectRiga(row) {
       if (row) {
-        this.hiliteLayer.eachLayer(layer => {
+        this.hiliteLayer.eachLayer((layer) => {
           if (layer.feature.id == row.id) {
             layer.setStyle({ fillOpacity: 0.0 });
           }
@@ -375,18 +378,18 @@ export default {
     },
     subscribeMapEvent(event) {
       // GV.eventBus.$on('map-click', event => {
-      GV.app.map.on('click', event => {
+      GV.app.map.on('click', (event) => {
         const wmsUrl = this.getWmsUrl(event);
-        getFeatureInfo(wmsUrl).then(features => this.updateParticelleSelezionate(features));
+        getFeatureInfo(wmsUrl).then((features) => this.updateParticelleSelezionate(features));
       });
     },
     hideLayer() {
-      this.hiliteLayer.eachLayer(layer => {
+      this.hiliteLayer.eachLayer((layer) => {
         layer.getElement().style.display = 'none';
       });
     },
     showLayer() {
-      this.hiliteLayer.eachLayer(layer => {
+      this.hiliteLayer.eachLayer((layer) => {
         layer.getElement().style.display = 'block';
       });
     },
@@ -394,19 +397,19 @@ export default {
   mounted() {
     this.layerConfig = GV.config.getLayerConfig(this.options.idLayerParticella);
     if (!this.layerConfig) {
-      GV.eventBus.$on('gv-config-init', event => {
+      GV.eventBus.$on('gv-config-init', (event) => {
         this.layerConfig = GV.config.getLayerConfig(this.options.idLayerParticella);
       });
     }
     this.loadLayer();
 
     // GESTIONE EVENTI
-    GV.eventBus.$on('gv-control-genio-seleziona-particelle-activate', event => {
+    GV.eventBus.$on('gv-control-genio-seleziona-particelle-activate', (event) => {
       this.subscribeMapEvent(event);
       this.showLayer();
       this.loadParticelle();
     });
-    GV.eventBus.$on('gv-control-genio-seleziona-particelle-deactivate', event => {
+    GV.eventBus.$on('gv-control-genio-seleziona-particelle-deactivate', (event) => {
       GV.app.map.off('click');
       this.hideLayer();
     });

@@ -35,7 +35,7 @@
           <el-table
             :data="progetti"
             empty-text="Nessuna risultato trovato"
-            style="font-size: 12px !important;"
+            style="font-size: 12px !important"
             class="gv-inverted-color-scheme"
             :default-sort="{ prop: 'anno', order: 'descending' }"
             height="300"
@@ -60,7 +60,12 @@
                 <span v-if="scope.row.link_documentazione" title="link alla documentazione">
                   <el-button
                     size="mini"
-                    style="width:20px; padding-left:5px; color:#e94e1b; background-color:#EEEEEE !important"
+                    style="
+                      width: 20px;
+                      padding-left: 5px;
+                      color: #e94e1b;
+                      background-color: #eeeeee !important;
+                    "
                     @click="handleLink(scope.$index, scope.row.link_documentazione)"
                     icon="el-icon-link"
                   ></el-button>
@@ -120,7 +125,7 @@ export default {
     }
   },
   methods: {
-    closePanel: function() {
+    closePanel: function () {
       let div = document.getElementById('gv-scuoladigitale-info');
       if (!div) return;
       div.parentNode.removeChild(div);
@@ -128,7 +133,7 @@ export default {
         flagRicerca: this.flagRicerca,
       });
     },
-    hidePanel: function(event) {
+    hidePanel: function (event) {
       if (this.show) {
         document.getElementById('gv-scuoladigitale-info-body').style.display = 'block';
         document.getElementById('gv-scuoladigitale-info').style.width = '800px';
@@ -169,17 +174,17 @@ export default {
   padding-right: 0rem;
   padding-left: 0.5rem;
   margin-bottom: -1px;
-  color: black;
+  color: white;
   cursor: default;
   font-weight: 800;
-  font-family: 'Raleway', Arial, sans-serif !important;
+  font-family: 'Titillium Web', Arial, sans-serif !important;
   font-size: 14px;
 }
 
 .gv-scuoladigitale-info-title a {
   margin-left: 420px;
   font-size: 15px;
-  color: black;
+  color: white;
   font-weight: 900;
 }
 
@@ -216,12 +221,12 @@ export default {
   background: transparent;
   border: 0;
   -webkit-appearance: none;
-  background-color: #e94e1b !important;
+  background-color: ##86003b !important;
   float: right;
   font-size: 1rem;
   line-height: 1;
   font-weight: 800;
-  color: black;
+  color: white;
   margin-left: 5px;
   margin-right: 5px;
   margin-top: 3px;

@@ -3,7 +3,7 @@
     <gv-title title="Localizza Punto" :divId="'gv-insert-point-panel'"></gv-title>
     <div class="gv-insert-point-body gv-inverted-color-scheme">
       <el-form :model="form" ref="form">
-         <el-form-item>
+        <el-form-item>
           <el-select id="gv-insert-point-crs" v-model="sistemaCoordinate" size="mini">
             <el-option
               v-for="item in sistemiCoordinate"
@@ -12,49 +12,45 @@
               :label="item.proj_descr"
             ></el-option>
           </el-select>
-          </el-form-item>
-         <el-form-item>
+        </el-form-item>
+        <el-form-item>
           <el-input
             id="gv-insert-point-x"
-            style="width: 200px;"
+            style="width: 200px"
             size="mini"
             placeholder="Coordinata X"
             type="number"
             v-model="x"
           ></el-input>
-         </el-form-item>
-         <el-form-item>
+        </el-form-item>
+        <el-form-item>
           <el-input
             id="gv-insert-point-x"
-            style="width: 200px;"
+            style="width: 200px"
             size="mini"
             placeholder="Coordinata Y"
             type="number"
             v-model="y"
           ></el-input>
-         </el-form-item>          
-         <el-form-item>
-          <el-button
-            id="gv-insert-point-submit"
-            type="primary"
-            size="mini"
-            @click="submit"
+        </el-form-item>
+        <el-form-item>
+          <el-button id="gv-insert-point-submit" type="primary" size="mini" @click="submit"
             >Localizza</el-button
           >
-         </el-form-item>      
+        </el-form-item>
       </el-form>
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
+import Vue from 'vue';
 
-import { Input } from "element-ui";
+import { Input } from 'element-ui';
 Vue.use(Input);
 
 export default {
-  name: "gv-insert-point-panel",
+  name: 'gv-insert-point-panel',
   data() {
     return {
       sistemiCoordinate: [
@@ -89,12 +85,12 @@ export default {
         location: [this.y, this.x],
         epsg: this.sistemaCoordinate,
         zoomLevel: 16,
-      }
-      console.log(marker)
-      GV.app.map.addMarker(marker)    
-    }    
-  }, 
-  mounted() {}
+      };
+      console.log(marker);
+      GV.app.map.addMarker(marker);
+    },
+  },
+  mounted() {},
 };
 </script>
 

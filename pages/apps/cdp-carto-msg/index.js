@@ -18,21 +18,12 @@ function onReady() {
 
 function init() {
   const idMap = 'D66';
-  const idLayer = 'L6422';
-  const field = 'CODICE_COMUNE';
-  const value = GV.utils.getUrlParam('comune');
-
-  const findOptions = value
-    ? {
-        layers: [idLayer],
-        cqlFilter: field + "='" + value + "'",
-      }
-    : null;
+  // const idLayer = 'L6422';
 
   GV.init({
     debug: true,
     idMap: idMap,
-    findOptions: findOptions,
+    findOptions: null,
     application: {
       name: 'cdp-carto-gv2',
       mapOptions: {
@@ -69,7 +60,7 @@ function init() {
             name: 'gv-draw-button',
             active: true,
             options: {
-              idLayer: idLayer,
+              // idLayer: idLayer,
               tools: {
                 draw: {
                   point: true,
@@ -89,6 +80,7 @@ function init() {
               color: '#FF9900',
               multiGeom: true,
               epsg: '4326',
+              epsgOut: '4326',
               submit: function(data, deleted, loading, refresh) {
                 submit(data, loading);
               },
@@ -125,7 +117,8 @@ function init() {
 }
 
 async function submit(data, loading) {
-  let geojson = await transformGeoJSON(data);
+  // let geojson = await transformGeoJSON(data);
+  let geojson = data;
   window.parent.postMessage({ message: 'carto-response', geojson: geojson, esito: 'OK' }, '*');
   if (loading) loading.close();
 }

@@ -3,6 +3,18 @@ export default {
 
   USE_SUBDOMAINS: true,
 
+  SESSION: {
+    ID: crypto.randomUUID(),
+    AUTH: {
+      RUOLO: null,
+      COD_FISCALE: null,
+      LOGIN: null,
+      NOME: null,
+      COGNOME: null,
+      RUOLI_UTENTE: null,
+    },
+  },
+
   RL_MAP_CONFIG_SERVICE: '/geoservices/REST/geoportale/map/',
   RL_LAYER_CONFIG_SERVICE: '/geoservices/REST/config/layer/',
   RL_QUERY_LAYER_VALUE_LIST_SERVICE: '/geoservices/REST/config/query_layer_valuelist/',

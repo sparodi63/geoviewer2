@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+
+    <title>CDP_CARTO TEST</title>
+
+    <script>
+      const id = '1';
+      if (window.addEventListener) {
+        window.addEventListener('message', onMessage, false);
+      } else if (window.attachEvent) {
+        window.attachEvent('onmessage', onMessage, false);
+      }
+
+      function onMessage(event) {
+        // GESTIONE INIZIALIZZAZIONE CARTOGRAFIA
+        if (event.data.message === `carto-ready-${id}`) {
+          console.log(event.data.message);
+          const cartoFrame = document.getElementById('carto-frame').contentWindow;
+          cartoFrame.postMessage(
+            {
+              message: `load-${id}`,
+              geom: document.getElementById('txt-geom').value,
+            },
+            '*'
+          );
+        }
+        // GESTIONE SALVATAGGIO DATI CARTO
+        if (event.data.message === `carto-response-${id}`) {
+          console.log(event.data.message);
+          const el = document.getElementById('txt-geom');
+          if (event.data.geom) el.value = JSON.stringify(event.data.geom);
+        }
+      }
+
+      function showCarto() {
+        if (document.getElementById('carto-div')) {
+          document.getElementById('carto-div').remove();
+        } else {
+          const cartoDiv = document.createElement('div');
+          cartoDiv.id = 'carto-div';
+          const cartoFrame = document.createElement('iframe');
+          cartoFrame.setAttribute(
+            'src',
+            '/geoservices/apps/viewer/pages/apps/cdp-carto-test/?id=1'
+          );
+          cartoFrame.id = 'carto-frame';
+          cartoFrame.width = '800';
+          cartoFrame.height = '600';
+          cartoDiv.appendChild(cartoFrame);
+          document.getElementById('carto-container').appendChild(cartoDiv);
+        }
+
+        // const el = document.getElementById('carto-div');
+        // if (el && el.style.display == 'block') {
+        //   el.style.display = 'none';
+        // } else {
+        //   el.style.display = 'block';
+        // }
+      }
+    </script>
+  </head>
+
+  <body>
+    <textarea id="txt-geom" rows="10" cols="80">
+      {
+        "features": [
+          {
+            "geometry":{"coordinates":[8.843352651,44.442237187],"type":"Point"},
+            "properties":null,
+            "type":"Feature"
+          }
+        ]
+      }
+    </textarea>
+    <button onclick="showCarto()">Visualizza mappa</button>
+    <div id="carto-container"></div>
+    <!-- <div id="carto-div" style="display: none">
+      <iframe
+        id="carto-frame"
+        width="800"
+        height="600"
+        src="/geoservices/apps/viewer/pages/apps/cdp-carto-test/?id=1"
+      >
+      </iframe>
+      <br />
+    </div> -->
+  </body>
+</html>

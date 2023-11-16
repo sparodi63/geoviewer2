@@ -149,7 +149,7 @@ export default {
   color: #ccc;
   cursor: default;
   font-weight: 800;
-  font-family: 'Raleway', Arial, sans-serif !important;
+  font-family: 'Titillium Web', Arial, sans-serif !important;
   font-size: 14px;
 }
 
@@ -163,7 +163,7 @@ export default {
   color: #ccc;
   cursor: default;
   font-weight: bold;
-  font-family: 'Raleway', Arial, sans-serif !important;
+  font-family: 'Titillium Web', Arial, sans-serif !important;
   font-size: 14px;
 }
 

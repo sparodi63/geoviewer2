@@ -10,6 +10,9 @@ function onFeatureSelect(feature) {
   GV.app.map.setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 14);
 }
 
+const baseURL =
+  'https://geoservizi.regione.liguria.it/geoserver/scuoladigitale/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=V_SCUOLE_2014_COMPL&cql_filter=';
+
 GV.globals.SCUOLA_DIGITALE_LAYERS = [
   {
     type: 'JSON',
@@ -19,7 +22,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
         iconCreateFunction: function(cluster) {
           return L.divIcon({
             html: cluster.getChildCount(),
-            className: 'cluster_01',
+            className: 'cfa-c',
             iconSize: L.point(28, 28),
           });
         },
@@ -30,7 +33,8 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
     name: 'scuole_01',
     visible: true,
     geomSubType: 'POINT',
-    url: '/geoservices/data/scuoladigitale/scuole01.json',
+    url: '/geoservices/data/scuoladigitale/cfa.json',
+    // url: `${baseURL}TIPO='01'`,
     legend: {
       label: 'Centro Formazione Adulti',
       icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/cfa.png',
@@ -61,7 +65,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
         iconCreateFunction: function(cluster) {
           return L.divIcon({
             html: cluster.getChildCount(),
-            className: 'cluster_02',
+            className: 'iss-c',
             iconSize: L.point(28, 28),
           });
         },
@@ -72,9 +76,10 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
     name: 'scuole_02',
     visible: true,
     geomSubType: 'POINT',
-    url: '/geoservices/data/scuoladigitale/scuole02.json',
+    url: '/geoservices/data/scuoladigitale/iss.json',
+    // url: `${baseURL}TIPO='02'`,
     legend: {
-      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school02.png',
+      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/iss.png',
       label: 'Istruzione Superiore',
     },
     tooltip: '{DENOMINAZIONE}',
@@ -87,7 +92,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
           value: '02',
         },
         style: {
-          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school02.png',
+          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/iss.png',
           iconSize: [32, 37],
           iconAnchor: [16, 37],
           popupAnchor: [0, -37],
@@ -103,7 +108,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
         iconCreateFunction: function(cluster) {
           return L.divIcon({
             html: cluster.getChildCount(),
-            className: 'cluster_03',
+            className: 'isc-c',
             iconSize: L.point(28, 28),
           });
         },
@@ -114,9 +119,10 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
     name: 'scuole_03',
     visible: true,
     geomSubType: 'POINT',
-    url: '/geoservices/data/scuoladigitale/scuole03.json',
+    url: '/geoservices/data/scuoladigitale/isc.json',
+    // url: `${baseURL}TIPO='03'`,
     legend: {
-      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school01.png',
+      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/isc.png',
       label: 'IC :  infanzia, primaria, media',
     },
     tooltip: '{DENOMINAZIONE}',
@@ -129,7 +135,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
           value: '03',
         },
         style: {
-          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school01.png',
+          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/isc.png',
           iconSize: [32, 37],
           iconAnchor: [16, 37],
           popupAnchor: [0, -37],
@@ -145,7 +151,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
         iconCreateFunction: function(cluster) {
           return L.divIcon({
             html: cluster.getChildCount(),
-            className: 'cluster_04',
+            className: 'iso-c',
             iconSize: L.point(28, 28),
           });
         },
@@ -156,9 +162,10 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
     name: 'scuole_04',
     visible: true,
     geomSubType: 'POINT',
-    url: '/geoservices/data/scuoladigitale/scuole04.json',
+    url: '/geoservices/data/scuoladigitale/iso.json',
+    // url: `${baseURL}TIPO='04'`,
     legend: {
-      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school03.png',
+      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/iso.png',
       label: 'Istituti Omnicomprensivi',
     },
     tooltip: '{DENOMINAZIONE}',
@@ -171,7 +178,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
           value: '04',
         },
         style: {
-          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school03.png',
+          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/iso.png',
           iconSize: [32, 37],
           iconAnchor: [16, 37],
           popupAnchor: [0, -37],
@@ -187,7 +194,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
         iconCreateFunction: function(cluster) {
           return L.divIcon({
             html: cluster.getChildCount(),
-            className: 'cluster_06',
+            className: 'isp-c',
             iconSize: L.point(28, 28),
           });
         },
@@ -198,9 +205,10 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
     name: 'scuole_06',
     visible: true,
     geomSubType: 'POINT',
-    url: '/geoservices/data/scuoladigitale/scuole06.json',
+    url: '/geoservices/data/scuoladigitale/isp.json',
+    // url: `${baseURL}TIPO='06'`,
     legend: {
-      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school06.jpg',
+      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/isp.png',
       label: 'Istituti Paritari',
     },
     tooltip: '{DENOMINAZIONE}',
@@ -213,7 +221,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
           value: '06',
         },
         style: {
-          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school06.jpg',
+          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/isp.png',
           iconSize: [32, 37],
           iconAnchor: [16, 37],
           popupAnchor: [0, -37],
@@ -229,7 +237,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
         iconCreateFunction: function(cluster) {
           return L.divIcon({
             html: cluster.getChildCount(),
-            className: 'cluster_07',
+            className: 'ifp-c',
             iconSize: L.point(28, 28),
           });
         },
@@ -240,12 +248,13 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
     name: 'scuole_07',
     visible: true,
     geomSubType: 'POINT',
-    url: '/geoservices/data/scuoladigitale/scuole07.json',
+    url: '/geoservices/data/scuoladigitale/ifp.json',
+    // url: `${baseURL}TIPO='07'`,
     legend: {
-      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school07.png',
+      icon: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/ifp.png',
       label: 'Istruzione e Formazione Professionale',
     },
-    tooltip: '{DENOMINAZIONE}', 
+    tooltip: '{DENOMINAZIONE}',
     onFeatureSelect: onFeatureSelect,
     classes: [
       {
@@ -255,7 +264,7 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
           value: '07',
         },
         style: {
-          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/school07.png',
+          iconUrl: '/geoservices/apps/viewer/static/img/scuoladigitale/legend/ifp.png',
           iconSize: [32, 37],
           iconAnchor: [16, 37],
           popupAnchor: [0, -37],
@@ -264,8 +273,6 @@ GV.globals.SCUOLA_DIGITALE_LAYERS = [
     ],
   },
 ];
-
-console.log('SONO QUI');
 
 const maps = [
   {

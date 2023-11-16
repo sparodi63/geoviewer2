@@ -346,6 +346,9 @@ export default {
     if (!this.largeScreen) {
       this.visible = false;
     }
+    if (GV.globals.CULTURA_CONFIG.filter.luogo) {
+      this.visible = false;
+    }
   },
   methods: {
     onChangeRaggruppamento(value) {
@@ -380,7 +383,7 @@ export default {
     // },
     filterLuoghi() {
       const divInfo = document.getElementById('gv-cultura-info');
-      if (divInfo) divInfo.remove();
+      if (divInfo && !GV.globals.CULTURA_CONFIG.filter.luogo) divInfo.remove();
       this.listaLuoghi = GV.globals.CULTURA_CONFIG.luoghi
         .filter((luogo) => {
           if (this.raggruppamento && this.raggruppamento !== luogo.properties.ID_RAGGRUPPAMENTO)
@@ -538,6 +541,8 @@ export default {
       if (this.filtro.provincia) url += `&PROVINCIA=${this.filtro.provincia}`;
       if (this.filtro.comune) url += `&COMUNE=${this.filtro.comune}`;
       if (this.filtro.itinerario) url += `&ITINERARIO=${this.filtro.itinerario}`;
+
+      // console.log(url);
       // window.open(url, '_blank');
 
       fetch(url)

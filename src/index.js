@@ -53,7 +53,7 @@ import { get } from 'jquery';
 // -- DEFINIZIONE GV
 window.GV = {
   async init(options) {
-    console.log('INIT', options);
+    // console.log('INIT', options);
 
     // CARICAMENTO LIBRERIE
     if (options.application.mapOptions && options.application.mapOptions.type === 'openlayers') {
@@ -81,7 +81,7 @@ window.GV = {
       }
       // console.log('Dopo fetchInject - openlayers', ol);
     } else {
-      console.log('Caricamento libreria LeafLet');
+      // console.log('Caricamento libreria LeafLet');
       const llScripts = [
         '/geoservices/apps/viewer/dist/leaflet/leaflet-min.js',
         '/geoservices/apps/viewer/dist/leaflet/leaflet-min.css',
@@ -96,8 +96,19 @@ window.GV = {
       switch (options.application.auth.type) {
         case 'NAM':
           const auth = await getAuth(options.application.name, authOptions.ruolo);
-          if (auth.success) this.initConfig(options);
-          else notification('ACCESSO ALLA APPLICAZIONE NON AUTORIZZATO');
+          if (auth.success) {
+            console.log(auth.data);
+            GV.globals.SESSION.AUTH.RUOLO = auth.data.ruolo;
+            GV.globals.SESSION.AUTH.COD_FISCALE = auth.data.cod_fiscale;
+            GV.globals.SESSION.AUTH.LOGIN = auth.data.login;
+            GV.globals.SESSION.AUTH.NOME = auth.data.nome;
+            GV.globals.SESSION.AUTH.COGNOME = auth.data.cognome;
+            GV.globals.SESSION.AUTH.RUOLI_UTENTE = auth.data.ruoli_utente;
+            console.log(GV.globals.SESSION);
+            this.initConfig(options);
+          } else {
+            notification('ACCESSO ALLA APPLICAZIONE NON AUTORIZZATO');
+          }
           break;
         case 'S3':
           const s3Token = await getS3Token(

@@ -11,6 +11,8 @@
             placeholder="Comune"
             @change="changeComune"
             filterable
+            :disabled="comuneDisabled"
+            v-show="!comuneDisabled"
           >
             <el-option
               v-for="item in comuni"
@@ -115,8 +117,11 @@ locale.use(lang);
 export default {
   name: 'gv-ricerca-particella',
   data() {
+    const options = GV.config.getToolOptions('gv-ricerca-particella-button');
+
     return {
       title: 'RICERCA PARTICELLA CATASTALE',
+      options: options,
       maps: GV.config.maps,
       comuni: null,
       sezioni: null,
@@ -126,6 +131,7 @@ export default {
       sezione: null,
       foglio: null,
       particella: null,
+      comuneDisabled: false,
     };
   },
   computed: {
@@ -134,8 +140,16 @@ export default {
     },
   },
   mounted() {
-    getComuni().then(resp => {
+    getComuni().then((resp) => {
       this.comuni = resp;
+      console.log(this.options);
+      if (this.options.codComBelfiore) {
+        this.comune = this.options.codComBelfiore;
+        this.comuneDisabled = true;
+      } else {
+        this.comune = this.comuni[0].id;
+      }
+      this.changeComune(this.comune);
     });
   },
   methods: {
@@ -146,7 +160,7 @@ export default {
       this.foglio = null;
       this.particelle = null;
       this.particella = null;
-      getSezioni(id).then(resp => {
+      getSezioni(id).then((resp) => {
         this.sezioni = resp;
       });
     },
@@ -155,14 +169,14 @@ export default {
       this.foglio = null;
       this.particelle = null;
       this.particella = null;
-      getFogli(this.comune, id).then(resp => {
+      getFogli(this.comune, id).then((resp) => {
         this.fogli = resp;
       });
     },
     changeFoglio(id) {
       this.particelle = null;
       this.particella = null;
-      getParticelle(this.comune, this.sezione, id).then(resp => {
+      getParticelle(this.comune, this.sezione, id).then((resp) => {
         this.particelle = resp;
       });
     },
@@ -171,7 +185,7 @@ export default {
       const url =
         'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=M1047:L2624&cql_filter=ct24_id=' +
         this.particella;
-      getWFSFeature(null, null, url).then(features => {
+      getWFSFeature(null, null, url).then((features) => {
         GV.app.map.hiliteFeatures(features);
       });
     },
@@ -187,7 +201,7 @@ export default {
           .parentNode.removeChild(document.getElementById('gv-ricerca-particella'));
       }
     },
-    collapse: function(event) {
+    collapse: function (event) {
       if (this.show) {
         document.getElementById('gv-ricerca-particella-body').style.display = 'none';
       } else {

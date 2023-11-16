@@ -13,29 +13,29 @@ switch (target) {
     geoserverUrl = 'https://geoservizi.regione.liguria.it';
     break;
   case 'PM':
-    geoserverUrl = 'http://10.20.4.120:8080';
+    geoserverUrl = '/geoservices/REST/proxy/proxy?url=http://10.20.4.120:8080';
     break;
   case 'P1':
-    geoserverUrl = 'http://10.20.4.120:8081';
+    geoserverUrl = '/geoservices/REST/proxy/proxy?url=http://10.20.4.120:8081';
     break;
   case 'P2':
-    geoserverUrl = 'http://10.20.4.120:8082';
+    geoserverUrl = '/geoservices/REST/proxy/proxy?url=http://10.20.4.120:8082';
     break;
   case 'P3':
-    geoserverUrl = 'http://10.20.4.120:8083';
+    geoserverUrl = '/geoservices/REST/proxy/proxy?url=http://10.20.4.120:8083';
     break;
   case 'P4':
-    geoserverUrl = 'http://10.20.4.120:8084';
+    geoserverUrl = '/geoservices/REST/proxy/proxy?url=http://10.20.4.120:8084';
     break;
   case 'T':
-    geoserverUrl = 'http://geoservizi.datasiel.net';
+    geoserverUrl = '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net';
     break;
   case 'TM':
-    geoserverUrl = 'http://geoservizi.datasiel.net:8080';
+    geoserverUrl = '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net:8080';
     break;
 }
 
-console.log(geoserverUrl);
+// console.log(disableCache)
 
 if (geoserverUrl) {
   GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';

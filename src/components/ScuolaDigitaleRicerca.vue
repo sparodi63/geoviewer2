@@ -20,7 +20,7 @@
         v-model="tipo"
         size="small"
         @change="changeTipo"
-        style="margin-bottom: 5px !important;"
+        style="margin-bottom: 5px !important"
       >
         <el-option
           v-for="item in tipi"
@@ -44,7 +44,7 @@
           loading-text="Caricamento... "
           no-match-text="Nessun elemento trovato"
           no-data-text="Nessun elemento trovato"
-          style="width: 370px !important;"
+          style="width: 370px !important"
         >
           <el-option
             v-for="item in results"
@@ -62,7 +62,7 @@
           collapse-tags
           multiple
           placeholder="Ordine Scuola"
-          style="width: 170px !important;"
+          style="width: 170px !important"
         >
           <el-option
             v-for="item in listaOrdini"
@@ -79,7 +79,7 @@
           filterable
           collapse-tags
           placeholder="Parole Chiave"
-          style="width: 270px !important;"
+          style="width: 270px !important"
         >
           <el-option
             v-for="item in listaParole"
@@ -91,12 +91,12 @@
         </el-select>
       </div>
       <div class="gv-scuoladigitale-ricerca-buttons">
-        <el-button id="gv-scuoladigitale-ricerca-submit" type="info" size="mini" @click="submit"
-          >Conferma</el-button
-        >
-        <el-button id="gv-scuoladigitale-ricerca-reset" type="info" size="mini" @click="reset"
-          >Annulla Selezione</el-button
-        >
+        <button id="gv-scuoladigitale-ricerca-submit" type="info" size="mini" @click="submit">
+          Conferma
+        </button>
+        <button id="gv-scuoladigitale-ricerca-reset" type="info" size="mini" @click="reset">
+          Annulla Selezione
+        </button>
       </div>
     </div>
   </div>
@@ -160,7 +160,7 @@ export default {
 
     let parole = await axios.get('/geoservices/REST/scuola/parole');
     this.listaParole = await parole.data.data;
-    GV.eventBus.$on('scuoladigitale-close-panel', e => {
+    GV.eventBus.$on('scuoladigitale-close-panel', (e) => {
       if (e.flagRicerca) this.reset();
     });
   },
@@ -189,11 +189,11 @@ export default {
       if (text === '') {
         return [];
       }
-      this.layers.forEach(sLayer => {
-        GV.app.map.eachLayer(layer => {
+      this.layers.forEach((sLayer) => {
+        GV.app.map.eachLayer((layer) => {
           if (layer.name === sLayer) {
             if (layer instanceof L.LayerGroup) {
-              layer.eachLayer(m => {
+              layer.eachLayer((m) => {
                 let loc = m.getLatLng();
                 loc.layer = m;
                 const key = m.feature.properties[this.propertyName];
@@ -255,7 +255,7 @@ export default {
       }
     },
     reset() {
-      GV.globals.SCUOLA_DIGITALE_LAYERS.forEach(layer => {
+      GV.globals.SCUOLA_DIGITALE_LAYERS.forEach((layer) => {
         GV.config.removeLayer(layer.name);
         layer.filter = () => {
           return true;
@@ -301,13 +301,13 @@ export default {
             listaProgetti: this.listaProgetti,
           },
         }),
-      }); 
+      });
     },
     filtraMappa(zoom) {
       this.markerArray = [];
-      GV.globals.SCUOLA_DIGITALE_LAYERS.forEach(layer => {
+      GV.globals.SCUOLA_DIGITALE_LAYERS.forEach((layer) => {
         GV.config.removeLayer(layer.name);
-        layer.filter = feature => {
+        layer.filter = (feature) => {
           if (this.scuolaInListaScuole(feature, zoom)) return true;
         };
         GV.config.addLayerToMap(layer, 0);
@@ -332,7 +332,7 @@ export default {
     handleLink(index, link) {
       window.open(link);
     },
-    hidePanel: function(event) {
+    hidePanel: function (event) {
       if (this.show) {
         document.getElementById('gv-scuoladigitale-ricerca-body').style.display = 'block';
         document.getElementById('gv-scuoladigitale-ricerca').style.width = '480px';
@@ -370,10 +370,10 @@ export default {
   padding-right: 0rem;
   padding-left: 0.5rem;
   margin-bottom: -1px;
-  color: black;
+  color: white;
   cursor: default;
   font-weight: 800;
-  font-family: 'Raleway', Arial, sans-serif !important;
+  font-family: 'Titillium Web', Arial, sans-serif !important;
   font-size: 14px;
 }
 
@@ -394,6 +394,19 @@ export default {
   margin-top: 10px;
   margin-left: 5px;
 }
+
+.gv-scuoladigitale-ricerca-buttons button {
+  font-family: 'Titillium Web', Arial, sans-serif !important;
+  font-weight: 800;
+  color: white;
+  background-color: #105b70;
+  border: none;
+  padding: 2px 10px;
+  padding-bottom: 4px;
+  margin-right: 10px;
+  border-radius: 3px;
+}
+
 .gv-scuoladigitale-ricerca-result {
   margin-top: 10px;
   margin-left: 5px;

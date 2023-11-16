@@ -33,11 +33,15 @@ const screenWidth = document.documentElement.clientWidth;
 const maxScreenWidth = 420;
 const largeScreen = screenWidth > maxScreenWidth;
 
-if (largeScreen) {
-  tools.push({
-    name: 'gv-help-aib-button',
-  });
-}
+// if (largeScreen) {
+tools.push({
+  name: 'gv-help-button',
+  options: {
+    URL:
+      'https://srvcarto.regione.liguria.it/geoservices/apps/viewer/static/img/aib/MANUALE_WEBGIS_CAIB.pdf',
+  },
+});
+// }
 
 GV.init({
   debug: true,

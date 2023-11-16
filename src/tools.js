@@ -190,6 +190,25 @@ tools.push({
 import RqaLivelli from './components/RqaLivelli.vue';
 Vue.component('rqa-livelli', RqaLivelli);
 
+// Form Libioss Specie
+tools.push({
+  name: 'libioss-specie',
+});
+import LibiossSpecie from './components/LibiossSpecie.vue';
+Vue.component('libioss-specie', LibiossSpecie);
+
+// Form Difesa suolo foto
+tools.push({
+  name: 'difesa-suolo-foto',
+});
+import DifesaSuoloFoto from './components/DifesaSuoloFoto.vue';
+Vue.component('difesa-suolo-foto', DifesaSuoloFoto);
+tools.push({
+  name: 'gv-difesa-suolo-foto-info',
+});
+import DifesaSuoloFotoInfo from './components/DifesaSuoloFotoInfo.vue';
+Vue.component('gv-difesa-suolo-foto-info', DifesaSuoloFotoInfo);
+
 // Bottone Switch3D
 tools.push({ name: 'gv-switch3D-button' });
 import Switch3D from './components/buttons/Switch3D.vue';
@@ -206,9 +225,9 @@ import Help3D from './components/buttons/Help3D.vue';
 Vue.component('gv-help3D-button', Help3D);
 
 // Bottone Help AIB
-tools.push({ name: 'gv-help-aib-button' });
-import HelpAib from './components/buttons/HelpAib.vue';
-Vue.component('gv-help-aib-button', HelpAib);
+tools.push({ name: 'gv-help-button' });
+import Help from './components/buttons/Help.vue';
+Vue.component('gv-help-button', Help);
 
 // Bottone InsertPoint
 tools.push({ name: 'gv-insert-point-button' });
@@ -226,6 +245,12 @@ tools.push({
 });
 import CulturaInfo from './components/CulturaInfo.vue';
 Vue.component('gv-cultura-info', CulturaInfo);
+
+tools.push({
+  name: 'gv-cdu-seleziona-particelle-button',
+});
+import CduSelezionaParticelle from './components/buttons/CduSelezionaParticelle.vue';
+Vue.component('gv-cdu-seleziona-particelle-button', CduSelezionaParticelle);
 
 // -------------------------------------------------------------------------------- //
 
