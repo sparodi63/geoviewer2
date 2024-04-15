@@ -1,5 +1,3 @@
-console.log('session', GV.globals.SESSION.ID);
-
 function onFeatureSelect(feature) {
   const div = document.getElementById('gv-difesa-suolo-foto-info');
   if (div) div.remove();
@@ -57,8 +55,6 @@ GV.init({
         },
       },
       tools: [
-        // { name: 'gv-measure-button' },
-        // { name: 'gv-print-button' },
         {
           name: 'difesa-suolo-foto',
         },
@@ -78,77 +74,4 @@ GV.init({
     },
   ],
   maps: [],
-  // maps: [
-  //   {
-  //     id: 0,
-  //     name: 'Difesa Suolo Foto',
-  //     layers: [
-  //       {
-  //         type: 'JSON',
-  //         dataType: 'json',
-  //         name: 'foto_validate',
-  //         visible: true,
-  //         geomSubType: 'POINT',
-  //         url:
-  //           'https://geoservizi.regione.liguria.it/geoserver/M2493/ogc/features/collections/L9643/items?f=application%2Fjson&limit=5000',
-  //         legend: {
-  //           label: `Foto Validate`,
-  //           icon: `/geoservices/apps/viewer/static/img/cultura/legend/Foto.png`,
-  //         },
-  //         onFeatureSelect: onFeatureSelect,
-  //         filter: function(feature) {
-  //           return (
-  //             feature.properties['session'] !== GV.globals.SESSION.ID && feature.properties['validato']
-  //           );
-  //         },
-  //         pointToLayer: (feature, latlng) => {
-  //           let fillColor = '#00ff00';
-  //           let color = '#000000';
-  //           const style = {
-  //             color: color,
-  //             fillColor: fillColor,
-  //             fillOpacity: 1,
-  //             fill: true,
-  //             weight: 2,
-  //             radius: 5,
-  //           };
-  //           return L.circleMarker(latlng, style);
-  //         },
-  //       },
-  //       {
-  //         type: 'JSON',
-  //         dataType: 'json',
-  //         name: 'foto_non_validate',
-  //         visible: true,
-  //         geomSubType: 'POINT',
-  //         url:
-  //           'https://geoservizi.regione.liguria.it/geoserver/M2493/ogc/features/collections/L9643/items?f=application%2Fjson&limit=5000',
-  //         legend: {
-  //           label: `Foto Non Validate`,
-  //           icon: `/geoservices/apps/viewer/static/img/cultura/legend/Foto.png`,
-  //         },
-  //         onFeatureSelect: onFeatureSelect,
-  //         filter: function(feature) {
-  //           return (
-  //             feature.properties['session'] !== GV.globals.SESSION.ID &&
-  //             !feature.properties['validato']
-  //           );
-  //         },
-  //         pointToLayer: (feature, latlng) => {
-  //           let fillColor = '#ff0000';
-  //           let color = '#000000';
-  //           const style = {
-  //             color: color,
-  //             fillColor: fillColor,
-  //             fillOpacity: 1,
-  //             fill: true,
-  //             weight: 2,
-  //             radius: 5,
-  //           };
-  //           return L.circleMarker(latlng, style);
-  //         },
-  //       },
-  //     ],
-  //   },
-  // ],
 });

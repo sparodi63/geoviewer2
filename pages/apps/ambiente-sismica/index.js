@@ -13,7 +13,7 @@ console.log('ENV', env);
 
 const geoserverUrl =
   env === 'TEST'
-    ? 'http://geoservizi.datasiel.net:8080/'
+    ? '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net'
     : 'https://geoservizi.regione.liguria.it/';
 const idMap = env === 'TEST' ? 2206 : 2192;
 const layer_p = env === 'TEST' ? 'L8027' : 'L7949';

@@ -4,15 +4,13 @@ const idMap = GV.utils.getUrlParam('id_map');
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
-
 // http://localhost:8081/?id_map=2&id_layer=499&env=test
 
 // const geoserverUrl =
 //   env === 'test'
-//     ? 'http://geoservizi.datasiel.net:8080/'
+//     ? '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net'
 //     : 'https://geoservizi.regione.liguria.it/';
-const geoserverUrl = 'http://geoservizi.datasiel.net:8080/'
-
+const geoserverUrl = '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net';
 
 if (idMap) {
   // loadConfig();
@@ -20,12 +18,14 @@ if (idMap) {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        const layers = data.data.layers.filter(layer => layer.idMap == idMap && layer.geomType === "RASTER")
+        const layers = data.data.layers.filter(
+          layer => layer.idMap == idMap && layer.geomType === 'RASTER'
+        );
         if (layers[0]) {
-          const idLayer = layers[0].id
+          const idLayer = layers[0].id;
           loadConfig(idLayer);
         } else {
-          throw "Layer Raster non trovato";
+          throw 'Layer Raster non trovato';
         }
       } else {
         throw data.message;
@@ -34,7 +34,7 @@ if (idMap) {
     .catch(error => {
       console.error('Error:', error);
       alert(error);
-    });  
+    });
 } else {
   console.error('PARAMETRI ASSENTE');
 }

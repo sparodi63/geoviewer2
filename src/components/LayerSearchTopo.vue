@@ -154,11 +154,7 @@
             >Ricerca</el-button
           >
         </el-form-item>
-        <div
-          id="gv-layer-search-topo-value-list-panel"
-          style="width: 350px;"
-          v-show="showValueList"
-        >
+        <div id="gv-layer-search-topo-value-list-panel" style="width: 350px" v-show="showValueList">
           <el-table
             id="gv-layer-search-topo-value-list-table"
             :data="valueList"
@@ -203,7 +199,7 @@
               <template slot-scope="scope">
                 <div
                   :title="scope.row[index]"
-                  style="height:20px; overflow:hidden; white-space: nowrap; "
+                  style="height: 20px; overflow: hidden; white-space: nowrap"
                 >
                   {{ scope.row[index] }}
                 </div>
@@ -321,7 +317,7 @@ export default {
   },
   computed: {
     maps() {
-      return this.configMaps.filter(map => map.type !== 'R');
+      return this.configMaps.filter((map) => map.type !== 'R');
     },
     showSelectComuni() {
       return this.selezioneTerritoriale === 2;
@@ -341,7 +337,7 @@ export default {
   },
   watch: {
     configMaps() {
-      this.maps.filter(map => map.type !== 'R');
+      this.maps.filter((map) => map.type !== 'R');
     },
     comune(comune) {
       this.syncComune(comune);
@@ -380,7 +376,7 @@ export default {
       if (this.layer) {
         layerName = `L${this.layer}`;
       } else {
-        this.layers.forEach(layer => {
+        this.layers.forEach((layer) => {
           if (row[0] === layer.label) layerName = `L${layer.codice}`;
         });
       }
@@ -394,17 +390,19 @@ export default {
       const cqlFilter = `${idAttr}='${value}'`;
 
       getWFSFeature(wfsParams, cqlFilter)
-        .then(features => {
-          GV.app.map.hiliteFeatures(features);
+        .then((features) => {
+          const findOptions = { maxZoom: 15 };
+          GV.app.map.hiliteFeatures(features, findOptions);
+          // GV.app.map.hiliteFeatures(features);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
     },
     changeMap(id) {
       this.showValueList = false;
       this.showResults = false;
-      this.maps.forEach(map => {
+      this.maps.forEach((map) => {
         if (map.id === id) {
           this.layers = [];
           this.layers.push({
@@ -412,10 +410,10 @@ export default {
             label: 'Tutti i livelli',
             columns: [],
           });
-          map.layers.forEach(layer => {
+          map.layers.forEach((layer) => {
             if (layer.geomType !== 'RASTER') {
               if (layer.dbSchema && layer.dbSchema.columns && layer.dbSchema.columns.length > 0) {
-                const columns = layer.dbSchema.columns.map(column => {
+                const columns = layer.dbSchema.columns.map((column) => {
                   return {
                     codice: column.name,
                     label: capitalize(column.name.replace(/_/g, ' ')),
@@ -431,14 +429,14 @@ export default {
             }
           });
           this.mapLayers = this.layers
-            .filter(layer => (layer.codice |= null))
-            .map(layer => layer.codice)
+            .filter((layer) => (layer.codice |= null))
+            .map((layer) => layer.codice)
             .join(',');
           this.layer = this.layers[0].codice;
           let columns = [];
-          this.layers.forEach(layer => {
+          this.layers.forEach((layer) => {
             const columnsList = layer.columns
-              .map(column => column.codice)
+              .map((column) => column.codice)
               .sort()
               .join(',');
             if (columnsList !== '') columns.push(columnsList);
@@ -453,7 +451,7 @@ export default {
       let check = true;
       if (columns.length < 2) return true;
       let col = columns[0];
-      columns.forEach(el => {
+      columns.forEach((el) => {
         if (el !== col) check = false;
         col = el;
       });
@@ -464,7 +462,7 @@ export default {
       this.showValueList = false;
       this.showResults = false;
 
-      this.layers.forEach(layer => {
+      this.layers.forEach((layer) => {
         if (layer.codice === id) {
           this.columns = layer.columns;
         }
@@ -480,12 +478,12 @@ export default {
     },
     queryValueList(offset) {
       const column = this.column;
-      const dataType = this.columns.filter(col => {
+      const dataType = this.columns.filter((col) => {
         return col.codice == column;
       })[0].type;
       // const layer = this.layer === 0 ? this.layers[1].codice : this.layer;
       const layers = this.layer || this.mapLayers;
-      getQueryLayerTopoValueList(layers, column, dataType, offset, this.limit).then(res => {
+      getQueryLayerTopoValueList(layers, column, dataType, offset, this.limit).then((res) => {
         this.valueList = res.data.data;
         this.total = res.data.count;
         this.showValueList = true;
@@ -509,7 +507,7 @@ export default {
         text: 'Ricerca...',
       });
       const column = this.column;
-      const dataTypes = this.columns.filter(col => {
+      const dataTypes = this.columns.filter((col) => {
         return col.codice == column;
       })[0];
       const dataType = dataTypes && dataTypes[0] ? dataTypes[0].type : null;
@@ -532,7 +530,7 @@ export default {
         topoFeature,
         topoQuery,
         version
-      ).then(res => {
+      ).then((res) => {
         loading.close();
         if (!res.data.success) {
           notification(res.data.message, 'error');
@@ -588,12 +586,12 @@ export default {
       // const trasfCoords = coords.map(coord => {
       //   return ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
       // });
-      this.bbox = coords.map(coord => {
+      this.bbox = coords.map((coord) => {
         return coord.join(',');
       })[0];
       console.log(this.bbox);
       this.bboxSRS = '3857';
-      setTimeout(function() {
+      setTimeout(function () {
         GV.config.activeControl.activate();
       }, 10);
     },
@@ -607,7 +605,7 @@ export default {
       this.bboxSRS = '4326';
       this.showRectReset = true;
       // Riattivo controllo base
-      setTimeout(function() {
+      setTimeout(function () {
         GV.config.activeControl.activate();
       }, 10);
     },
@@ -617,7 +615,7 @@ export default {
     addLayerComuni() {
       const baseUrl = `${globals.DEFAULT_PROXY}https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application%2Fjson&typeName=`;
       const url = `${baseUrl}M1946:L6421`;
-      getGeoJSON(url).then(response => {
+      getGeoJSON(url).then((response) => {
         this.loadDataComuni(response.data);
       });
     },
@@ -631,13 +629,13 @@ export default {
         return;
       }
       this.comuni = data.features
-        .map(feature => {
+        .map((feature) => {
           return {
             codice: feature.properties.CODICE_COMUNE || feature.properties.codice_comune,
             nome: feature.properties.NOME_COMUNE || feature.properties.nome_comune,
           };
         })
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           if (a.nome < b.nome) {
             return -1;
           }
@@ -667,10 +665,10 @@ export default {
           }
         }
       } else {
-        layerComuni.eachLayer(layer => {
+        layerComuni.eachLayer((layer) => {
           layer.setStyle(this.style);
         });
-        layerComuni.eachLayer(layer => {
+        layerComuni.eachLayer((layer) => {
           const codice =
             layer.feature.properties.CODICE_COMUNE || layer.feature.properties.codice_comune;
           if (codice === comune) {
@@ -778,7 +776,7 @@ export default {
       }
     },
 
-    collapse: function(event) {
+    collapse: function (event) {
       if (this.show) {
         document.getElementById('gv-layer-search-topo-body').style.display = 'none';
       } else {

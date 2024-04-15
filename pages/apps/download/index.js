@@ -14,6 +14,13 @@ var customPageUrlList = {
 if (id && customPageUrlList[id]) {
   window.location = customPageUrlList[id];
 }
+
+// ORTOFOTO -> RIDIRIGI A CATALOGO MAPPE
+const noDownloadList = ['2251', '2248', '1834', '1828'];
+if (id && noDownloadList.includes(id)) {
+  window.location = 'https://geoportal.regione.liguria.it/catalogo/mappe.html';
+}
+
 // GESTIONE PAGINE CUSTOM --------------------------------------------
 
 GV.init({

@@ -60,7 +60,7 @@
   // Consente di controllare se, quando si copia senza aver effettuato una selezione, viene copiata la riga corrente.
   "editor.emptySelectionClipboard": true,
   // Abilita i suggerimenti basati su parole.
-  "editor.wordBasedSuggestions": true,
+  "editor.wordBasedSuggestions": "matchingDocuments",
   // Dimensioni del carattere per il widget dei suggerimenti
   "editor.suggestFontSize": 0,
   // Altezza della riga per il widget dei suggerimenti
@@ -501,7 +501,7 @@
   "eslint.run": "onSave",
   // Turns auto fix on save on or off.
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": false
+    "source.fixAll.eslint": "never"
   },
   // An array of language ids which should be validated by ESLint
   "eslint.validate": ["javascript", "javascriptreact"],

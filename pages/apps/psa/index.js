@@ -1,7 +1,6 @@
 GV.globals.RL_CATALOG = 'int';
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
-
 var auth = {
   type: 'NAM',
   options: {
@@ -13,7 +12,7 @@ if (GV.globals.ENV === 'TEST') auth = null;
 
 GV.init({
   debug: true,
-  idMap: '2208,1916',
+  idMap: '2208,2550',
   application: {
     name: 'psa-gv2',
     auth: auth,

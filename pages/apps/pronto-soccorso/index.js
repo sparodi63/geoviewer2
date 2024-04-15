@@ -27,7 +27,6 @@ async function getConfig() {
   fetch(urlConfig)
     .then(response => response.json())
     .then(async data => {
-      // pollingInterval = data.pollingInterval;
       await getData();
       await refresh();
     })
@@ -56,7 +55,7 @@ async function refresh() {
 
 async function refreshData() {
   if (!GV.app) return;
-  // console.log('REFRESH');
+  console.log('REFRESH');
   fetch(url)
     .then(response => response.json())
     .then(data => {
@@ -124,7 +123,7 @@ function getGeoJson(data) {
   };
 
   data.forEach(el => {
-    console.log(el);
+    // console.log(el);
     const ind_gda = getIndGda(el);
     const ps_class = getPsClass(el);
     const class_gda = getAffollamentoClass(ind_gda);
@@ -148,7 +147,7 @@ function getGeoJson(data) {
 
   if (affollamento) {
     const listaIndGda = affollamento.split(',');
-    console.log(affollamento);
+    // console.log(affollamento);
     filtered = filtered.filter(el => {
       const ind_gda = getIndGda(el);
       const class_gda = getAffollamentoClass(ind_gda);
@@ -717,8 +716,6 @@ function getPopupLink(class_gda, ps_class, orario) {
   return popup_link;
 }
 
-
-  
 function getPopupIcon(class_gda, ps_class) {
   let popup_icon_class = ps_class === 'PS' ? 'popup-icon' : 'popup-icon-small';
 

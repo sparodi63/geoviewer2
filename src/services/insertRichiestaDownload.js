@@ -1,11 +1,11 @@
-import axios from 'axios'
-import globals from '../globals'
+import axios from 'axios';
+import globals from '../globals';
 
 export default function(data) {
   return axios
     .post(globals.RL_DOWNLOAD_INSERT_SERVICE, {
-      headers: { Accept: 'text/xml' },
+      // headers: { Accept: 'text/xml' },
       data: data,
     })
-    .then(response => response.data)
+    .then(response => response.data);
 }

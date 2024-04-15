@@ -8,14 +8,16 @@ const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
 const geoserverUrl =
   env === 'TEST'
-    ? 'http://geoservizi.datasiel.net:8080/'
+    ? '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net'
     : 'https://geoservizi.regione.liguria.it/';
 const idMap = env === 'TEST' ? 2290 : null;
 const idLayer = env === 'TEST' ? 'L8479' : null;
 const idLayerComune = 'L6422';
 
 if (idIstanza || idSession) {
-  const URL = (idIstanza) ? `/geoservices/REST/via/istanza/${idIstanza}` : `/geoservices/REST/via/session/${idSession}`  
+  const URL = idIstanza
+    ? `/geoservices/REST/via/istanza/${idIstanza}`
+    : `/geoservices/REST/via/session/${idSession}`;
   fetch(URL)
     .then(response => response.json())
     .then(data => {
@@ -47,13 +49,15 @@ function loadConfig(data) {
     };
   }
   if (countGeom > 0) {
-    findOptions = (idIstanza) ? {
-      layers: [idLayer],
-      cqlFilter: "IDISTANZA='" + idIstanza + "'",
-    } : {
-      layers: [idLayer],
-      cqlFilter: "IDSESSION='" + idSession + "'",
-    };
+    findOptions = idIstanza
+      ? {
+          layers: [idLayer],
+          cqlFilter: "IDISTANZA='" + idIstanza + "'",
+        }
+      : {
+          layers: [idLayer],
+          cqlFilter: "IDSESSION='" + idSession + "'",
+        };
   }
 
   let tools = [{ name: 'gv-geocoder' }, { name: 'gv-scalebar', position: 'bottomleft' }];
@@ -126,7 +130,7 @@ function loadConfig(data) {
 }
 
 function getDrawTool() {
-  const cqlFilter = (idIstanza) ? `IDISTANZA='${idIstanza}'` : `IDSESSION='${idSession}'`
+  const cqlFilter = idIstanza ? `IDISTANZA='${idIstanza}'` : `IDSESSION='${idSession}'`;
   const initWfsRequest = [
     {
       wfsURL: `${geoserverUrl}geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${idLayer}&cql_filter=${cqlFilter}`,

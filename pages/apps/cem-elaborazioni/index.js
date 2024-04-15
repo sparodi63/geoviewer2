@@ -4,18 +4,12 @@ var env = GV.globals.ENV || 'TEST';
 
 var geoserverUrl =
   env === 'TEST'
-    ? 'http://geoservizi.datasiel.net:8080/'
+    ? '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net'
     : 'https://geoservizi.regione.liguria.it/';
-var idMap =
-    env === 'TEST'
-    ? 2123 
-    : 2261;
-var idLayer =
-    env === 'TEST'
-    ? 7268 
-    : 8275;
+var idMap = env === 'TEST' ? 2123 : 2261;
+var idLayer = env === 'TEST' ? 7268 : 8275;
 
-console.log('ENV', env)
+console.log('ENV', env);
 
 GV.init({
   debug: true,
@@ -61,7 +55,7 @@ GV.init({
             idElab: idElab,
             idMap: idMap,
             idLayer: idLayer,
-            geoserverUrl: geoserverUrl
+            geoserverUrl: geoserverUrl,
           },
         },
         {

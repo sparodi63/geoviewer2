@@ -8,6 +8,7 @@ import getFeatureInfo from '../services/getFeatureInfo';
 import getFeatureInfoXML from '../services/getFeatureInfoXML';
 import getFeatureInfoGeojson from '../services/getFeatureInfoGeojson';
 import getFeatureInfoText from '../services/getFeatureInfoText';
+import getFeatureInfoHTML from '../services/getFeatureInfoHTML';
 import getWFSFeature from '../services/getWFSFeature';
 import getFeatureXSLT from '../services/getFeatureXSLT';
 import notification from '../util/notification';
@@ -29,7 +30,6 @@ function _request(event) {
 
   // Ciclo sulle mappe caricate
   GV.config.maps.forEach(function(mapConfig) {
-    var infoFormat = mapConfig.flagGeoserver ? 'application/json' : 'application/vnd.ogc.gml';
     // Ciclo sui layer caricati sulla mappa
     mapConfig.layers.forEach(function(layerConfig) {
       if (
@@ -38,13 +38,17 @@ function _request(event) {
         layerConfig.visible &&
         GV.app.map.layerInRange(layerConfig)
       ) {
+        // var infoFormat = mapConfig.flagGeoserver ? 'application/json' : 'application/vnd.ogc.gml';
+        if (!layerConfig.wmsParams.infoFormat)
+          layerConfig.wmsParams.infoFormat = 'application/json';
+        var infoFormat = layerConfig.wmsParams.infoFormat;
         queryLayer(layerConfig, infoFormat);
       }
     });
   });
 
   function queryLayer(layerConfig, infoFormat) {
-    if (!layerConfig.wmsParams.infoFormat) layerConfig.wmsParams.infoFormat = infoFormat;
+    // if (!layerConfig.wmsParams.infoFormat) layerConfig.wmsParams.infoFormat = infoFormat;
     const wmsUrl = getGetFeatureInfoUrl(layerConfig, event);
     _numRequests++;
 
@@ -64,8 +68,18 @@ function _request(event) {
           .then(data => _handleResponse(data, layerConfig.name))
           .catch(error => console.error(error));
         break;
-      default:
-        getFeatureInfoXML(wmsUrl, layerConfig.wmsParams.name)
+      case 'application/vnd.ogc.gml':
+        getFeatureInfoXML(wmsUrl, layerConfig.wmsParams.name, layerConfig.infoOptions)
+          .then(features => _handleResponse(features, layerConfig.name))
+          .catch(error => console.error(error));
+        break;
+      case 'text/html':
+        getFeatureInfoHTML(wmsUrl, layerConfig.wmsParams.name)
+          .then(features => _handleResponse(features, layerConfig.name))
+          .catch(error => console.error(error));
+        break;
+      case 'text/xml; subtype=gml/3.2.1':
+        getFeatureInfoHTML(wmsUrl, layerConfig.wmsParams.name)
           .then(features => _handleResponse(features, layerConfig.name))
           .catch(error => console.error(error));
         break;
@@ -81,10 +95,11 @@ function getGetFeatureInfoUrl(layerConfig, event) {
       ? layerConfig.wmsParams.url
       : globals.DEFAULT_PROXY + layerConfig.wmsParams.url;
     const url = layerConfig.infoOptions.infoQueryUrl || wmsUrl;
-    console.log(url);
+    // console.log(url);
     const layers = layerConfig.infoOptions.infoQueryLayers || layerConfig.wmsParams.name;
     const cqlFilter = layerConfig.wmsParams.cql_filter;
     const infoFormat = layerConfig.wmsParams.infoFormat;
+    if (layerConfig.infoOptions.complexFeature) layerConfig.infoOptions.featureCount = 1;
     // console.log(url);
     return buildWMSOptions(
       url,
@@ -92,7 +107,8 @@ function getGetFeatureInfoUrl(layerConfig, event) {
       event.latlng,
       infoFormat,
       layerConfig.infoBuffer,
-      cqlFilter
+      cqlFilter,
+      layerConfig.infoOptions.featureCount
     );
   }
 }
@@ -110,17 +126,18 @@ function buildOLWMSOptions(layerConfig, event) {
     ratio: 1,
     serverType: 'geoserver',
   });
+  if (layerConfig.infoOptions.complexFeature) layerConfig.infoOptions.featureCount = 1;
   var infoUrl = source.getFeatureInfoUrl(event.coordinate, viewResolution, viewProjection, {
     INFO_FORMAT: infoFormat,
     QUERY_LAYERS: queryLayers,
-    FEATURE_COUNT: 100,
+    FEATURE_COUNT: layerConfig.infoOptions.featureCount || 100,
     BUFFER: buffer,
   });
   infoUrl = globals.DEFAULT_PROXY + infoUrl;
   return infoUrl;
 }
 
-function buildWMSOptions(url, layers, latlng, infoFormat, infoBuffer, cqlFilter) {
+function buildWMSOptions(url, layers, latlng, infoFormat, infoBuffer, cqlFilter, featureCount) {
   const point = GV.app.map.getContainerPoint(latlng);
   const size = GV.app.map.getSize();
   const bbox = GV.app.map.getBbox();
@@ -136,7 +153,7 @@ function buildWMSOptions(url, layers, latlng, infoFormat, infoBuffer, cqlFilter)
     width: size.x,
     layers: layers,
     query_layers: layers,
-    FEATURE_COUNT: 100,
+    FEATURE_COUNT: featureCount || 100,
     buffer: buffer,
     info_format: infoFormat,
     i: parseInt(point.x),
@@ -151,6 +168,7 @@ function buildWMSOptions(url, layers, latlng, infoFormat, infoBuffer, cqlFilter)
 function _handleResponse(features, layerName) {
   if (!features) return;
   _requestCount++;
+
   features.forEach(function(feature) {
     if (feature.text) {
       feature.layer = GV.app.map.getLayerByName(feature.layerName);
@@ -161,18 +179,18 @@ function _handleResponse(features, layerName) {
       feature.layer = GV.app.map.getLayerByName(layerName);
       // TODO gestione attributi per livelli PostGIS
       feature.properties = setFeatureProperties(layerName, feature.properties);
-      feature.label = setFeatureLabel(layerName, feature.properties);
       feature.infoOptions = feature.layer.config.infoOptions;
+      feature.label = feature.infoOptions.complexFeature
+        ? setFeatureLabelComplex(layerName, feature.properties)
+        : setFeatureLabel(layerName, feature.properties);
     }
   });
   Array.prototype.push.apply(_features, features);
-
   if (_requestCount === _numRequests) {
     if (_features.length === 0) {
       GV.log('Nessun elemento trovato');
       return;
     }
-
     if (_features.length === 1) {
       var listDiv = document.getElementById('gv-info-wms-list');
       if (listDiv) {
@@ -226,6 +244,20 @@ function _handleResponse(features, layerName) {
     return newProps;
   }
 
+  function setFeatureLabelComplex(layerName, attributes) {
+    var infoLabelAttr, infoIdAttr;
+    infoLabelAttr = getField(layerName, 'infoLabelAttr');
+    infoIdAttr = getField(layerName, 'infoIdAttr');
+    if (infoLabelAttr) {
+      const label = eval(`attributes.${infoLabelAttr}`);
+      return label;
+    }
+    if (infoIdAttr && attributes[infoIdAttr]) {
+      const label = eval(`attributes.${infoIdAttr}`);
+      return label;
+    }
+  }
+
   function setFeatureLabel(layerName, attributes) {
     var infoLabelAttr, infoIdAttr;
     infoLabelAttr = getField(layerName, 'infoLabelAttr');
@@ -274,6 +306,12 @@ function _showFeatureInfo(feature) {
     case 'function':
       showFunction(feature);
       break;
+    case 'html':
+      showStaticHtml(feature);
+      break;
+    case 'gml':
+      showRawGml(feature);
+      break;
     default:
       showHtml(feature);
       break;
@@ -309,6 +347,12 @@ function showHtml(feature) {
   } else {
     openPopup(url, feature.infoOptions);
   }
+}
+
+function showStaticHtml(feature) {
+  const panelId = `gvi-info`;
+  const html = feature.html;
+  showPanel(null, feature.infoOptions, panelId, html);
 }
 
 function showGenerico(feature) {
@@ -414,9 +458,29 @@ function showXml(data) {
   }
 }
 
+function showRawGml(data) {
+  const infoOptions = data.infoOptions;
+  // costruisco il gml in formato getFeatureInfo Mapserver
+  let { infoUrl, infoTarget } = infoOptions;
+
+  getFeatureXSLT(infoUrl, data).then(resp => {
+    // // applico la trasformazione xslt
+    // var result = xslTransform(xmlDoc, xslDoc);
+    const url = resp.infoUrl;
+    // visualizzo il risultato
+    if (!infoTarget || infoTarget === 'panel') {
+      showPanel(url, infoOptions);
+    } else {
+      openPopup(url, infoOptions);
+    }
+  });
+}
+
 function getType(feature) {
   const infoUrl = feature.infoOptions.infoUrl;
   if (feature.text) return 'text';
+  if (feature.html) return 'html';
+  if (feature.gml) return 'gml';
   if (infoUrl === 'gvi') return 'gvi';
   if (infoUrl === 'function') return 'function';
   if (infoUrl.substr(infoUrl.length - 12) === 'generico.xsl') return 'generico';
@@ -440,18 +504,45 @@ function hiliteFeature(feature) {
       GV.app.map.hiliteFeatures(features, findOptions);
     });
   }
+  if (feature.layer.config.infoOptions.complexFeature) {
+    const url = `/geoservices/REST/config/info_hilite_complex_feature/`;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        gml: feature.gml,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        const findOptions = { noZoom: true };
+        const features = [
+          {
+            type: 'Feature',
+            geometry: data,
+          },
+        ];
+        GV.app.map.hiliteFeatures(features, findOptions);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
 }
 // apre una panel div con un documento html
-function showPanel(url, configOptions, panelId) {
+function showPanel(url, configOptions, panelId, html) {
   const id = panelId || 'gv-info-wms-html';
   mountComponent({
     elId: id,
     vm: new Vue({
       template:
-        '<gv-info-wms-html :src="src" :height="height" :width="width" :title="title" :id="id"></gv-info-wms-html>',
+        '<gv-info-wms-html :src="src" :html="html" :height="height" :width="width" :title="title" :id="id"></gv-info-wms-html>',
       data: {
         title: 'Risultato Info',
         src: url,
+        html: html,
         width: configOptions.infoWidth || 400,
         height: configOptions.infoHeight || 400,
         id: id,

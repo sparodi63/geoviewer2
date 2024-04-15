@@ -146,6 +146,12 @@ import GenioSelezionaParticelle from './components/buttons/GenioSelezionaPartice
 Vue.component('gv-genio-seleziona-particelle-button', GenioSelezionaParticelle);
 
 tools.push({
+  name: 'gv-button-genio-conferma-load-shape',
+});
+import GenioConfermaLoadShape from './components/buttons/GenioConfermaLoadShape.vue';
+Vue.component('gv-button-genio-conferma-load-shape', GenioConfermaLoadShape);
+
+tools.push({
   name: 'gv-cem-elaborazioni-button',
 });
 import CemElaborazioni from './components/buttons/CemElaborazioni.vue';
@@ -208,6 +214,11 @@ tools.push({
 });
 import DifesaSuoloFotoInfo from './components/DifesaSuoloFotoInfo.vue';
 Vue.component('gv-difesa-suolo-foto-info', DifesaSuoloFotoInfo);
+tools.push({
+  name: 'gv-difesa-suolo-foto-log',
+});
+import DifesaSuoloFotoLog from './components/DifesaSuoloFotoLog.vue';
+Vue.component('gv-difesa-suolo-foto-log', DifesaSuoloFotoLog);
 
 // Bottone Switch3D
 tools.push({ name: 'gv-switch3D-button' });

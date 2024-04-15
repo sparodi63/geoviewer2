@@ -369,7 +369,7 @@ export default {
     },
     addLayerFeatures(data, type) {
       this.layer.getSource().clear(true);
-      console.log('Sono in addLayerFeatures');
+      // console.log('Sono in addLayerFeatures');
       if (type === 'wfs') {
         // console.log('wfs');
         for (const request of data) {
@@ -386,9 +386,9 @@ export default {
       const source = this.layer.getSource();
       if (type === 'geojson') {
         if (typeof data === 'string') data = JSON.parse(data);
-        console.log('geojson', data);
+        // console.log('geojson', data);
         this.addFeatures(data.features, source);
-        console.log('features', source.getFeatures());
+        // console.log('features', source.getFeatures());
         return;
       }
       if (type === 'wkt') {

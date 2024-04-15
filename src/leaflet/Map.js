@@ -420,6 +420,8 @@ const llMap = {
     return marker;
   },
   find(findOptions) {
+    console.log(GV.config.maps);
+
     if (findOptions.bbox) {
       this.zoomToBound(findOptions.bbox, findOptions.epsg, findOptions.maxZoom);
       return;

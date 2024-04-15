@@ -344,7 +344,7 @@ const layerFactory = {
       params.sld = wmsParams.sld;
     }
 
-    let url = wmsParams.url;
+    let url = wmsParams.url + '?';
     if (isCached) {
       if (idMap) {
         url = url.replace(`M${idMap}`, 'gwc/service');

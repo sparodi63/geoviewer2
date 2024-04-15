@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+
+    <title>TEST</title>
+
+    <script>
+      if (window.addEventListener) {
+        window.addEventListener('message', onMessage, false);
+      } else if (window.attachEvent) {
+        window.attachEvent('onmessage', onMessage, false);
+      }
+
+      function onMessage(event) {
+        if (event.data.message === `carto-response`) {
+          console.log(event.data);
+          const el = document.getElementById('display-msg');
+          el.value = `ESITO: ${event.data.esito} - ${event.data.x},${event.data.y}`;
+        }
+      }
+
+      function showCarto() {
+        if (document.getElementById('carto-div')) {
+          document.getElementById('carto-div').remove();
+        }
+        const cartoDiv = document.createElement('div');
+        cartoDiv.id = 'carto-div';
+        const cartoFrame = document.createElement('iframe');
+        const params = document.getElementById('params').value;
+        cartoFrame.setAttribute(
+          'src',
+          `index.html?${params}`
+          // `http://localhost:8081/?${params}`
+        );
+        cartoFrame.id = 'carto-frame';
+        cartoFrame.width = '800';
+        cartoFrame.height = '600';
+        cartoDiv.appendChild(cartoFrame);
+        document.getElementById('carto-container').appendChild(cartoDiv);
+      }
+    </script>
+  </head>
+
+  <body>
+    <button onclick="showCarto()">Visualizza mappa</button>
+    <input
+      type="text"
+      id="params"
+      name="params"
+      value="codice_comune=010025&coordinate=1541032.5,4898378.7"
+      size="50"
+    />
+    <div id="carto-container"></div>
+    <div>
+      <input type="text" id="display-msg" size="50"></input>
+    </div>
+  </body>
+</html>

@@ -473,7 +473,6 @@ var layerFactory = {
     layer.name = name.replace('/webmercator', '');
     return layer;
   },
-
   WMS(layerConfig) {
     let {
       name,

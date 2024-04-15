@@ -7,12 +7,11 @@ const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
 const geoserverUrl =
   env === 'TEST'
-    ? 'http://geoservizi.datasiel.net:8080/'
+    ? '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net'
     : 'https://geoservizi.regione.liguria.it/';
 const idMap = env === 'TEST' ? 2246 : 2278;
 const idLayer = env === 'TEST' ? 'L8245' : 'L8323';
 const idLayerComune = 'L6422';
-
 
 if (codice) {
   fetch(`/geoservices/REST/difesa_suolo/domanda/${codice}`)

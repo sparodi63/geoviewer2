@@ -4,7 +4,9 @@ export default {
   USE_SUBDOMAINS: true,
 
   SESSION: {
-    ID: crypto.randomUUID(),
+    // ID: crypto.randomUUID(),
+    // ID: uuidv4(),
+    ID: null,
     AUTH: {
       RUOLO: null,
       COD_FISCALE: null,

@@ -10,7 +10,7 @@ const env = GV.globals.ENV || 'TEST';
 
 var geoserverUrl =
   env === 'TEST'
-    ? 'http://geoservizi.datasiel.net:8080/'
+    ? '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net'
     : 'https://geoservizi.regione.liguria.it/';
 var idMap = env === 'TEST' ? 2258 : 2259;
 var idLayer = env === 'TEST' ? 'L8272' : 'L8273';

@@ -204,7 +204,9 @@ export default {
         } else if (layer.multiClasse) {
           // se livello multiclasse apro una finestra con la legenda dei livelli multiclasse
           if (layer.flagGeoserver || layer.flagRemote) {
-            url = `${GV.globals.DEFAULT_PROXY}${layer.wmsParams.url}LAYER=${layer.name}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&`;
+            // se url con proxy levo il proxy
+            const wmsUrl = layer.wmsParams.url.replace('/geoservices/REST/proxy/proxy?url=', '');
+            url = `${GV.globals.DEFAULT_PROXY}${wmsUrl}LAYER=${layer.name}&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&`;
             if (layer.wmsParams.styles) {
               url += `STYLES=${layer.wmsParams.styles}&`;
             }

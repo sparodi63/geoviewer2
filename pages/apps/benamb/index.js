@@ -93,6 +93,7 @@ GV.init({
           name: 'gv-info-button',
           active: true,
         },
+        { name: 'gv-measure-button' },
         {
           name: 'gv-coordinate-button',
           options: {

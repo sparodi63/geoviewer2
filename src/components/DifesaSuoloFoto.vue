@@ -19,31 +19,34 @@
         id="gv-difesa-suolo-foto-body"
         class="gv-difesa-suolo-foto-body gv-inverted-color-scheme"
       >
-        <el-form :model="dsfForm" ref="dsf-form">
-          <div class="gv-difesa-suolo-foto-upload">
-            <el-form-item>
-              <el-upload
-                :action="url"
-                :limit="20"
-                drag
-                :file-list="dsfForm.fileList"
-                :auto-upload="false"
-                :on-success="onUploadSuccess"
-                :on-exceed="handleExceed"
-                ref="dsfUpload"
-                multiple
-                list-type="picture"
-              >
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">
-                  Trascina qui i file o seleziona per upload <br />
-                  Limite massimo 20 file
-                </div>
-                <!-- <div class="el-upload__tip" slot="tip">jpg/png file</div> -->
-              </el-upload>
-            </el-form-item>
-          </div>
-        </el-form>
+        <div id="gv-difesa-suolo-foto-div">
+          <div class="gv-difesa-suolo-foto-session">SESSIONE: {{ session }}</div>
+          <el-form :model="dsfForm" ref="dsf-form">
+            <div class="gv-difesa-suolo-foto-upload">
+              <el-form-item>
+                <el-upload
+                  :action="url"
+                  :limit="20"
+                  drag
+                  :file-list="dsfForm.fileList"
+                  :auto-upload="false"
+                  :on-success="onUploadSuccess"
+                  :on-exceed="handleExceed"
+                  ref="dsfUpload"
+                  multiple
+                  list-type="picture"
+                >
+                  <i class="el-icon-upload"></i>
+                  <div class="el-upload__text">
+                    Trascina qui i file o seleziona per upload <br />
+                    Limite massimo 20 file
+                  </div>
+                  <!-- <div class="el-upload__tip" slot="tip">jpg/png file</div> -->
+                </el-upload>
+              </el-form-item>
+            </div>
+          </el-form>
+        </div>
       </div>
       <div class="gv-difesa-suolo-foto-button">
         <el-button type="primary" class="gv-map-catalog-button" size="mini" @click="submitFoto"
@@ -52,12 +55,15 @@
         <el-button type="primary" class="gv-map-catalog-button" size="mini" @click="clear"
           >Pulisci coda</el-button
         >
+        <el-button type="primary" class="gv-map-catalog-button" size="mini" @click="validateAll"
+          >Valida tutto</el-button
+        >
         <el-button
           type="primary"
-          class="gv-map-catalog-button-validate"
+          class="gv-map-catalog-button-log"
           size="mini"
-          @click="validateAll"
-          >Valida tutto</el-button
+          @click="openLogPanel"
+          >Log</el-button
         >
       </div>
     </div>
@@ -240,6 +246,13 @@ export default {
     GV.globals.DIFESA_SUOLO_FOTO = this;
   },
   methods: {
+    openLogPanel() {
+      GV.mount({
+        elId: 'gv-difesa-suolo-foto-log',
+        toggleEl: true,
+        template: `<gv-difesa-suolo-foto-log></gv-difesa-suolo-foto-log>`,
+      });
+    },
     addLayers() {
       GV.config.addLayerToMap(this.layer_no_val, 'DIFESA_SUOLO_FOTO');
       GV.config.addLayerToMap(this.layer_val, 'DIFESA_SUOLO_FOTO');
@@ -297,10 +310,13 @@ export default {
       if (!response.success) {
         const msg = `Errore durante il caricamento del file ${file.name} - ${response.message}`;
         notification(msg, 'error');
-        return;
+        // return;
       } else {
-        this.refreshMap();
       }
+      setTimeout(() => {
+        this.refreshMap();
+        this.clear();
+      }, 1000);
     },
     refreshMap() {
       this.reloadLayer('no_val', this.layer_no_val);
@@ -322,9 +338,9 @@ export default {
     },
     hidePanel: function () {
       if (this.show) {
-        document.getElementById('gv-difesa-suolo-foto-body').style.display = 'none';
+        document.getElementById('gv-difesa-suolo-foto-wrapper').style.display = 'none';
       } else {
-        document.getElementById('gv-difesa-suolo-foto-body').style.display = 'block';
+        document.getElementById('gv-difesa-suolo-foto-wrapper').style.display = 'block';
       }
       this.show = !this.show;
     },
@@ -342,8 +358,8 @@ export default {
   font-size: 12px;
 }
 
-.gv-map-catalog-button-validate {
-  margin-left: 95px !important;
+.gv-map-catalog-button-log {
+  margin-left: 45px !important;
   font-size: 12px;
 }
 
@@ -376,6 +392,12 @@ export default {
 
 .gv-difesa-suolo-foto-button {
   padding-left: 15px;
+}
+
+.gv-difesa-suolo-foto-session {
+  padding-left: 5px;
+  padding-bottom: 10px;
+  font-weight: bold;
 }
 
 .gv-difesa-suolo-foto-body {

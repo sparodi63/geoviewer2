@@ -8,7 +8,7 @@ const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 console.log('env', env);
 const geoserverUrl =
   env === 'TEST'
-    ? 'http://geoservizi.datasiel.net:8080/'
+    ? '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net'
     : 'https://geoservizi.regione.liguria.it/';
 const idMap = env === 'TEST' ? 2422 : 2426;
 const idLayer = env === 'TEST' ? 'L9138' : 'L9156';

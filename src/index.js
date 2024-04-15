@@ -49,6 +49,7 @@ import App from './components/App.vue';
 //
 import tools from './tools';
 import { get } from 'jquery';
+import { v4 as uuidv4 } from 'uuid';
 
 // -- DEFINIZIONE GV
 window.GV = {
@@ -91,6 +92,8 @@ window.GV = {
 
     this.messageEventListener();
 
+    GV.globals.SESSION.ID = uuidv4();
+
     if (options.application.auth) {
       const authOptions = options.application.auth.options;
       switch (options.application.auth.type) {
@@ -104,7 +107,7 @@ window.GV = {
             GV.globals.SESSION.AUTH.NOME = auth.data.nome;
             GV.globals.SESSION.AUTH.COGNOME = auth.data.cognome;
             GV.globals.SESSION.AUTH.RUOLI_UTENTE = auth.data.ruoli_utente;
-            console.log(GV.globals.SESSION);
+            // console.log(GV.globals.SESSION);
             this.initConfig(options);
           } else {
             notification('ACCESSO ALLA APPLICAZIONE NON AUTORIZZATO');

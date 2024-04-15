@@ -64,7 +64,7 @@ export default {
         ? 'gv-panel-collapse gv-color-scheme el-icon-arrow-up'
         : 'gv-panel-collapse gv-color-scheme el-icon-arrow-down';
     },
-    hidePanel: function() {
+    hidePanel: function () {
       if (this.show) {
         document.getElementById('ag-wrapper').style.display = 'none';
       } else {
@@ -73,7 +73,7 @@ export default {
       this.show = !this.show;
     },
     onChange(value) {
-      const layerConfig = this.livelli.filter(livello => {
+      const layerConfig = this.livelli.filter((livello) => {
         return livello.id == value;
       });
       this.layerConfig = layerConfig[0];
@@ -114,11 +114,11 @@ export default {
     },
     subscribeMapEvent(event) {
       // GV.eventBus.$on('map-click', event => {
-      GV.app.map.on('click', event => {
+      GV.app.map.on('click', (event) => {
         const wmsUrl = this.getWmsUrl(event);
-        console.log(wmsUrl)
+        console.log(wmsUrl);
         if (this.layerConfig && this.layerConfig.visible) {
-          getFeatureInfo(wmsUrl).then(features => {
+          getFeatureInfo(wmsUrl).then((features) => {
             this.showInfo(features);
           });
         }
@@ -159,14 +159,11 @@ export default {
       return InfoWmsManager.getGetFeatureInfoUrl(this.layerConfig, event);
     },
   },
-  mounted: function() {
-    getConfig().then(data => {
+  mounted: function () {
+    getConfig().then((data) => {
       this.livelli = data.layers.sort((a, b) => a.title.localeCompare(b.title));
-      this.livelli.forEach(livello => {
-        livello.title = livello.title
-          .replace('2', '₂')
-          .replace('3', '₃')
-          .replace('5', '₅');
+      this.livelli.forEach((livello) => {
+        livello.title = livello.title.replace('2', '₂').replace('3', '₃').replace('5', '₅');
       });
       this.downloadConfig = data.downloadConfig;
       this.metaData = data.metaData;
