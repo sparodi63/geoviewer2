@@ -1,29 +1,41 @@
 /*
 ESEMPIO QUERY_STRING
-?ID_MAP=1709&ID_LAYER=4618&FIELD=COD_TPRAT,NUM_PRAT,PROG_PRAT,PROG_LOC&CODICE=BAN,24987,0,1&FIND=SI&ID_SESSION=12345
+?FIELD=COD_TPRAT,NUM_PRAT,PROG_PRAT,PROG_LOC&CODICE=BAN,24987,0,1&FIND=SI&ID_SESSION=12345
 
-http://localhost:8081?ID_MAP=1709&ID_LAYER=4618&FIELD=COD_TPRAT,NUM_PRAT,PROG_PRAT,PROG_LOC&CODICE=BAN,24987,0,1&FIND=SI&ID_SESSION=12345
+http://localhost:8081?FIELD=COD_TPRAT,NUM_PRAT,PROG_PRAT,PROG_LOC&CODICE=BAN,24987,0,1&FIND=SI&ID_SESSION=12345
 
 */
 
 GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 // GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/geoportale/map/'
 
-var idMap = GV.utils.getUrlParam('ID_MAP');
-var idLayer = 'L' + GV.utils.getUrlParam('ID_LAYER');
-var fields = GV.utils.getUrlParam('FIELD');
-var values = GV.utils.getUrlParam('CODICE');
-var findFlag = GV.utils.getUrlParam('FIND');
-var idSession = GV.utils.getUrlParam('ID_SESSION');
-var cqlFilter = buildCQL(fields, values);
+const idMap = '1709';
+const fields = GV.utils.getUrlParam('FIELD');
+const values = GV.utils.getUrlParam('CODICE');
+const findFlag = GV.utils.getUrlParam('FIND');
+const idSession = GV.utils.getUrlParam('ID_SESSION');
+const cqlFilter = buildCQL(fields, values);
 
-var findOptions =
-  findFlag === 'SI'
-    ? {
-        layers: [idLayer],
-        cqlFilter: cqlFilter,
-      }
-    : null;
+var findOptions = null;
+if (findFlag === 'SI') {
+  var tipoPratica = values.split(',')[0];
+  console.log('tipoPratica', tipoPratica);
+
+  const idLayer = tipoPratica === 'BAN' ? 'L10041' : 'L10026';
+  if (tipoPratica === 'BAN')
+    findOptions = {
+      layers: [idLayer],
+      cqlFilter: cqlFilter,
+    };
+}
+
+// var findOptions =
+//   findFlag === 'SI'
+//     ? {
+//         layers: [idLayer],
+//         cqlFilter: cqlFilter,
+//       }
+//     : null;
 
 function buildCQL(fields, values) {
   var fieldsArray = fields.split(',');

@@ -27,7 +27,7 @@ const findOptions = set_find_options();
 const auth = {
   type: 'NAM',
   options: {
-    ruolo: 'VIA_VIS,VIA_GEST',
+    ruolo: 'ACQ_GEST',
   },
 };
 

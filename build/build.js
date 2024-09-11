@@ -33,8 +33,10 @@ webpack(webpackConfig, function(err, stats) {
     }) + '\n'
   );
 
-  const geoviewerPath = 'D:\\Tomcat\\webapps\\geoservices\\apps\\viewer\\dist\\static';
-  console.log('\n Copio la distribuzione su geoservices\\apps\\viewer: ' + geoviewerPath);
+  const geoviewerPath = 'D:\\Progetti\\geoapps\\viewer\\dist\\static';
+  console.log(
+    '\n Copio la distribuzione su D:\\Progetti\\geoapps\\viewer\\dist\\static: ' + geoviewerPath
+  );
   rm('-rf', geoviewerPath);
   cp('-R', assetsPath, geoviewerPath);
 });

@@ -18,7 +18,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/geoservices/**': 'http://localhost:8080/',
+      // '/geoservices/**': 'http://localhost:8080/',
+      '/geoservices/**': 'http://localhost/',
       '/geoviewer/**': 'http://localhost:8080/',
       '/geoviewer2/data/**': 'http://localhost:8080/',
       '/geoviewer2/static/**': 'http://localhost:8080/',
@@ -28,10 +29,14 @@ module.exports = {
   },
   deploy: {
     baseDeployDir: {
-      LOCAL: 'D:/Tomcat/webapps/geoservices/apps/viewer/',
-      TEST: 'K:/webapps/geoservices/apps/viewer/',
-      STAGING: 'G:/webapps/geoservices/apps/viewer_staging/',
-      PROD: 'G:/webapps/geoservices/apps/viewer/',
+      // LOCAL: 'D:/Tomcat/webapps/geoservices-fe/apps/viewer/',
+      // TEST: 'K:/webapps/geoservices/apps/viewer/',
+      // STAGING: 'G:/webapps/geoservices/apps/viewer_staging/',
+      // PROD: 'G:/webapps/geoservices/apps/viewer/',
+      LOCAL: 'D:/Progetti/geoapps/viewer/',
+      TEST: 'N:/geoapps/viewer/',
+      STAGING: 'J:/geoapps/viewer_staging/',
+      PROD: 'J:/geoapps/viewer/',
       'STAGING-PROT': 'H:/webapps/geoservices/apps/viewer_staging/',
       'PROD-PROT': 'H:/webapps/geoservices/apps/viewer/',
     },

@@ -61,7 +61,8 @@ const olMap = {
     const ol3d = new olcs.OLCesium({ map: this.map });
     this.scene = ol3d.getCesiumScene();
     var terrainProvider = new Cesium.GeoserverTerrainProvider({
-      url: 'https://geoservizi.regione.liguria.it/geoserver/DTM/ows',
+      // url: 'https://geoservizi.regione.liguria.it/geoserver/DTM/ows',
+      url: GV.globals.RL_TERRAIN_PROVIDER_URL,
       layerName: 'DTM_dbtopo_5m_wgs84',
     });
     this.scene.terrainProvider = terrainProvider;

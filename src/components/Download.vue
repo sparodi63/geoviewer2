@@ -263,7 +263,7 @@ export default {
   mixins: [RectDraw],
   mounted() {
     // Gestione sospensione per menutenzione
-    if (GV.globals.SYS_MANUTENZIONE_DOWNLOAD) {
+    if (GV.globals.SYS_MANUTENZIONE) {
       notification('SISTEMA IN MANUTENZIONE: SERVIZIO TEMPORANEAMENTE SOSPESO');
       this.$el.hidden = true;
       return;
@@ -915,6 +915,10 @@ export default {
 </style>
 
 <style>
+.el-select {
+  width: 370px !important;
+}
+
 .el-tree-node__label {
   font-size: 12px !important;
 }

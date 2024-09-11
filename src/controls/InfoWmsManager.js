@@ -20,6 +20,8 @@ import * as LayerFactory from '../openlayers/LayerFactory';
 var _requestCount = 0;
 var _numRequests = 0;
 var _features = [];
+// var _layers_req = [];
+// var _layers_res = [];
 
 function _request(event) {
   GV.log('start info request: ' + new Date());
@@ -51,7 +53,8 @@ function _request(event) {
     // if (!layerConfig.wmsParams.infoFormat) layerConfig.wmsParams.infoFormat = infoFormat;
     const wmsUrl = getGetFeatureInfoUrl(layerConfig, event);
     _numRequests++;
-
+    // _layers_req.push(layerConfig.name);
+    // console.log('queryLayer', _numRequests);
     switch (infoFormat) {
       case 'application/json':
         getFeatureInfo(wmsUrl)
@@ -169,6 +172,10 @@ function _handleResponse(features, layerName) {
   if (!features) return;
   _requestCount++;
 
+  // _layers_res.push(layerName);
+  // console.log('_handleResponse', _layers_req, _layers_res);
+  // console.log(_layers_req.filter(x => !_layers_res.includes(x)));
+
   features.forEach(function(feature) {
     if (feature.text) {
       feature.layer = GV.app.map.getLayerByName(feature.layerName);
@@ -185,6 +192,7 @@ function _handleResponse(features, layerName) {
         : setFeatureLabel(layerName, feature.properties);
     }
   });
+
   Array.prototype.push.apply(_features, features);
   if (_requestCount === _numRequests) {
     if (_features.length === 0) {
@@ -215,6 +223,7 @@ function _handleResponse(features, layerName) {
   }
 
   function setFeatureProperties(layerName, properties) {
+    // console.log('setFeatureProperties', layerName, GV.app.map.getLayerByName(layerName));
     const layerConfig = GV.app.map.getLayerByName(layerName).config;
     const newProperties = setProperties(properties, layerConfig.cachePostGIS);
     return newProperties;
@@ -477,6 +486,7 @@ function showRawGml(data) {
 }
 
 function getType(feature) {
+  console.log(feature);
   const infoUrl = feature.infoOptions.infoUrl;
   if (feature.text) return 'text';
   if (feature.html) return 'html';

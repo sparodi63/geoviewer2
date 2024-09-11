@@ -6,11 +6,9 @@ GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 // http://localhost:8081/?id_map=2&id_layer=499&env=test
 
-// const geoserverUrl =
-//   env === 'test'
-//     ? '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net'
-//     : 'https://geoservizi.regione.liguria.it/';
-const geoserverUrl = '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net';
+// const geoserverUrl = '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net:8080/';
+const geoserverUrl =
+  '/geoservices/REST/proxy/proxy?url=http://geoservizi-gest-test.regione.liguria.it:8081/';
 
 if (idMap) {
   // loadConfig();
@@ -36,7 +34,7 @@ if (idMap) {
       alert(error);
     });
 } else {
-  console.error('PARAMETRI ASSENTE');
+  console.error('PARAMETRO id_map ASSENTE');
 }
 
 function loadConfig(idLayer) {
@@ -125,9 +123,6 @@ function loadConfig(idLayer) {
       mapOptions: {
         type: 'openlayers',
         click: 'info',
-      },
-      callback: function() {
-        console.log('CALLBACK!!!');
       },
       layout: {
         legend: {

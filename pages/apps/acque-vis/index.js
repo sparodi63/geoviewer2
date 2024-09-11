@@ -29,7 +29,7 @@ const findOptions = {
 const auth = {
   type: 'NAM',
   options: {
-    ruolo: 'VIA_VIS,VIA_GEST',
+    ruolo: 'ACQ_VISP,ACQ_SYS,ACQ_ PFR',
   },
 };
 

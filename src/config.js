@@ -325,7 +325,7 @@ export default {
         throw new Error('Errore Caricamento Mappa: configurazione non trovata');
       }
 
-      globals.SYS_MANUTENZIONE_DOWNLOAD =
+      globals.SYS_MANUTENZIONE =
         response.data.sistema && response.data.sistema.manutenzioneDownload;
 
       const mapConfig = response.data.data;

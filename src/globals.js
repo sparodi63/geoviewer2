@@ -38,6 +38,8 @@ export default {
   RL_TRANSFORM_POLY_SERVICE: '/geoservices/REST/coordinate/transform_poly/',
   RL_ELEVATION: '/geoservices/REST/coordinate/elevation/',
   RL_AG_APP_LISTA_MAPPE: '/geoservices/REST/config/ag_app_lista_mappe/',
+  // RL_TERRAIN_PROVIDER_URL: 'https://geoservizi.regione.liguria.it/geoserver/DTM/ows',
+  RL_TERRAIN_PROVIDER_URL: '/geoservices/REST/proxy/geoserverTerrainProvider',
 
   RL_CATALOG: 'pub',
 

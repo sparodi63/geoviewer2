@@ -803,6 +803,10 @@ var layerFactory = {
       getGeoJSON(url)
         .then(response => {
           let geoJson;
+          if (!response.data || response.data === 'null') {
+            console.error('NESSUN DATO', layer);
+            return;
+          }
           if (subType === 'KML') {
             const xml = parseXML(response.data);
             geoJson = toGeoJSON.kml(xml);
@@ -826,7 +830,9 @@ var layerFactory = {
             });
           }
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+          console.error(error);
+        });
     }
 
     if (data) {

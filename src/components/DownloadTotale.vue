@@ -29,7 +29,7 @@
             <span id="gv-download-totale-label">Email</span>
             <el-input
               id="gv-download-totale-email"
-              style="width: 250px;"
+              style="width: 250px"
               size="mini"
               placeholder="Email"
               type="email"
@@ -69,7 +69,7 @@ export default {
   name: 'gv-download-totale-panel',
   props: ['idMap'],
   data() {
-    const maps = GV.config.maps.filter(map => {
+    const maps = GV.config.maps.filter((map) => {
       return map.downloadSuInteroTerritorio == true;
     });
     return {
@@ -83,7 +83,7 @@ export default {
   mounted() {
     GV.log('gv-download-totale-panel: mounted');
     // Gestione sospensione per menutenzione
-    if (GV.globals.SYS_MANUTENZIONE_DOWNLOAD) {
+    if (GV.globals.SYS_MANUTENZIONE) {
       notification('SISTEMA IN MANUTENZIONE: SERVIZIO TEMPORANEAMENTE SOSPESO');
       this.$el.hidden = true;
       return;
@@ -106,7 +106,7 @@ export default {
   methods: {
     selectAll() {
       if (this.maps) {
-        this.maps.forEach(map => {
+        this.maps.forEach((map) => {
           this.$refs.mapsTable.toggleRowSelection(map);
         });
       } else {
@@ -122,14 +122,15 @@ export default {
     },
     getMapsList() {
       const mapList = this.multipleSelection
-        .map(map => {
+        .map((map) => {
           return map.id;
         })
         .join(',');
       return mapList;
     },
     validateEmail(email) {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      var re =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
     submit() {
@@ -164,14 +165,14 @@ export default {
       };
       // console.log(data)
       // return
-      insertRichiestaDownload(data).then(resp => {
+      insertRichiestaDownload(data).then((resp) => {
         if (resp.success) {
           notification(
             `<p>Inserita richiesta numero: ${resp.data.idRichiesta}.</p> <p>Al termine della elaborazione l'esito verrà comunicato via mail</p>`,
             'info'
           );
           const me = this;
-          setTimeout(function() {
+          setTimeout(function () {
             me.cleanUp();
           }, 5000);
         } else {
