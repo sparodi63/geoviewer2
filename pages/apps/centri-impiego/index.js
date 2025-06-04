@@ -26,9 +26,9 @@ var svg_mail = `<svg class="svg-icon v-align" viewBox="0 0 44.76 46.74">
   </g>
 </svg>`;
 
-var baseLegendUrl = '/geoservices/apps/viewer/static/img/centri-impiego/legend/';
+var baseLegendUrl = '../../../static/img/centri-impiego/legend/';
 
-var config = [ 
+var config = [
   { id: 'cpi', legendLabel: "CPI - Centro per l'impiego" },
   { id: 'com', legendLabel: 'COM - Comune' },
   { id: 'ef', legendLabel: 'EF - Ente di formazione' },
@@ -61,7 +61,7 @@ function getTemplate(id) {
   return tpl;
 }
 
-function getLayer(id, legendLabel) { 
+function getLayer(id, legendLabel) {
   var template = getTemplate(id);
   return {
     type: 'JSON',
@@ -111,12 +111,8 @@ var map = {
 GV.init({
   debug: true,
   maps: [map],
-  application: {
-    mapOptions: {
-      zoomSnap: 0.1,
-      initialExtent: '830036,5402959,1123018,5597635',
-      restrictedExtent: '830036,5402959,1123018,5597635',
-    },
+  application: { 
+    name: 'centri-impiego-gv2',
     layout: {
       title: ' ',
       legend: {

@@ -1,5 +1,4 @@
 GV.globals.RL_CATALOG = 'int';
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 var auth = {
   type: 'NAM',
@@ -71,9 +70,7 @@ GV.init({
     {
       type: 'OSM',
     },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
+    { type: 'RL_ORTOFOTO_2022' },
     {
       type: 'RL_CARTE_BASE',
     },

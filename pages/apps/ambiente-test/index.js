@@ -3,7 +3,7 @@ var canale = GV.utils.getUrlParam('canale'); // CODICE CANALE ALFA_GIS (ALTERNAT
 var id = GV.utils.getUrlParam('id');
 var repertorio = GV.utils.getUrlParam('cod_repertorio') || '03';
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/'
+
 
 GV.init({
   debug: true,

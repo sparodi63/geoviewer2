@@ -209,6 +209,23 @@ const layerFactory = {
       attributions: 'Regione Liguria',
     });
   },
+  RL_ORTOFOTO_2022() {
+    const idMap = 2555;
+    const idLayer = 'L10401';
+    return this.WMS({
+      idMap: idMap,
+      visible: false,
+      name: 'RL_ORTOFOTO_2022',
+      cacheMinZoomLevel: 8,
+      wmsParams: {
+        name: idLayer,
+        format: 'image/png',
+        url: `https://geoservizi.regione.liguria.it/geoserver/M${idMap}/wms?`,
+      },
+      zIndex: 0,
+      attributions: 'Ortofoto 20cm/ ©2019 CONSORZIO TeA - TUTTI I DIRITTI RISERVATI',
+    });
+  },
   RL_ORTOFOTO_2019() {
     const idMap = 2248;
     const idLayer = 'L8256';
@@ -346,12 +363,13 @@ const layerFactory = {
 
     let url = wmsParams.url + '?';
     if (isCached) {
-      if (idMap) {
-        url = url.replace(`M${idMap}`, 'gwc/service');
-        params.layers = `M${idMap}:${wmsParams.name}`;
-      } else {
-        params.layers = wmsParams.name;
-      }
+      // if (idMap) {
+      //   url = url.replace(`M${idMap}`, 'gwc/service');
+      //   params.layers = `M${idMap}:${wmsParams.name}`;
+      // } else { 
+      //   params.layers = wmsParams.name;
+      // }
+      params.layers = wmsParams.name;
       let urls =
         globals.USE_SUBDOMAINS && url.indexOf('geoservizi.regione.liguria.it') > 0
           ? [url.replace('geoservizi', 'geoservizi1'), url.replace('geoservizi', 'geoservizi2')]

@@ -285,6 +285,7 @@ const maps = [
 GV.init({
   debug: true,
   application: {
+    name: 'scuola-digitale-gv2',
     mapOptions: {
       type: 'leaflet',
       maxZoom: 19,

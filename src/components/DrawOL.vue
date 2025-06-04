@@ -586,6 +586,8 @@ export default {
     });
     GV.app.map.addLayer(this.layer);
 
+    console.log('DrawOL: options', this.options)
+
     if (this.options.initWfsRequests) this.addLayerFeatures(this.options.initWfsRequests, 'wfs');
     if (this.options.geoJson) this.addLayerFeatures(this.options.geoJson, 'geojson');
     if (this.options.wkt) this.addLayerFeatures(this.options.wkt, 'wkt');

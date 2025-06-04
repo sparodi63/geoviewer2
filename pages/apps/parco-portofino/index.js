@@ -5,7 +5,6 @@ const ne = { lat: 44.370935, lng: 9.281964 };
 const extent = '1012859,5509645,1033263,5523025';
 const idCanale = '165';
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 let tools = [
   { name: 'gv-geocoder' },
@@ -39,7 +38,7 @@ GV.init({
   debug: true,
   idMap: idMap,
   application: {
-    name: 'gv2-parco-portofino',
+    name: 'parco-portofino-gv2',
     mapOptions: {
       zoomSnap: 0.5,
       initialExtent: extent,
@@ -86,6 +85,7 @@ GV.init({
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
     { type: 'OSM' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_ORTOFOTO_2019' },
     { type: 'RL_ORTOFOTO_2016' },
     { type: 'RL_ORTOFOTO_2013' },

@@ -1,7 +1,6 @@
 var id = GV.utils.getUrlParam('id')
 
-//GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/'
-// GV.globals.RL_DYN_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/map/'
+
 // GV.globals.RL_CREATE_SLD_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/create_sld/'
 // GV.globals.RL_XSL_INFO_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/xsl_info_service?'
 // GV.globals.RL_CATALOG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/geoportale/catalogo/'

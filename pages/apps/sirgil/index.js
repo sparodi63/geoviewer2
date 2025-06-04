@@ -1,15 +1,19 @@
-// http://srvcarto.regione.liguria.it/geoservices/apps/viewer/pages/apps/sirgil/?chiave=0000279649
+var id = '1276'
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+var idLayer = 'L3373'
+var value = GV.utils.getUrlParam('chiave')
 
-var value = GV.utils.getUrlParam('chiave');
-
-var id = value ? '1276' : '2165';
+var findOptions = value
+  ? {
+      layers: [idLayer],
+      cqlFilter: "COD_UNIVOCO='" + value + "'",
+    }
+  : null
 
 GV.init({
   debug: true,
   idMap: id,
-  // findOptions: findOptions,
+  findOptions: findOptions,
   application: {
     name: 'sirgil-gv2',
     mapOptions: {
@@ -50,29 +54,13 @@ GV.init({
         { name: 'gv-scalebar', position: 'bottomleft' },
       ],
     },
-    callback: function(app) {
-      if (value) {
-        const url = `/geoservices/REST/sirgil/get_id/${value}`;
-        GV.utils.getGeneric(url).then(function(resp) {
-          if (resp.success) {
-            var findOptions = {
-              map: id,
-              cqlFilter: `ID IN (${resp.data})`,
-            };
-            GV.app.map.find(findOptions);
-          } else {
-            GV.utils.notification('Nessun elemento trovato');
-          }
-        });
-      }
-    },
   },
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
     { type: 'OSM' },
-    { type: 'RL_ORTOFOTO_2019' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK' },
   ],
   maps: [],
-});
+})

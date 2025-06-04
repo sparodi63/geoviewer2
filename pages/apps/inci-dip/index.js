@@ -1,8 +1,7 @@
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.ENV || 'TEST';
 
-const idMap = 2556;
+const idMap = 2618;
 
 const auth = {
   type: 'NAM',
@@ -52,7 +51,7 @@ let conf = {
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
     { type: 'OSM' },
-    { type: 'RL_ORTOFOTO_2019' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK' },
   ],

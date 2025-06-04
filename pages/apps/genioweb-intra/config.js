@@ -70,4 +70,3 @@ GV.globals.GW_CONFIG = {
   }
 };
 
-GV.globals.RL_MAP_CONFIG_SERVICE = "/geoservices/REST/config/map/";

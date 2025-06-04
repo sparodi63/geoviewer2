@@ -19,16 +19,28 @@ GV.init({
       },
       tools: [
         {
-          name: 'gv-geocoder',
           position: 'topleft',
+          items: [
+            {
+              name: 'geocoder',
+            },
+          ],
         },
         {
-          name: 'gv-geocoder',
-          position: 'topleft',
+          position: 'bottomright',
+          items: [
+            {
+              name: 'zoom',
+            },
+          ],
         },
         {
-          name: 'gv-scalebar',
           position: 'bottomleft',
+          items: [
+            {
+              name: 'scalebar',
+            },
+          ],
         },
       ],
     },

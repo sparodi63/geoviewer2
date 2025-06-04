@@ -47,7 +47,7 @@ export default {
         GV.config.addRlMap(`${idMap}`, false, false);
       });
     },
-    isDownloadable(map) {
+    isDownloadable(map) { 
       if (GV.globals.RL_CATALOG === 'pub' && map.flag_download) return true;
       if (GV.globals.RL_CATALOG === 'int' && (map.flag_download_extranet || map.flag_download))
         return true;
@@ -63,7 +63,8 @@ export default {
           console.error('Scheda non trovata');
           return;
         }
-        const downloadable = this.isDownloadable(metaData);
+        // const downloadable = this.isDownloadable(metaData);
+        const downloadable = false;
         mountComponent({
           elId: 'gv-map-info-panel',
           clear: true,

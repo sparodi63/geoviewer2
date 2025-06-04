@@ -11,10 +11,10 @@ function callback() {
           name: 'hilite',
           type: 'JSON',
           style: {
-            color: '#ffcc00',
+            color: "#ff3300",
             radius: 4,
-            weight: 14,
-            opacity: 0.5,
+            weight: 10,
+            opacity: 0.7,
             fillOpacity: 0.5,
           },
           visible: true,

@@ -54,7 +54,19 @@ import { v4 as uuidv4 } from 'uuid';
 // -- DEFINIZIONE GV
 window.GV = {
   async init(options) {
-    // console.log('INIT', options);
+    console.log('INIT', options);
+
+    let response = await fetch('/geoservices/apps/viewer/pages/env.json');
+    GV.globals.env = await response.json();
+
+    // let session = await fetch('/geoservices/REST/utils/get_session');
+    // GV.globals.session = await session.json();
+
+    if (GV.globals.env.SYS_MANUTENZIONE) {
+      window.location.replace("https://srvcarto.regione.liguria.it/geoapps/viewer/pages/sospensione.html");
+      // notification('SISTEMA IN MANUTENZIONE: SERVIZIO TEMPORANEAMENTE SOSPESO');
+      // return;
+    }
 
     // CARICAMENTO LIBRERIE
     if (options.application.mapOptions && options.application.mapOptions.type === 'openlayers') {

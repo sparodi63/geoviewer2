@@ -18,7 +18,7 @@ GV.init({
   debug: true,
   idMap: null, // 2213
   application: {
-    name: 'rete-qualita-aria-gv2',
+    name: 'libioss-specie-gv2',
     mapOptions: {
       click: 'info',
     },

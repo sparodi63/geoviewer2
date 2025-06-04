@@ -1,30 +1,28 @@
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
-const locate = GV.utils.getUrlParam('LOCATE');
-const codice = GV.utils.getUrlParam('CODICE');
-const codice_comune = GV.utils.getUrlParam('CODICE_COMUNE');
-const id_session = GV.utils.getUrlParam('ID_SESSION');
-const modo_sito = GV.utils.getUrlParam('MODOSITO');
-const flag_validato = GV.utils.getUrlParam('FLAG_VALIDATO');
+const locate = GV.utils.getUrlParam("LOCATE");
+const codice = GV.utils.getUrlParam("CODICE");
+const codice_comune = GV.utils.getUrlParam("CODICE_COMUNE");
+const id_session = GV.utils.getUrlParam("ID_SESSION");
+const modo_sito = GV.utils.getUrlParam("MODOSITO");
+const flag_validato = GV.utils.getUrlParam("FLAG_VALIDATO");
 
-const env = GV.globals.GENIO_WEB_ENV || 'TEST';
+const env = GV.globals.GENIO_WEB_ENV || "TEST";
 // const env = 'PROD';
-console.log('ENV', env);
 
 const geoserverUrl =
-  env === 'TEST'
-    ? '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net:8080/'
-    : 'https://geoservizi.regione.liguria.it/';
-const idMap = env === 'TEST' ? 2206 : 2192;
-const layer_p = env === 'TEST' ? 'L8027' : 'L7949';
-const layer_l = env === 'TEST' ? 'L8028' : 'L7950';
-const idLayerComune = 'L6422';
+  env === "TEST"
+    ? "http://geoservizi.datasiel.net:8080/"
+    : "https://geoservizi.regione.liguria.it/";
+const idMap = env === "TEST" ? 2206 : 2192;
+const layer_p = env === "TEST" ? "L8027" : "L7949";
+const layer_l = env === "TEST" ? "L8028" : "L7950";
+const idLayerComune = "L6422";
 
 const findOptions = codice
   ? {
       map: `${idMap}`,
       layers: null,
-      fields: 'CODICE_SITO',
+      fields: "CODICE_SITO",
       values: codice,
       cqlFilter: null,
     }
@@ -32,7 +30,7 @@ const findOptions = codice
   ? {
       map: null,
       layers: [idLayerComune],
-      fields: 'CODICE_COMUNE',
+      fields: "CODICE_COMUNE",
       values: codice_comune,
       cqlFilter: null,
     }
@@ -42,28 +40,28 @@ const findOptions = codice
 
 let tools = [
   {
-    name: 'gv-geocoder',
+    name: "gv-geocoder",
   },
   {
-    name: 'gv-info-button',
+    name: "gv-info-button",
     active: true,
   },
   {
-    name: 'gv-measure-button',
+    name: "gv-measure-button",
   },
   {
-    name: 'gv-layer-search-button',
+    name: "gv-layer-search-button",
   },
   {
-    name: 'gv-print-button',
+    name: "gv-print-button",
   },
   {
-    name: 'gv-scalebar',
-    position: 'bottomleft',
+    name: "gv-scalebar",
+    position: "bottomleft",
   },
 ];
 
-if ((locate && locate === 'true' && flag_validato === 'NO') || env === 'TEST') {
+if (locate && locate === "true" && flag_validato === "NO") {
   tools.push(getDrawTool(codice));
 }
 
@@ -78,7 +76,7 @@ function getDrawTool(codice) {
   ];
 
   let draw = null;
-  if (modo_sito == 'P') {
+  if (modo_sito == "P") {
     draw = {
       point: true,
     };
@@ -89,7 +87,7 @@ function getDrawTool(codice) {
   }
 
   return {
-    name: 'gv-draw-button',
+    name: "gv-draw-button",
     active: false,
     options: {
       idLayer: [layer_p, layer_l],
@@ -105,14 +103,14 @@ function getDrawTool(codice) {
         cancel: true,
         refresh: false,
       },
-      color: '#FF9900',
+      color: "#FF9900",
       multiGeom: false,
       coord3d: true,
-      epsg: '3003',
-      epsgOut: '32633',
+      epsg: "3003",
+      epsgOut: "32633",
       initWfsRequests: initWfsRequest,
       cancel: () => {
-        insert(null, null, 'NO');
+        insert(null, null, "NO");
       },
       submit: submit,
     },
@@ -129,34 +127,47 @@ function submit(data, deleted, loading, refresh) {
       : null;
   let coords;
   if (geometry) {
-    if (geometry.type === 'LineString') {
-      coords = [
-        geometry.coordinates[0][0].toFixed(0),
-        geometry.coordinates[0][1].toFixed(0),
-        geometry.coordinates[0][2].toFixed(0),
-        geometry.coordinates[geometry.coordinates.length - 1][0].toFixed(0),
-        geometry.coordinates[geometry.coordinates.length - 1][1].toFixed(0),
-        geometry.coordinates[geometry.coordinates.length - 1][2].toFixed(0),
-      ];
-    } else {
-      coords = [
-        geometry.coordinates[0].toFixed(0),
-        geometry.coordinates[1].toFixed(0),
-        geometry.coordinates[2].toFixed(0),
-        null,
-        null,
-        null,
-      ];
-    }
+    if (geometry.type === "LineString") {
+      const x1 = geometry.coordinates[0][0]
+        ? geometry.coordinates[0][0].toFixed(0)
+        : 0;
+      const y1 = geometry.coordinates[0][1]
+        ? geometry.coordinates[0][1].toFixed(0)
+        : 0;
+      const z1 = geometry.coordinates[0][2]
+        ? geometry.coordinates[0][2].toFixed(0)
+        : 0;
+      const x2 = geometry.coordinates[geometry.coordinates.length - 1][0]
+        ? geometry.coordinates[geometry.coordinates.length - 1][0].toFixed(0)
+        : 0;
+      const y2 = geometry.coordinates[geometry.coordinates.length - 1][1]
+        ? geometry.coordinates[geometry.coordinates.length - 1][1].toFixed(0)
+        : 0;
+      const z2 = geometry.coordinates[geometry.coordinates.length - 1][2]
+        ? geometry.coordinates[geometry.coordinates.length - 1][2].toFixed(0)
+        : 0;
 
-    // insert(coords, 32633, 'SI');
+      coords = [x1, y1, z1, x2, y2, z2];
+    } else {
+      const x = geometry.coordinates[0]
+        ? geometry.coordinates[0].toFixed(0)
+        : 0;
+      const y = geometry.coordinates[1]
+        ? geometry.coordinates[1].toFixed(0)
+        : 0;
+      const z = geometry.coordinates[2]
+        ? geometry.coordinates[2].toFixed(0)
+        : 0;
+      coords = [x, y, z, null, null, null];
+    }
+    insert(coords, 32633, "SI");
   }
   if (refresh) refresh();
   if (loading) loading.close();
 }
 
 function insert(coords, epsg, esito) {
-  if (esito === 'NO') {
+  if (esito === "NO") {
     GV.utils.insertAgCoordinate(id_session, 0, 0, esito, 0, 0, 0, 0, null);
   } else {
     let x = coords[0],
@@ -169,7 +180,7 @@ function insert(coords, epsg, esito) {
   }
 }
 
-window.addEventListener('beforeunload', function() {
+window.addEventListener("beforeunload", function () {
   beforeUnload();
 });
 
@@ -180,20 +191,20 @@ function beforeUnload() {
     return;
   }
   // insert(0, 0, 'NO');
-  insert(null, null, 'NO');
+  insert(null, null, "NO");
 }
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/'
+
 GV.init({
   debug: true,
   idMap: idMap,
   findOptions: findOptions,
   // geoserverUrl: 'https://geoservizi.regione.liguria.it:8081/',
   application: {
-    name: 'ambiente-gv2',
+    name: "ambiente-gv2",
     mapOptions: {
-      type: 'openlayers',
-      click: 'info',
+      type: "openlayers",
+      click: "info",
     },
     layout: {
       legend: {
@@ -207,18 +218,18 @@ GV.init({
           addMapConfig: {
             panels: {
               repertorio: {
-                type: 'tree',
-                name: 'repertorio',
-                label: 'Repertorio Cartografico',
+                type: "tree",
+                name: "repertorio",
+                label: "Repertorio Cartografico",
               },
               canali: {
-                type: 'tree',
-                name: 'canali',
-                label: 'Canali Tematici',
+                type: "tree",
+                name: "canali",
+                label: "Canali Tematici",
                 options: {
                   canale: null,
-                  applicazione: 'ECO3',
-                  tematici: 'SI',
+                  applicazione: "ECO3",
+                  tematici: "SI",
                   pub: true,
                 },
                 tree: null,
@@ -232,20 +243,20 @@ GV.init({
   },
   baseLayers: [
     {
-      type: 'ESRI_IMAGERY',
+      type: "ESRI_IMAGERY",
       visible: true,
     },
     {
-      type: 'OSM',
+      type: "OSM",
     },
     {
-      type: 'RL_ORTOFOTO_2019',
+      type: "RL_ORTOFOTO_2019",
     },
     {
-      type: 'RL_CARTE_BASE',
+      type: "RL_CARTE_BASE",
     },
     {
-      type: 'BLANK',
+      type: "BLANK",
     },
   ],
   maps: [],

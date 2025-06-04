@@ -1,13 +1,13 @@
-var applicazione = 'PROT_CIV';
-var repertorio = '03';
-var canale = null;
+var applicazione = 'PROT_CIV'
+var repertorio = '03'
+var canale = null
 
 GV.init({
   debug: true,
   idMap: null,
   agAppMapList: null,
   application: {
-    name: 'ambiente-gv2',
+    name: 'protezione-civile-gv2',
     mapOptions: {
       click: 'info',
     },
@@ -65,9 +65,9 @@ GV.init({
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
     { type: 'OSM' },
-    { type: 'RL_ORTOFOTO_2019' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK' },
   ],
   maps: [],
-});
+})

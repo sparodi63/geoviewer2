@@ -1,7 +1,7 @@
 const codice = GV.utils.getUrlParam('codice');
 const codice_comune = GV.utils.getUrlParam('codice_comune');
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 

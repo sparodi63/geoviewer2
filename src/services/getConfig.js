@@ -6,9 +6,11 @@ export default function getConfig(idMap) {
     throw new Error('Parametro idMap mancante');
   }
 
-  let url = idMap.startsWith('D')
-    ? `${globals.RL_DYN_MAP_CONFIG_SERVICE}${idMap}`
-    : `${globals.RL_MAP_CONFIG_SERVICE}${idMap}`;
+  // let url = idMap.startsWith('D')
+  //   ? `${globals.RL_DYN_MAP_CONFIG_SERVICE}${idMap}`
+  //   : `${globals.RL_MAP_CONFIG_SERVICE}${idMap}`;
+
+  let url = `${globals.RL_MAP_CONFIG_SERVICE}${idMap}`
 
   let params = {};
 

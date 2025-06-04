@@ -10,7 +10,6 @@ const numordineregionale = GV.utils.getUrlParam('numordineregionale');
 const codice_comune = GV.utils.getUrlParam('codice_comune');
 const id_session = GV.utils.getUrlParam('id_session');
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
@@ -18,8 +17,8 @@ const geoserverUrl =
   env === 'TEST'
     ? 'http://geoservizi.datasiel.net:8080/'
     : 'https://geoservizi.regione.liguria.it/';
-const idMap = env === 'TEST' ? 2603 : 2603;
-const idLayer = env === 'TEST' ? 'L10198' : 'L10198';
+const idMap = env === 'TEST' ? 2603 : 2637;
+const idLayer = env === 'TEST' ? 'L10198' : 'L10395';
 const layers = idLayer.split(',');
 const idLayerComune = 'L6422';
 
@@ -109,7 +108,7 @@ function loadConfig(data) {
     findOptions: findOptions,
     application: {
       name: 'siti-contaminati-p-gv2',
-      auth: auth,
+      // auth: auth,
       mapOptions: {
         type: 'openlayers',
         click: 'info',
@@ -146,7 +145,7 @@ function loadConfig(data) {
     baseLayers: [
       { type: 'ESRI_IMAGERY', visible: true },
       { type: 'OSM' },
-      { type: 'RL_ORTOFOTO_2019' },
+      { type: 'RL_ORTOFOTO_2022' },
       { type: 'RL_CARTE_BASE' },
       { type: 'BLANK' },
     ],
@@ -179,7 +178,7 @@ function getDrawTool() {
           edit: true,
           // remove: true,
         },
-      },
+      }, 
       buttons: {
         submit: true,
         cancel: false,
@@ -188,6 +187,7 @@ function getDrawTool() {
       color: '#FF9900',
       multiGeom: false,
       epsg: '3003',
+            epsgOut: '3003',
       initWfsRequests: initWfsRequest,
 
       submit: function(data) {

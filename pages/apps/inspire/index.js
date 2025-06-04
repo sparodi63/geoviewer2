@@ -1,8 +1,5 @@
 // ?url=http://localhost:8099/geoserver/M1237/ogc/features/collections/L3147/items/L3147.195121_1?f=application/json
 
-// GV.globals.RL_MAP_CONFIG_SERVICE =
-// 'https://srvcarto.regione.liguria.it/geoservices/REST/config/map/';
-
 const theme = GV.utils.getUrlParam('theme');
 const id = GV.utils.getUrlParam('id');
 

@@ -3,7 +3,6 @@
 const codice = GV.utils.getUrlParam('CODICE');
 // const cod_com = GV.utils.getUrlParam('COD_COM');
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.ENV || 'TEST';
 // console.log('ENV', env);
@@ -29,7 +28,7 @@ const findOptions = {
 const auth = {
   type: 'NAM',
   options: {
-    ruolo: 'ACQ_VISP,ACQ_SYS,ACQ_ PFR',
+    ruolo: 'ACQ_VISP,ACQ_SYS,ACQ_ PFR,VIA_GEST',
   },
 };
 
@@ -85,7 +84,7 @@ let conf = {
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
     { type: 'OSM' },
-    { type: 'RL_ORTOFOTO_2019' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK' },
   ],

@@ -62,6 +62,7 @@ const layers = [
     name: 'cpi',
     visible: true,
     geomSubType: 'POINT',
+    // url: `/geoservices/data/centri-impiego/cpi_test.json`,
     url: `/geoservices/REST/cpi/get_data`,
     // url: `/geoservices/REST/proxy/proxy?url=http://srvcarto2svil.regione.liguria.it/geoservices/REST/cpi/get_data`,
     onEachFeature: id
@@ -107,6 +108,7 @@ GV.init({
     },
   ],
   application: {
+    name: 'cpi-gv2',
     mapOptions: {
       static: id ? true : false,
       zoomSnap: 0.1,

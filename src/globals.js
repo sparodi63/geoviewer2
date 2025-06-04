@@ -1,7 +1,7 @@
 export default {
   DEFAULT_PROXY: '/geoservices/REST/proxy/proxy?url=',
 
-  USE_SUBDOMAINS: true,
+  USE_SUBDOMAINS: false,
 
   SESSION: {
     // ID: crypto.randomUUID(),
@@ -17,20 +17,20 @@ export default {
     },
   },
 
-  RL_MAP_CONFIG_SERVICE: '/geoservices/REST/geoportale/map/',
+  RL_MAP_CONFIG_SERVICE: '/geoservices/REST/config/map/',
+  // RL_DYN_MAP_CONFIG_SERVICE: '/geoservices/REST/config/map/',
   RL_LAYER_CONFIG_SERVICE: '/geoservices/REST/config/layer/',
   RL_QUERY_LAYER_VALUE_LIST_SERVICE: '/geoservices/REST/config/query_layer_valuelist/',
   RL_QUERY_LAYER_TOPO_VALUE_LIST_SERVICE: '/geoservices/REST/config/query_layer_topo_valuelist/',
   RL_QUERY_LAYER_SERVICE: '/geoservices/REST/config/query_layer/',
   RL_QUERY_LAYER_TOPO_SERVICE: '/geoservices/REST/config/query_layer_topo/',
-  RL_DYN_MAP_CONFIG_SERVICE: '/geoservices/REST/config/map/',
   RL_XSL_INFO_SERVICE: '/geoservices/REST/config/info_xsl?',
   RL_CATALOG_SERVICE: '/geoservices/REST/geoportale/catalogo/',
   RL_CANALI_SERVICE: '/geoservices/REST/config/ag_app_canali_tree/',
   RL_CANALE_CARTE_SERVICE: '/geoservices/REST/config/ag_canale_tree/',
   RL_DOWNLOAD_CONFIG_SERVICE: '/geoservices/REST/download/map/',
   RL_DOWNLOAD_INSERT_SERVICE: '/geoservices/REST/download/insert_richiesta/',
-  RL_DOWNLOAD_ESEGUI_RICHIESTA: '/geoservices/REST/download/elabora_richiesta_sincrona/',
+  RL_DOWNLOAD_ESEGUI_RICHIESTA: 'https://srvcarto.regione.liguria.it/geoservices/REST/download/elabora_richiesta_sincrona/',
   RL_ENTI_SERVICE: '/geoservices/REST/geoportale/enti/',
   RL_METADATA_URL: '/geoservices/REST/metadata/scheda_xml/',
   RL_TRANSFORM_POINT_SERVICE: '/geoservices/REST/coordinate/transform_point/',
@@ -114,6 +114,10 @@ export default {
     },
     RL_ORTOFOTO_2019: {
       label: 'AGEA: Ortofoto 2019',
+      icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
+    },
+    RL_ORTOFOTO_2022: {
+      label: 'AGEA: Ortofoto 2022',
       icon: '/geoservices/apps/viewer/static/img/legend/sfondi_rl.jpg',
     },
     RL_CARTE_BASE: {

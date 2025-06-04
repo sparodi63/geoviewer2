@@ -305,6 +305,7 @@ function init(maps) {
   GV.init({
     debug: true,
     application: {
+      name: 'cultura-gv2',
       mapOptions: {
         // zoomSnap: 0.5,
         // initialExtent: '830036,5402959,1123018,5597635',

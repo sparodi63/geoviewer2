@@ -1,24 +1,24 @@
 /*
-ESEMPIO QUERY_STRING 
+ESEMPIO QUERY_STRING
 ?ID_MAP=1640&ID_LAYER=4355&FIELD=CODICE&CODICE=C008027A&FIND=SI
 ?ID_MAP=1640&ID_LAYER=4429&FIELD=COD_IMPIANTO&CODICE=9&FIND=SI
 ?ID_MAP=1640&ID_LAYER=4430&FIELD=ID_SCARICO&CODICE=I011015046U&FIND=SI
 ?ID_MAP=1640&ID_LAYER=4431&FIELD=CODICE_CENTRO&CODICE=???&FIND=SI
 
 http://localhost:8081/?ID_MAP=1640&ID_LAYER=4355&FIELD=CODICE&CODICE=C008027A&FIND=SI
+http://dts-parodi_s.ld.ge/geoviewer2/pages/apps/scaridri-selezione-coordinate/?ID_MAP=1640&ID_LAYER=4355&FIELD=CODICE&CODICE=C008027A&FIND=SI
 
 
 */
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/'
-// GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/geoportale/map/'
 
-var idMap = GV.utils.getUrlParam('ID_MAP');
-var idLayer = 'L' + GV.utils.getUrlParam('ID_LAYER');
-var field = GV.utils.getUrlParam('FIELD');
-var value = GV.utils.getUrlParam('CODICE');
-var findFlag = GV.utils.getUrlParam('FIND');
-var idSession = GV.utils.getUrlParam('ID_SESSION');
+
+var idMap = GV.utils.getUrlParam('ID_MAP')
+var idLayer = 'L' + GV.utils.getUrlParam('ID_LAYER')
+var field = GV.utils.getUrlParam('FIELD')
+var value = GV.utils.getUrlParam('CODICE')
+var findFlag = GV.utils.getUrlParam('FIND')
+var idSession = GV.utils.getUrlParam('ID_SESSION')
 
 var findOptions =
   findFlag === 'SI'
@@ -26,23 +26,23 @@ var findOptions =
         layers: [idLayer],
         cqlFilter: field.toLowerCase() + "='" + value + "'",
       }
-    : null;
+    : null
 
 window.addEventListener('beforeunload', function() {
-  beforeUnload();
-});
+  beforeUnload()
+})
 
-GV.globals.flagInsert = false;
+GV.globals.flagInsert = false
 
 function beforeUnload() {
   if (GV.globals.flagInsert) {
-    return;
+    return
   }
-  insert(0, 0, 'NO');
+  insert(0, 0, 'NO')
 }
 
 function insert(x, y, esito) {
-  GV.utils.insertAgCoordinate(idSession, x.toFixed(0), y.toFixed(0), esito);
+  GV.utils.insertAgCoordinate(idSession, x.toFixed(0), y.toFixed(0), esito)
 }
 
 //
@@ -52,7 +52,7 @@ GV.init({
   idMap: idMap,
   findOptions: findOptions,
   application: {
-    name: 'benamb-gv2',
+    name: 'scaridri-selezione-coordinate-gv2',
     mapOptions: {
       click: 'info',
     },
@@ -88,11 +88,11 @@ GV.init({
           options: {
             projection: 'EPSG:3003',
             submit: function(x, y) {
-              insert(x, y, 'SI');
+              insert(x, y, 'SI')
             },
             cancel: function() {
               //richiesta conferma
-              insert(0, 0, 'NO');
+              insert(0, 0, 'NO')
             },
           },
         },
@@ -112,9 +112,7 @@ GV.init({
     {
       type: 'OSM',
     },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
+    { type: 'RL_ORTOFOTO_2022' },
     {
       type: 'RL_CARTE_BASE',
     },
@@ -123,4 +121,4 @@ GV.init({
     },
   ],
   maps: [],
-});
+})

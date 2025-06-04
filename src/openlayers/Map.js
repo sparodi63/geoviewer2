@@ -54,7 +54,7 @@ const olMap = {
     }
 
     return this;
-  },
+  }, 
   loadCesium() {
     require('../cesium/GeoserverTerrainProvider');
 

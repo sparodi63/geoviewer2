@@ -1,25 +1,25 @@
-var applicazione = GV.utils.getUrlParam('applicazione') || ''; // CODICE APPLICAZIONE ALFA_GIS. Es: ECO3
-var canale = GV.utils.getUrlParam('canale'); // CODICE CANALE ALFA_GIS (ALTERNATIVO AD APPLICAZIONE) Es: 4
-var repertorio = '03';
+var applicazione = GV.utils.getUrlParam('applicazione') || '' // CODICE APPLICAZIONE ALFA_GIS. Es: ECO3
+var canale = GV.utils.getUrlParam('canale') // CODICE CANALE ALFA_GIS (ALTERNATIVO AD APPLICAZIONE) Es: 4
+var repertorio = '03'
 
 var baseLayers = [
   { type: 'ESRI_IMAGERY', visible: true },
   { type: 'OSM' },
-  { type: 'RL_ORTOFOTO_2019' },
+  { type: 'RL_ORTOFOTO_2022' },
   { type: 'RL_CARTE_BASE' },
   { type: 'BLANK' },
-];
-var idMap = null;
+]
+var idMap = null
 
 if (canale === '5') {
   baseLayers = [
     { type: 'ESRI_IMAGERY' },
     { type: 'OSM' },
-    { type: 'RL_ORTOFOTO_2019' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK', visible: true },
-  ];
-  idMap = 1947;
+  ]
+  idMap = 1947
 }
 
 GV.init({
@@ -78,4 +78,4 @@ GV.init({
   },
   baseLayers: baseLayers,
   maps: [],
-});
+})

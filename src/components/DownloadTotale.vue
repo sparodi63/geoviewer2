@@ -70,8 +70,9 @@ export default {
   props: ['idMap'],
   data() {
     const maps = GV.config.maps.filter((map) => {
-      return map.downloadSuInteroTerritorio == true;
+      return map.downloadSuInteroTerritorio === true && map.flagDownload === true;
     });
+    console.log('gv-download-totale-panel: data', maps)
     return {
       codCliente: '',
       showHeader: true,
@@ -88,7 +89,6 @@ export default {
       this.$el.hidden = true;
       return;
     }
-
     this.codCliente =
       this.$cookie.get('codCliente') != 'null' ? this.$cookie.get('codCliente') : '';
     this.selectAll();

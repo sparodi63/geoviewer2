@@ -6,7 +6,6 @@
 const codice_comune = GV.utils.getUrlParam('codice_comune');
 const coordinate = GV.utils.getUrlParam('coordinate');
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
@@ -27,7 +26,7 @@ const findOptions = set_find_options();
 const auth = {
   type: 'NAM',
   options: {
-    ruolo: 'ACQ_GEST',
+    ruolo: 'ACQ_GEST,VIA_GEST',
   },
 };
 
@@ -162,7 +161,7 @@ let conf = {
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
     { type: 'OSM' },
-    { type: 'RL_ORTOFOTO_2019' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK' },
   ],

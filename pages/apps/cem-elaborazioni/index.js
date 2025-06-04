@@ -6,10 +6,15 @@ var geoserverUrl =
   env === 'TEST'
     ? '/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net'
     : 'https://geoservizi.regione.liguria.it/';
-var idMap = env === 'TEST' ? 2123 : 2261;
-var idLayer = env === 'TEST' ? 7268 : 8275;
+var idMap =
+    env === 'TEST'
+    ? 2123 
+    : 2261;
+var idLayer =
+    env === 'TEST'
+    ? 7268 
+    : 8275;
 
-console.log('ENV', env);
 
 GV.init({
   debug: true,
@@ -55,7 +60,7 @@ GV.init({
             idElab: idElab,
             idMap: idMap,
             idLayer: idLayer,
-            geoserverUrl: geoserverUrl,
+            geoserverUrl: geoserverUrl
           },
         },
         {
@@ -73,9 +78,7 @@ GV.init({
     {
       type: 'OSM',
     },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
+    { type: 'RL_ORTOFOTO_2022' },
     {
       type: 'RL_CARTE_BASE',
     },

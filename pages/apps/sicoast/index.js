@@ -30,8 +30,7 @@ var tools = [
     options: {
       props: [
         {
-          html:
-            '<div id="logo"><img src="/geoservices/apps/viewer/static/img/sicoast/img_sicoast.gif"></div>',
+          html: '<div id="logo"><img src="../../../static/img/sicoast/img_sicoast.gif"></div>',
         },
       ],
     },
@@ -97,9 +96,7 @@ GV.init({
     {
       type: 'RL_ORTOFOTO_2016',
     },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
+    { type: 'RL_ORTOFOTO_2022' },
     {
       type: 'RL_CARTE_BASE',
     },
@@ -108,4 +105,4 @@ GV.init({
     },
   ],
   maps: [],
-});
+})

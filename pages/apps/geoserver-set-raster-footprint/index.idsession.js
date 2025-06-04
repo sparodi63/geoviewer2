@@ -2,7 +2,7 @@ const idIstanza = GV.utils.getUrlParam('idistanza');
 const idSession = GV.utils.getUrlParam('idsession');
 const comune = GV.utils.getUrlParam('comune');
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 

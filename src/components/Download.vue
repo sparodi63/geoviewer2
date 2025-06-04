@@ -38,7 +38,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item> 
           <span v-if="config.flagDownloadPerTemi" class="gv-map-download-label">Tematismo</span>
           <el-select
             id="gv-map-download-temi"

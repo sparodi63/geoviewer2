@@ -1,19 +1,12 @@
-var idMap = GV.utils.getUrlParam('id');
-var selFogli = GV.utils.getUrlParam('fogli');
-var field = GV.utils.getUrlParam('field');
+var idMap = GV.utils.getUrlParam('id')
+var selFogli = GV.utils.getUrlParam('fogli')
+var field = GV.utils.getUrlParam('field')
 
-var props = [
-  {
-    idMap: idMap,
-  },
-  {
-    field: field,
-  },
-];
+var props = [{ idMap: idMap }, { field: field }]
 if (selFogli) {
   props.push({
     selFogli: selFogli,
-  });
+  })
 }
 
 GV.init({
@@ -22,7 +15,6 @@ GV.init({
   application: {
     name: 'selezione-fogli-gv2',
     mapOptions: {
-      // type: 'openlayers',
       click: 'info',
     },
     layout: {
@@ -45,22 +37,11 @@ GV.init({
     },
   },
   baseLayers: [
-    {
-      type: 'ESRI_IMAGERY',
-      visible: true,
-    },
-    {
-      type: 'OSM',
-    },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
-    {
-      type: 'RL_CARTE_BASE',
-    },
-    {
-      type: 'BLANK',
-    },
+    { type: 'ESRI_IMAGERY', visible: true },
+    { type: 'OSM' },
+    { type: 'RL_ORTOFOTO_2022' },
+    { type: 'RL_CARTE_BASE' },
+    { type: 'BLANK' },
   ],
   maps: [],
-});
+})

@@ -1,18 +1,15 @@
 // var id = 'D589';
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/map/'
-// GV.globals.RL_MAP_CONFIG_SERVICE = "/geoservices/REST/config/map/";
-
 GV.globals.FOTOTECA_SEL_VOLO = null;
 GV.globals.FOTOTECA_CARRELLO = [];
 
 GV.init({
   debug: true,
   idMap: 'D74',
+  // geoserverUrl: 'http://10.20.4.120:8081/',
   application: {
     name: 'fototeca-gv2',
     mapOptions: {
-      // type: 'openlayers',
       // click: 'info',
     },
     layout: {
@@ -24,13 +21,13 @@ GV.init({
           name: 'gv-fototeca-selezione-territoriale-button',
         },
         {
+          name: 'gv-ricerca-particella-button',
+        },
+        {
           name: 'gv-fototeca-scheda-volo-button',
         },
         {
           name: 'gv-fototeca-carrello-button',
-        },
-        {
-          name: 'gv-ricerca-particella-button',
         },
         {
           name: 'gv-geocoder',

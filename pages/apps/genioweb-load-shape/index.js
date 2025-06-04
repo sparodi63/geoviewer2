@@ -1,97 +1,102 @@
 // http://localhost:8081/?PROV=GE&codice_pratica=GCI05508&TOKEN=fkdsgfalkjgad
 
-const env = GV.globals.GENIO_WEB_ENV || 'TEST';
-// console.log('ENV', env);
+const env = GV.globals.GENIO_WEB_ENV || "TEST";
+// const env = "TEST";
+// console.log("ENV", env);
 
-const codice_pratica = GV.utils.getUrlParam('CODICE_PRATICA');
-const token = GV.utils.getUrlParam('TOKEN');
-const prov = GV.utils.getUrlParam('PROV');
+const codice_pratica = GV.utils.getUrlParam("CODICE_PRATICA");
+const token = GV.utils.getUrlParam("TOKEN");
+const prov = GV.utils.getUrlParam("PROV");
 
 const auth =
-  env === 'TEST'
+  env === "TEST"
     ? null
     : {
-        type: 'S3',
+        type: "S3",
         options: {
           s3Token: token,
-          s3TokenType: 'genio',
+          s3TokenType: "genio",
           s3TokenProv: prov,
         },
       };
 
-if (env === 'TEST') {
+if (env === "TEST") {
   GV.globals.GW_CONFIG = {
     GE: {
-      id_map_tmp: 'M2545',
-      id_layer_tmp: 'L9973',
-      codIstatProv: '010',
-      extent: '949000,5498925,1076251,5571286',
-      id_map_pratica: '2120',
-      id_layer_pratica: 'L7240',
-      id_canali: '55,159',
+      id_map_tmp: "M2545",
+      id_layer_tmp: "L9973",
+      codIstatProv: "010",
+      extent: "949000,5498925,1076251,5571286",
+      id_map_pratica: "2120",
+      id_layer_pratica: "L7240",
+      id_canali: "55,159",
     },
     IM: {
-      id_map_tmp: 'M2545',
-      id_layer_tmp: 'L9973',
-      codIstatProv: '008',
-      extent: '834446,5429486,907520,5489412',
-      id_map_pratica: '2120',
-      id_layer_pratica: 'L7240',
-      id_canali: '55,159',
+      id_map_tmp: "M2545",
+      id_layer_tmp: "L9973",
+      codIstatProv: "008",
+      extent: "834446,5429486,907520,5489412",
+      id_map_pratica: "2120",
+      id_layer_pratica: "L7240",
+      id_canali: "55,159",
     },
     SV: {
-      id_map_tmp: 'M2545',
-      id_layer_tmp: 'L9973',
-      codIstatProv: '009',
-      extent: '887493,5452722,967599,5551785',
-      id_map_pratica: '2120',
-      id_layer_pratica: 'L7240',
-      id_canali: '55,159',
+      id_map_tmp: "M2545",
+      id_layer_tmp: "L9973",
+      codIstatProv: "009",
+      extent: "887493,5452722,967599,5551785",
+      id_map_pratica: "2120",
+      id_layer_pratica: "L7240",
+      id_canali: "55,159",
     },
     SP: {
-      id_map_tmp: 'M2545',
-      id_layer_tmp: 'L9973',
-      codIstatProv: '011',
-      extent: '1052903,5465564,1126435,5534051',
-      id_map_pratica: '2167',
-      id_layer_pratica: 'L7761',
-      id_canali: '55,160',
+      id_map_tmp: "M2545",
+      id_layer_tmp: "L9973",
+      codIstatProv: "011",
+      extent: "1052903,5465564,1126435,5534051",
+      id_map_pratica: "2167",
+      id_layer_pratica: "L7761",
+      id_canali: "55,160",
     },
   };
 } else {
   // CONFIGURAZIONE PROD
   GV.globals.GW_CONFIG = {
     GE: {
-      id_map_tmp: 'M2579',
-      id_layer_tmp: 'L10088',
-      codIstatProv: '010',
-      extent: '949000,5498925,1076251,5571286',
-      id_map_pratica: '2170',
-      id_canali: '55,161',
+      id_map_tmp: "M2579",
+      id_layer_tmp: "L10088",
+      codIstatProv: "010",
+      extent: "949000,5498925,1076251,5571286",
+      id_map_pratica: "2170",
+      id_layer_pratica: "L7783",
+      id_canali: "55,161",
     },
     IM: {
-      id_map_tmp: 'M2581',
-      id_layer_tmp: 'L10091',
-      codIstatProv: '008',
-      extent: '834446,5429486,907520,5489412',
-      id_map_pratica: '2173',
-      id_canali: '55,164',
+      id_map_tmp: "M2581",
+      id_layer_tmp: "L10091",
+      codIstatProv: "008",
+      extent: "834446,5429486,907520,5489412",
+      id_map_pratica: "2173",
+      id_layer_pratica: "L7810",
+      id_canali: "55,164",
     },
     SV: {
-      id_map_tmp: 'M2580',
-      id_layer_tmp: 'L10090',
-      codIstatProv: '009',
-      extent: '887493,5452722,967599,5551785',
-      id_map_pratica: '2172',
-      id_canali: '55,163',
+      id_map_tmp: "M2580",
+      id_layer_tmp: "L10090",
+      codIstatProv: "009",
+      extent: "887493,5452722,967599,5551785",
+      id_map_pratica: "2172",
+      id_layer_pratica: "L7801",
+      id_canali: "55,163",
     },
     SP: {
-      id_map_tmp: 'M2582',
-      id_layer_tmp: 'L10089',
-      codIstatProv: '011',
-      extent: '1052903,5465564,1126435,5534051',
-      id_map_pratica: '2171',
-      id_canali: '55,162',
+      id_map_tmp: "M2582",
+      id_layer_tmp: "L10089",
+      codIstatProv: "011",
+      extent: "1052903,5465564,1126435,5534051",
+      id_map_pratica: "2171",
+      id_layer_pratica: "L7792",
+      id_canali: "55,162",
     },
   };
 }
@@ -118,19 +123,19 @@ async function load_map() {
   layer_pratica.name = `L${id_layer_pratica}_FILTERED`;
   layer_pratica.wmsParams.cql_filter = `CODICE_PRATICA='${codice_pratica}'`;
   layer_pratica.wmsParams.styles = `gw_load_shape_hilite`;
-  layer_pratica.legend.label = 'Geometrie già presenti per la pratica';
+  layer_pratica.legend.label = "Geometrie già presenti per la pratica";
   layer_pratica.legend.icon =
     layer_pratica.legend.icon + `&style=${layer_pratica.wmsParams.styles}`;
 
   // CARICAMENTO LIVELLO GEOMETRIE ALTRE PRATICHE
   layer_altre_pratiche = await get_layer_config(id_layer_pratica);
   layer_altre_pratiche.wmsParams.cql_filter = `CODICE_PRATICA <> '${codice_pratica}'`;
-  layer_altre_pratiche.legend.label = 'Altre Pratiche Demaniali';
+  layer_altre_pratiche.legend.label = "Altre Pratiche Demaniali";
 
   // CARICO LA CONFIGURAZIONE DELLA MAPPA
   GV.config.addMapConfig({
-    id: 'GENIOWEB-LOAD-SHAPE',
-    name: 'GenioWeb Caricamento Shape',
+    id: "GENIOWEB-LOAD-SHAPE",
+    name: "GenioWeb Caricamento Shape",
     flagGeoserver: true,
     layers: [layer_altre_pratiche, layer_pratica, layer_tmp],
   });
@@ -141,7 +146,10 @@ async function load_map() {
     GV.app.map.setExtent(bbox);
     if (GV.app.map.getZoom() > 18) GV.app.map.setZoom(18);
   } else {
-    GV.utils.notification('Geometrie di staging non trovate per la pratica', 'error');
+    GV.utils.notification(
+      "Geometrie di staging non trovate per la pratica",
+      "error"
+    );
   }
 }
 
@@ -150,7 +158,7 @@ async function get_bbox(codice_pratica) {
   let response = await fetch(url);
   let data = await response.json();
   if (data.features && data.features.length > 0) {
-    const bbox = data.bbox.join(',');
+    const bbox = data.bbox.join(",");
     return bbox;
   } else {
     return null;
@@ -158,8 +166,10 @@ async function get_bbox(codice_pratica) {
 }
 
 async function get_layer_config(id) {
-  const id_layer = id.replace('L', '');
-  let response = await fetch(`${GV.globals.RL_LAYER_CONFIG_SERVICE}/${id_layer}`);
+  const id_layer = id.replace("L", "");
+  let response = await fetch(
+    `${GV.globals.RL_LAYER_CONFIG_SERVICE}/${id_layer}`
+  );
   let data = await response.json();
   if (data.success) {
     return data.data[0];
@@ -170,25 +180,25 @@ async function get_layer_config(id) {
 
 function init() {
   if (!codice_pratica) {
-    alert('Parametro CODICE_PRATICA non presente');
+    alert("Parametro CODICE_PRATICA non presente");
     return;
   }
   if (!prov) {
-    alert('Parametro PROV non presente');
+    alert("Parametro PROV non presente");
     return;
   }
   if (!token) {
-    alert('Parametro TOKEN non presente');
+    alert("Parametro TOKEN non presente");
     return;
   }
 
   GV.init({
     debug: true,
     application: {
-      name: 'genioweb-load-shape-gv2',
+      name: "genioweb-load-shape-gv2",
       auth: auth,
       mapOptions: {
-        click: 'info',
+        click: "info",
         initialExtent: extent,
         restrictedExtent: extent,
       },
@@ -206,34 +216,34 @@ function init() {
             addMapConfig: {
               panels: {
                 repertorio: {
-                  type: 'tree',
-                  name: 'repertorio',
-                  label: 'Repertorio Cartografico',
+                  type: "tree",
+                  name: "repertorio",
+                  label: "Repertorio Cartografico",
                 },
                 canali: {
-                  type: 'tree',
-                  name: 'canali',
-                  label: '',
+                  type: "tree",
+                  name: "canali",
+                  label: "",
                   options: {
                     multiCanale: true,
                     canale: id_canali,
-                    applicazione: 'ECO3',
-                    tematici: 'SI',
+                    applicazione: "ECO3",
+                    tematici: "SI",
                     pub: false,
                   },
                   tree: null,
                 },
               },
-              activePanel: 'canali',
+              activePanel: "canali",
             },
           },
         },
         tools: [
           {
-            name: 'gv-geocoder',
+            name: "gv-geocoder",
           },
           {
-            name: 'gv-button-genio-conferma-load-shape',
+            name: "gv-button-genio-conferma-load-shape",
           },
           // {
           //   name: 'gv-back-button',
@@ -243,28 +253,28 @@ function init() {
           //   },
           // },
           {
-            name: 'gv-scalebar',
-            position: 'bottomleft',
+            name: "gv-scalebar",
+            position: "bottomleft",
           },
         ],
       },
     },
     baseLayers: [
       {
-        type: 'ESRI_IMAGERY',
+        type: "ESRI_IMAGERY",
         visible: true,
       },
       {
-        type: 'OSM',
+        type: "OSM",
       },
       {
-        type: 'RL_ORTOFOTO_2019',
+        type: "RL_ORTOFOTO_2019",
       },
       {
-        type: 'RL_CARTE_BASE',
+        type: "RL_CARTE_BASE",
       },
       {
-        type: 'BLANK',
+        type: "BLANK",
       },
     ],
     maps: [],

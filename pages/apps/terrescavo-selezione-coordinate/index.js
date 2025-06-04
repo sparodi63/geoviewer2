@@ -6,43 +6,25 @@ ESEMPIO QUERY_STRING
 ?ID_MAP=1640&ID_LAYER=4431&FIELD=CODICE_CENTRO&CODICE=???&FIND=SI
 
 http://localhost:8081/?&CODICE=010001
-
+http://dts-parodi_s.ld.ge/geoviewer2/pages/apps/terrescavo-selezione-coordinate/?CODICE=010001
 
 */
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/'
-// GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/geoportale/map/'
 
-var idMap = 'D66';
-var idLayer = 'L6422';
-// var field = 'codice_comune';
-var field = 'CODICE_COMUNE';
-var value = GV.utils.getUrlParam('codice');
-var lon = GV.utils.getUrlParam('lon');
-var lat = GV.utils.getUrlParam('lat');
 
-function addMarker() {
-  if (!lon || !lat) {
-    return;
-  }
-  GV.app.map.addMarker({
-    location: [lat, lon],
-    epsg: '3003',
-  });
+var idMap = 'D66'
+var idLayer = 'L6422'
+// var field = 'codice_comune'
+var field = 'CODICE_COMUNE'
+var value = GV.utils.getUrlParam('CODICE')
+
+var findOptions = {
+  layers: [idLayer],
+  cqlFilter: field + "='" + value + "'",
 }
 
-var findOptions = value
-  ? {
-      layers: [idLayer],
-      cqlFilter: field + "='" + value + "'",
-    }
-  : null;
-
 function conferma(x, y, esito) {
-  window.parent.postMessage(
-    { messaggio: 'selezione-coordinate', lon: x, lat: y, esito: esito },
-    '*'
-  );
+  window.parent.postMessage({ messaggio: 'selezione-coordinate', lon: x, lat: y, esito: esito }, '*')
 }
 
 //
@@ -52,10 +34,7 @@ GV.init({
   idMap: idMap,
   findOptions: findOptions,
   application: {
-    name: 'terrescavo-gv2',
-    mapOptions: {
-      type: 'openlayers',
-    },
+    name: 'terrescavo-selezione-coordinate-gv2',
     layout: {
       legend: {
         options: {
@@ -86,11 +65,11 @@ GV.init({
           name: 'gv-coordinate-button',
           options: {
             projection: 'EPSG:3003',
-            submit: function(x, y) {
-              conferma(x, y, 'OK');
+            submit: function (x, y) {
+              conferma(x, y, 'OK')
             },
-            cancel: function() {
-              conferma(null, null, 'KO');
+            cancel: function () {
+              conferma(null, null, 'KO')
             },
             active: true,
           },
@@ -101,7 +80,7 @@ GV.init({
         },
       ],
     },
-    callback: addMarker,
+    callback: null,
   },
   baseLayers: [
     {
@@ -111,9 +90,7 @@ GV.init({
     {
       type: 'OSM',
     },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
+    { type: 'RL_ORTOFOTO_2022' },
     {
       type: 'RL_CARTE_BASE',
     },
@@ -122,4 +99,4 @@ GV.init({
     },
   ],
   maps: [],
-});
+})

@@ -1,4 +1,3 @@
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const cod_com = GV.utils.getUrlParam('cod_com');
 
@@ -163,6 +162,7 @@ function init(com) {
     baseLayers: [
       { type: 'ESRI_IMAGERY', visible: true },
       { type: 'OSM' },
+      { type: 'RL_ORTOFOTO_2022' },
       { type: 'RL_ORTOFOTO_2019' },
       { type: 'RL_ORTOFOTO_2016' },
       { type: 'RL_ORTOFOTO_2013' },

@@ -3,30 +3,27 @@
 // http://localhost:8081/?urlRitorno=http://sigmater.regione.liguria.it/sigmater/index.jsp&LAYER=COMUNE&codice=B838
 // http://localhost:8081/?urlRitorno=http://sigmater.regione.liguria.it/sigmater/index.jsp&LAYER=FOGLIO&codice=344481
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+GV.globals.RL_CATALOG = 'int'
 
-var env = GV.globals.GENIO_WEB_ENV || 'TEST';
-GV.globals.RL_CATALOG = 'int';
+var idMap = '1047'
 
-var idMap = '1047';
+var token = GV.utils.getUrlParam('token')
+var findBbox = GV.utils.getUrlParam('FindBbox')
+var urlRitorno = GV.utils.getUrlParam('urlRitorno')
+var layer = GV.utils.getUrlParam('LAYER')
+var codice = GV.utils.getUrlParam('CODICE')
 
-var token = GV.utils.getUrlParam('token');
-var findBbox = GV.utils.getUrlParam('FindBbox');
-var urlRitorno = GV.utils.getUrlParam('urlRitorno');
-var layer = GV.utils.getUrlParam('LAYER');
-var codice = GV.utils.getUrlParam('CODICE');
+var findOptions = setFindOptions()
 
-var findOptions = setFindOptions();
-
-var tools = setTools();
+var tools = setTools()
 
 function getTokenBbox(app) {
   if (token) {
-    GV.utils.getS3TokenBbox(token).then(function(resp) {
+    GV.utils.getS3TokenBbox(token).then(function (resp) {
       if (resp.success) {
-        GV.app.map.zoomToBound(resp.bbox, '3003', null);
+        GV.app.map.zoomToBound(resp.bbox, '3003', null)
       }
-    });
+    })
   }
 }
 
@@ -37,10 +34,6 @@ var auth = {
     s3TokenType: 'genio',
     s3TokenProv: null,
   },
-};
-
-if (env === 'TEST') {
-  auth = null;
 }
 
 GV.init({
@@ -51,8 +44,8 @@ GV.init({
   application: {
     name: 'sigmater-gv2',
     auth: auth,
+    // auth: null,
     mapOptions: {
-      type: 'openlayers',
       click: 'info',
     },
     callback: getTokenBbox,
@@ -102,9 +95,7 @@ GV.init({
     {
       type: 'OSM',
     },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
+    { type: 'RL_ORTOFOTO_2022' },
     {
       type: 'RL_CARTE_BASE',
     },
@@ -113,7 +104,7 @@ GV.init({
     },
   ],
   maps: [],
-});
+})
 
 function setTools() {
   var tools = [
@@ -144,32 +135,32 @@ function setTools() {
       name: 'gv-scalebar',
       position: 'bottomleft',
     },
-  ];
+  ]
 
-  return tools;
+  return tools
 }
 
 function setFindOptions() {
   if (layer && codice) {
-    var idLayer, cqlFilter;
+    var idLayer, cqlFilter
     switch (layer) {
       case 'COMUNE':
-        idLayer = 'L2626';
-        cqlFilter = "aa01_cod_com='" + codice + "'";
-        break;
+        idLayer = 'L2626'
+        cqlFilter = "AA01_COD_COM='" + codice + "'"
+        break
       case 'FOGLIO':
-        idLayer = 'L2625';
-        cqlFilter = "ct31_id='" + codice + "'";
-        break;
+        idLayer = 'L2625'
+        cqlFilter = "CT31_ID='" + codice + "'"
+        break
       case 'PARTICELLA':
-        idLayer = 'L2624';
-        cqlFilter = 'ct24_id=' + codice + '';
-        break;
+        idLayer = 'L2624'
+        cqlFilter = 'CT24_ID=' + codice + ''
+        break
     }
     return {
       layers: [idLayer],
       cqlFilter: cqlFilter,
-    };
+    }
   }
   // if (findBbox) {
   //   return {
@@ -178,5 +169,5 @@ function setFindOptions() {
   //   }
   // }
 
-  return null;
+  return null
 }

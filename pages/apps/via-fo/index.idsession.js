@@ -2,7 +2,6 @@ const idIstanza = GV.utils.getUrlParam('idistanza');
 const idSession = GV.utils.getUrlParam('idsession');
 const comune = GV.utils.getUrlParam('comune');
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
@@ -15,9 +14,7 @@ const idLayer = env === 'TEST' ? 'L8479' : null;
 const idLayerComune = 'L6422';
 
 if (idIstanza || idSession) {
-  const URL = idIstanza
-    ? `/geoservices/REST/via/istanza/${idIstanza}`
-    : `/geoservices/REST/via/session/${idSession}`;
+  const URL = (idIstanza) ? `/geoservices/REST/via/istanza/${idIstanza}` : `/geoservices/REST/via/session/${idSession}`  
   fetch(URL)
     .then(response => response.json())
     .then(data => {
@@ -49,15 +46,13 @@ function loadConfig(data) {
     };
   }
   if (countGeom > 0) {
-    findOptions = idIstanza
-      ? {
-          layers: [idLayer],
-          cqlFilter: "IDISTANZA='" + idIstanza + "'",
-        }
-      : {
-          layers: [idLayer],
-          cqlFilter: "IDSESSION='" + idSession + "'",
-        };
+    findOptions = (idIstanza) ? {
+      layers: [idLayer],
+      cqlFilter: "IDISTANZA='" + idIstanza + "'",
+    } : {
+      layers: [idLayer],
+      cqlFilter: "IDSESSION='" + idSession + "'",
+    };
   }
 
   let tools = [{ name: 'gv-geocoder' }, { name: 'gv-scalebar', position: 'bottomleft' }];
@@ -119,7 +114,7 @@ function loadConfig(data) {
     baseLayers: [
       { type: 'ESRI_IMAGERY', visible: true },
       { type: 'OSM' },
-      { type: 'RL_ORTOFOTO_2019' },
+      { type: 'RL_ORTOFOTO_2022' },
       { type: 'RL_CARTE_BASE' },
       { type: 'BLANK' },
     ],
@@ -130,7 +125,7 @@ function loadConfig(data) {
 }
 
 function getDrawTool() {
-  const cqlFilter = idIstanza ? `IDISTANZA='${idIstanza}'` : `IDSESSION='${idSession}'`;
+  const cqlFilter = (idIstanza) ? `IDISTANZA='${idIstanza}'` : `IDSESSION='${idSession}'`
   const initWfsRequest = [
     {
       wfsURL: `${geoserverUrl}geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson&typeName=${idLayer}&cql_filter=${cqlFilter}`,

@@ -6,19 +6,19 @@ ESEMPIO QUERY_STRING
 ?ID_MAP=1640&ID_LAYER=4431&FIELD=CODICE_CENTRO&CODICE_CONDOTTA=???
 
 http://localhost:8081?ID_MAP=1640&ID_LAYER=4355&FIELD=CODICE&CODICE_CONDOTTA=C008027A
-
+http://dts-parodi_s.ld.ge/geoviewer2/pages/apps/scaridri-find?ID_MAP=1640&ID_LAYER=4355&FIELD=CODICE&CODICE_CONDOTTA=C008027A
 
 */
 
-var idMap = GV.utils.getUrlParam('ID_MAP');
-var idLayer = 'L' + GV.utils.getUrlParam('ID_LAYER');
-var field = GV.utils.getUrlParam('FIELD');
-var value = GV.utils.getUrlParam('CODICE_CONDOTTA');
+var idMap = GV.utils.getUrlParam('ID_MAP')
+var idLayer = 'L' + GV.utils.getUrlParam('ID_LAYER')
+var field = GV.utils.getUrlParam('FIELD')
+var value = GV.utils.getUrlParam('CODICE_CONDOTTA')
 
 var findOptions = {
   layers: [idLayer],
   cqlFilter: field.toLowerCase() + "='" + value + "'",
-};
+}
 
 //
 
@@ -70,9 +70,7 @@ GV.init({
     {
       type: 'OSM',
     },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
+    { type: 'RL_ORTOFOTO_2022' },
     {
       type: 'RL_CARTE_BASE',
     },
@@ -81,4 +79,4 @@ GV.init({
     },
   ],
   maps: [],
-});
+})

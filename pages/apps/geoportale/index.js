@@ -1,20 +1,23 @@
-var id = GV.utils.getUrlParam('id');
+var id = GV.utils.getUrlParam('id')
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = 'http://srvcarto.regione.liguria.it/geoservices/REST/config/map/';
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+
+
 
 // GESTIONE PAGINE CUSTOM --------------------------------------------
 var customPageUrlList = {
   1881: '/geoservices/apps/viewer/pages/apps/atlante-geochimico/',
+  1884: '/geoservices/apps/viewer/pages/apps/geoportale/?id=2363',
+  2219: '/geoservices/apps/viewer/pages/apps/rqa/',
 };
 if (id && customPageUrlList[id]) {
   window.location = customPageUrlList[id];
 }
-// FINE GESTIONE PAGINE CUSTOM --------------------------------------------
+// GESTIONE PAGINE CUSTOM --------------------------------------------
 
 GV.init({
   debug: true,
   idMap: id,
+  // geoserverUrl: 'http://10.20.4.120:8081/',
   application: {
     name: 'geoportale-gv2',
     mapOptions: {
@@ -47,36 +50,22 @@ GV.init({
         },
       },
       tools: [
-        {
-          name: 'gv-geocoder',
-          position: 'topleft',
-        },
-        {
-          name: 'gv-scalebar',
-          position: 'bottomleft',
-        },
+        { name: 'gv-geocoder', position: 'topleft' },
+        { name: 'gv-scalebar', position: 'bottomleft' },
       ],
     },
   },
   baseLayers: [
-    {
-      type: 'ESRI_IMAGERY',
-      visible: true,
-    },
-    {
-      type: 'TS_STREETS',
-    },
+    { type: 'ESRI_IMAGERY', visible: true },
+    { type: 'OSM' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_ORTOFOTO_2019' },
     { type: 'RL_ORTOFOTO_2016' },
     { type: 'RL_ORTOFOTO_2013' },
     { type: 'RL_ORTOFOTO_2010' },
     { type: 'RL_ORTOFOTO_2007' },
-    {
-      type: 'RL_CARTE_BASE',
-    },
-    {
-      type: 'BLANK',
-    },
+    { type: 'RL_CARTE_BASE' },
+    { type: 'BLANK' },
   ],
   maps: [],
-});
+})

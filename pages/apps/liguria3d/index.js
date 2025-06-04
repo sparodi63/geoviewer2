@@ -1,30 +1,22 @@
+// http://ld-paordi-m.ld.ge/geoservices/apps/viewer/pages/apps/olcs/?id=5
+
+var id = GV.utils.getUrlParam("id");
+
 GV.init({
   debug: true,
-  idMap: GV.utils.getUrlParam('id'),
+  idMap: id,
   application: {
-    name: 'liguria3d-gv2',
+    name: "liguria3d-gv2",
     mapOptions: {
-      type: 'openlayers',
+      type: "openlayers",
       ol3d: true,
       enable3d: true,
-      click: 'info',
-      restrictedExtent: '830036,5402959,1123018,5597635',
+      click: "info",
+      restrictedExtent: "830036,5402959,1123018,5597635",
     },
-    // callback: function() {
-    //   console.log('CALLBACK!!!');
-    //   fetch(`/geoservices/REST/difesa_suolo/domanda/${codice}`)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //       console.log(data)
-    //     })
-    //     .catch(error => {
-    //       console.error('Error:', error);
-    //       alert(error);
-    //     });
-    // },    
     layout: {
       legend: {
-        options: { 
+        options: {
           show: true,
           showAddMap: true,
           showInfoMap: true,
@@ -33,7 +25,7 @@ GV.init({
           addMapConfig: {
             panels: {
               kml: {
-                label: 'KML/GPX/JSON',
+                label: "KML/GPX/JSON",
               },
             },
           },
@@ -41,47 +33,30 @@ GV.init({
       },
       tools: [
         {
-          name: 'gv-geocoder',
-          position: 'topleft',
+          name: "gv-geocoder",
+          position: "topleft",
         },
         {
-          name: 'gv-help3D-button',
-          position: 'topleft',
+          name: "gv-help3D-button",
+          position: "topleft",
           options: {
-            showOnStart: true
-          }
+            showOnStart: true,
+          },
         },
       ],
     },
   },
   baseLayers: [
     {
-      type: 'ESRI_IMAGERY',
+      type: "ESRI_IMAGERY",
       visible: true,
     },
     {
-      type: 'RL_ORTOFOTO_2019',
+      type: "RL_ORTOFOTO_2019",
     },
+    { type: "RL_CARTE_BASE" },
     {
-      type: 'RL_ORTOFOTO_2013',
-    },
-    {
-      type: 'RL_ORTOFOTO_2010',
-    },
-    {
-      type: 'RL_ORTOFOTO_2007',
-    },
-    {
-      type: 'RL_ORTOFOTO_2000',
-    },
-    {
-      type: 'RL_CARTE_BASE',
-    },
-    {
-      type: 'RL_CARTE_BASE_NC25',
-    },
-    {
-      type: 'BLANK',
+      type: "BLANK",
     },
   ],
   maps: [],

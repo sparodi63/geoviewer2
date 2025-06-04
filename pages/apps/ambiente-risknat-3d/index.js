@@ -1,7 +1,7 @@
 var applicazione = 'RISKNAT';
 var repertorio = '03';
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+
 
 GV.init({
   debug: true,
@@ -50,8 +50,8 @@ GV.init({
           name: 'gv-help3D-button',
           position: 'topleft',
           options: {
-            showOnStart: true,
-          },
+            showOnStart: true
+          }
         },
       ],
     },
@@ -62,7 +62,11 @@ GV.init({
       visible: true,
     },
     {
-      type: 'RL_ORTOFOTO_2019',
+      type: 'OSM',
+    },
+    { type: 'RL_ORTOFOTO_2022' },
+    {
+      type: 'RL_CARTE_BASE',
     },
     {
       type: 'BLANK',

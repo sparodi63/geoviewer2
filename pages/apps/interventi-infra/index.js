@@ -1,7 +1,6 @@
 const codice = GV.utils.getUrlParam('codice');
 const codice_comune = GV.utils.getUrlParam('codice_comune');
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 
 const env = GV.globals.GENIO_WEB_ENV || 'TEST';
 
@@ -77,7 +76,7 @@ function loadConfig(data) {
     geoserverUrl: geoserverUrl,
     findOptions: findOptions,
     application: {
-      name: 'geoportale-tecnico-gv2',
+      name: 'interventi-infra-gv2',
       mapOptions: {
         type: 'openlayers',
         click: 'info',
@@ -114,7 +113,7 @@ function loadConfig(data) {
     baseLayers: [
       { type: 'ESRI_IMAGERY', visible: true },
       { type: 'OSM' },
-      { type: 'RL_ORTOFOTO_2019' },
+      { type: 'RL_ORTOFOTO_2022' },
       { type: 'RL_CARTE_BASE' },
       { type: 'BLANK' },
     ],

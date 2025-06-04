@@ -1,75 +1,39 @@
+
 // http://localhost:8081/?FIND_LAYERS=L4382&FIND_CQL_FILTER=cod_i=%2707/00208369%27
 
-var id = '1646';
-var findOptions = GV.utils.buildFindOptionsFromQueryStringParams();
-var download = GV.utils.getUrlParam('DOWNLOAD');
+var id = '1646'
+var findOptions = GV.utils.buildFindOptionsFromQueryStringParams()
+var download = GV.utils.getUrlParam('DOWNLOAD')
 
-if (!findOptions.layers || !cqlFilter.layers) findOptions = null;
-
-var showDownloadPanelOnLoad = false;
-var collapsed = false;
+var showDownloadPanelOnLoad = false
+var collapsed = false
 var tools = [
+  { name: 'gv-geocoder' },
+  { name: 'gv-info-button', active: true },
+  { name: 'gv-measure-button' },
+  { name: 'gv-layer-search-button' },
+  { name: 'gv-ricerca-particella-button' },
+  { name: 'gv-print-button' },
+  { name: 'gv-scalebar', position: 'bottomright' },
   {
-    name: 'gv-geocoder',
+    name: 'gv-inner-html', position: 'bottomleft', options: {
+      props: [{ html: '<div id="titolo"> <div id="loghi_sx"><a href="http://www.liguriavincoli.it/home.asp"><img src="/geoviewer2/static/img/vincoli/vincoli_logo_sx_1.jpg"></a></div> <div id="loghi_dx"><a href="http://www.beniculturali.it" onclick="window.open(this.href);return false;"><img src="/geoviewer2/static/img/vincoli/vincoli_logo_dx_1.jpg"></a><a href="http://www.regione.liguria.it" onclick="window.open(this.href);return false;"><img src="/geoviewer2/static/img/vincoli//vincoli_logo_dx_2.jpg"></a></div> </div>' }]
+    }
   },
-  {
-    name: 'gv-info-button',
-    active: true,
-  },
-  {
-    name: 'gv-measure-button',
-  },
-  {
-    name: 'gv-layer-search-button',
-  },
-  {
-    name: 'gv-ricerca-particella-button',
-  },
-  {
-    name: 'gv-print-button',
-  },
-  {
-    name: 'gv-scalebar',
-    position: 'bottomright',
-  },
-  {
-    name: 'gv-inner-html',
-    position: 'bottomleft',
-    options: {
-      props: [
-        {
-          html:
-            '<div id="titolo"> <div id="loghi_sx"><a href="http://www.liguriavincoli.it/home.asp"><img src="/geoservices/apps/viewer/static/img/vincoli/vincoli_logo_sx_1.jpg"></a></div> <div id="loghi_dx"><a href="http://www.beniculturali.it" onclick="window.open(this.href);return false;"><img src="/geoservices/apps/viewer/static/img/vincoli/vincoli_logo_dx_1.jpg"></a><a href="http://www.regione.liguria.it" onclick="window.open(this.href);return false;"><img src="/geoservices/apps/viewer/static/img/vincoli//vincoli_logo_dx_2.jpg"></a></div> </div>',
-        },
-      ],
-    },
-  },
-];
+]
 
-if (download === 'TRUE') {
-  showDownloadPanelOnLoad = true;
-  collapsed = true;
-  tools = [
+if (download === "TRUE") {
+  showDownloadPanelOnLoad = true
+  collapsed = true
+  tools = [ 
+    { name: 'gv-geocoder' },
+    { name: 'gv-scalebar', position: 'bottomright' },
     {
-      name: 'gv-geocoder',
-    },
-    {
-      name: 'gv-scalebar',
-      position: 'bottomright',
-    },
-    {
-      name: 'gv-inner-html',
-      position: 'bottomleft',
-      options: {
-        props: [
-          {
-            html:
-              '<div id="titolo"> <div id="loghi_sx"><a href="http://www.liguriavincoli.it/home.asp"><img src="/geoservices/apps/viewer/static/img/vincoli/vincoli_logo_sx_1.jpg"></a></div> <div id="loghi_dx"><a href="http://www.beniculturali.it" onclick="window.open(this.href);return false;"><img src="../../../dist/static/img/vincoli/vincoli_logo_dx_1.jpg"></a><a href="http://www.regione.liguria.it" onclick="window.open(this.href);return false;"><img src="../../../dist/static/img/vincoli//vincoli_logo_dx_2.jpg"></a></div> </div>',
-          },
-        ],
-      },
-    },
-  ];
+      name: 'gv-inner-html', position: 'bottomleft', options: {
+        props: [{ html: '<div id="titolo"> <div id="loghi_sx"><a href="http://www.liguriavincoli.it/home.asp"><img src="/geoviewer2/static/img/vincoli/vincoli_logo_sx_1.jpg"></a></div> <div id="loghi_dx"><a href="http://www.beniculturali.it" onclick="window.open(this.href);return false;"><img src="/geoviewer2/static/img/vincoli/vincoli_logo_dx_1.jpg"></a><a href="http://www.regione.liguria.it" onclick="window.open(this.href);return false;"><img src="/geoviewer2/static/img/vincoli//vincoli_logo_dx_2.jpg"></a></div> </div>' }]
+      }
+    }
+  ]
 }
 
 GV.init({
@@ -114,22 +78,12 @@ GV.init({
     },
   },
   baseLayers: [
-    {
-      type: 'ESRI_IMAGERY',
-      visible: true,
-    },
-    {
-      type: 'OSM',
-    },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
-    {
-      type: 'RL_CARTE_BASE',
-    },
-    {
-      type: 'BLANK',
-    },
+    { type: 'ESRI_IMAGERY', visible: true },
+    { type: 'OSM' },
+    { type: 'RL_ORTOFOTO_2022' },
+    { type: 'RL_CARTE_BASE' },
+    { type: 'BLANK' },
   ],
   maps: [],
-});
+})
+

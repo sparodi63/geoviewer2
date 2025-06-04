@@ -1,4 +1,4 @@
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+
 
 function onFeatureSelect(feature) {
   console.log(feature.properties)

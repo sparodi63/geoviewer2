@@ -1,12 +1,10 @@
 var idMap = null;
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
 // GV.globals.ATLANTE_GEOCHIMICO_CONFIG_URL = '/geoservices/REST/atlante_geochimico/config/';
 GV.globals.ATLANTE_GEOCHIMICO_CONFIG_URL = '/geoservices/data/atlante_geochimico/config.json';
 
 GV.init({
   debug: true,
   idMap: idMap,
-  // geoserverUrl: 'https://geoservizi.regione.liguria.it:8081/',
   application: {
     name: 'atlante-geochimico-gv2',
     mapOptions: {
@@ -58,12 +56,7 @@ GV.init({
     {
       type: 'ESRI_IMAGERY',
     },
-    {
-      type: 'OSM',
-    },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
+    { type: 'RL_ORTOFOTO_2022' },
     {
       type: 'RL_CARTE_BASE',
     },

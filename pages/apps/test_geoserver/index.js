@@ -1,30 +1,58 @@
-var id = GV.utils.getUrlParam('id');
+var id = GV.utils.getUrlParam("id");
 
-var target = GV.utils.getUrlParam('target');
+var target = GV.utils.getUrlParam("target");
 
-var geoserverUrl = GV.utils.getUrlParam('geoserver_url');
+var geoserverUrl = GV.utils.getUrlParam("geoserver_url");
 
 // Parametro per disabilitare cache
-var disableCache = GV.utils.getUrlParam('DISABLE_CACHE') === 'TRUE';
-if (!geoserverUrl) geoserverUrl = getGeoserverUrl(target);
-console.log(`TARGET: ${target}`);
-// console.log(`DISABLE_CACHE: ${disableCache}`);
-console.log(`GEOSERVER_URL: ${geoserverUrl}`);
+var disableCache = GV.utils.getUrlParam("DISABLE_CACHE") === "TRUE";
+console.log(disableCache);
+
+switch (target) {
+  case "P":
+    geoserverUrl = "https://geoservizi.regione.liguria.it";
+    break;
+  case "PM":
+    geoserverUrl = "/geoservices/REST/proxy/proxy?url=http://10.20.4.120:8080";
+    break;
+  case "P1":
+    geoserverUrl = "/geoservices/REST/proxy/proxy?url=http://10.20.4.120:8081";
+    break;
+  case "P2":
+    geoserverUrl = "/geoservices/REST/proxy/proxy?url=http://10.20.4.120:8082";
+    break;
+  case "P3":
+    geoserverUrl = "/geoservices/REST/proxy/proxy?url=http://10.20.4.120:8083";
+    break;
+  case "P4":
+    geoserverUrl = "/geoservices/REST/proxy/proxy?url=http://10.20.4.120:8084";
+    break;
+  case "T":
+    geoserverUrl =
+      "/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net";
+    break;
+  case "TM":
+    geoserverUrl =
+      "/geoservices/REST/proxy/proxy?url=http://geoservizi.datasiel.net:8080";
+    break;
+}
+
+// console.log(disableCache)
 
 if (geoserverUrl) {
-  GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+  
   GV.globals.USE_SUBDOMAINS = false;
   GV.init({
     debug: true,
     idMap: id,
     disableTMS: true,
     disableCache: disableCache,
-    geoserverUrl: geoserverUrl + '/',
+    geoserverUrl: geoserverUrl + "/",
     flagGeoserver: true,
     application: {
-      name: 'test-geoserver-gv2',
+      name: "test-geoserver-gv2",
       mapOptions: {
-        click: 'info',
+        click: "info",
       },
       layout: {
         legend: {
@@ -36,69 +64,36 @@ if (geoserverUrl) {
         },
         tools: [
           {
-            name: 'gv-geocoder',
-            position: 'topleft',
+            name: "gv-geocoder",
+            position: "topleft",
           },
           {
-            name: 'gv-scalebar',
-            position: 'bottomleft',
+            name: "gv-scalebar",
+            position: "bottomleft",
           },
         ],
       },
     },
     baseLayers: [
       {
-        type: 'ESRI_IMAGERY',
+        type: "ESRI_IMAGERY",
         visible: true,
       },
       {
-        type: 'OSM',
+        type: "OSM",
       },
       {
-        type: 'RL_ORTOFOTO_2019',
+        type: "RL_ORTOFOTO_2019",
       },
       {
-        type: 'RL_CARTE_BASE',
+        type: "RL_CARTE_BASE",
       },
       {
-        type: 'BLANK',
+        type: "BLANK",
       },
     ],
     maps: [],
   });
 } else {
-  console.error('parametro TARGET non impostato o non corretto');
-}
-
-function getGeoserverUrl(target) {
-  let url = null;
-
-  switch (target) {
-    // PROD
-    case 'GP':
-      url = '/geoservices/REST/proxy/proxy?url=http://geoservizi-gest.regione.liguria.it:8081';
-      break;
-    case 'GPP':
-      url = '/geoservices/REST/proxy/proxy?url=http://geoservizi-gest.regione.liguria.it:8091';
-      break;
-    case 'EP':
-      url = 'https://geoservizi-prod.regione.liguria.it';
-    case 'EPP':
-      url = '/geoservices/REST/proxy/proxy?url=http://geoservizi.regione.liguria.it:8091';
-      break;
-    // TEST
-    case 'GT':
-      url = '/geoservices/REST/proxy/proxy?url=http://geoservizi-gest-test.regione.liguria.it:8081';
-      break;
-    case 'GTP':
-      url = '/geoservices/REST/proxy/proxy?url=http://geoservizi-gest-test.regione.liguria.it:8091';
-      break;
-    case 'ET':
-      url = 'https://geoservizi-test.regione.liguria.it';
-      break;
-    case 'ETP':
-      url = '/geoservices/REST/proxy/proxy?url=http://geoservizi-test.regione.liguria.it:8091';
-      break;
-  }
-  return url;
+  console.error("parametro TARGET non impostato o non corretto");
 }

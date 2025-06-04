@@ -37,27 +37,29 @@
             empty-text="Nessuna risultato trovato"
             style="font-size: 12px !important"
             class="gv-inverted-color-scheme"
-            :default-sort="{ prop: 'anno', order: 'descending' }"
-            height="300"
+            :default-sort="{ prop: 'anno', order: 'descending', prop: 'titolo' }"
+            height="400"
             size="mini"
           >
             <el-table-column prop="anno" sortable label="Anno" align="left" width="80">
             </el-table-column>
-            <el-table-column prop="ordine" label="Ordine" sortable align="left" width="120">
+            <el-table-column prop="ordine" label="Ordine" sortable align="left" width="100">
+            </el-table-column>
+            <el-table-column prop="tipo_progetto" label="Tipologia progetto" sortable align="left" width="140">
             </el-table-column>
             <el-table-column
               prop="titolo_progetto"
               sortable
               label="Titolo progetto"
               align="left"
-              width="130"
+              width="150"
             >
             </el-table-column>
-            <el-table-column prop="abstract" sortable label="Abstract" align="left" width="390">
+            <el-table-column prop="abstract" sortable label="Abstract" align="left" width="300">
             </el-table-column>
-            <el-table-column label="Link" width="50">
+            <el-table-column label="Link scheda" width="90">
               <template slot-scope="scope">
-                <span v-if="scope.row.link_documentazione" title="link alla documentazione">
+                <span v-if="scope.row.link_documentazione" title="Link scheda web">
                   <el-button
                     size="mini"
                     style="
@@ -136,7 +138,7 @@ export default {
     hidePanel: function (event) {
       if (this.show) {
         document.getElementById('gv-scuoladigitale-info-body').style.display = 'block';
-        document.getElementById('gv-scuoladigitale-info').style.width = '800px';
+        document.getElementById('gv-scuoladigitale-info').style.width = '900px';
       } else {
         document.getElementById('gv-scuoladigitale-info-body').style.display = 'none';
         document.getElementById('gv-scuoladigitale-info').style.width = '200px';
@@ -160,7 +162,7 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  width: 800px;
+  width: 900px;
   margin-left: 10px;
   margin-top: 210px;
   z-index: 800;

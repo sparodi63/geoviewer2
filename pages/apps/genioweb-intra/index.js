@@ -13,13 +13,12 @@ http://localhost:8081/?ENV=TEST&PROV=GE&CODICE=GVI06559&LAYER=PRATICA
 http://localhost:8081/?ENV=TEST&PROV=GE&CODICE=GDE4645&LAYER=PUNTO_DE&ID_PUNTO=12794
 */
 
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/geoportale/map/';
-// GV.globals.RL_MAP_CONFIG_SERVICE = "/geoservices/REST/config/map/";
+// ;
 
-var env = GV.globals.GENIO_WEB_ENV || 'TEST';
-console.log('ENV: ', env);
+var env = GV.globals.GENIO_WEB_ENV || 'TEST'
+console.log('ENV: ', env)
 
-GV.globals.RL_CATALOG = 'int';
+GV.globals.RL_CATALOG = 'int'
 
 if (env === 'TEST') {
   GV.globals.GW_CONFIG = {
@@ -98,7 +97,7 @@ if (env === 'TEST') {
       idLayerEttariIrrigati: 'L7766',
       idCanali: '55,160',
     },
-  };
+  }
 } else {
   // CONFIGURAZIONE PROD
   GV.globals.GW_CONFIG = {
@@ -176,50 +175,46 @@ if (env === 'TEST') {
       idLayerEttariIrrigati: 'L7797',
       idCanali: '55,162',
     },
-  };
+  }
 }
 
-var token = GV.utils.getUrlParam('TOKEN');
-var prov = GV.utils.getUrlParam('PROV');
-var action = GV.utils.getUrlParam('ACTION');
+var token = GV.utils.getUrlParam('TOKEN')
+var prov = GV.utils.getUrlParam('PROV')
+var action = GV.utils.getUrlParam('ACTION')
 // var tipoLayer = GV.utils.getUrlParam('LAYER'); // Livello di riferimento per find: PRATICA/PRATICA_DE/PUNTO_DE/COMUNE/...
-var codicePratica = GV.utils.getUrlParam('CODICE_PRATICA'); // Codice della pratica nel caso di inserimento punti
-var codice = GV.utils.getUrlParam('CODICE'); // Codice per find
-var idPunto = GV.utils.getUrlParam('ID_PUNTO'); // Codice del punto presa
-var coordX = GV.utils.getUrlParam('COORD_X');
-var coordY = GV.utils.getUrlParam('COORD_Y');
-var codEpsg = GV.utils.getUrlParam('COD_EPSG');
-var codIstat = GV.utils.getUrlParam('COD_ISTAT');
-var idLocalita = GV.utils.getUrlParam('ID_LOCALITA');
-var codBelfiore = GV.utils.getUrlParam('COD_BELFIORE');
-var sezione = GV.utils.getUrlParam('SEZIONE');
-var foglio = GV.utils.getUrlParam('FOGLIO');
-var mappale = GV.utils.getUrlParam('MAPPALE');
-var codiceIdro = GV.utils.getUrlParam('CODICE_IDRO');
-var conto = GV.utils.getUrlParam('CONTO');
+var codicePratica = GV.utils.getUrlParam('CODICE_PRATICA') // Codice della pratica nel caso di inserimento punti
+var codice = GV.utils.getUrlParam('CODICE') // Codice per find
+var idPunto = GV.utils.getUrlParam('ID_PUNTO') // Codice del punto presa
+var coordX = GV.utils.getUrlParam('COORD_X')
+var coordY = GV.utils.getUrlParam('COORD_Y')
+var codEpsg = GV.utils.getUrlParam('COD_EPSG')
+var codIstat = GV.utils.getUrlParam('COD_ISTAT')
+var idLocalita = GV.utils.getUrlParam('ID_LOCALITA')
+var codBelfiore = GV.utils.getUrlParam('COD_BELFIORE')
+var sezione = GV.utils.getUrlParam('SEZIONE')
+var foglio = GV.utils.getUrlParam('FOGLIO')
+var mappale = GV.utils.getUrlParam('MAPPALE')
+var codiceIdro = GV.utils.getUrlParam('CODICE_IDRO')
+var conto = GV.utils.getUrlParam('CONTO')
 
-var idMap = GV.globals.GW_CONFIG[prov].idMap;
-var idCanali = GV.globals.GW_CONFIG[prov].idCanali;
-var extent = GV.globals.GW_CONFIG[prov].extent;
+var idMap = GV.globals.GW_CONFIG[prov].idMap
+var idCanali = GV.globals.GW_CONFIG[prov].idCanali
+var extent = GV.globals.GW_CONFIG[prov].extent
 
 // IMPOSTO FIND ALL'AVVIO PER AZIONE DI INSERT
-codice = codicePratica;
+codice = codicePratica
 
-var findOptions = setFindOptions();
+var findOptions = setFindOptions()
 
-var tools = setTools();
+var tools = setTools()
 
-var auth = {
+let auth = {
   type: 'S3',
   options: {
     s3Token: token,
     s3TokenType: 'genio',
     s3TokenProv: prov,
   },
-};
-
-if (env === 'TEST') {
-  auth = null;
 }
 
 GV.init({
@@ -230,8 +225,8 @@ GV.init({
   application: {
     name: 'genioweb-intra-gv2',
     auth: auth,
+    // auth: null,
     mapOptions: {
-      // type: 'openlayers',
       click: 'info',
       initialExtent: extent,
       restrictedExtent: extent,
@@ -251,11 +246,11 @@ GV.init({
               repertorio: {
                 type: 'tree',
                 name: 'repertorio',
-                label: 'Repertorio Cartografico',
+                label: 'Repertorio',
               },
               canali: {
                 type: 'tree',
-                name: 'canali',
+                name: 'canali', 
                 label: '',
                 options: {
                   multiCanale: true,
@@ -265,6 +260,12 @@ GV.init({
                   pub: false,
                 },
                 tree: null,
+              },
+              wms: {
+                label: 'Servizi WMS',
+              },
+              kml: {
+                label: 'KML/GPX/JSON',
               },
             },
             activePanel: 'canali',
@@ -282,9 +283,7 @@ GV.init({
     {
       type: 'OSM',
     },
-    {
-      type: 'RL_ORTOFOTO_2019',
-    },
+    { type: 'RL_ORTOFOTO_2022' },
     {
       type: 'RL_CARTE_BASE',
     },
@@ -293,7 +292,7 @@ GV.init({
     },
   ],
   maps: [],
-});
+})
 
 function setTools() {
   var tools = [
@@ -326,7 +325,7 @@ function setTools() {
       name: 'gv-scalebar',
       position: 'bottomleft',
     },
-  ];
+  ]
 
   if (codicePratica || codBelfiore || idLocalita || coordX || codiceIdro) {
     tools.push({
@@ -335,7 +334,7 @@ function setTools() {
         title: 'PRATICA: ' + codicePratica,
         items: getLocalizzaItems(),
       },
-    });
+    })
   }
 
   if (codicePratica) {
@@ -349,7 +348,7 @@ function setTools() {
         idMap: GV.globals.GW_CONFIG[prov].idMap,
         codicePratica: codicePratica,
       },
-    });
+    })
   }
 
   if (action === 'INSERT') {
@@ -362,7 +361,7 @@ function setTools() {
           point: true,
           polyline: true,
           polygon: true,
-        };
+        }
     tools.push({
       name: 'gv-draw-button',
       active: false,
@@ -383,33 +382,33 @@ function setTools() {
         multiGeom: true,
         epsg: '3003',
         initWfsRequests: getInitWfsRequests(),
-        submit: function(data, deleted, loading, refresh) {
+        submit: function (data, deleted, loading, refresh) {
           var data = {
             prov: prov,
             codicePratica: codicePratica,
             idPunto: idPunto,
             features: data,
             deleted: deleted,
-          };
-          GV.utils.insertGeomPraticaGenio(data).then(function(resp) {
-            var message = resp.data.msg.join('<br>');
-            if (loading) loading.close();
-            refreshLayer();
+          }
+          GV.utils.insertGeomPraticaGenio(data).then(function (resp) {
+            var message = resp.data.msg.join('<br>')
+            if (loading) loading.close()
+            refreshLayer()
             if (resp.success) {
-              GV.utils.notification('Dati salvati correttamente<br>' + message, 'info');
+              GV.utils.notification('Dati salvati correttamente<br>' + message, 'info')
             } else {
-              GV.utils.notification('Errore nella scrittura sul DB', 'error');
+              GV.utils.notification('Errore nella scrittura sul DB', 'error')
             }
             // chiamo callback per refresh client
-            if (refresh) refresh();
+            if (refresh) refresh()
             // GV.eventBus.$emit('draw-saved-data', {
             //   success: resp.success,
             // });
-          });
+          })
         },
-        cancel: function(data) {},
+        cancel: function (data) {},
       },
-    });
+    })
 
     tools.push({
       name: 'gv-genio-seleziona-particelle-button',
@@ -422,7 +421,7 @@ function setTools() {
         codicePratica: codicePratica,
         idPunto: idPunto,
       },
-    });
+    })
   }
 
   tools.push({
@@ -431,40 +430,35 @@ function setTools() {
       confirm: true,
       action: 'close',
     },
-  });
+  })
 
-  return tools;
+  return tools
 }
 
 function refreshLayer() {
-  var layerToRefresh = idPunto ? GV.globals.GW_CONFIG[prov].idLayerPuntoDe : getLayerPratica();
-  var layerConfig = GV.config.getLayerConfig(layerToRefresh);
+  var layerToRefresh = idPunto ? GV.globals.GW_CONFIG[prov].idLayerPuntoDe : getLayerPratica()
+  var layerConfig = GV.config.getLayerConfig(layerToRefresh)
   GV.eventBus.$emit('set-layer-visible', {
     layer: layerConfig,
     checked: false,
-  });
+  })
   GV.eventBus.$emit('set-layer-visible', {
     layer: layerConfig,
     checked: true,
-  });
+  })
 }
 
 function getLayerPratica() {
-  var layerPratica = GV.globals.GW_CONFIG[prov].idLayerPratica;
-  if (
-    codicePratica.startsWith('GDE') ||
-    codicePratica.startsWith('IMD') ||
-    codicePratica.startsWith('SVD') ||
-    codicePratica.startsWith('SPD')
-  ) {
-    layerPratica = GV.globals.GW_CONFIG[prov].idLayerPraticaDe;
+  var layerPratica = GV.globals.GW_CONFIG[prov].idLayerPratica
+  if (codicePratica.startsWith('GDE') || codicePratica.startsWith('IMD') || codicePratica.startsWith('SVD') || codicePratica.startsWith('SPD')) {
+    layerPratica = GV.globals.GW_CONFIG[prov].idLayerPraticaDe
   }
-  return layerPratica;
+  return layerPratica
 }
 
 function getInitWfsRequests() {
   var baseWfsURL =
-    'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson';
+    'https://geoservizi.regione.liguria.it/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A4326&outputFormat=application%2Fjson'
 
   return idPunto
     ? [
@@ -503,11 +497,11 @@ function getInitWfsRequests() {
             "' AND ID_PUNTO_DE IS NULL" +
             " AND G_STATO='M'",
         },
-      ];
+      ]
 }
 
 function getLocalizzaItems() {
-  var items = [];
+  var items = []
 
   if (codicePratica) {
     items.push({
@@ -517,7 +511,7 @@ function getLocalizzaItems() {
         layers: [getLayerPratica()],
         cqlFilter: "CODICE_PRATICA='" + codicePratica + "'",
       },
-    });
+    })
   }
   if (codBelfiore) {
     items.push({
@@ -527,7 +521,7 @@ function getLocalizzaItems() {
         layers: [GV.globals.GW_CONFIG[prov].idLayerComune],
         cqlFilter: "AA01_COD_COM='" + codBelfiore + "'",
       },
-    });
+    })
   }
   if (idLocalita) {
     items.push({
@@ -537,12 +531,12 @@ function getLocalizzaItems() {
         layers: [GV.globals.GW_CONFIG[prov].idLayerLocalita],
         cqlFilter: "ID='" + idLocalita + "'",
       },
-    });
+    })
   }
   if (codBelfiore && sezione && foglio) {
-    if (foglio == '0') foglio = '';
+    if (foglio == '0') foglio = ''
     if (mappale) {
-      mappale = mappale.padEnd(10, ' ');
+      mappale = mappale.padEnd(10, ' ')
       items.push({
         label: 'Particella',
         value: codBelfiore + ',' + sezione + ',' + foglio + ',' + mappale,
@@ -550,33 +544,18 @@ function getLocalizzaItems() {
           layers: [GV.globals.GW_CONFIG[prov].idLayerParticella],
           maxZoom: 18,
           cqlFilter:
-            "CT24_COD_COM='" +
-            codBelfiore +
-            "' AND CT24_SEZ='" +
-            sezione +
-            "' AND CT24_FOGLIO='" +
-            foglio +
-            "' AND CT24_NUMERO='" +
-            mappale +
-            "'",
+            "CT24_COD_COM='" + codBelfiore + "' AND CT24_SEZ='" + sezione + "' AND CT24_FOGLIO='" + foglio + "' AND CT24_NUMERO='" + mappale + "'",
         },
-      });
+      })
     } else {
       items.push({
         label: 'Foglio',
         value: codBelfiore + ',' + sezione + ',' + foglio,
         findOptions: {
           layers: [GV.globals.GW_CONFIG[prov].idLayerFoglio],
-          cqlFilter:
-            "CT31_COD_COM='" +
-            codBelfiore +
-            "' AND CT31_SEZ='" +
-            sezione +
-            "' AND CT31_FOGLIO='" +
-            foglio +
-            "'",
+          cqlFilter: "CT31_COD_COM='" + codBelfiore + "' AND CT31_SEZ='" + sezione + "' AND CT31_FOGLIO='" + foglio + "'",
         },
-      });
+      })
     }
   }
   if (coordX && coordY && codEpsg) {
@@ -589,7 +568,7 @@ function getLocalizzaItems() {
           epsg: codEpsg,
         },
       },
-    });
+    })
   }
   if (idPunto) {
     items.push({
@@ -599,10 +578,10 @@ function getLocalizzaItems() {
         layers: [GV.globals.GW_CONFIG[prov].idLayerPuntoDe],
         cqlFilter: "CODICE_PRATICA='" + codicePratica + "' AND ID_PUNTO_DE='" + idPunto + "'",
       },
-    });
+    })
   }
   if (codiceIdro) {
-    var count = conto || '1';
+    var count = conto || '1'
     items.push({
       label: 'Corpo Idrico',
       value: codiceIdro,
@@ -611,63 +590,53 @@ function getLocalizzaItems() {
         codiceIdro: codiceIdro,
         count: count,
       },
-    });
+    })
   }
 
-  return items;
+  return items
 }
 
 function setFindOptions() {
-  if (!codice) return null;
+  if (!codice) return null
 
-  var idLayer, cqlFilter;
-  var tipoLayer = getTipoLayer();
-  console.log('LAYER: ' + tipoLayer);
+  var idLayer, cqlFilter
+  var tipoLayer = getTipoLayer()
+  console.log('LAYER: ' + tipoLayer)
 
   switch (tipoLayer) {
     case 'PRATICA':
-      idLayer = GV.globals.GW_CONFIG[prov].idLayerPratica;
-      cqlFilter = "CODICE_PRATICA='" + codice + "'";
-      break;
+      idLayer = GV.globals.GW_CONFIG[prov].idLayerPratica
+      cqlFilter = "CODICE_PRATICA='" + codice + "'"
+      break
     case 'PRATICA_DE':
-      idLayer = GV.globals.GW_CONFIG[prov].idLayerPraticaDe;
-      cqlFilter = "CODICE_PRATICA='" + codice + "'";
-      break;
+      idLayer = GV.globals.GW_CONFIG[prov].idLayerPraticaDe
+      cqlFilter = "CODICE_PRATICA='" + codice + "'"
+      break
     case 'PUNTO_DE':
-      idLayer = GV.globals.GW_CONFIG[prov].idLayerPuntoDe;
-      cqlFilter = "CODICE_PRATICA='" + codice + "' AND ID_PUNTO_DE=" + idPunto;
-      break;
+      idLayer = GV.globals.GW_CONFIG[prov].idLayerPuntoDe
+      cqlFilter = "CODICE_PRATICA='" + codice + "' AND ID_PUNTO_DE=" + idPunto
+      break
   }
 
   return {
     layers: [idLayer],
     cqlFilter: cqlFilter,
-  };
+  }
 }
 
 function getTipoLayer() {
-  var tipoLayer = 'PRATICA';
-  if (
-    codicePratica.startsWith('GDE') ||
-    codicePratica.startsWith('IMD') ||
-    codicePratica.startsWith('SVD') ||
-    codicePratica.startsWith('SPD')
-  ) {
-    tipoLayer = 'PRATICA_DE';
+  var tipoLayer = 'PRATICA'
+  if (codicePratica.startsWith('GDE') || codicePratica.startsWith('IMD') || codicePratica.startsWith('SVD') || codicePratica.startsWith('SPD')) {
+    tipoLayer = 'PRATICA_DE'
   }
-  if (idPunto) tipoLayer = 'PUNTO_DE';
-  return tipoLayer;
+  if (idPunto) tipoLayer = 'PUNTO_DE'
+  return tipoLayer
 }
 
 function getTipoPratica() {
-  var tipoPratica = 'DEM';
-  if (
-    codicePratica.startsWith('GDE') ||
-    codicePratica.startsWith('IMD') ||
-    codicePratica.startsWith('SVD') ||
-    codicePratica.startsWith('SPD')
-  ) {
-    tipoPratica = 'DER';
+  var tipoPratica = 'DEM'
+  if (codicePratica.startsWith('GDE') || codicePratica.startsWith('IMD') || codicePratica.startsWith('SVD') || codicePratica.startsWith('SPD')) {
+    tipoPratica = 'DER'
   }
-  return tipoPratica;
+  return tipoPratica
 }

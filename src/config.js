@@ -319,10 +319,10 @@ export default {
     try {
       const response = await getConfig(idMap);
       if (!response.data.success) {
-        throw new Error('Errore Caricamento Mappa: ' + response.data.message);
+        throw new Error('Errore caricamento: ' + response.data.message);
       }
       if (!response.data.data) {
-        throw new Error('Errore Caricamento Mappa: configurazione non trovata');
+        throw new Error('Errore caricamento: configurazione non trovata');
       }
 
       globals.SYS_MANUTENZIONE =

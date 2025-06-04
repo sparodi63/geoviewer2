@@ -4,9 +4,10 @@ ESEMPIO QUERY_STRING
 ?COORD=8.421021,44.339565&EPSG=4326
 */
 
-var idMap = '1947';
-var coord = GV.utils.getUrlParam('COORD');
-var epsg = GV.utils.getUrlParam('EPSG') || '3003';
+var idMap = '1947'
+var coord = GV.utils.getUrlParam('COORD')
+//var epsg = '4326'
+var epsg = '3003'
 
 GV.init({
   debug: true,
@@ -37,18 +38,15 @@ GV.init({
           },
         },
       },
-      tools: [
-        { name: 'gv-geocoder', position: 'topleft' },
-        { name: 'gv-scalebar', position: 'bottomleft' },
-      ],
+      tools: [{ name: 'gv-geocoder', position: 'topleft' }, { name: 'gv-scalebar', position: 'bottomleft' }],
     },
   },
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
     { type: 'OSM' },
-    { type: 'RL_ORTOFOTO_2019' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK' },
   ],
   maps: [],
-});
+})

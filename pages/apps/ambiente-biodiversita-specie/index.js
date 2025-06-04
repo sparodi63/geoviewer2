@@ -1,5 +1,3 @@
-// GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
-
 GV.init({
   debug: true,
   idMap: '2096,1721',
@@ -54,7 +52,7 @@ GV.init({
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
     { type: 'OSM' },
-    { type: 'RL_ORTOFOTO_2019' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_CARTE_BASE' },
     { type: 'BLANK' },
   ],

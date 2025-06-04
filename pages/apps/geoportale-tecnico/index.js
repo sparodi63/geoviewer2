@@ -1,22 +1,14 @@
-var id = GV.utils.getUrlParam('id');
-
-// GESTIONE PAGINE CUSTOM --------------------------------------------
-var customPageUrlList = {
-  1881: '/geoservices/apps/viewer/pages/apps/atlante-geochimico/',
-};
-if (id && customPageUrlList[id]) {
-  window.location = customPageUrlList[id];
-}
-// GESTIONE PAGINE CUSTOM --------------------------------------------
+var id = GV.utils.getUrlParam("id");
 
 GV.init({
   debug: true,
   idMap: id,
-  // geoserverUrl: 'https://geoservizi.regione.liguria.it:8081/',
+  // geoserverUrl: 'http://10.20.4.120:8081/',
   application: {
-    name: 'geoportale-tecnico-gv2',
+    name: "geoportale-tecnico-gv2",
     mapOptions: {
-      click: 'info',
+      click: "info",
+      maxZoom: 19,
     },
     layout: {
       legend: {
@@ -30,42 +22,45 @@ GV.init({
           addMapConfig: {
             panels: {
               repertorio: {
-                type: 'tree',
-                name: 'repertorio',
-                label: 'Repertorio Cartografico',
+                type: "tree",
+                name: "repertorio",
+                label: "Repertorio Cartografico",
               },
               wms: {
-                label: 'Servizi WMS',
+                label: "Servizi WMS",
               },
               kml: {
-                label: 'KML/GPX/JSON',
+                label: "KML/GPX/JSON",
               },
             },
           },
         },
       },
       tools: [
-        { name: 'gv-geocoder' },
-        { name: 'gv-info-button', active: true },
-        { name: 'gv-measure-button' },
-        // { name: 'gv-layer-search-button' },
-        { name: 'gv-layer-search-topo-button' },
-        { name: 'gv-ricerca-catastale-button' },
-        { name: 'gv-print-button' },
-        { name: 'gv-scalebar', position: 'bottomleft' },
+        { name: "gv-geocoder" },
+        { name: "gv-info-button", active: true },
+        { name: "gv-measure-button" },
+        { name: "gv-layer-search-button" },
+        { name: "gv-ricerca-particella-button" },
+        { name: "gv-print-button" },
+        {
+          name: "gv-insert-point-button",
+        },
+        { name: "gv-scalebar", position: "bottomleft" },
       ],
     },
   },
   baseLayers: [
-    { type: 'ESRI_IMAGERY', visible: true },
-    { type: 'OSM' },
+    { type: "ESRI_IMAGERY", visible: true },
+    { type: "OSM" },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_ORTOFOTO_2019' },
     { type: 'RL_ORTOFOTO_2016' },
     { type: 'RL_ORTOFOTO_2013' },
     { type: 'RL_ORTOFOTO_2010' },
     { type: 'RL_ORTOFOTO_2007' },
-    { type: 'RL_CARTE_BASE' },
-    { type: 'BLANK' },
+    { type: "RL_CARTE_BASE" },
+    { type: "BLANK" },
   ],
   maps: [],
 });

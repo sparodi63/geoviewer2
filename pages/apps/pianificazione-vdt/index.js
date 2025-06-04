@@ -37,6 +37,10 @@ GV.init({
                 type: 'tree',
                 name: 'repertorio',
                 label: 'Repertorio Cartografico',
+                options: {
+                  treeServiceUrl: '/geoservices/REST/config/catalog/',
+                  cat: GV.globals.RL_CATALOG,
+                },
                 tree: null,
               },
               canali: {
@@ -75,6 +79,7 @@ GV.init({
   baseLayers: [
     { type: 'ESRI_IMAGERY', visible: true },
     { type: 'OSM' },
+    { type: 'RL_ORTOFOTO_2022' },
     { type: 'RL_ORTOFOTO_2019' },
     { type: 'RL_ORTOFOTO_2016' },
     { type: 'RL_ORTOFOTO_2013' },

@@ -90,7 +90,7 @@ export default {
   },
   mounted() {
     GV.log('gv-legend-maps: mounted');
-    if (this.options.showDownloadPanelOnLoad && GV.config.idMap) {
+    if (GV.config.idMap && this.options.showDownloadPanelOnLoad) {
       GV.eventBus.$on('gv-config-init', (config) => {
         this.openDownloadPanel(GV.config.idMap, this.options.downloadFormat);
       });
@@ -103,16 +103,14 @@ export default {
     toggleLayers(map) {
       map.showLayersInLegend = !map.showLayersInLegend;
     },
-    getToggleLayersClass(map) {
+    getToggleLayersClass(map) { 
       return map.showLayersInLegend
         ? 'gv-inverted-color-scheme gv-legend-map-tools-button el-icon-arrow-up'
         : 'gv-inverted-color-scheme gv-legend-map-tools-button el-icon-arrow-down';
     },
-    isDownloadable(map) {
+    isDownloadable(map) { 
       if (this.options.noDownloadButton) return false;
-      if (GV.globals.RL_CATALOG === 'pub' && map.flagDownload) return true;
-      if (GV.globals.RL_CATALOG === 'int' && (map.flagDownloadExtranet || map.flagDownload))
-        return true;
+      if (map.flagDownload) return true;
       return false;
     },
     checkInfoMap(map) {
@@ -141,7 +139,13 @@ export default {
       this.openDownloadPanel(map.id);
     },
     openDownloadPanel(idMap, inputFormat) {
-      // console.log('LEGEND', inputFormat);
+      const map = GV.config.getMapConfig(idMap);
+      const downloadable = this.isDownloadable(map);
+
+      if (!downloadable) {
+        GV.log('gv-legend-maps: openDownloadPanel - map not downloadable');
+        return;
+      }
 
       if (document.getElementById('gv-map-download')) {
         const element = document.getElementById('gv-map-download');

@@ -2,7 +2,7 @@ const idMap = GV.utils.getUrlParam('id_map');
 // const idLayer = GV.utils.getUrlParam('id_layer');
 // const env = GV.utils.getUrlParam('env') || 'test';
 
-GV.globals.RL_MAP_CONFIG_SERVICE = '/geoservices/REST/config/map/';
+
 
 // http://localhost:8081/?id_map=2&id_layer=499&env=test
 
@@ -12,7 +12,7 @@ const geoserverUrl =
 
 if (idMap) {
   // loadConfig();
-  fetch(`/geoservices/REST/geoportale/map/${idMap}`)
+  fetch(`/geoservices/REST/config/map/${idMap}`)
     .then(response => response.json())
     .then(data => {
       if (data.success) {
@@ -40,7 +40,7 @@ if (idMap) {
 function loadConfig(idLayer) {
   const initWfsRequest = [
     {
-      wfsURL: `https://srvcarto2svil.regione.liguria.it/geoservices/REST/geoserver/raster_footprint/?id_layer=${idLayer}`,
+      wfsURL: `https://srvcarto2svil.regione.liguria.it/geoservices/REST/geoserver/raster_footprint2/?id_layer=${idLayer}`,
     },
   ];
   let tools = [
@@ -76,7 +76,7 @@ function loadConfig(idLayer) {
         submit: function(data, deleted, loading, refresh) {
           console.log('submit', data, deleted);
 
-          fetch('/geoservices/REST/geoserver/raster_footprint', {
+          fetch('/geoservices/REST/geoserver/raster_footprint2', {
             headers: {
               'Content-Type': 'application/json',
             },

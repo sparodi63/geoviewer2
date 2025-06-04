@@ -347,6 +347,20 @@ var layerFactory = {
     });
   },
 
+  RL_ORTOFOTO_2022() {
+    return this.WMS({
+      visible: false,
+      name: 'ORTOFOTO',
+      cacheMinZoomLevel: 8,
+      wmsParams: {
+        name: 'L10401',
+        format: 'image/png',
+        url: 'https://geoservizi.regione.liguria.it/geoserver/M2555/wms?',
+      },
+      zIndex: 1,
+      attribution: 'Ortofoto 20cm/ ©2022 CONSORZIO TeA - TUTTI I DIRITTI RISERVATI',
+    });
+  },
   RL_ORTOFOTO_2019() {
     return this.WMS({
       visible: false,
@@ -428,6 +442,7 @@ var layerFactory = {
         url: 'https://geoservizi.regione.liguria.it/geoserver/M48/wms?',
       },
       zIndex: 1,
+      attribution: 'Immagine TerraItaly(tm) - © Compagnia Generale Ripreseaeree',
     });
   },
   RL_ORTOFOTO_1986() {
@@ -506,6 +521,7 @@ var layerFactory = {
         L.latLng(globals.MAX_BOUNDS.X_MAX, globals.MAX_BOUNDS.Y_MAX)
       ),
       client: 'GV2',
+      attribution: layerConfig.attribution || '',
     };
     if (wmsParams.cql_filter) {
       options.cql_filter = wmsParams.cql_filter;
@@ -513,8 +529,10 @@ var layerFactory = {
     if (wmsParams.sld) {
       options.sld = wmsParams.sld;
     }
+    // console.log('options', options);
 
     let url = wmsParams.url;
+
     if (isCached) {
       if (globals.USE_SUBDOMAINS && url.indexOf('geoservizi.regione.liguria.it') > 0) {
         url = url.replace('geoservizi', 'geoservizi{s}');

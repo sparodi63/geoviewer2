@@ -12,7 +12,7 @@
       </p>
       <p>
         Z:
-        <span id="gv-coordinate-panel-y">{{ z }}</span>
+        <span id="gv-coordinate-panel-z">{{ z }}</span>
       </p>
       <br />
       <el-button
