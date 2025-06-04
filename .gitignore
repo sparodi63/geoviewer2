@@ -3,3 +3,5 @@
 cypress/videos/**
 dist/static/**
 dist/stats-report.txt
+# Ignora la directory node_modules
+node_modules/
